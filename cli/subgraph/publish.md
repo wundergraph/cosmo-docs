@@ -1,0 +1,61 @@
+---
+description: >-
+  Publishes a subgraph on the control plane. Optionally, you can publish and
+  create a subgraph in one step.
+---
+
+# Publish
+
+## **Usage**
+
+```css
+npx wgc subgraph publish [subgraphName] --schema [schemaFilePath]
+```
+
+{% hint style="info" %}
+**Publish** is an irreversible action. However, the change will only be visible to the routers once the composition has been successful. Until then, the routers will operate with the most recent valid composition. Please use [subgraph check](check.md) to understand the impact of your change.
+{% endhint %}
+
+## **Description**
+
+The `npx wgc subgraph publish` command enables you to publish a specific subgraph to the Cosmo platform. Publishing a subgraph makes it available for consumption by other services or applications, allowing them to send GraphQL queries and retrieve data from your subgraph. The `[subgraphName]` argument specifies the name of the subgraph you want to publish, while the `--schema` option defines the path to the GraphQL schema file that contains your subgraph's schema definition.
+
+## **Parameters**
+
+* `[subgraphName]`: The name of the subgraph you want to publish. Make sure to use the correct name of the subgraph you previously created.
+
+## **Options**
+
+* `--schema`: The file path to the GraphQL schema definition for the subgraph you want to publish. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
+  * Example: `--schema ../demo/subgraphs/products/products.graphql`
+
+Only needed when creating a subgraph with publish:
+
+* `--label`: (**Required**) Assign multiple labels to the new subgraph. Labels are used to categorize and organize subgraphs based on specific criteria (e.g., team, department, project).
+  * Example: `--label team=A`
+* `--routing-url`: (**Required**) Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from.
+  * Example: `--routing-url http://localhost:4001/graphql`
+* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
+* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
+  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
+  * `sse`: Use Server-Sent Events with a GET request.
+  * `sse_post`: Use Server-Sent events with a POST request.
+
+## **Example**
+
+### Publish a schema to an existing subgraph.
+
+```bash
+npx wgc subgraph publish products --schema ../demo/subgraphs/products/products.graphql
+```
+
+### **Create a subgraph and publish a schema in one command**
+
+```bash
+npx wgc subgraph publish products --schema ../demo/subgraphs/products/products.graphql --routing-url http://localhost:4001/graphql --label=team=A
+```
+
+## **Notes**
+
+* The `npx wgc subgraph publish` command interacts with the Cosmo platform's control plane to publish the specified subgraph.
+* Double-check that the path provided for the `--schema` option points to the correct location of the GraphQL schema file you intend to publish.

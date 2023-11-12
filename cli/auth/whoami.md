@@ -1,0 +1,15 @@
+---
+description: Displays the identity currently authenticated and in use.
+---
+
+# Whoami
+
+## Usage
+
+```bash
+npx wgc auth whoami
+```
+
+## Description
+
+The `npx wgc auth whoami` command allows you to figure out who is currently authenticated with the controlplane. It displays the organization and controlplane URL.

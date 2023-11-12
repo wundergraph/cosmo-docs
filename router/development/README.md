@@ -1,0 +1,9 @@
+# Development
+
+The Cosmo router contains functionality intended to be used to assist the development of the router and/or subgraphs that are connected through the router. Most of these features should not be enabled for production, since they could impact performance in negative ways.
+
+### Connect to your subgraphs running on localhost from Docker
+
+A common setup for development is running subgraphs on `localhost` and the executing router inside Docker. To avoid requiring additional configuration steps in this environment and to make this setup more ergonomic, when running inside Docker the router will retry requests that fail to connect to a loopback address, sending them to `docker.host.insternal` instead.
+
+This feature is enabled by default, but it can be disabled by setting the environment variable `LOCALHOST_FALLBACK_INSIDE_DOCKER` to `false`.

@@ -1,0 +1,44 @@
+---
+description: >-
+  Fetches the latest valid SDL of a federated graph. The output can be piped to
+  a file. This is primarily used for debugging purposes
+---
+
+# Fetch
+
+## Usage
+
+```bash
+npx wgc federated-graph fetch <name>
+```
+
+## Description
+
+The `npx wgc federated-graph fetch` command allows you to fetch the latest valid Schema Definition Language (SDL) of a federated graph from the Cosmo platform's control plane. The fetched SDL represents the unified schema of the federated graph. You can use this command to retrieve the SDL and, if needed, pipe the output to a file.
+
+## Parameters
+
+* `<name>`: The name of the federated graph you want to fetch. Replace `<name>` with the name of the federated graph you wish to retrieve the SDL for.
+
+## Options
+
+* `-o, --out` : Destination file for the SDL. Prints to standard output if not provided.
+
+## Examples
+
+```bash
+npx wgc federated-graph fetch production
+```
+
+Fetch the latest valid SDL of the federated graph named "production."
+
+```bash
+npx wgc federated-graph fetch production > production-schema.graphql
+```
+
+Fetch the latest valid SDL of the federated graph named "production" and save it to a file named "production-schema.graphql."
+
+## Notes
+
+* The `npx wgc federated-graph fetch` command interacts with the Cosmo platform's control plane to fetch the latest valid SDL of the specified federated graph. Ensure that you have the necessary permissions to perform this operation.
+* The fetched SDL represents the unified schema of the federated graph, which includes the composition of multiple subgraphs.

@@ -1,0 +1,11 @@
+---
+description: >-
+  Kubernetes is an open-source container orchestration platform designed to
+  automate the deployment, scaling, and management of application containers.
+---
+
+# Kubernetes
+
+Kubernetes and its ecosystem enable us to package a stack like Cosmo in a manner that is both maintainable and reliable. Since Kubernetes is available on all major cloud providers, it stands out as the best platform.
+
+To simplify the deployment, we maintain to provide a production-grade [Helm](https://helm.sh/) Chart.

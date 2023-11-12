@@ -1,0 +1,59 @@
+---
+description: >-
+  Checks for breaking changes and composition errors for all the connected
+  federated graphs.
+---
+
+# Check
+
+## Usage
+
+```bash
+npx wgc subgraph check <name> --schema <path-to-schema>
+```
+
+{% hint style="info" %}
+Use this command whenever you make modifications to your subgraphs. It will report any GraphQL or composition errors before they land on production. The report will be made visible under [Schema Checks](../../studio/schema-checks.md).
+{% endhint %}
+
+## Description
+
+The `npx wgc subgraph check` command checks for breaking changes and composition errors in all connected federated graphs associated with the specified subgraph. This validation process ensures that the new schema you intend to use does not introduce any issues that could negatively impact existing federated graphs.
+
+## Parameters
+
+* `<name>`: The name of the subgraph for which you want to perform the validation check. This should be the exact name of the subgraph you wish to check.
+
+## Required Option
+
+* `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
+
+## Examples
+
+1.  Check for breaking changes and composition errors for the subgraph "products" with the new schema file located at "./schemas/new\_schema.graphql":
+
+    ```sql
+    npx wgc subgraph check products --schema ./schemas/new_schema.graphql
+    ```
+
+## Sample output with changes and errors
+
+Changes
+
+| CHANGE       | TYPE           | DESCRIPTION                                       |
+| ------------ | -------------- | ------------------------------------------------- |
+| BREAKING     | FIELD\_REMOVED | Field 'email' was removed from object type 'User' |
+| NON-BREAKING | FIELD\_ADDED   | Field 'emailID' was added to object type 'User'   |
+
+Composition Errors
+
+<table><thead><tr><th width="263">FEDERATED_GRAPH_NAME</th><th>ERROR_MESSAGE</th></tr></thead><tbody><tr><td>inventory</td><td>Type "Product" is an extension type, but there is no type definition for "Product" in any subgraphs.</td></tr></tbody></table>
+
+## Usage in CI and GitHub Integration
+
+Checkout the tutorial [here](../../tutorial/pr-based-workflow-for-federation.md) on how to use the subgraph check command in CI with GitHub.
+
+## Notes
+
+* The `npx wgc subgraph check` command interacts with the Cosmo platform's control plane and connected federated graphs to perform the validation checks.
+* If there are no breaking changes or composition errors detected, the tables will be empty, indicating that the new schema is compatible with the existing federated graphs.
