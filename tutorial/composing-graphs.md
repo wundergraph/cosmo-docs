@@ -1,6 +1,6 @@
 ---
 description: >-
-  How to compose a federated graph with WunderMerge, a TypeScript composition
+  How to compose a federated graph with WunderGraph Schema Composition, a TypeScript composition
   library.
 ---
 
@@ -12,6 +12,7 @@ The subgraph object is the core of the composition library. It has the following
 
 ```typescript
 import { DocumentNode } from 'graphql';
+import { federateSubgraphs, Subgraph } from '@wundergraph/composition';
 
 export type Subgraph = {
   definitions: DocumentNode
@@ -22,7 +23,8 @@ export type Subgraph = {
 
 A `DocumentNode` can be created using the graphql libary `parse` function. A simple example subgraph is provided below :
 
-<pre class="language-typescript"><code class="lang-typescript"><strong>import { parse } from 'graphql';
+<pre class="language-typescript"><code class="lang-typescript"><strong>import { DocumentNode } from 'graphql';
+import { federateSubgraphs, Subgraph } from '@wundergraph/composition';
 </strong><strong>
 </strong><strong>const subgraphA = {
 </strong>  name: 'subgraph-a',
