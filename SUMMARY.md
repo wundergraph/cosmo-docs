@@ -6,7 +6,7 @@
 
 ## Tutorial
 
-* [Mastering Local Development](tutorial/mastering-local-development.md)
+* [Mastering Local Development for GraphQL Federation](tutorial/mastering-local-development-for-graphql-federation.md)
 * [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)
 * [Switch from Apollo to Cosmo](tutorial/switch-from-apollo-to-cosmo.md)
 * [Cosmo Cloud Onboarding](tutorial/cosmo-cloud-onboarding.md)
