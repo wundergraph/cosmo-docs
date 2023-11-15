@@ -1,10 +1,42 @@
 ---
-description: >-
-  This tutorial provides steps on how to run a router locally without the
-  control plane.
+description: This tutorial provides steps on how to run a federated graph/router locally.
 ---
 
 # How to run and develop your federated graph locally
+
+## TL;DR
+
+1. Install the latest [`wgc`](https://www.npmjs.com/package/wgc)
+2. Download and extract the latest router for your OS/architecture from the Assets list [here](https://github.com/wundergraph/cosmo/releases?q=router\&expanded=true)
+3. Create `graphs.yaml` with your subgraph information:
+
+<pre class="language-yaml"><code class="lang-yaml">version: 1
+subgraphs:
+  - name: subgraph-a
+    routing_url: http://localhost:4001/graphql
+  - name: subgraph-b
+<strong>  # ...etc.
+</strong></code></pre>
+
+4. Generate the config with `wgc compose`:
+
+```bash
+wgc router compose -i path/to/graphs.yaml -o path/to/router/binary/config.json. 
+```
+
+5. Create a `.env` file in the router binary directory:
+
+```bash
+FEDERATED_GRAPH_NAME=federated_graph
+GRAPH_API_TOKEN=dummy # cannot be empty
+ROUTER_CONFIG_PATH=config.json
+```
+
+6. Run the router and go to `localhost:3002`
+
+```
+path/to/router/binary/router
+```
 
 ## Pre-requirements
 
@@ -125,7 +157,7 @@ An example `/env` file is shown below:
 
 ```bash
 FEDERATED_GRAPH_NAME=federated_graph
-GRAPH_API_TOKEN=dummy
+GRAPH_API_TOKEN=dummy # cannot be empty
 ROUTER_CONFIG_PATH=config.json
 LISTEN_ADDR=0.0.0.0:3002
 LOG_LEVEL=info
@@ -139,7 +171,7 @@ LOG_LEVEL=info
 path/to/router/binary/router
 ```
 
-### go 1.21 (cosmo/router/main.go)
+### From source using go 1.21 (cosmo/router/main.go)
 
 1. Change your working directory to your WunderGraph Cosmo repository's router directory
 2. Run `main.go` with `go run`
