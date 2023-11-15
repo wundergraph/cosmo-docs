@@ -69,5 +69,5 @@ ROUTER_CONFIG_PATH=config.json # The path to the file we generated previously
 Run the router and go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes. The next time you want to update your graph you can run:
 
 ```bash
-wgc router compose -i compose.yaml -o config.json. && router
+wgc router compose -i compose.yaml -o config.json && router
 ```
