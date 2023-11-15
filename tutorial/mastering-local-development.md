@@ -1,0 +1,73 @@
+---
+description: >-
+  A Step-by-Step Guide to Running and Enhancing Your Federated Graph for Rapid
+  Development.
+---
+
+# Mastering Local Development
+
+## Overview
+
+In development, you aim to test your schema changes as quickly as possible, bypassing the need to check and update your federated graph on the control plane. This approach does not replace the necessity of pushing your subgraph to the control plane in production; however, it serves as a more expedient method for iterating on your graph during the development phase.
+
+{% hint style="info" %}
+If you want to start your router in production with a static config please use the [fetch](../cli/router/fetch.md) command instead. This will fetch the latest valid production config from the controlplane.
+{% endhint %}
+
+## Prerequisites
+
+1. Install the latest [`wgc`](https://www.npmjs.com/package/wgc)
+2. Download and extract the latest router [here](https://github.com/wundergraph/cosmo/releases?q=router\&expanded=true)
+
+## Getting started
+
+In order to compose locally, we need to create a `compose.yaml` file that includes all the subgraphs you wish to include and compose into a federated graph.\
+\
+The information you are required to provide is as follows:
+
+{% code title="compose.yaml" %}
+```yaml
+version: 1
+subgraphs:
+  - name: subgraph-a
+    routing_url: http://localhost:4001/graphql
+    # a) Specify a schema to introspect by file OR
+    schema:
+      file: ../schemas/subgraph-a.graphqls
+  - name: subgraph-b
+    routing_url: http://localhost:4002/graphql
+    # b) Specify introspection to introspect on a running subgraph
+    introspection:
+      url: http://localhost:4002/graphql
+      headers:
+        Authorization: 'Bearer YOUR_TOKEN_HERE'
+```
+{% endcode %}
+
+<table><thead><tr><th width="216">Property</th><th width="434">Description</th><th>Required</th><th data-hidden></th></tr></thead><tbody><tr><td>name</td><td>The unique name of the subgraph</td><td>true</td><td></td></tr><tr><td>routing_url</td><td>The unique url (endpoint) of the subgraph (typically ends with <code>/graphql</code>)</td><td>true</td><td></td></tr><tr><td>introspection.url</td><td>Required if you want to dynamically introspect a running subgraph server</td><td>false</td><td></td></tr><tr><td>introspection.headers</td><td>Headers to pass on the introspection request</td><td>false</td><td></td></tr><tr><td>schema.file</td><td>Path to the subgraph GraphQL schema</td><td>false</td><td></td></tr></tbody></table>
+
+After you have configured everything, you can generate the static router config as follows:
+
+```bash
+wgc router compose -i compose.yaml -o config.json. 
+```
+
+This command produces a `config.json` that can be passed to the router in the next step.
+
+## Run the config with the router
+
+Create a `.env` file in the router working directory:
+
+{% code title=".env" %}
+```bash
+FEDERATED_GRAPH_NAME=federated_graph # Cannot be empty. The name of your federated graph
+GRAPH_API_TOKEN=dummy # Cannot be empty. Only needed for working Analytics, Tracing & Persistent Operations
+ROUTER_CONFIG_PATH=config.json # The path to the file we generated previously
+```
+{% endcode %}
+
+Run the router and go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes. The next time you want to update your graph you can run:
+
+```bash
+wgc router compose -i compose.yaml -o config.json. && router
+```

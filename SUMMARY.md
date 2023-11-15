@@ -6,11 +6,11 @@
 
 ## Tutorial
 
+* [Mastering Local Development](tutorial/mastering-local-development.md)
 * [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)
 * [Switch from Apollo to Cosmo](tutorial/switch-from-apollo-to-cosmo.md)
 * [Cosmo Cloud Onboarding](tutorial/cosmo-cloud-onboarding.md)
 * [Composing graphs](tutorial/composing-graphs.md)
-* [How to run and develop your federated graph locally](tutorial/how-to-run-and-develop-your-federated-graph-locally.md)
 * [PR based workflow for Federation](tutorial/pr-based-workflow-for-federation.md)
 * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
 
@@ -86,6 +86,7 @@
 * [Deployment](router/deployment.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
+* [Download & Install](router/download-and-install.md)
 
 ## Control Plane
 
