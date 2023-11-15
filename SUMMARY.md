@@ -10,6 +10,7 @@
 * [Switch from Apollo to Cosmo](tutorial/switch-from-apollo-to-cosmo.md)
 * [Cosmo Cloud Onboarding](tutorial/cosmo-cloud-onboarding.md)
 * [Composing graphs](tutorial/composing-graphs.md)
+* [How to run and develop your federated graph locally](tutorial/how-to-run-and-develop-your-federated-graph-locally.md)
 * [PR based workflow for Federation](tutorial/pr-based-workflow-for-federation.md)
 * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
 
