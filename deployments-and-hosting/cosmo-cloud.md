@@ -7,4 +7,4 @@ description: >-
 
 # Cosmo Cloud
 
-If you don't want to manage the platform yourself, you can use our managed service [WunderGraph Cosmo Cloud](https://cosmo.wundergraph.com). It is a fully managed platform that doesn't make you worry about infrastructure, so you can focus on building. The managed service has a trial period. If you want continued access, please contact us [here](https://form.typeform.com/to/oC6XATf4).
+If you don't want to manage the platform yourself, you can use our managed service [WunderGraph Cosmo Cloud](https://cosmo.wundergraph.com). It is a fully managed platform that eliminates your worries about infrastructure, allowing you to concentrate on building. This managed service includes a generous free tier of 10 million monthly requests. If you require extended data retention or are subject to strict compliance requirements, please [contact us](https://wundergraph.com/contact/sales). We offer custom plans for Hybrid SaaS and On-Premises deployments.

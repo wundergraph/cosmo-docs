@@ -8,12 +8,24 @@ description: >-
 
 ## Usage
 
+### Check schema changes
+
 ```bash
 npx wgc subgraph check <name> --schema <path-to-schema>
 ```
 
 {% hint style="info" %}
 Use this command whenever you make modifications to your subgraphs. It will report any GraphQL or composition errors before they land on production. The report will be made visible under [Schema Checks](../../studio/schema-checks.md).
+{% endhint %}
+
+### Check deletion of a subgraph
+
+```
+/npx wgc subgraph check <name> --delete
+```
+
+{% hint style="info" %}
+This command will check any breaking changes or composition errors in case the subgraph is deleted.
 {% endhint %}
 
 ## Description
@@ -23,18 +35,19 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 ## Parameters
 
 * `<name>`: The name of the subgraph for which you want to perform the validation check. This should be the exact name of the subgraph you wish to check.
-
-## Required Option
-
 * `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
+* `--delete`: Check for breaking changes and composition errors in case the subgraph will be deleted.
+
+{% hint style="info" %}
+The check command requires either the `--schema or --delete parameter.`
+{% endhint %}
 
 ## Examples
 
 1.  Check for breaking changes and composition errors for the subgraph "products" with the new schema file located at "./schemas/new\_schema.graphql":
 
-    ```sql
-    npx wgc subgraph check products --schema ./schemas/new_schema.graphql
-    ```
+    <pre class="language-sh"><code class="lang-sh"><strong>npx wgc subgraph check products --schema ./schemas/new_schema.graphql
+    </strong></code></pre>
 
 ## Sample output with changes and errors
 
@@ -48,6 +61,31 @@ Changes
 Composition Errors
 
 <table><thead><tr><th width="263">FEDERATED_GRAPH_NAME</th><th>ERROR_MESSAGE</th></tr></thead><tbody><tr><td>inventory</td><td>Type "Product" is an extension type, but there is no type definition for "Product" in any subgraphs.</td></tr></tbody></table>
+
+2.  Check for breaking changes and composition errors for the subgraph "products" with the new schema file located at "./schemas/new\_schema.graphql":\
+
+
+    ```sh
+    npx wgc subgraph check employees --delete
+    ```
+
+
+
+### Sample output
+
+Changes
+
+| CHANGE       | TYPE          | DESCRIPTION                   |
+| ------------ | ------------- | ----------------------------- |
+| BREAKING     | TYPE\_REMOVED | Type 'Department' was removed |
+| NON-BREAKING | TYPE\_REMOVED | Type 'RoleType' was removed   |
+
+Composition Errors
+
+<table><thead><tr><th width="263">FEDERATED_GRAPH_NAME</th><th>ERROR_MESSAGE</th></tr></thead><tbody><tr><td>inventory</td><td>The subgraph "products" could not be federated for the following reason:<br>The object type "Employee" defines the directive "@override(from: "employees)" on the following field: "notes".<br>The required "from" argument of type "String!" must be provided with an existing subgraph name.<br>However, a subgraph by the name of "employees" does not exist.</td></tr></tbody></table>
+
+\
+
 
 ## Usage in CI and GitHub Integration
 
