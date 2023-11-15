@@ -1,7 +1,5 @@
 ---
-description: >-
-  Fetches the latest valid router execution config of a federated graph. The
-  output can be piped to a file.
+description: Fetches the latest valid router execution config of a federated graph.
 ---
 
 # Fetch
@@ -9,7 +7,7 @@ description: >-
 ## Usage
 
 ```bash
-npx wgc router fetch <name>
+npx wgc router fetch production -o config.json
 ```
 
 ## Description
@@ -26,14 +24,10 @@ The `npx wgc router fetch` command allows you to fetch the latest valid router e
 
 ## Examples
 
-```bash
-npx wgc router fetch production
-```
-
 Fetch the latest router execution config of the federated graph named "production."
 
 ```bash
-npx wgc router fetch production > config.json
+npx wgc router fetch production -o config.json
 ```
 
 Fetch the latest router config of the federated graph named "production" and save it to a file named "config.json"
