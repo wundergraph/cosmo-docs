@@ -75,6 +75,7 @@
 ## Router
 
 * [Intro](router/intro.md)
+* [Download & Install](router/download-and-install.md)
 * [Configuration](router/configuration.md)
 * [Custom Modules](router/custom-modules.md)
 * [Authentication & Authorization](router/authentication-and-authorization.md)
@@ -86,7 +87,6 @@
 * [Deployment](router/deployment.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
-* [Download & Install](router/download-and-install.md)
 
 ## Control Plane
 

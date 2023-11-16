@@ -4,14 +4,14 @@ description: >-
   Development.
 ---
 
-# Mastering Local Development
+# Mastering Local Development for GraphQL Federation
 
 ## Overview
 
 In development, you aim to test your schema changes as quickly as possible, bypassing the need to check and update your federated graph on the control plane. This approach does not replace the necessity of pushing your subgraph to the control plane in production; however, it serves as a more expedient method for iterating on your graph during the development phase.
 
 {% hint style="info" %}
-If you want to start your router in production with a static config please use the [fetch](../cli/router/fetch.md) command instead. This will fetch the latest valid production config from the controlplane.
+If you want to start your router in production with a static config please use the [fetch](../cli/router/fetch.md) command instead. This will fetch the latest valid production config from the control plane.
 {% endhint %}
 
 ## Prerequisites
@@ -60,11 +60,14 @@ Create a `.env` file in the router working directory:
 
 {% code title=".env" %}
 ```bash
-FEDERATED_GRAPH_NAME=federated_graph # Cannot be empty. The name of your federated graph
-GRAPH_API_TOKEN=dummy # Cannot be empty. Only needed for working Analytics, Tracing & Persistent Operations
-ROUTER_CONFIG_PATH=config.json # The path to the file we generated previously
+# The path to the file we generated previously
+ROUTER_CONFIG_PATH=config.json
 ```
 {% endcode %}
+
+{% hint style="info" %}
+If you omit `GRAPH_API_TOKEN` analytics and tracing are disabled. For production please create a token  [`wgc router token create`](../cli/router/token/create.md) and use polling instead. This ensures that the latest valid config is deployed to your routers automatically.
+{% endhint %}
 
 Run the router and go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes. The next time you want to update your graph you can run:
 

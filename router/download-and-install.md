@@ -26,9 +26,9 @@ If you are unsure which binary is for what platform please take the following ta
 
 You can also run the router with docker. On every release, we also push a docker image. [Here](https://github.com/wundergraph/cosmo/pkgs/container/cosmo%2Frouter) is the docker repository of the router. If you are looking for an easy way to find the right docker instructions, navigate to your dashboard and click on "Run router locally".
 
-<figure><img src="../.gitbook/assets/image (84).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (84).png" alt=""><figcaption><p>Click on the button to copy the docker instructions. Graph name and token are replaced your correct values.</p></figcaption></figure>
 
-The output will look like this but with your own `GRAPH_API_TOKEN`.
+The output will look like this but with your own `GRAPH_API_TOKEN` and `FEDERATED_GRAPH_NAME.`
 
 ```bash
 docker run \
