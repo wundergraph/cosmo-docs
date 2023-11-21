@@ -32,7 +32,7 @@ For convenience, **Advanced Request Tracing is enabled by default**. When starti
 
 To fully disable Advanced Request Tracing, set the following environment variable:
 
-```
+```bash
 ENGINE_ENABLE_REQUEST_TRACING=false
 ```
 
@@ -44,7 +44,7 @@ To use Advanced Request Tracing, you need to either use Request Headers or Query
 
 You can set the following Header to enable tracing
 
-```
+```bash
 X-WG-Trace=true
 ```
 
@@ -52,7 +52,7 @@ X-WG-Trace=true
 
 It's also possible to use Query Parameters
 
-```
+```bash
 POST http://example.com/graphql?wg_trace=true
 ```
 
@@ -71,12 +71,12 @@ Other (optional) arguments that are available:
 
 #### Enable Advanced Tracing but exclude planner stats and input via Header
 
-```
+```bash
 X-WG-Trace=exclude_planner_stats,exclude_input
 ```
 
 #### Enable Advanced Tracing but exclude output via Query Parameters
 
-```
+```bash
 POST http://example.com/graphql?wg_trace=exclude_output
 ```
