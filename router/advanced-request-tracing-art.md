@@ -5,13 +5,11 @@ description: >-
   request.
 ---
 
-# Debugging Execution Plans & Advanced Request Tracing
+# Advanced Request Tracing (ART)
 
-> Enabling Advanced Request Tracing is a potential security risk as well as negatively impacts the performance of the Router. The feature adds verbose information about the Execution Plan and how it was resolved to the response. Generating this has a cost and adds overhead in terms of performance, but it's also a security risk because internals like Subgraph requests, Headers, potentialls Secrets are being exposed via the response.
->
-> Keep all of this in mind when enabling the feature. You should usually not enable this in production.
->
-> That said, it can be very useful to enable it when running a Router locally or in a secure dev environment.
+{% hint style="warning" %}
+Enabling Advanced Request Tracing can be a potential security risk and may also negatively impact the performance of the Router. This feature adds verbose information about the Execution Plan and its resolution to the response. Generating this information incurs a cost and adds performance overhead. Additionally, it poses a security risk as it exposes internals such as Subgraph requests, Headers, and potentially Secrets through the response. Keep all these factors in mind when enabling this feature. It is generally not advisable to enable this in a production environment. However, it can be very useful when running a Router locally or in a secure development environment.
+{% endhint %}
 
 Advanced Request Tracing (ART) renders the Execution Plan including verbose information about how it was resolved as a JSON and adds it to the GraphQL response in the "extensions" part of the response using the "trace" key.
 

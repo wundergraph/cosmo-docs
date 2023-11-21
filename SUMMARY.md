@@ -87,7 +87,7 @@
 * [Deployment](router/deployment.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
-* [Debugging Execution Plans & Advanced Request Tracing](router/debugging-execution-plans-and-advanced-request-tracing.md)
+* [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
 
 ## Control Plane
 
