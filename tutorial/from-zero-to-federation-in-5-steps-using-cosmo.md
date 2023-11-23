@@ -169,13 +169,15 @@ You can run the router by executing a single Docker command. This way you can ea
 
 ```bash
 docker run \
-    --name cosmo-router \
-    -e FEDERATED_GRAPH_NAME=production \
-    -e GRAPH_API_TOKEN=<token-from-previous-command> \
-    -e LISTEN_ADDR=0.0.0.0:3001 \
-    -p 3001:3001 \
-    --platform=linux/amd64 \
-    ghcr.io/wundergraph/cosmo/router:latest
+  --name cosmo-router \
+  --rm \
+  -e FEDERATED_GRAPH_NAME=$NAME \
+  -e GRAPH_API_TOKEN=$TOKEN \
+  -e LISTEN_ADDR=0.0.0.0:3002 \
+  --add-host=host.docker.internal:host-gateway \
+  --platform=linux/amd64 \
+  -p 3002:3002 \
+  ghcr.io/wundergraph/cosmo/router:latest
 ```
 
 ## Setup CI/CD with schema checks

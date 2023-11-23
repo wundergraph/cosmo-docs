@@ -96,7 +96,7 @@ The following configuration is a minimal working example:
 docker run \
   --name cosmo-router \
   --rm \
-  -e FEDERATED_GRAPH_NAME=$NAME> \
+  -e FEDERATED_GRAPH_NAME=$NAME \
   -e GRAPH_API_TOKEN=$TOKEN \
   -e LISTEN_ADDR=0.0.0.0:3002 \
   --add-host=host.docker.internal:host-gateway \
