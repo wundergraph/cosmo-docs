@@ -78,8 +78,8 @@ wgc subgraph publish <subgraph_name> --schema ./schema.graphqls
 
 Before we can start the Cosmo Router, we need to issue a Router token that gives the router permission to communicate with the controlplane. Please run the following command:
 
-```
-wgc federated-graph create-token <graph_name> --name <token_name>
+```bash
+wgc router token create <token_name> --graph-name <graph_name>
 ```
 
 {% hint style="info" %}
