@@ -53,6 +53,12 @@ const otlpExporter = new OTLPTraceExporter({
 });
 ```
 
+## Sampling Rate
+
+Ensure that your subgraphs use parent-based sampling to inherit the sampling rate. For more information see [OTEL instrumentation on Subgraphs](otel-instrumentation-on-subgraphs.md).
+
+## Example
+
 Additionally, check our [TypeScript example with OTEL](https://github.com/wundergraph/graphql-federation-typescript-demo).
 
 {% hint style="info" %}
