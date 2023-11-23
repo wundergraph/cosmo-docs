@@ -14,7 +14,7 @@ Shows the most current version of your federated graph's schema. This schema is 
 
 ## Subgraph Schemas
 
-In addition to the federated schema, this page also shows the individual schemas of all subgraphs in your federated graph. Select the one oyu want to view from the dropdown.
+In addition to the federated schema, this page also shows the individual schemas of all subgraphs in your federated graph. Select the one you want to view from the dropdown.
 
 ## Copy and Download Schemas
 
