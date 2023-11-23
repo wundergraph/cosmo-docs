@@ -8,7 +8,7 @@ description: >-
 
 ## Get your Trial
 
-Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your free trial period begins.&#x20;
+Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your free trial period begins.
 
 To gain full access you have to [contact us](https://form.typeform.com/to/oC6XATf4). To better understand your use case and ensure that the onboarding process is as smooth as possible, please prepare the following information:
 
@@ -94,13 +94,15 @@ The following configuration is a minimal working example:
 
 ```bash
 docker run \
-    --name cosmo-router \
-    -e FEDERATED_GRAPH_NAME=<name_of_your_fed_graph> \
-    -e GRAPH_API_TOKEN=<router_token> \
-    -e LISTEN_ADDR=0.0.0.0:3002 \
-    --platform=linux/amd64 \
-    -p 3002:3002 \
-    ghcr.io/wundergraph/cosmo/router:latest
+  --name cosmo-router \
+  --rm \
+  -e FEDERATED_GRAPH_NAME=$NAME> \
+  -e GRAPH_API_TOKEN=$TOKEN \
+  -e LISTEN_ADDR=0.0.0.0:3002 \
+  --add-host=host.docker.internal:host-gateway \
+  --platform=linux/amd64 \
+  -p 3002:3002 \
+  ghcr.io/wundergraph/cosmo/router:latest
 ```
 
 {% hint style="info" %}
