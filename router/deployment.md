@@ -91,6 +91,10 @@ In scenarios with low traffic, a sampling rate of 1 (100%) is acceptable. Howeve
 Ensure that your subgraphs use parent-based sampling to inherit the sampling rate. For more information see [OTEL instrumentation on Subgraphs](../tutorial/otel-instrumentation-on-subgraphs.md).
 {% endhint %}
 
+## Configuration recommendations
+
+Please ensure [ENGINE\_ENABLE\_REQUEST\_TRACING](advanced-request-tracing-art.md)[ (ART)](advanced-request-tracing-art.md) is set to `false` to not expose information about your subgraphs. You will see a warning when ART is enabled.
+
 ## Recommended resources
 
 The specific resource recommendations depend on your constraints, but we have observed that low to medium-traffic projects benefit from the following setup:
