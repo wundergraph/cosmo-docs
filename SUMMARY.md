@@ -47,6 +47,8 @@
   * [Login](cli/auth/login.md)
   * [Whoami](cli/auth/whoami.md)
   * [Logout](cli/auth/logout.md)
+* [Operations](cli/operations/README.md)
+  * [Push](cli/operations/push.md)
 
 ## Studio
 
@@ -80,6 +82,7 @@
 * [Custom Modules](router/custom-modules.md)
 * [Authentication & Authorization](router/authentication-and-authorization.md)
 * [Subscriptions](router/subscriptions.md)
+* [Persisted Operations](router/persisted-operations.md)
 * [Metrics & Monitoring](router/metrics-and-monitoring.md)
 * [Open Telemetry](router/open-telemetry.md)
 * [Proxy capabilities](router/proxy-capabilities.md)
