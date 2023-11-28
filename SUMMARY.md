@@ -58,6 +58,7 @@
 * [Schema Registry](studio/schema-registry.md)
 * [Schema Checks](studio/schema-checks.md)
 * [Changelog](studio/changelog.md)
+* [Playground++](studio/playground++.md)
 * [Analytics](studio/analytics/README.md)
   * [Metrics](studio/analytics/metrics.md)
   * [Traces](studio/analytics/traces.md)
