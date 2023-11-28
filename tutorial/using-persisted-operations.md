@@ -12,10 +12,10 @@ Persisted Operations, also known as Trusted Documents or Persisted Queries, allo
 
 ### Prerequisites
 
-* Follow the [from-zero-to-federation-in-5-steps-using-cosmo.md](from-zero-to-federation-in-5-steps-using-cosmo.md "mention") tutorial to set up your demo subgraphs, install the required tools and create a Cosmo account.
+* Follow the [from-zero-to-federation-in-5-steps-using-cosmo.md](from-zero-to-federation-in-5-steps-using-cosmo.md "mention") tutorial to set up your demo subgraphs, install the required tools, and create a Cosmo account.
 * [curl](https://curl.se)
 
-### Write an operation
+### Write an Operation
 
 Let's start by writing an operation in our playground. The easiest way to open it is to use [Cosmo Studio](https://cosmo.wundergraph.com). Navigate to your federated graph's `Playground` by clicking its link in the sidebar.
 
@@ -49,7 +49,7 @@ The router will return a list of IDs for every employee in the subgraph.
 }
 ```
 
-To get ourselves familiar with `curl`, let's also execute this query using the command line:
+To get ourselves familiar with `curl`, let's also execute this operation using the command line:
 
 <pre class="language-sh"><code class="lang-sh"><strong># This assumes your router is running on 127.0.0.1:3002
 </strong><strong>curl 'http://127.0.0.1:3002/graphql' \
@@ -58,7 +58,7 @@ To get ourselves familiar with `curl`, let's also execute this query using the c
 
 ### Register a persisted operation
 
-Now let's turn this query into a persisted operation. To register persisted operations, we will use `wgc`, which we installed in the previous tutorial. Open a text editor and create a file named `employees.graphql` with the operation body that we previously used:
+Now let's turn this query into a persisted operation. To register persisted operations, we will use `wgc`, which we installed in the prerequisites step. Open a text editor and create a file named `employees.graphql` with the operation body that we previously used:
 
 ```graphql
 # employees.graphql
