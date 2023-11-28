@@ -1,12 +1,14 @@
 ---
-description: Learn how to leverage persisted operations with the Cosmo router
+description: >-
+  Learn how to leverage Persisted Operations / Persisted Queries / Trusted
+  Documents with Cosmo & Cosmo Router
 ---
 
-# Using Persisted Operations
+# Using Persisted Operations with Federated GraphQL
 
 ### Overview
 
-Persisted operations, also known as trusted documents, allow you to register GraphQL operations within the context of the router. This way, you can execute an operation by its identifier instead of sending the whole operation to the router on each query, reducing bandwidth requirements and increasing security.
+Persisted Operations, also known as Trusted Documents or Persisted Queries, allow you to register GraphQL Operations on the Router. This way, you can execute an operation by its identifier instead of sending the whole operation to the router on each query, reducing bandwidth requirements and increasing security. This is also known as Operation Safelisting.
 
 ### Prerequisites
 

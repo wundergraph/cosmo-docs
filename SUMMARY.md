@@ -13,7 +13,7 @@
 * [Composing graphs](tutorial/composing-graphs.md)
 * [PR based workflow for Federation](tutorial/pr-based-workflow-for-federation.md)
 * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
-* [Using Persisted Operations](tutorial/using-persisted-operations.md)
+* [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations-with-federated-graphql.md)
 
 ## CLI
 
