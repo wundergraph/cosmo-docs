@@ -28,9 +28,9 @@ Once this list of operations has been generated, typically in your CI or CD pipe
 wgc operations push production -c web -f my-operations-manifest.json
 ```
 
-This will register the operations for your federated graph named `production` (as seen in the Studio) and your client named `web` (indicated by the `graphql-client-name` HTTP header).
+This will register the operations for your federated graph named `production` (as seen in the Studio) and your client named `web` (indicated by the `graphql-client-name` HTTP header), using the same operation identifiers that your library when possible (if your library doesn't generate them, Cosmo will automatically generate them).
 
-When pushing the operations you will see a short summary of the operations that were pushed, indicating how many were created and how many were already registered. Alternatively, the `--output` flag can be used to obtain a JSON summary that can easily be processed by your tooling to generate a new manifest to be consumed by your client library.
+When pushing the operations you will see a short summary of the operations that were pushed, indicating how many were created and how many were already registered. Alternatively, the `--output` flag can be used to obtain a JSON summary that can easily be processed by your tooling.
 
 ```
 wgc operations push production -c my-client -f persisted-query-manifest.json --format json                                   (11-25 10:23)
@@ -46,3 +46,5 @@ wgc operations push production -c my-client -f persisted-query-manifest.json --f
 Finally, you should enable persisted operations in your GraphQL client library.
 
 To see all available options for  `wgc operations push, see` [push.md](../cli/operations/push.md "mention").
+
+Additionally, check the [#using-persisted-operations](persisted-operations.md#using-persisted-operations "mention") tutorial for a step by step guide.
