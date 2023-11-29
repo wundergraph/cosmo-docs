@@ -54,4 +54,21 @@ wscat -c wss://demo-router.fly.dev/graphql --subprotocol graphql-transport-ws
 {"id":"6e6f71d0-2729-4db5-baee-8b6fc88721a7","type":"subscribe","payload":{"query":"subscription {\n  currentTime {\n    unixTime\n  }\n}"}}
 ```
 
+### Using the "extensions" field
+
+Cosmo Router allows you to leverage the "extensions" field of a GraphQL Request JSON to add additional meta information to the connection\_init or subscription type message.
+
+This is useful, e.g. if you're trying to send an additional parameter, like a Bearer token with the initial payload. The feature in enabled by default, here's an example on how to use it:
+
+```bash
+# 1. Establish a secure WebSocket connection with our demo Router.
+wscat -c wss://demo-router.fly.dev/graphql --subprotocol graphql-transport-ws
+# 2. Paste the initial init message and press ENTER.
+{"type":"connection_init","payload":{"extensions":{"token":"asd"}}}
+# 3. Paste the GraphQL subscription and press ENTER to get updates.
+{"id":"6e6f71d0-2729-4db5-baee-8b6fc88721a7","type":"subscribe","payload":{"query":"subscription {\n  currentTime {\n    unixTime\n  }\n}"}}
+```
+
+When establishing a connection from the Router to the Subgraph, we will automatically include the "extensions" field from the initial payload. More specifically, the Router will include this "extensions" field into all (subsequent) Subgraph requests.
+
 [^1]: 
