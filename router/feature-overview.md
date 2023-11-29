@@ -1,0 +1,21 @@
+# Feature Overview
+
+### Support for the "extensions" field in GraphQL Request JSON Payloads
+
+Cosmo Router supports sending the "extensions" field to Subgraphs. If a client sends an "extensions" field alongside a Query or Mutation, or alternatively as part of the "payload" of a Subscription Request, Cosmo Router will by default include the "extensions" field in all Subgraph requests.
+
+This feature allows you to extend GraphQL in a very flexible way as defined by the [GraphQL over HTTP specification](https://github.com/graphql/graphql-over-http/blob/main/spec/GraphQLOverHTTP.md#request-parameters).
+
+Here's an example on how this can be used:
+
+```json
+{"query":"{hello}","extensions":{"token":"asd"}}
+```
+
+Alternatively, this feature could be useful to send a token when initiating a subscription:
+
+```json
+{"id":"1","type":"subscribe","payload":{"extensions":{"token":"asd"},"query":"subscription {\n  currentTime {\n    unixTime\n  }\n}"}}
+```
+
+More info on how this can be used with subscriptions can be found [here](subscriptions.md#using-the-extensions-field).

@@ -81,6 +81,7 @@
 * [Intro](router/intro.md)
 * [Download & Install](router/download-and-install.md)
 * [Configuration](router/configuration.md)
+* [Feature Overview](router/feature-overview.md)
 * [Custom Modules](router/custom-modules.md)
 * [Authentication & Authorization](router/authentication-and-authorization.md)
 * [Subscriptions](router/subscriptions.md)
