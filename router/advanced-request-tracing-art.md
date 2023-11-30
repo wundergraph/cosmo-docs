@@ -7,6 +7,12 @@ description: >-
 
 # Advanced Request Tracing (ART)
 
+<div align="center" data-full-width="false">
+
+<figure><img src="../.gitbook/assets/treeview (1).png" alt="" width="563"><figcaption></figcaption></figure>
+
+</div>
+
 {% hint style="warning" %}
 Enabling Advanced Request Tracing may pose a potential security risk. For this reason, we have implemented a mechanism to ensure secure communication from Cosmo Studio to your routers. A router with version **0.42.1** or **higher** is required.
 {% endhint %}
@@ -26,7 +32,7 @@ You get the following information from ART
 
 All of this information can be quite useful to fully understand how the Router resolves a request and why it might be slow or behave unexpectedly.
 
-### Configuration
+## Configuration
 
 For convenience, **Advanced Request Tracing is enabled by default**. When starting the Router, a warning indicates if the feature is active.
 
@@ -83,7 +89,7 @@ POST http://example.com/graphql?wg_trace=exclude_output
 
 ## Development
 
-In the development playground, Advanced Request Tracing (ART) can be enabled by setting the environment variable `DEV_MODE` to true and using the following header in the playground:
+In the development playground, Advanced Request Tracing (ART) can be enabled by setting the environment variable `DEV_MODE` to `true` and using the following header in the playground:
 
 ```json
 {
