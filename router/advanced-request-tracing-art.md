@@ -16,7 +16,7 @@ description: >-
 {% hint style="warning" %}
 Enabling Advanced Request Tracing may pose a potential security risk. For this reason, we have implemented a mechanism to ensure secure communication from Cosmo Studio to your routers. This allows to debug routers in production :tada:&#x20;
 
-A router with version **0.42.3** or **higher** is required.
+A connection with the controlplane is **required** and a router with version **0.42.3** or **higher.**
 {% endhint %}
 
 Advanced Request Tracing (ART) renders the Execution Plan including verbose information about how it was resolved as a JSON and adds it to the GraphQL response in the "extensions" part of the response using the "trace" key.
