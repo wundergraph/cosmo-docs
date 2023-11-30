@@ -8,7 +8,7 @@ description: >-
 # Advanced Request Tracing (ART)
 
 {% hint style="warning" %}
-Enabling Advanced Request Tracing can be a potential security risk and may also negatively impact the performance of the Router. This feature adds verbose information about the Execution Plan and its resolution to the response. Generating this information incurs a cost and adds performance overhead. Additionally, it poses a security risk as it exposes internals such as Subgraph requests, Headers, and potentially Secrets through the response. Keep all these factors in mind when enabling this feature. It is generally not advisable to enable this in a production environment. However, it can be very useful when running a Router locally or in a secure development environment.
+Enabling Advanced Request Tracing may pose a potential security risk. For this reason, we have implemented a mechanism to ensure secure communication from Cosmo Studio to your routers. A router with version **0.42.1** or **higher** is required.
 {% endhint %}
 
 Advanced Request Tracing (ART) renders the Execution Plan including verbose information about how it was resolved as a JSON and adds it to the GraphQL response in the "extensions" part of the response using the "trace" key.
@@ -42,7 +42,7 @@ To use Advanced Request Tracing, you need to either use Request Headers or Query
 
 #### Headers
 
-You can set the following Header to enable tracing
+You must set the following Header to enable tracing
 
 ```bash
 X-WG-Trace=true
@@ -79,4 +79,14 @@ X-WG-Trace=exclude_planner_stats,exclude_input
 
 ```bash
 POST http://example.com/graphql?wg_trace=exclude_output
+```
+
+## Development
+
+In the development playground, Advanced Request Tracing (ART) can be enabled by setting the environment variable `DEV_MODE` to true and using the following header in the playground:
+
+```json
+{
+  "X-WG-TRACE" : "true"
+}
 ```
