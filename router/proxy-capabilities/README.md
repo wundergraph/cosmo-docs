@@ -8,7 +8,7 @@ description: >-
 
 ## Forward HTTP headers to subgraphs
 
-Forwarding specific client headers to your subgraphs is a straightforward process. By default, no headers are forwarded for security reasons. To enable header forwarding, insert the following snippet into your [config.yaml](configuration.md#config-file) file and adjust it according to your needs.
+Forwarding specific client headers to your subgraphs is a straightforward process. By default, no headers are forwarded for security reasons. To enable header forwarding, insert the following snippet into your [config.yaml](../configuration.md#config-file) file and adjust it according to your needs.
 
 ```yaml
 # config.yaml
@@ -72,7 +72,7 @@ You can also define a value when the client header is not set by the client. Can
 All rules are evaluated in the order they are defined.
 
 {% hint style="info" %}
-Please inform us if you have more advanced use cases that cannot be accommodated with the current feature set. You can still use [Custom Modules](custom-modules.md) to implement any logic yourself. You can aggregate, remove, or add headers as you like.
+Please inform us if you have more advanced use cases that cannot be accommodated with the current feature set. You can still use [Custom Modules](../custom-modules.md) to implement any logic yourself. You can aggregate, remove, or add headers as you like.
 {% endhint %}
 
 ## Override Subgraph routing URLs <a href="#subgraph-routing-urls" id="subgraph-routing-urls"></a>

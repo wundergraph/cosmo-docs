@@ -32,7 +32,7 @@ Whenever your router updates its config at runtime, **it terminates all active s
 
 ### Header forwarding
 
-Headers in subscriptions can be forwarded through the router to the subgraphs using the proxy capabilities for the router. See [#forward-http-headers-to-subgraphs](proxy-capabilities.md#forward-http-headers-to-subgraphs "mention") for more information.
+Headers in subscriptions can be forwarded through the router to the subgraphs using the proxy capabilities for the router. See [#forward-http-headers-to-subgraphs](proxy-capabilities/#forward-http-headers-to-subgraphs "mention") for more information.
 
 When multiplexing subscriptions over a single WebSocket connection, only subscriptions with the same forwarded header names and values are grouped into a single connection.
 

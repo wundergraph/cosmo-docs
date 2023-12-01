@@ -41,4 +41,4 @@ Authentication information is also available to custom modules. See [Access Auth
 
 ### Forwarding authentication headers
 
-By default, the router won't forward authentication headers to subgraphs, but if desired this can be configured using [Proxy capabilities](proxy-capabilities.md).
+By default, the router won't forward authentication headers to subgraphs, but if desired this can be configured using [Proxy capabilities](proxy-capabilities/).
