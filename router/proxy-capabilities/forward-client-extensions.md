@@ -1,13 +1,15 @@
 ---
 description: >-
   Forward Client Extensions allow you to share arbitrary data between clients
-  and subgraphs. For websockets, it is the only method for sharing init-session
-  data.
+  and subgraphs. For subscriptions, it is the only method for sharing
+  init-session data.
 ---
 
 # Forward Client Extensions
 
 ## Support for the "extensions" field in GraphQL Request JSON Payloads
+
+### For Query and Mutation
 
 Cosmo Router supports sending the "extensions" field to Subgraphs. If a client sends an "extensions" field alongside a Query or Mutation, or alternatively as part of the "payload" of a Subscription Request, Cosmo Router will by default include the "extensions" field in all Subgraph requests.
 
@@ -18,6 +20,8 @@ Here's an example on how this can be used:
 ```json
 {"query":"{hello}","extensions":{"token":"asd"}}
 ```
+
+### For initiating a subscription
 
 Alternatively, this feature could be useful to send a token when initiating a subscription:
 
