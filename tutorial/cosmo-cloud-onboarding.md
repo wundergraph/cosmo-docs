@@ -96,12 +96,13 @@ The following configuration is a minimal working example:
 docker run \
   --name cosmo-router \
   --rm \
-  -e FEDERATED_GRAPH_NAME=$NAME \
-  -e GRAPH_API_TOKEN=$TOKEN \
-  -e LISTEN_ADDR=0.0.0.0:3002 \
+  -p 3002:3002 \
   --add-host=host.docker.internal:host-gateway \
   --platform=linux/amd64 \
-  -p 3002:3002 \
+  -e FEDERATED_GRAPH_NAME=$GRAPH_NAME \
+  -e DEV_MODE=true \
+  -e LISTEN_ADDR=0.0.0.0:3002 \
+  -e GRAPH_API_TOKEN=$TOKEN \
   ghcr.io/wundergraph/cosmo/router:latest
 ```
 
