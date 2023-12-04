@@ -10,7 +10,7 @@ description: >-
 
 Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your free trial period begins.
 
-To gain full access you have to [contact us](https://form.typeform.com/to/oC6XATf4). To better understand your use case and ensure that the onboarding process is as smooth as possible, please prepare the following information:
+To better understand your use case and ensure that the onboarding process is as smooth as possible, please prepare the following information:
 
 * **Send us your Subgraphs**. If this information is confidential, you can simply provide us with the names of the federation features you rely on.
 * Do you have to migrate from an existing platform like Apollo?
