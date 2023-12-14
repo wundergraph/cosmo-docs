@@ -8,7 +8,7 @@ description: >-
 # Helm Chart
 
 {% hint style="info" %}
-The chart isn't published yet on a registry but is available in the OSS Repository [here](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo).
+Not all charts have been published yet. The source code is available in the OSS Repository [here](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo).
 {% endhint %}
 
 Please checkout to the Helm [directory](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo) in the OpenSource repository. The structure is as follows:
