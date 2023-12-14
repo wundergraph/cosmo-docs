@@ -40,7 +40,7 @@ configuration:
 ```
 {% endcode %}
 
-After that you can install the chart.
+After that you can install the chart with the release name `router`.
 
 <pre class="language-bash"><code class="lang-bash"><strong>helm install router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
 </strong><strong>    --version 0.0.1 \
@@ -49,7 +49,7 @@ After that you can install the chart.
 
 ### Use a custom Router config
 
-Managing environment variables can be tedious. We also support providing a custom router configuration. To do so, you only need to create one and specify its name in the chart values.
+Managing environment variables can be tedious. We also support providing a custom [router configuration](../../router/configuration.md#config-file). To do so, you only need to create one and specify its name in the chart values. The config must exist in the same namespace as the router.
 
 {% code title="router-config.yaml" %}
 ```yaml
