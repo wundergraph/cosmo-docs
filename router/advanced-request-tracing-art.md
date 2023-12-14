@@ -91,7 +91,7 @@ POST http://example.com/graphql?wg_trace=exclude_output
 
 ## Development
 
-In the development playground, Advanced Request Tracing (ART) can be enabled by setting the environment variable `DEV_MODE` to `true` and using the following header in the playground:
+For security reasons, we don't enable Advanced Request Tracing (ART) by default but you can enable it by setting the router environment variable `DEV_MODE` to `true` and using the following header in the playground:
 
 ```json
 {
