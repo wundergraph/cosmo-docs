@@ -19,3 +19,54 @@ Please checkout to the Helm directory in the OpenSource repository. The structur
 
 Every helm chart contains a [CHART.md](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/CHART.md) that describes the available configuration options with default values and documentation. We auto-generate this on every update.
 
+## Install the Router
+
+Install the router through our official [`OCI`](https://helm.sh/docs/topics/registries/) chart. Note that [Helm 3.8](https://helm.sh/docs/topics/registries/) or later is required.
+
+Create the following file to not bother with cli flags.
+
+{% code title="values.yaml" %}
+```yaml
+configuration:
+  # -- The name of the graph to be served by the router (required)
+  federatedGraphName: "production"
+  # -- The router token is used to authenticate the router against the controlplane (required)
+  graphApiToken: "replace-me"
+```
+{% endcode %}
+
+After that you can install the chart.
+
+<pre class="language-bash"><code class="lang-bash"><strong>helm install router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
+</strong><strong>    --version 0.0.1 \
+</strong><strong>    --values ./values.yaml
+</strong></code></pre>
+
+### Use a custom Router config
+
+Managing environment variables can be tedious. We also support providing a custom router configuration. To do so, you only need to create one and specify its name in the chart values.
+
+{% code title="router-config.yaml" %}
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: router-config
+  # Must be same as the router
+  namespace: default
+data:
+  # key is important
+  config.yaml: |
+    log_level: debug
+```
+{% endcode %}
+
+Now, specify the configuration name in the `existingConfigmap` of the chart values. Keep in mind that secrets should be passed as Kubernetes Secrets. Use `extraEnvVars` or  `extraEnvVarsSecret` to pass additional ones.
+
+{% code title="values.yaml" %}
+```yaml
+existingConfigmap: "router-config"
+```
+{% endcode %}
+
+After running `helm upgrade router --values ./values.yaml`, your router should restart and pick up the changes.
