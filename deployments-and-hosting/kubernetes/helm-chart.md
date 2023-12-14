@@ -74,4 +74,10 @@ existingConfigmap: "router-config"
 ```
 {% endcode %}
 
-After running `helm upgrade router --values ./values.yaml`, your router should restart and pick up the changes.
+After running the following command, your router should restart and pick up the changes.
+
+```bash
+helm upgrade router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
+    --version 0.0.1 \
+    --values ./values.yaml
+```
