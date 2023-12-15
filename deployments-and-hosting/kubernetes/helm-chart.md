@@ -81,3 +81,26 @@ helm upgrade router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
     --version 0.0.1 \
     --values ./values.yaml
 ```
+
+### Install with a static Router Execution Config
+
+If you follow the default instructions the execution config is polled from the controlplane. Sometimes this is not desired e.g. when you have a strict CI/CD workflow. The following instructions, shows you how to deploy a Router with a static router execution config.
+
+#### 1. Download the latest valid execution config
+
+```bash
+wgc router fetch <graph-name> -o router.json
+```
+
+#### 2. Set the file content on the helm value
+
+```
+helm upgrade router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
+    --version 0.0.1 \
+    --set-file configuration.executionConfig=./router.json
+    --values ./values.yaml
+```
+
+{% hint style="info" %}
+Install the router with a static execution config is a legitimate way to deploy the schema but requires automation to update the router continuously.
+{% endhint %}
