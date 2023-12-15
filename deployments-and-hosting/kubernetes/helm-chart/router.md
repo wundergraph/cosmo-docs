@@ -4,6 +4,10 @@ description: The following instructions help you install the Router Chart on Kub
 
 # Router
 
+Chart Repository: `oci://ghcr.io/wundergraph/cosmo/helm-charts/router`
+
+Source: [Repository](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router)
+
 ## Install the Router
 
 Install the router through our official [`OCI`](https://helm.sh/docs/topics/registries/) chart. Note that [Helm 3.8](https://helm.sh/docs/topics/registries/) or later is required.
