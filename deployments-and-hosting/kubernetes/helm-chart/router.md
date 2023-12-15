@@ -64,7 +64,7 @@ helm upgrade router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
 
 ### Install with a static Router Execution Config
 
-If you follow the default instructions the execution config is polled from the controlplane. Sometimes this is not desired e.g. when you have a strict CI/CD workflow. The following instructions, shows you how to deploy a Router with a static router execution config.
+If you follow the default instructions the execution config is polled from the controlplane. Sometimes this is not desired e.g. when you have a strict CI/CD workflow or SLA requirements. The following instructions, shows you how to deploy a Router with a static router execution config.
 
 #### 1. Download the latest valid execution config
 
