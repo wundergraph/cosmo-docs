@@ -34,12 +34,12 @@ telemetry:
     # Expose OpenTelemetry metrics for scraping
     prometheus:
       exclude_metrics:
-        - "^router_http_requests_in_flight_count$"
+        - "^router_http_requests_in_flight" # Without _count _total suffix
       exclude_metric_labels:
-        - "wg_operation_name"
+        - "^wg_client_version$"
 ```
 
-This excludes `router_http_requests_in_flight_count` metric and the label `wg_client_name` from all metrics.
+This excludes `router_http_requests_in_flight_count` metric and the label `wg_client_version` from all metrics.
 
 {% hint style="info" %}
 Default process and Go metrics can't be excluded.
