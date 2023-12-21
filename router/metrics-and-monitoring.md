@@ -31,7 +31,7 @@ Sometimes it is useful to have the flexibility to exclude specific metrics or la
 telemetry:
   # OpenTelemetry Metrics
   metrics:
-    # Expose OpenTelemetry metrics for scraping
+    # Expose OpenTelemetry metrics as Prometheus metrics
     prometheus:
       exclude_metrics:
         - "^router_http_requests_in_flight" # Without _count _total suffix
