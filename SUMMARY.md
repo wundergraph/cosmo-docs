@@ -77,6 +77,7 @@
   * [Auth0](studio/sso/auth0.md)
   * [Keycloak](studio/sso/keycloak.md)
 * [Compositions](studio/compositions.md)
+* [Readme](studio/readme.md)
 
 ## Router
 

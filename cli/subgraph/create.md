@@ -29,6 +29,7 @@ The `npx wgc subgraph create` command allows you to create a new subgraph within
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
   * `sse`: Use Server-Sent Events with a GET request.
   * `sse_post`: Use Server-Sent events with a POST request.
+* `--readme <path-to-readme>:` The path to the markdown file which describes the subgraph.
 
 
 

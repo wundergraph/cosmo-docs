@@ -32,6 +32,12 @@ The routing URL of your router. This URL defines the endpoint where the router w
 
 The labels used to select the subgraphs to be federated. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. The federated graph will include the subgraphs that match the specified labels.
 
+```
+--readme <path-to-readme> 
+```
+
+The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
+
 ## Examples
 
 ```bash

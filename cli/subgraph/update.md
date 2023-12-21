@@ -7,7 +7,7 @@ description: Updates subgraph metadata like URL, labels on the control plane.
 ## Usage
 
 ```bash
-npx wgc subgraph update <name> [-r, --routing-url <url>] [--label [labels...]]
+npx wgc subgraph update <name> [-r, --routing-url <url>] [--label [labels...]] [--readme <path-to-readme>]
 ```
 
 {% hint style="info" %}
@@ -33,6 +33,7 @@ The `npx wgc subgraph updatwe` command allows you to update an existing subgraph
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
   * `sse`: Use Server-Sent Events with a GET request.
   * `sse_post`: Use Server-Sent events with a POST request.
+* `--readme <path-to-readme>:` The path to the markdown file which describes the subgraph.
 
 ## Examples
 
