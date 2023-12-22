@@ -78,7 +78,7 @@ Please inform us if you have more advanced use cases that cannot be accommodated
 
 ## Override Subgraph routing URLs <a href="#subgraph-routing-urls" id="subgraph-routing-urls"></a>
 
-By default, we read the routing URL for each of your subgraphs from the router config. In most cases, no additional configuration is required.
+By default, we read the routing URL for each of your subgraphs from the router execution config. In most cases, no additional configuration is required.
 
 However, if you _do_ need to override a particular subgraph's routing URL (for example, to handle changing network topography), you can do so with the `override_subgraph_url` option:
 
