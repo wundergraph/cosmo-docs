@@ -1,7 +1,7 @@
 ---
 description: >-
-  Upload a markdown file to your federated- and sub-graphs to communicate the
-  purpose of the graph as well as who is responsible of it.
+  Upload a markdown file to your federated- and sub-graphs to share on-boarding
+  or common information with your organization.
 ---
 
 # Graph Documentation
