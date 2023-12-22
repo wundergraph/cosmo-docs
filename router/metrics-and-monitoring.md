@@ -42,7 +42,7 @@ telemetry:
 This excludes `router_http_requests_in_flight_count` metric and the label `wg_client_version` from all metrics.
 
 {% hint style="info" %}
-Default process and Go metrics can't be excluded.
+Default process and Go metrics can't be excluded. If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.
 {% endhint %}
 
 ### Summary
@@ -54,10 +54,6 @@ By collecting the metrics, you can find answers to the following questions:
 * What is the average request/response size of a specific operation?
 * How much traffic went through a router instance?
 * What's the distribution of Queries / Mutations and Subscription requests?
-
-{% hint style="info" %}
-If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.
-{% endhint %}
 
 ## Make metrics accessible on all networks
 
