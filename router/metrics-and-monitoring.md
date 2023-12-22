@@ -55,3 +55,7 @@ By collecting the metrics, you can find answers to the following questions:
 * How much traffic went through a router instance?
 * What's the distribution of Queries / Mutations and Subscription requests?
 
+{% hint style="info" %}
+If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.
+{% endhint %}
+
