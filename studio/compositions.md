@@ -6,11 +6,12 @@ description: Comprehensive records detailing every instance of a subgraph public
 
 <figure><img src="../.gitbook/assets/compositions-min.png" alt=""><figcaption></figcaption></figure>
 
-The highlights of the compositions page are as follows:-
+The highlights of the compositions page are as follows:
 
 * Track the inputs and the errors of every composition.
 * Track every version of your composed schema.
 * View the changes in the federated graph after each composition.
+* Understand what version is currently available to the router.
 
 <figure><img src="../.gitbook/assets/composition-details-min (1).png" alt=""><figcaption></figcaption></figure>
 
