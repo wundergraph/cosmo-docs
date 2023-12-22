@@ -60,6 +60,7 @@ Go canonicalize headers by default e.g. `x-my-header` to `X-My-Header.` Write yo
 You can also define a value when the client header is not set by the client. Can only be used with the _named_ matcher.
 
 ```yaml
+headers:
   all:
     request:
       - op: "propagate"
