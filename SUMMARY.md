@@ -60,6 +60,8 @@
 * [Schema Checks](studio/schema-checks.md)
 * [Changelog](studio/changelog.md)
 * [Playground++](studio/playground++.md)
+* [Graph Documentation](studio/readme.md)
+* [Compositions](studio/compositions.md)
 * [Analytics](studio/analytics/README.md)
   * [Metrics](studio/analytics/metrics.md)
   * [Traces](studio/analytics/traces.md)
@@ -76,8 +78,6 @@
   * [Okta](studio/sso/okta.md)
   * [Auth0](studio/sso/auth0.md)
   * [Keycloak](studio/sso/keycloak.md)
-* [Compositions](studio/compositions.md)
-* [Graph Documentation](studio/readme.md)
 
 ## Router
 
