@@ -59,3 +59,19 @@ By collecting the metrics, you can find answers to the following questions:
 If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.
 {% endhint %}
 
+## Make metrics accessible on all networks
+
+In container environments, it is necessary to expose your server on `0.0.0.0` to make the port accessible from outside.You can enable it by setting the following configuration.
+
+```yaml
+telemetry:
+  metrics:
+    prometheus:
+      listen_addr: "0.0.0.0:8088"
+```
+
+Alternatively, you can use the environment variable.
+
+```
+PROMETHEUS_LISTEN_ADDR: 0.0.0.0:8088
+```
