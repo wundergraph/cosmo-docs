@@ -6,20 +6,32 @@ The router offers built-in support for [Prometheus](https://prometheus.io/). Dat
 * **`router_http_response_content_length_total`**: Total bytes of incoming requests
 * **`router_http_request_content_length_total`**: Total bytes of outgoing responses
 * **`router_http_request_duration_milliseconds`**: End-to-end duration of incoming requests in (histogram)
-* **`router_http_requests_in_flight_count`**: Number of in-flight requests
+* **`router_http_requests_in_flight_count`**: Number of in-flight requests. (Only static and subgraph dimensions are attached)
+
+### Dimensions
 
 All metrics are tracked along the following dimensions:
 
-* **`wg_operation_name`**: The name of the operation
-* **`wg_operation_type`**: The type of the operation e.g. `query`
+#### Static (Known before Router start):
+
 * **`wg_federated_graph_name`**: The name of the running graph
-* **`wg_operation_protocol`**: The used protocol `ws`, `sse` ,`sse-post` or `http`
 * **`wg_router_version`**: The current router binary version
 * **`wg_router_config_version`**: The current router config version
+
+#### Request/Response based:
+
+* **`wg_operation_protocol`**: The used protocol `http` , `ws`
+* **`wg_operation_name`**: The name of the operation
+* **`wg_operation_type`**: The type of the operation e.g. `query`
 * **`http_status_code`**: The status code of the request
 * **`wg_client_name`**: The client name
 * **`wg_client_version`**: The client version
-* **`wg_request_error`**: Identify if an error occurred. This applies to a request that didn't result in a successful response. Only set when it is `true`.
+* **`wg_request_error`**: Identify if an error occurred. This applies to a request that didn't result in a successful response. Only set when it is `true`. Be aware that a Status-Code `200` can still be an error in GraphQL.
+
+#### Subgraph Request/ Response:
+
+* `wg_subgraph_name`: The name of the subgraph
+* `wg_subgraph_id`: The ID of the subgraph
 
 ### Exclude certain metrics and labels
 
@@ -49,10 +61,10 @@ Default process and Go metrics can't be excluded. If you haven't run a query aga
 
 By collecting the metrics, you can find answers to the following questions:
 
-* What is the error/success rate of my router or a specific operation?
-* How is the performance of my router or a specific operation?
+* What is the error/success rate of my router/subgraph or a specific operation?
+* How is the performance of my router/subgraph or a specific operation?
 * What is the average request/response size of a specific operation?
-* How much traffic went through a router instance?
+* How much traffic went through a router/subgraph instance?
 * What's the distribution of Queries / Mutations and Subscription requests?
 
 ## Make metrics accessible on all networks
@@ -70,4 +82,20 @@ Alternatively, you can use the environment variable.
 
 ```
 PROMETHEUS_LISTEN_ADDR: 0.0.0.0:8088
+```
+
+## Example Prometheus Queries
+
+Here you can see a few example queries to query useful information about your client traffic:
+
+### Get Router Request Rate (over 5min inverval) by Operation
+
+```promql
+sum by (wg_operation_name) (rate(router_http_requests_total{app="cosmo-router",wg_subgraph_name="",wg_operation_name!=""}[5m]))
+```
+
+### Get Subgraph's Request Rate (over 5min inverval) by Operation
+
+```promql
+sum by (wg_subgraph_name) (rate(router_http_requests_total{app="cosmo-router",wg_subgraph_name!=""}[5m]))
 ```
