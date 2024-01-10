@@ -61,6 +61,7 @@
 * [Changelog](studio/changelog.md)
 * [Playground++](studio/playground++.md)
 * [Graph Documentation](studio/readme.md)
+* [Discussions](studio/discussions.md)
 * [Compositions](studio/compositions.md)
 * [Analytics](studio/analytics/README.md)
   * [Metrics](studio/analytics/metrics.md)
