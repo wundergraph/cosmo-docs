@@ -6,6 +6,8 @@ description: >-
 
 # Schema Explorer
 
+<figure><img src="../.gitbook/assets/image (97).png" alt=""><figcaption></figcaption></figure>
+
 ## Navigation
 
 You can navigate to every type you see on the page. From objects that implement interfaces to unions and enums. The details section shows all the inputs for that particular field. If your schema has comments, they would appear here as well.
