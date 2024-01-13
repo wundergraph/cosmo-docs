@@ -12,7 +12,7 @@ Cosmo router supports exporting tracing and metrics via OpenTelemetry. By defaul
     enabled: true
     # If no exporters are configured, telemetry is exported to Cosmo Cloud
     exporters:
-    - endpoint: https://cosmo-otel.wundergraph.com:4318 # The default
+    - endpoint: https://cosmo-otel.wundergraph.com # The default
       exporter: "http" # or "grpc" with port 4317
       headers: {Authorization: Bearer ${ROUTER_TOKEN}}
 <strong>  metrics:
@@ -20,7 +20,7 @@ Cosmo router supports exporting tracing and metrics via OpenTelemetry. By defaul
       enabled: true
       # If no exporters are configured, telemetry is exported to Cosmo Cloud
       exporters:
-      - endpoint: https://cosmo-otel.wundergraph.com:4318 # The default
+      - endpoint: https://cosmo-otel.wundergraph.com # The default
         exporter: "http" # or "grpc" with port 4317
         headers: {Authorization: Bearer ${ROUTER_TOKEN}}
 </code></pre>
@@ -42,10 +42,10 @@ telemetry:
     enabled: true
     exporters:
     # Cosmo Cloud
-    - endpoint: https://cosmo-otel.wundergraph.com:4318
+    - endpoint: https://cosmo-otel.wundergraph.com
       exporter: "http"
       headers: {Authorization: Bearer ${MY_AUTH_TOKEN}}
     # Datadog Agent 
-    - endpoint: http://datadog-agent
+    - endpoint: http://datadog-agent:4318
       exporter: "http"
 ```
