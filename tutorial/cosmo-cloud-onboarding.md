@@ -8,7 +8,7 @@ description: >-
 
 ## Get your Trial
 
-Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your free trial period begins.
+Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your are on the Developer Plan with 10 million requests for free.
 
 To better understand your use case and ensure that the onboarding process is as smooth as possible, please prepare the following information:
 
@@ -27,7 +27,7 @@ Run the following command to install our CLI.
 npm install -g wgc@latest
 ```
 
-Before you can run any command you need to export the following environment variables to authenticate against Cosmo Cloud. **You can obtain an API key from the studio. (You would also have gotten one if you were onboarded)**
+Before you can run any command you need to export the following environment variables to authenticate against Cosmo Cloud.
 
 ```bash
 # You can put this in your .bashrc or .zshrc
@@ -136,9 +136,9 @@ wgc subgraph publish <subgraph_name> --schema ./subgraph.graphql
 
 This will update the subgraph and propagate the federated graph to your routers. It takes around 10s until your Router fetches and serves the latest valid schema composition.
 
-## Invite Team Members (production only)
+## Invite Team Members (Paid plan)
 
-You have successfully connected your Admin Account to Cosmo Cloud. Now it is time to invite your colleagues. Login to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and click on **Members**. You can invite as many people as you wish, and each member will receive an invitation email. Upon accepting this invitation, they must set a secure password to finish the process. After that, they can issue custom API Keys in the **API Keys** section to connect to Cosmo Cloud as well (See [above](cosmo-cloud-onboarding.md#install-wgc-the-command-line-tool)).
+You have successfully connected your Admin Account to Cosmo Cloud. Now it is time to invite your colleagues. Login to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and click on **Members**. Upon accepting this invitation, they must set a secure password to finish the process. After that, they can issue custom API Keys in the **API Keys** section to connect to Cosmo Cloud as well (See [above](cosmo-cloud-onboarding.md#install-wgc-the-command-line-tool)).
 
 ## Summary
 
