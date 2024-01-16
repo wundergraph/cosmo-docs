@@ -98,6 +98,7 @@
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
 * [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
+* [Event-Driven Federated Subscriptions (EDFS)](router/event-driven-federated-subscriptions-edfs.md)
 
 ## Control Plane
 
