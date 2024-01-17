@@ -10,4 +10,4 @@ Audit logs are crucial for several reasons. First, they provide a detailed recor
 
 Navigate to your organization's page and click on "Audit Log." You will see all audit logs arranged in descending order by their creation date. Each log entry is annotated with information about who performed the action, what was done, and when it occurred. Based on the icon next to the actor, you can determine if the action was performed directly by a user or through their API key. Additionally, several events generated from the Cosmo can be identified accordingly.
 
-<figure><img src="../.gitbook/assets/image (98).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/audit-log (1).png" alt=""><figcaption><p>Audit Log View</p></figcaption></figure>
