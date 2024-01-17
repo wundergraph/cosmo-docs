@@ -47,4 +47,4 @@ Finally, you should enable persisted operations in your GraphQL client library.
 
 To see all available options for  `wgc operations push, see` [push.md](../cli/operations/push.md "mention").
 
-Additionally, check the [[#using-persisted-operations](persisted-operations.md#using-persisted-operations "mention")](../tutorial/using-persisted-operations.md) tutorial for a step by step guide.
+Additionally, check the [Using Persisted Operation with Federated GraphQL](../tutorial/using-persisted-operations.md) tutorial for a step by step guide.
