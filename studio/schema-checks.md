@@ -18,22 +18,24 @@ You can run schema checks with [`wgc subgraph check`](../cli/subgraph/check.md) 
 
 This view lists all the checks performed, showing the timestamp of each check, the status (passed or failed), and whether the proposed schema was both composable and non-breaking. You can use the date picker to browse through the history.
 
-<figure><img src="../.gitbook/assets/checks.png" alt=""><figcaption><p>Checks table</p></figcaption></figure>
+
 
 * **Timestamp**: This column indicates when each check was performed. The most recent checks are displayed at the top.
 * **Status**: This column shows the result of the check. A status of "Passed" means that the proposed schema was both composable and non-breaking. A status of "Failed" means that the proposed schema was either not composable, introduced breaking changes, or both.
 
 ## Check Page
 
+<figure><img src="../.gitbook/assets/schema-checks.png" alt=""><figcaption><p>Schema Checks View</p></figcaption></figure>
+
 ### Overview
 
 Have a glance at your check. Understand why the check succeeded or failed, and what graphs, operations, and clients were affected.
 
 {% hint style="info" %}
-Operations checks are enabled by default and use the traffic of the last 7 days to validate if a breaking change can be safely published. If you have a more advanced use case, please let us know.
+Operations checks are enabled by default and use the traffic of the last 7 days to validate if a breaking change can be safely published. If you have a more advanced use case, please upgrade to a higher plan or contact us.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/overview.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/schema-check-detail.png" alt=""><figcaption></figcaption></figure>
 
 #### Manual overrides
 
@@ -44,14 +46,12 @@ You can force a breaking change to be released even when all checks except compo
 Understand which operations and clients are affected by the breaking changes. You can check which ones along all your changes affected that particular operation. Besides that, you can inspect the operation document or share the specific operation with your colleagues.
 
 {% hint style="info" %}
-Operations Check is not performed if there are no breaking changes in your schema.
+Operations Check is not performed if there are no breaking changes in your proposed schema.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/operations.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/schema-check-detail-operations.png" alt=""><figcaption></figcaption></figure>
 
-### Details
+### Operation Details
 
-View all changes that were proposed by the check including composition errors. Each change is linked to the [schema explorer](schema-explorer.md) and [field usage](analytics/schema-field-usage.md) page. The field usage opened from here by default shows the traffic during the timeframe of the check (7 days).
-
-<figure><img src="../.gitbook/assets/details.png" alt=""><figcaption></figcaption></figure>
+If you click on a specific operation, you can view all the changes that have impacted it. Each change is linked to the schema explorer and the field usage page. By default, the field usage opened from here displays the traffic during the timeframe of the check.
 

@@ -6,7 +6,7 @@ description: >-
 
 # Schema Registry
 
-<figure><img src="../.gitbook/assets/registry (2).png" alt=""><figcaption><p>SDL Viewer for the Registry</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/schema-registry (1).png" alt=""><figcaption><p>Schema Registry SDL view</p></figcaption></figure>
 
 ## Latest Schema State
 

@@ -1,3 +1,9 @@
+---
+description: >-
+  Studio is your copilot to execute and maintain GraphQL Federated
+  Architectures.
+---
+
 # Intro
 
 The Studio is the primary user-friendly way to consume the graphs created through the CLI. You can view all the federated graphs and subgraphs created. When inside the dashboard for a federated graph, you can view connected subgraphs, label matchers, composition status, schema registry, schema checks and so on.&#x20;

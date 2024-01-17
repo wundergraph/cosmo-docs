@@ -6,25 +6,33 @@ description: >-
 
 # Overview Page
 
-<figure><img src="../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FPCxRzBseMSvlmkUtf0oA%2Fimage.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production.png" alt=""><figcaption><p>Federated Graph Overview</p></figcaption></figure>
 
-## Subgraphs
+## Graph details
+
+### Subgraphs
 
 The total number of subgraphs currently existing in your federated graph. Each subgraph represents a portion of your graph's schema. The illustration on the right also shows which subgraphs were federated.
 
-## Label Matchers
+### Label Matchers
 
 The Label Matchers provides information on the labelling system employed within your federated graph. The subgraphs are selected for federation based on these label matchers. Learn more [here](../cli/essentials.md#label-matcher).
 
-## Current Composition Status
+### Current Composition Status
 
 This shows the latest status of the composed schema. If there are no errors, the federated graph is ready to be fetched from the server. If not, it will display the error messages stating that the graph needs attention.
 
-## Router URL
+### Router URL
 
 The Router URL is the endpoint through which all of your federated graph's operations are accessed. This URL acts as the singular point of interaction for clients, routing requests to appropriate subgraphs based on the incoming operation. It's crucial for client-side developers to know this URL for querying and mutation purposes.
 
-## Weekly Stats
+## Federated Graph Visualization
+
+This visualization displays the constellation of your federated graph. Upon closer examination, it also reveals the P95 latency and Request-Per-Minute (RPM) metrics for all services. RPM is categorized into "successful" (green) and "errored" (red) requests.
+
+## Statistics
+
+Here we present important statistics regarding your current router traffic. By default, the data displayed is from the last day, but you can adjust the date range using the datepicker located at the top right. Additionally, you can periodically fetch updates by clicking on the clock icon.
 
 ### Total Requests and Errors
 
