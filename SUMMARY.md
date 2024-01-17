@@ -79,6 +79,7 @@
   * [Okta](studio/sso/okta.md)
   * [Auth0](studio/sso/auth0.md)
   * [Keycloak](studio/sso/keycloak.md)
+* [Audit log](studio/audit-log.md)
 
 ## Router
 
