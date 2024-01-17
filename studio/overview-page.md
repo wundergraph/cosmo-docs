@@ -38,8 +38,8 @@ Here we present important statistics regarding your current router traffic. By d
 
 This section of the dashboard provides a day-to-day graph of total requests and errors. The total requests metric shows how often your federated graph is accessed. The errors metric shows how often requests to your graph encounter errors. These could be a result of various issues, from server-side problems to incorrect client requests. A sudden increase in errors can be an early warning sign of potential issues that need immediate attention.
 
-### Top 5 Requested Operations
+### Top 10 Requested Operations
 
-This section provides information on the five most frequently accessed operations in your federated graph over the past week. Understanding the most accessed operations can give you insights into how your users interact with your system. It may also help identify potential areas for optimization, especially if certain operations are causing high load or errors.
+This section provides information on the ten most frequently accessed operations in your federated graph over the past week. Understanding the most accessed operations can give you insights into how your users interact with your system. It may also help identify potential areas for optimization, especially if certain operations are causing high load or errors.
 
 The Overview page is your first stop in understanding the overall state of your federated graph. It is the starting point for further diagnostics, and its constant monitoring can help maintain the health of your federated graph and its associated services.
