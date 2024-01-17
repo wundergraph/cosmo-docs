@@ -8,7 +8,7 @@ description: >-
 
 The API keys are used to authorize the user to perform actions using [wgc](broken-reference) (Wundergraph Cosmo CLI Command). On the overview, we display all keys across the organization. Only members of role Admin and Developer have the ability to create new keys.
 
-<figure><img src="../.gitbook/assets/api-keys (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/api-keys (3).png" alt=""><figcaption></figcaption></figure>
 
 ### How to create an API Token
 
