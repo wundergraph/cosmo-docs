@@ -29,4 +29,4 @@ Alternatively, this feature could be useful to send a token when initiating a su
 {"id":"1","type":"subscribe","payload":{"extensions":{"token":"asd"},"query":"subscription {\n  currentTime {\n    unixTime\n  }\n}"}}
 ```
 
-More info on how this can be used with subscriptions can be found [here](../subscriptions.md#using-the-extensions-field).
+More info on how this can be used with subscriptions can be found [here](../subscriptions/#using-the-extensions-field).

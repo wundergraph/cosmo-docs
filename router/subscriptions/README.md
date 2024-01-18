@@ -16,25 +16,19 @@ The Cosmo Router comes with subscription support out of the box without any limi
 * [Server-Sent Events (SSE)](https://en.wikipedia.org/wiki/Server-sent\_events): One-Way Messaging. Both with `GET` and `POST` requests. Recommended for unidirectional updates. More resource efficient than WebSockets.
 * [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws): Legacy transport to WebSocket-based GraphQL subscriptions. Please use `graphql-ws` or `SSE` if you have the choice.
 
-<figure><img src="../.gitbook/assets/subscriptions-architecture (1).png" alt=""><figcaption><p>The Router connects your Clients and Subgraphs to establish a Real-time connection.</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/subscriptions-architecture (1).png" alt=""><figcaption><p>The Router connects your Clients and Subgraphs to establish a Real-time connection.</p></figcaption></figure>
 
-These protocols are both supported between the client and the router as well as between the router and each subgraph. The supported transport depends on the support of your client or subgraph. By default, graphql-ws is used which is widely adopted. The protocol to be used to subscribe for each subgraph can be configured while registering the subgraph on the control plane. See [Create](../cli/subgraph/create.md) and [Update](../cli/subgraph/update.md) for more information.
+These protocols are both supported between the client and the router as well as between the router and each subgraph. The supported transport depends on the support of your client or subgraph. By default, graphql-ws is used which is widely adopted. The protocol to be used to subscribe for each subgraph can be configured while registering the subgraph on the control plane. See [Create](../../cli/subgraph/create.md) and [Update](../../cli/subgraph/update.md) for more information.
 
 ### Multiplexing
 
-<figure><img src="../.gitbook/assets/subscriptions-multiplexing.png" alt=""><figcaption><p>The Clients and Subgraphs can speak different protocols depending on their abilities.</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/subscriptions-multiplexing.png" alt=""><figcaption><p>The Clients and Subgraphs can speak different protocols depending on their abilities.</p></figcaption></figure>
 
 The Cosmo router multiplexes long-lived connections to the subgraphs when possible. Multiple client requests with the same authentication information are routed to the subgraph over a single connection.
 
 {% hint style="info" %}
 Whenever your router updates its config at runtime, **it terminates all active subscriptions.** Clients should be built in a way that reconnects automatically on disconnect.
 {% endhint %}
-
-### Header forwarding
-
-Headers in subscriptions can be forwarded through the router to the subgraphs using the proxy capabilities for the router. See [#forward-http-headers-to-subgraphs](proxy-capabilities/#forward-http-headers-to-subgraphs "mention") for more information.
-
-When multiplexing subscriptions over a single WebSocket connection, only subscriptions with the same forwarded header names and values are grouped into a single connection.
 
 ### Test WebSockets
 
@@ -70,5 +64,11 @@ wscat -c wss://demo-router.fly.dev/graphql --subprotocol graphql-transport-ws
 ```
 
 When establishing a connection from the Router to the Subgraph, we will automatically include the "extensions" field from the initial payload. More specifically, the Router will include this "extensions" field in all (subsequent) Subgraph requests. E.g. if a Subscription depends on a nested entity field that will be resolved through a GraphQL Query, the extensions field will be included as well.
+
+### Header forwarding
+
+Headers in subscriptions can be forwarded through the router to the subgraphs using the proxy capabilities for the router. See [#forward-http-headers-to-subgraphs](../proxy-capabilities/#forward-http-headers-to-subgraphs "mention") for more information.
+
+When multiplexing subscriptions over a single WebSocket connection, only subscriptions with the same forwarded header names and values are grouped into a single connection.
 
 [^1]: 
