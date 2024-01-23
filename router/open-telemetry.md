@@ -101,3 +101,7 @@ If you want to enable [B3](https://github.com/openzipkin/b3-propagation) for exa
   allow_headers:
     - b3
 </code></pre>
+
+### WebSockets
+
+Tracing has not yet been implemented for WebSocket messages. If you require this feature, please do not hesitate to contact us.
