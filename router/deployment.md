@@ -85,7 +85,9 @@ The router exposes useful metrics about the process and memory. All metrics can 
 
 ### Tracing Sampling Rate
 
-In scenarios with low traffic, a sampling rate of 1 (100%) is acceptable. However, for high-volume situations, we strongly recommend using a lower sampling rate. For instance, in a project experiencing 60 requests per second, a sampling rate of 0.1 (10% 6 req/s) is sufficient to generate valuable insights. If you export to Cosmo Cloud, we will enforce a sampling rate based on your subscription. If your configured rate is higher than your account limit a warning is printed. Please upgrade your plan or contact us for custom limits.
+In scenarios with low traffic, a sampling rate of 1 (100%) is acceptable. However, for high-volume situations, we strongly recommend using a lower sampling rate. For instance, in a project experiencing 60 requests per second, a sampling rate of 0.1 (10% 6 req/s) is sufficient to generate valuable insights.
+
+If you export to Cosmo Cloud, which is enabled by default, a sampling rate based on your subscription will be enforced. If your configured rate exceeds your account limit, a warning will be displayed. Please consider upgrading your plan or contact us for custom limits.
 
 {% hint style="warning" %}
 Ensure that your subgraphs use parent-based sampling to inherit the sampling rate. For more information see [OTEL instrumentation on Subgraphs](../tutorial/otel-instrumentation-on-subgraphs.md).
