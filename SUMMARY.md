@@ -99,7 +99,7 @@
 * [Deployment](router/deployment.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
-  * [Performance Debugging](router/development/performance-debugging.md)
+* [Performance Debugging](router/performance-debugging.md)
 * [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
 * [Event-Driven Federated Subscriptions (EDFS)](router/event-driven-federated-subscriptions-edfs.md)
 
