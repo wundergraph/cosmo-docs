@@ -68,6 +68,7 @@
   * [Traces](studio/analytics/traces.md)
   * [Distributed Tracing](studio/analytics/distributed-tracing.md)
   * [Schema Field Usage](studio/analytics/schema-field-usage.md)
+  * [Performance Debugging](studio/analytics/performance-debugging.md)
 * [API Keys](studio/api-keys.md)
 * [Migrate from Apollo](studio/migrate-from-apollo.md)
 * [Alerts and notifications](studio/alerts-and-notifications/README.md)
