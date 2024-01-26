@@ -23,8 +23,9 @@ The `npx wgc subgraph fix` command checks for composition errors in all connecte
 
 * `--schema <path-to-schema>`: The path to the new schema file that you want to validate and then fix its errors. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
 
-### Other Options <a href="#required-option" id="required-option"></a>
+### Options <a href="#required-option" id="required-option"></a>
 
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--out-schema <path-to-out-schema>`: The path where the fixed schema file should be written.
 
 ## **Example**

@@ -28,6 +28,10 @@ The `npx wgc router token create` command creates a new token for a federated gr
 
 The name of the federated graph that the token should be created for.
 
+## Options
+
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
 ## Examples
 
 ```bash

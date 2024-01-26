@@ -20,6 +20,7 @@ The `npx wgc subgraph create` command allows you to create a new subgraph within
 
 ## **Options**
 
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--label`: Assign multiple labels to the new subgraph. Labels are used to categorize and organize subgraphs based on specific criteria (e.g., team, department, project).
   * Example: `--label team=A`
 * `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from.

@@ -24,6 +24,8 @@ The `npx wgc federated-graph update` command allows you to update an existing fe
 
 ## Options
 
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
 ```bash
 -r <routing-url>, --routing-url <routing-url>
 ```

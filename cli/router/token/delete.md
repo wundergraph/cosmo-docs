@@ -26,6 +26,10 @@ The `npx wgc router token delete` command deletes a token of a federated graph.
 
 The name of the federated graph that the token should be deleted from.
 
+## Options
+
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
 ## Examples
 
 ```bash

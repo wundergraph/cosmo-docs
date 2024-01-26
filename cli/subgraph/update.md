@@ -24,6 +24,7 @@ The `npx wgc subgraph updatwe` command allows you to update an existing subgraph
 
 ## Options
 
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `-r, --routing-url <url>`: The updated routing URL of your subgraph. This URL defines the endpoint where the subgraph will fetch data from. Use this option to change the subgraph's data source URL.
   * Example: `--routing-url http://new-domain.com/graphql`
 * `--label [labels...]`: The labels to apply or change for the subgraph. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. Use this option to update the subgraph's metadata.

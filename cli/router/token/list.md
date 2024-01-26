@@ -20,6 +20,8 @@ The `npx wgc router token list` command lists all the tokens of a federated grap
 
 ## Options
 
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
 ```bash
 -o, --out [string]
 ```

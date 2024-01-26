@@ -20,6 +20,8 @@ The `npx wgc federated-graph changelog` command allows you to retrieve the chang
 
 ## Options
 
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
 `-l, --limit`: The number of entries to fetch. Defaults to 10.
 
 `-f, --offset`: Used for pagination. Sets the offset from which you want to query.

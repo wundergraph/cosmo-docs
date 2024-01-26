@@ -22,9 +22,9 @@ The `npx wgc federated-graph check` command allows you to check for composition 
 
 ## Options
 
-```bash
---label-matcher <labels...>
-```
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
+`--label-matcher <labels...>` : The label matchers to the federated graph with which the check is to be performed
 
 The labels used to select the subgraphs to be federated. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. The federated graph will include the subgraphs that match the updated labels.
 

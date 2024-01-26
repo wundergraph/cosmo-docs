@@ -22,6 +22,7 @@ The `npx wgc federated-graph fetch` command allows you to fetch the latest valid
 
 ## Options
 
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `-o, --out` : Destination file for the SDL. Prints to standard output if not provided.
 
 ## Examples

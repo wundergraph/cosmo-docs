@@ -26,6 +26,7 @@ The `npx wgc subgraph publish` command enables you to publish a specific subgrap
 
 ## **Options**
 
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--schema`: The file path to the GraphQL schema definition for the subgraph you want to publish. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
   * Example: `--schema ../demo/subgraphs/products/products.graphql`
 

@@ -24,6 +24,8 @@ The `npx wgc federated-graph delete` command allows you to delete a federated gr
 
 ## Options
 
+`-n, --namespace` : The namespace of the federated graph (Default: "default").
+
 ```bash
 -f, --force
 ```

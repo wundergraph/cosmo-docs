@@ -38,6 +38,13 @@ The labels used to select the subgraphs to be federated. Labels are passed in th
 
 The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
 
+## Options
+
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
+* `-r, --routing-url` :The routing url of your router. This is the url that the router will be accessible at.
+* `--label-matcher [labels...]` : The label matcher is used to select the subgraphs to federate. The labels are passed in the format = =. They are separated by spaces and grouped using comma. Example: --label-matcher team=A,team=B env=prod
+* `--readme` : The markdown file which describes the federated graph.
+
 ## Examples
 
 ```bash

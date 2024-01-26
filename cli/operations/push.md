@@ -24,6 +24,7 @@ The operations are validated against the graph schema before registering them. I
 
 ### Options
 
+* `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `-c, --client-name <client-name>` The client name / identifier to register these operations under.
 * `-f, --file <filename>` Filename to read operations from. This argument can be used multiple times to read operations from multiple files. See [#description](push.md#description "mention") for a list of the supported file formats.
 * `-q, --quiet` Don't produce any output, just exit with success or error. Intended for use in CI checks.
