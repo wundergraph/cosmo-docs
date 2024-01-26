@@ -1,0 +1,22 @@
+---
+description: List all namespaces within the organization
+---
+
+# List
+
+## Usage
+
+```bash
+npx wgc namespace list
+```
+
+## Description
+
+The `npx wgc namespace list` command allows you to view all namespaces within the organization.
+
+## Options
+
+* `-r, --raw` : Prints to the console in json format instead of table
+* `-o, --out` : Destination file for the json output. Has precedence over `raw`
+
+\

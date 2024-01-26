@@ -6,6 +6,18 @@ description: >-
 
 # Essentials
 
+## Namespaces
+
+Namespaces are a way to scope your federated graphs and subgraphs. For example you can have a federated graph called `my-api` in a production and staging namespace. All graph operations and compositions are scoped to graphs present in a particular namespace. Every organization is provided a `default` namespace which cannot be deleted. You can scope CLI commands to a particular namespace by passing the `-n` flag or default is considered.
+
+Namespaces have the following restrictions:
+
+* Must begin and end with alphanumeric characters
+* Could contain dashes (-) or underscores (\_) in between.
+* Special characters other than the above mentioned are not allowed
+
+Namespaces allow to create and organize multiple environments. Every federated graph represents physically a router instance and every subgraph is a service connected to the router.
+
 ## Order of execution
 
 The order in which you create graphs does not matter. You can either create subgraphs first or federated graphs. Depending on the labels the appropriate subgraphs will be taken into account for composing your federated graphs.
@@ -28,25 +40,25 @@ To understand how they work here is an example.
 
 #### Federated Graph&#x20;
 
-`--label-matcher team=A,team=B,team=C env=prod`&#x20;
+`--label-matcher team=A,team=B team=C`&#x20;
 
 is the same as
 
-`--label-matcher team=A,team=B,team=C --label-matcher env=prod`&#x20;
+`--label-matcher team=A,team=B --label-matcher team=C`&#x20;
 
-The above matcher translates to `(team=A || team=B || team=C) && env=prod`
+The above matcher translates to `(team=A || team=B) && team=C`
 
-Create a federated graph from all subgraphs of Team A, Team B, and Team C but only those which was marked for production.
+Create a federated graph from all subgraphs that match the label `Team A` or `Team B` and `Team C`.
 
 #### Subgraphs&#x20;
 
-1\. `--labels team=A,provider=aws,env=prod`
+1\. `--labels team=A`
 
-2\. `--labels team=B,env=prod`
+2\. `--labels team=D`
 
-3\. `--labels team=C,env=dev`
+3\. `--labels team=C`
 
-This will create a federated graph consisting of subgraphs 1 and 2 with labels team=A,team=B, and env=prod.
+This will create a federated graph consisting of subgraphs 1 and 3.
 
 ## Validate composition
 
@@ -60,7 +72,3 @@ That allows you to validate if the composition will produce any errors and what 
 ## Routing Url
 
 The routing Url must be specified when creating a federated graph or subgraph. In the case of a federated graph, it points to the Url of your Cosmo router. For subgraphs, it is the service URL that the subgraph will be accessible at.
-
-## Multiple environments
-
-The [label matcher](essentials.md#label-matcher) concept allows the expression of any `OR` and `AND` combination to compose multiple subgraphs. That makes it very simple to create and organize multiple environments. Every federated graph represents physically a router instance and every subgraph is a service connected to the router.
