@@ -8,7 +8,7 @@ description: >-
 
 ## Namespaces
 
-Namespaces are the way to group and isolate graphs in different environments, such as production and staging. For example you can have a federated graph called `my-api` in a production and staging namespace. All graph operations and compositions are scoped to graphs present in a particular namespace. Every organization is provided a `default` namespace which cannot be deleted. You can create additional namespaces with the [namespace](namespace/) CLI. Most of the CLI commands respect a `-n` flag or `default` is respectively.
+Namespaces are the way to group and isolate graphs in different environments, such as production and staging. For example you can have a federated graph called `my-api` in a production and staging namespace. All graph operations and compositions are scoped to graphs present in a particular namespace. Every organization is provided a `default` namespace which cannot be deleted. You can create additional namespaces with the [namespace](namespace/) CLI. Most of the CLI commands respect a `-n` flag or use `default` respectively.
 
 Namespaces have the following restrictions:
 
