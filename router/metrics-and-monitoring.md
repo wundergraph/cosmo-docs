@@ -14,7 +14,7 @@ All metrics are tracked along the following dimensions:
 
 #### Static (Known before Router start):
 
-* **`wg_federated_graph_name`**: The name of the running graph
+* **`wg_federated_graph_id`**: The ID of the running graph
 * **`wg_router_version`**: The current router binary version
 * **`wg_router_config_version`**: The current router config version
 
