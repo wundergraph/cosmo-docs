@@ -72,7 +72,8 @@ Triggered when graph migration succeeds.
   "payload": {
     "federated_graph": {
       "id": "graph123",
-      "name": "MainGraph"
+      "name": "MainGraph",
+      "namespace": "default"
     },
     "actor_id": "user5678"
   }

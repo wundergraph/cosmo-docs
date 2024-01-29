@@ -49,8 +49,8 @@ Run the following command to create your first federated graph:
 
 ```bash
 wgc federated-graph create <graph_name> \
+    --namespace default \
     --label-matcher team=A,team=B \
-    --label-matcher env=production \
     --routing-url http://localhost:3002/graphql
 ```
 
@@ -62,7 +62,8 @@ A federated graph without any subgraph is kind of useless. Let's create a subgra
 
 ```bash
 wgc subgraph create <subgraph_name> \
-    --label team=A env=production \
+    --namespace default \
+    --label team=A \
     --routing-url http://localhost:4001/graphql
 ```
 
@@ -71,7 +72,7 @@ The last step is to publish the initial schema of your subgraph so we have somet
 ### Publish the initial schema of the subgraph
 
 ```bash
-wgc subgraph publish <subgraph_name> --schema ./schema.graphqls
+wgc subgraph publish <subgraph_name> --namespace <namespace> --schema ./schema.graphqls
 ```
 
 ## Create a Router Token
@@ -79,7 +80,7 @@ wgc subgraph publish <subgraph_name> --schema ./schema.graphqls
 Before we can start the Cosmo Router, we need to issue a Router token that gives the router permission to communicate with the controlplane. Please run the following command:
 
 ```bash
-wgc router token create <token_name> --graph-name <graph_name>
+wgc router token create <token_name> --graph-name <graph_name> --namespace <namespace>
 ```
 
 {% hint style="info" %}
@@ -122,7 +123,7 @@ Open [http://localhost:3002/graphql](http://localhost:3001/graphql) and issue yo
 Let's introduce a change e.g. remove a field in one of your subgraphs to validate that no breaking changes are accidentally released. In order to do so we use the **check** command:
 
 ```
-wgc subgraph check <subgraph_name> --schema ./subgraph.graphql
+wgc subgraph check <subgraph_name> --namespace <namespace> --schema ./subgraph.graphql
 ```
 
 `wgc subgraph check` will not update your production router but it creates a [**check**](../studio/schema-checks.md) in the Cosmo Cloud Dashboard. This is very useful in PR-based workflows. Test your changes before you release them to production.
@@ -130,7 +131,7 @@ wgc subgraph check <subgraph_name> --schema ./subgraph.graphql
 If you are sure about the change run:
 
 ```
-wgc subgraph publish <subgraph_name> --schema ./subgraph.graphql
+wgc subgraph publish <subgraph_name> --namespace <namespace> --schema ./subgraph.graphql
 ```
 
 This will update the subgraph and propagate the federated graph to your routers. It takes around 10s until your Router fetches and serves the latest valid schema composition.

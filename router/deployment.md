@@ -11,7 +11,6 @@ The router is a Go application provided as a self-contained Docker container. Yo
 ```bash
 docker run \
     --name cosmo-router \
-    -e FEDERATED_GRAPH_NAME=<federated_graph_name> \
     -e GRAPH_API_TOKEN=<router_api_token> \
     -e LISTEN_ADDR=0.0.0.0:3002 \
     --platform=linux/amd64 \

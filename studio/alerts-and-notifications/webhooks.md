@@ -19,6 +19,7 @@ Triggered when the federated graph schema has been updated.
 * `federated_graph`: An object representing the federated graph details.
   * `id`: The unique identifier for the federated graph.
   * `name`: The name of the federated graph.
+  * `namespace`: The namespace of the federated graph
 * `errors`: A boolean value indicating whether there were errors during the update.
 * `actor_id` (optional): The identifier of the actor updating the schema.
 
@@ -31,7 +32,8 @@ Triggered when the federated graph schema has been updated.
   "payload": {
     "federated_graph": {
       "id": "graph123",
-      "name": "MainGraph"
+      "name": "MainGraph",
+      "namespace": "default"
     },
     "errors": false,
     "actor_id": "user5678"

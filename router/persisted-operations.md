@@ -25,15 +25,15 @@ Persisted operations require some tooling on the client side. Consult the docume
 Once this list of operations has been generated, typically in your CI or CD pipeline, you can use `wgc` to register your operations:
 
 ```bash
-wgc operations push production -c web -f my-operations-manifest.json
+wgc operations push mygraph -n default -c web -f my-operations-manifest.json
 ```
 
-This will register the operations for your federated graph named `production` (as seen in the Studio) and your client named `web` (indicated by the `graphql-client-name` HTTP header), using the same operation identifiers that your library when possible (if your library doesn't generate them, Cosmo will automatically generate them).
+This will register the operations for your federated graph named `mygraph` in the `default` namespace (as seen in the Studio) and your client named `web` (indicated by the `graphql-client-name` HTTP header), using the same operation identifiers that your library when possible (if your library doesn't generate them, Cosmo will automatically generate them).
 
 When pushing the operations you will see a short summary of the operations that were pushed, indicating how many were created and how many were already registered. Alternatively, the `--output` flag can be used to obtain a JSON summary that can easily be processed by your tooling.
 
 ```bash
-wgc operations push production -c my-client -f persisted-query-manifest.json --format json                                   (11-25 10:23)
+wgc operations push mygraph -n default -c my-client -f persisted-query-manifest.json --format json                                   (11-25 10:23)
 {
   "2d9df67f96ce804da7a9107d33373132a53bf56aec29ef4b4e06569a43a16935": {
     "body": "query Employees {\n  employees {\n    id\n    role {\n      department\n      title\n      __typename\n    }\n    details {\n      forename\n      surname\n      location\n      __typename\n    }\n    __typename\n  }\n}",

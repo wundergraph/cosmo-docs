@@ -17,8 +17,6 @@ Create the following file to not bother with cli flags.
 {% code title="values.yaml" %}
 ```yaml
 configuration:
-  # -- The name of the graph to be served by the router (required)
-  federatedGraphName: "production"
   # -- The router token is used to authenticate the router against the controlplane (required)
   graphApiToken: "replace-me"
 ```
@@ -73,7 +71,7 @@ If you follow the default instructions the execution config is polled from the c
 #### 1. Download the latest valid execution config
 
 ```bash
-wgc router fetch <graph-name> -o router.json
+wgc router fetch <graph-name> -n <namespace ["default"]> -o router.json
 ```
 
 #### 2. Set the file content on the helm value
