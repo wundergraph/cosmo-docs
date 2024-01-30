@@ -13,3 +13,9 @@ Cosmo Cloud now features an array of non-production capabilities utilizing LLM p
 {% hint style="info" %}
 Schemas exceeding 10,000 characters are ignored. However, if you're interested in trying it out, please inform us. Our capacity is limited due to the beta phase.
 {% endhint %}
+
+### Enable Cosmo AI
+
+Navigate to your organization settings and click on "Enable" in the "Cosmo AI" section. By clicking this button, you agree to the terms described above.
+
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>Enable Cosmo AI</p></figcaption></figure>
