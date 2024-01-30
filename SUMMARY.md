@@ -129,3 +129,5 @@
 
 * [Directives](federation-v2/directives/README.md)
   * [@shareable](federation-v2/directives/shareable.md)
+  * [@authenticated](federation-v2/directives/authenticated.md)
+  * [@requiresScopes](federation-v2/directives/requiresscopes.md)
