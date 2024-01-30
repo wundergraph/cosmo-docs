@@ -21,12 +21,20 @@ Use this command whenever you make modifications to your subgraphs. It will repo
 ### Check deletion of a subgraph
 
 ```
-/npx wgc subgraph check <name> --delete
+npx wgc subgraph check <name> --delete
 ```
 
 {% hint style="info" %}
 This command will check any breaking changes or composition errors in case the subgraph is deleted.
 {% endhint %}
+
+### Check how a new subgraph affects the federated graph
+
+<pre class="language-bash"><code class="lang-bash"><strong># First create it
+</strong><strong>npx wgc subgraph create products --label team=A --routing-url http://localhost:4001/graphql
+</strong><strong># Check the impact
+</strong><strong>npx wgc subgraph check &#x3C;name> --schema schema.graphql
+</strong></code></pre>
 
 ## Description
 
@@ -50,7 +58,7 @@ The check command requires either the `--schema or --delete parameter.`
 
 1.  Check for breaking changes and composition errors for the subgraph "products" with the new schema file located at "./schemas/new\_schema.graphql":
 
-    <pre class="language-sh"><code class="lang-sh"><strong>npx wgc subgraph check products --schema ./schemas/new_schema.graphql
+    <pre class="language-sh"><code class="lang-sh"><strong>npx wgc subgraph check products -n default --schema ./schemas/new_schema.graphql
     </strong></code></pre>
 
 ## Sample output with changes and errors
