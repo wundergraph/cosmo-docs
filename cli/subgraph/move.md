@@ -11,7 +11,7 @@ npx wgc subgraph move <name> -n fromNS -t toNS
 ```
 
 {% hint style="info" %}
-Moving a subgraph will result in a new graph composition but only federated graphs from the target namespace are respected.
+**Moving** is an irreversible action. Only federated graphs from the target namespace are respected. However, the change will only be visible to the routers once the composition has been successful. Until then, the routers will operate with the most recent valid composition.
 {% endhint %}
 
 ## Description
