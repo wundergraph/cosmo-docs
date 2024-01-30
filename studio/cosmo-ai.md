@@ -21,3 +21,7 @@ Schemas exceeding 10,000 characters are ignored. However, if you're interested i
 Navigate to your organization settings and click on "Enable" in the "Cosmo AI" section. By clicking this button, you agree to the terms described above.
 
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>Enable Cosmo AI</p></figcaption></figure>
+
+## Demo
+
+{% embed url="https://twitter.com/dustindeus/status/1751689513737273691" %}
