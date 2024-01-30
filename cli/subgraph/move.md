@@ -10,7 +10,7 @@ description: Move a subgraph into a different namespace
 npx wgc subgraph move <name> -n fromNS -t toNS
 ```
 
-{% hint style="info" %}
+{% hint style="warning" %}
 **Moving** is an irreversible action. Only federated graphs from the target namespace are respected. However, the change will only be visible to the routers once the composition has been successful. Until then, the routers will operate with the most recent valid composition.
 {% endhint %}
 

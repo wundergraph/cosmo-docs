@@ -10,6 +10,10 @@ description: Creates a federated subgraph on the control plane.
 npx wgc subgraph create [subgraphName] --label [labelName] --routing-url [url]
 ```
 
+{% hint style="info" %}
+After creating a subgraph, you can publish it with [wgc subgraph publish](publish.md).
+{% endhint %}
+
 ## Description
 
 The `npx wgc subgraph create` command allows you to create a new subgraph within the Cosmo platform. Subgraphs are isolated GraphQL schemas that can be independently deployed and managed, providing modularity and scalability to your GraphQL APIs. The `[subgraphName]` argument specifies the name of the new subgraph, while the `--label` and `--routing-url` options allow you to add custom metadata and define the endpoint for the subgraph's data. Use `npx wgc subgraph create -h` to see all the available options.

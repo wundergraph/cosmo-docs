@@ -10,7 +10,7 @@ description: Updates subgraph metadata like URL, labels on the control plane.
 npx wgc subgraph update <name> [-r, --routing-url <url>] [--label [labels...]] [--readme <path-to-readme>]
 ```
 
-{% hint style="info" %}
+{% hint style="warning" %}
 **Update** is an irreversible action. However, the change will only be visible to the routers once the composition has been successful. Until then, the routers will operate with the most recent valid composition. Please use [subgraph check](check.md) to understand the impact of your change.
 {% endhint %}
 

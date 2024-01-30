@@ -12,7 +12,7 @@ description: >-
 npx wgc subgraph publish [subgraphName] --schema [schemaFilePath]
 ```
 
-{% hint style="info" %}
+{% hint style="warning" %}
 **Publish** is an irreversible action. However, the change will only be visible to the routers once the composition has been successful. Until then, the routers will operate with the most recent valid composition. Please use [subgraph check](check.md) to understand the impact of your change.
 {% endhint %}
 
