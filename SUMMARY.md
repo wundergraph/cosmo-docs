@@ -87,6 +87,7 @@
   * [Auth0](studio/sso/auth0.md)
   * [Keycloak](studio/sso/keycloak.md)
 * [Audit log](studio/audit-log.md)
+* [Cosmo AI](studio/cosmo-ai.md)
 
 ## Router
 
