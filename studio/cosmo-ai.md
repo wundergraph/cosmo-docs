@@ -16,7 +16,7 @@ When you [publish](../cli/subgraph/publish.md) a Subgraph for the first time, Co
 Schemas exceeding 10,000 characters are ignored. However, if you're interested in trying it out, please inform us. Our capacity is limited due to the beta phase.
 {% endhint %}
 
-## Get assistance with GraphQL composition errors
+### Get assistance with GraphQL composition errors
 
 You can run "[wgc subgraph fix](../cli/subgraph/fix.md)" to get a possible solution for fixing your current composition error. It returns just the new GraphQL schema, which you can incorporate into your existing one.
 
