@@ -1,5 +1,5 @@
 ---
-description: Cosmo AI is currently in open beta.
+description: Cosmo AI is currently in Open Beta.
 ---
 
 # Cosmo AI
