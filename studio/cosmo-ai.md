@@ -10,7 +10,7 @@ Cosmo Cloud now features an array of non-production capabilities utilizing LLM p
 
 ### **Generate Subgraph Documentation**
 
-When you [publish](../cli/subgraph/publish.md) a Subgraph for the first time, Cosmo Cloud automatically generates the README (documentation) based on the provided GraphQL schema. This process is executed in the background and typically completes within about 30 seconds.
+When you [publish](../cli/subgraph/publish.md) a Subgraph, Cosmo Cloud automatically generates the README (documentation) based on the provided GraphQL schema to keep it up to date. This process is executed in the background and typically completes within about 30 seconds.
 
 {% hint style="info" %}
 Schemas exceeding 10,000 characters are ignored. However, if you're interested in trying it out, please inform us. Our capacity is limited due to the beta phase.
