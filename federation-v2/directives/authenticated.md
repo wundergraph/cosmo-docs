@@ -7,6 +7,12 @@ description: >-
 
 # @authenticated
 
+## Minimum requirements
+
+<table><thead><tr><th width="349">Package</th><th>Minimum version</th></tr></thead><tbody><tr><td>router</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/router%400.60.0">0.60.0</a></td></tr><tr><td>controlplane</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/controlplane%400.58.0">0.58.0</a></td></tr><tr><td>wgc</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/wgc%400.39.0">0.39.0</a></td></tr></tbody></table>
+
+Make sure you have correctly set up [Authentication & Authorization](../../router/authentication-and-authorization.md).
+
 ## Definition
 
 ```graphql
@@ -355,10 +361,10 @@ enum Enum {
 type Interface {
   "Interface.booleanField @authenticated: subgraph-f Interface"
   booleanField: Boolean! @authenticated
-  "Interface.booleanField @authenticated: subgraph-f Interface"
+  "Interface.enumField @authenticated: subgraph-f Interface"
   enumField: Enum! @authenticated
   intField: Int!
-  "Interface.booleanField @authenticated: subgraph-f Interface.stringField"
+  "Interface.stringField @authenticated: subgraph-f Interface.stringField"
   stringField: String! @authenticated
 }
 
@@ -387,7 +393,7 @@ type AnotherObject implements Interface {
   "AnotherObject.anotherObjectOnlyFloatField @authenticated: subgraph-f AnotherObject"
   anotherObjectOnlyFloatField: Float! @authenticated
   """
-    AnotherObject.anotherObjectOnlyFloatField
+    AnotherObject.anotherObjectOnlyScalarField
     @authenticated: subgraph-f AnotherObject, subgraph-f Scalar
   """
   anotherObjectOnlyScalarField: Scalar! @authenticated
@@ -496,7 +502,7 @@ type Object {
 }
 
 type NestedObject {
-  authenticatedIntField: Int! @authenticated # note that this fiels is non-nullable
+  authenticatedIntField: Int! @authenticated # note that this field is non-nullable
   unauthenticatedStringField: String!
 }
 ```
