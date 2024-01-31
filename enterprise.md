@@ -4,7 +4,7 @@ description: Cosmo is fully open-source, but its complexity should not be undere
 
 # Enterprise
 
-<figure><img src=".gitbook/assets/image (101).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/cosmo-architecture-final (1).png" alt=""><figcaption><p>Cosmo architecture</p></figcaption></figure>
 
 Cosmo is fully open-source and will always remain so. Its extensive range of features makes it one of the most advanced and cost-efficient GraphQL Platforms for both small and large companies.
 
