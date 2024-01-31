@@ -4,6 +4,11 @@ description: Set up authentication and authorization for incoming requests
 
 # Authentication & Authorization
 
+{% hint style="info" %}
+Authorization directives can be used in your schema to define granular authorization rules on the field definition level.\
+Documentation can be found at [@authenticated](../federation-v2/directives/authenticated.md) and [@requiresScopes](../federation-v2/directives/requiresscopes.md).
+{% endhint %}
+
 Cosmo router supports authenticating incoming requests using [JWKS](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets) authentication. The JSON Web Key Set (JWKS) is a set of keys that contains the public keys used to verify any JSON Web Token (JWT) issued by the authorization server and signed using the RS256 [signing algorithm](https://auth0.com/docs/tokens/concepts/signing-algorithms).
 
 To enable an authentication provider, add it to your configuration:
