@@ -359,7 +359,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 
 These rules apply to requests being made from clients to the Router.
 
-<table data-full-width="true"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>max_request_body_size</td><td>false</td><td></td><td>5mb</td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>max_request_body_size</td><td>false</td><td></td><td>5mb</td></tr></tbody></table>
 
 ## Authentication
 
