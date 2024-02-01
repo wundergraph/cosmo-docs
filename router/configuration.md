@@ -130,15 +130,15 @@ telemetry:
 
 <table data-full-width="false"><thead><tr><th width="285">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>oltp</td><td>false</td><td><a data-mention href="configuration.md#metrics-oltp">#metrics-oltp</a></td><td></td></tr><tr><td></td><td>prometheus</td><td>false</td><td><a data-mention href="configuration.md#metrics-prometheus">#metrics-prometheus</a></td><td></td></tr></tbody></table>
 
-### Metrics OLTP
+### OLTP
 
 <table data-full-width="false"><thead><tr><th width="285">Environment Variable</th><th width="168">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>METRICS_OTLP_ENABLED</td><td>enabled</td><td>true</td><td>Enables OTEL metrics instrumentation</td><td>true</td></tr><tr><td></td><td>exporters</td><td>false</td><td><a data-mention href="configuration.md#metrics-otlp-exporter">#metrics-otlp-exporter</a></td><td></td></tr></tbody></table>
 
-### Metrics Prometheus
+### Prometheus
 
 <table data-full-width="false"><thead><tr><th width="405">Environment Variable</th><th width="207">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>PROMETHEUS_ENABLED</td><td>enabled</td><td>true</td><td>Enables prometheus metrics support</td><td>true</td></tr><tr><td>PROMETHEUS_HTTP_PATH</td><td>path</td><td>false</td><td>The HTTP path where metrics are exposed.</td><td>"/metrics"</td></tr><tr><td>PROMETHEUS_LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The prometheus listener address</td><td>"127.0.0.1:8088"</td></tr><tr><td>PROMETHEUS_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td></td><td></td></tr><tr><td>PROMETHEUS_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td></td><td></td></tr></tbody></table>
 
-### Metrics OTLP Exporter
+### Exporter
 
 <table data-full-width="false"><thead><tr><th width="285">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td></td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td></td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
 
