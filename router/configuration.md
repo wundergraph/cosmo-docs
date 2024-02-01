@@ -114,7 +114,7 @@ telemetry:
 
 ## Tracing
 
-<table data-full-width="false"><thead><tr><th width="275">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TRACING_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>TRACING_SAMPLING_RATE</td><td>sampling_rate</td><td>true</td><td><p>min 0.0</p><p>max 1.0</p></td><td>1</td></tr><tr><td>TRACING_BATCH_TIMEOUT</td><td></td><td>false</td><td>The maximum delay allowed before spans are exported.</td><td>10s</td></tr><tr><td></td><td>exporters</td><td>false</td><td><a data-mention href="configuration.md#exporters">#exporters</a></td><td></td></tr><tr><td></td><td>propagation</td><td>false</td><td><a data-mention href="configuration.md#propagation">#propagation</a></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="275">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="154">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TRACING_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>TRACING_SAMPLING_RATE</td><td>sampling_rate</td><td>true</td><td><p>min 0.0</p><p>max 1.0</p></td><td>1</td></tr><tr><td>TRACING_BATCH_TIMEOUT</td><td></td><td>false</td><td>The maximum delay allowed before spans are exported.</td><td>10s</td></tr><tr><td></td><td>exporters</td><td>false</td><td><a data-mention href="configuration.md#exporters">#exporters</a></td><td></td></tr><tr><td></td><td>propagation</td><td>false</td><td><a data-mention href="configuration.md#propagation">#propagation</a></td><td></td></tr></tbody></table>
 
 #### Exporters
 
@@ -188,7 +188,7 @@ modules:
 
 Configure Header propagation rules for all Subgraphs or individual Subgraphs by name.
 
-<table data-full-width="false"><thead><tr><th width="406">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>all</td><td>false</td><td>Apply <a data-mention href="configuration.md#global-header-rules">#global-header-rules</a>for requests to "all" Subgraphs</td><td></td></tr><tr><td></td><td>subgraphs</td><td>false</td><td>Apply <a data-mention href="configuration.md#global-header-rules">#global-header-rules</a>for requests to specific Subgraphs.</td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="223">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>all</td><td>false</td><td>Apply <a data-mention href="configuration.md#global-header-rules">#global-header-rules</a>for requests to "all" Subgraphs</td><td></td></tr><tr><td></td><td>subgraphs</td><td>false</td><td>Apply <a data-mention href="configuration.md#global-header-rules">#global-header-rules</a>for requests to specific Subgraphs.</td><td></td></tr></tbody></table>
 
 Example YAML config:
 
@@ -213,17 +213,17 @@ headers:
 
 ### Global Header Rules
 
-<table data-full-width="false"><thead><tr><th width="406">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request</td><td>false</td><td><a data-mention href="configuration.md#request-header-rule">#request-header-rule</a></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request</td><td>false</td><td><a data-mention href="configuration.md#request-header-rule">#request-header-rule</a></td><td></td></tr></tbody></table>
 
 ### Request Header Rule
 
-<table data-full-width="false"><thead><tr><th width="406">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>false</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>false</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr></tbody></table>
 
 ## Traffic Shaping
 
 Configure rules for traffic shaping like maximum request body size, timeouts, retry behavior, etc. For more info, check this section in the docs: [traffic-shaping.md](traffic-shaping.md "mention")
 
-<table data-full-width="false"><thead><tr><th width="406">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>all</td><td>false</td><td><a data-mention href="configuration.md#traffic-shaping-subgraph-request-rules">#traffic-shaping-subgraph-request-rules</a></td><td></td></tr><tr><td></td><td>router</td><td>false</td><td><a data-mention href="configuration.md#traffic-shaping-client-request-request-rules">#traffic-shaping-client-request-request-rules</a></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="216">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>all</td><td>false</td><td><a data-mention href="configuration.md#traffic-shaping-subgraph-request-rules">#traffic-shaping-subgraph-request-rules</a></td><td></td></tr><tr><td></td><td>router</td><td>false</td><td><a data-mention href="configuration.md#traffic-shaping-client-request-request-rules">#traffic-shaping-client-request-request-rules</a></td><td></td></tr></tbody></table>
 
 Example YAML config:
 
@@ -273,7 +273,7 @@ These rules apply to requests being made from clients to the Router.
 
 ## Authentication
 
-<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>providers</td><td>false</td><td><a data-mention href="configuration.md#authentication-provider">#authentication-provider</a></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="214">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>providers</td><td>false</td><td><a data-mention href="configuration.md#authentication-provider">#authentication-provider</a></td><td></td></tr></tbody></table>
 
 Example YAML config:
 
@@ -293,11 +293,11 @@ authentication:
 
 ### Provider
 
-<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>name</td><td>false</td><td></td><td></td></tr><tr><td></td><td>jwks</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="215">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>name</td><td>false</td><td></td><td></td></tr><tr><td></td><td>jwks</td><td>false</td><td></td><td></td></tr></tbody></table>
 
 ### Provider JWKS
 
-<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>url</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_names</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_value_prefixes</td><td>false</td><td></td><td></td></tr><tr><td></td><td>refresh_interval</td><td>true</td><td></td><td>1m</td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="208">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>url</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_names</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_value_prefixes</td><td>false</td><td></td><td></td></tr><tr><td></td><td>refresh_interval</td><td>true</td><td></td><td>1m</td></tr></tbody></table>
 
 ## Authorization
 
@@ -333,7 +333,7 @@ The Events section lets you define Event Sources for [event-driven-federated-sub
 
 Currently, we only support to use a single Event Source (NATS) with more to come in the future.
 
-<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>sources</td><td>false</td><td><a data-mention href="configuration.md#event-source">#event-source</a></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="216">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>sources</td><td>false</td><td><a data-mention href="configuration.md#event-source">#event-source</a></td><td></td></tr></tbody></table>
 
 ```yaml
 version: "1"
@@ -346,7 +346,7 @@ events:
 
 ### Event Source
 
-<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>provider</td><td>true</td><td>one of: NATS</td><td></td></tr><tr><td></td><td>url</td><td>true</td><td>The URL of the event source, e.g. "nats://localhost:4222"</td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="217">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>provider</td><td>true</td><td>one of: NATS</td><td></td></tr><tr><td></td><td>url</td><td>true</td><td>The URL of the event source, e.g. "nats://localhost:4222"</td><td></td></tr></tbody></table>
 
 ## Router Engine Configuration
 
