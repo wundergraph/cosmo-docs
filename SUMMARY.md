@@ -16,6 +16,13 @@
 * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
 * [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
 
+## Open Federation
+
+* [Directives](open-federation/directives/README.md)
+  * [@shareable](open-federation/directives/shareable.md)
+  * [@authenticated](open-federation/directives/authenticated.md)
+  * [@requiresScopes](open-federation/directives/requiresscopes.md)
+
 ## CLI
 
 * [Intro](cli/intro.md)
@@ -126,10 +133,3 @@
     * [Router](deployments-and-hosting/kubernetes/helm-chart/router.md)
 * [Docker](deployments-and-hosting/docker.md)
 * [Cosmo Cloud](deployments-and-hosting/cosmo-cloud.md)
-
-## Federation V2
-
-* [Directives](federation-v2/directives/README.md)
-  * [@shareable](federation-v2/directives/shareable.md)
-  * [@authenticated](federation-v2/directives/authenticated.md)
-  * [@requiresScopes](federation-v2/directives/requiresscopes.md)
