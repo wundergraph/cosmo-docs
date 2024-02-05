@@ -109,8 +109,10 @@ GraphQL variables are useful for debugging to replay queries but they can pose a
 ```yaml
 telemetry:
   tracing:
-      export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
+      export_graphql_variables: false # TRACING_EXPORT_GRAPHQL_VARIABLES
 ```
+
+This disables the capability to debug and replay GraphQL requests in the Studio.
 
 ### WebSockets
 

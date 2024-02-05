@@ -20,13 +20,16 @@ The Operation Content is in normalization form, meaning user data is not include
 
 GraphQL variables can pose a potential risk because they include request data. To mitigate this, you can disable variable export in the following way. In the future, we will provide tools to redact specific arguments.
 
+{% code title="config.yaml" %}
 ```yaml
+version: "1"
 telemetry:
   tracing:
-      export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
+      export_graphql_variables: false # TRACING_EXPORT_GRAPHQL_VARIABLES
 ```
+{% endcode %}
 
-This disables the capability to debug and reproduce GraphQL requests in the Studio.
+This disables the capability to debug and replay GraphQL requests in the Studio.
 
 ## Metrics
 
