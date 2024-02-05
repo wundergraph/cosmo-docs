@@ -21,6 +21,8 @@ If you want to start your router in production with a static config please use t
 
 ## Getting started
 
+### 1. Add your subgraphs
+
 In order to compose locally, we need to create a `compose.yaml` file that includes all the subgraphs you wish to include and compose into a federated graph.\
 \
 The information you are required to provide is as follows:
@@ -46,19 +48,22 @@ subgraphs:
 
 <table><thead><tr><th width="216">Property</th><th width="434">Description</th><th>Required</th><th data-hidden></th></tr></thead><tbody><tr><td>name</td><td>The unique name of the subgraph</td><td>true</td><td></td></tr><tr><td>routing_url</td><td>The unique url (endpoint) of the subgraph (typically ends with <code>/graphql</code>)</td><td>true</td><td></td></tr><tr><td>introspection.url</td><td>Required if you want to dynamically introspect a running subgraph server</td><td>false</td><td></td></tr><tr><td>introspection.headers</td><td>Headers to pass on the introspection request</td><td>false</td><td></td></tr><tr><td>schema.file</td><td>Path to the subgraph GraphQL schema</td><td>false</td><td></td></tr></tbody></table>
 
+### 2. Generate the Router config
+
 After you have configured everything, you can generate the static router config as follows:
 
 ```bash
 wgc router compose -i compose.yaml -o config.json
 ```
 
-This command produces a `config.json` that can be passed to the router in the next step.
+This command introspects all your subgraphs and produces a `config.json` that can be passed to the router in the next step.
 
-## Run the config with the router
+### 3. Run the config with the router
 
 Create a `config.yaml` file in the same directory as your router binary.
 
-<pre class="language-yaml" data-title="config.yaml"><code class="lang-yaml"># Path to the previous generated file
+<pre class="language-yaml" data-title="config.yaml"><code class="lang-yaml">dev_mode: true
+# Path to the previous generated file
 router_config_path: config.json
 graph:
    # Result of `wgc router token create`. Can be omitted for local testing.
@@ -68,6 +73,8 @@ graph:
 {% hint style="info" %}
 If you omit the token, analytics and tracing are disabled. For production create a token  [`wgc router token create`](../cli/router/token/create.md) and use polling instead. This ensures that the latest valid config is deployed to your routers automatically.
 {% endhint %}
+
+### 4. Open the playground
 
 Finally, run the router and go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes.
 
