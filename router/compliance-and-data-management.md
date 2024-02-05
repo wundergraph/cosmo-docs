@@ -29,7 +29,7 @@ telemetry:
 ```
 {% endcode %}
 
-This disables the capability to debug and replay GraphQL requests in the Studio.
+This will limit the capability to debug and replay GraphQL requests in the Studio.
 
 ## Metrics
 
@@ -55,11 +55,11 @@ When the router starts, it attempts to connect with the control plane to self-re
 
 ## Router CDN
 
-Every time you update your schema via [wgc](broken-reference), we will upload the latest router configuration to our Content Delivery Network (CDN) to ensure high availability. This router configuration includes the optimized query plan and the schemas of your subgraph.
+Every time you update your schema via [wgc](broken-reference), we will upload the latest router configuration to our Content Delivery Network (CDN) to ensure high availability. This router configuration, accessible only by you, includes the optimized query plan and the schemas of your subgraph.
 
 ## Request logging
 
-The router logs every incoming request at the INFO log level. Logs **aren't** sent to any external systems and can only be accessed in the environment where the router runs. The log contains the following information:
+The router logs every incoming request at the INFO log level. Request logs **aren't** sent to any external systems and can only be accessed in the environment where the router runs. The log contains the following information:
 
 * Request Method, Path, Query, User-Agent, Client-IP
 * Router Version, Router Config Version

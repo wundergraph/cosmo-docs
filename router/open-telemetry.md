@@ -112,7 +112,7 @@ telemetry:
       export_graphql_variables: false # TRACING_EXPORT_GRAPHQL_VARIABLES
 ```
 
-This disables the capability to debug and replay GraphQL requests in the Studio.
+This will limit the capability to debug and replay GraphQL requests in the Studio.
 
 ### WebSockets
 
