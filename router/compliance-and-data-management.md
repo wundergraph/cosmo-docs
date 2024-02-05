@@ -18,7 +18,7 @@ We export [OTEL](https://opentelemetry.io/) trace information by default to prov
 
 The Operation Content is in normalization form, meaning user data is not included.&#x20;
 
-GraphQL variables can pose a potential risk because they include request data. To mitigate this, you can disable variable export in the following way:
+GraphQL variables can pose a potential risk because they include request data. To mitigate this, you can disable variable export in the following way. In the future, we will provide tools to redact specific arguments.
 
 ```yaml
 telemetry:
