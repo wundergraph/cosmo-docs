@@ -102,6 +102,16 @@ If you want to enable [B3](https://github.com/openzipkin/b3-propagation) for exa
     - b3
 </code></pre>
 
+### GraphQL variables
+
+GraphQL variables are useful for debugging to replay queries but they can pose a potential risk because they include request data. To mitigate this, you can disable variable export in the following way:
+
+```yaml
+telemetry:
+  tracing:
+      export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
+```
+
 ### WebSockets
 
 Tracing has not yet been implemented for WebSocket messages. If you require this feature, please do not hesitate to contact us.
