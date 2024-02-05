@@ -11,7 +11,7 @@ description: >-
 In development, you aim to test your schema changes as quickly as possible, bypassing the need to check and update your federated graph on the control plane. This approach does not replace the necessity of pushing your subgraph to the control plane in production; however, it serves as a more expedient method for iterating on your graph during the development phase.
 
 {% hint style="info" %}
-If you want to start your router in production with a static config please use the [fetch](../cli/router/fetch.md) command instead. This will fetch the latest valid production config from the control plane.
+If you want to start your router in production with a static config please use the [fetch](../cli/router/fetch.md) command instead. This will fetch the latest valid production config from the control plane. [wgc router compose](../cli/router/compose.md) should only be used for local development.
 {% endhint %}
 
 ## Prerequisites
