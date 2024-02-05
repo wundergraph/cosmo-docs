@@ -56,6 +56,8 @@ graph:
 
 ## Telemetry
 
+
+
 <table data-full-width="false"><thead><tr><th width="318">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TELEMETRY_SERVICE_NAME</td><td>service_name</td><td>true</td><td></td><td>cosmo-router</td></tr></tbody></table>
 
 #### Example YAML config:
@@ -71,7 +73,7 @@ telemetry:
 
 ## Tracing
 
-<table data-full-width="false"><thead><tr><th width="275">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="154">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TRACING_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>TRACING_SAMPLING_RATE</td><td>sampling_rate</td><td>true</td><td><p>min 0.0</p><p>max 1.0</p></td><td>1</td></tr><tr><td>TRACING_BATCH_TIMEOUT</td><td></td><td>false</td><td>The maximum delay allowed before spans are exported.</td><td>10s</td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="398">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="154">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TRACING_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>TRACING_SAMPLING_RATE</td><td>sampling_rate</td><td>true</td><td><p>min 0.0</p><p>max 1.0</p></td><td>1</td></tr><tr><td>TRACING_BATCH_TIMEOUT</td><td></td><td>false</td><td>The maximum delay allowed before spans are exported.</td><td>10s</td></tr><tr><td>TRACING_EXPORT_GRAPHQL_VARIABLES</td><td>export_graphql_variables</td><td>false</td><td></td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -89,11 +91,12 @@ telemetry:
     enabled: true
     sampling_rate: 1
     batch_timeout: '10s'
+    export_graphql_variables: true
 ```
 
 ### Exporters
 
-<table data-full-width="false"><thead><tr><th width="275">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="164">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td>bool</td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td></td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="377">Environment Variable</th><th width="245">YAML</th><th width="112" data-type="checkbox">Required</th><th width="164">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td>bool</td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td></td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
