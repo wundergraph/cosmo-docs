@@ -67,5 +67,5 @@ We log every incoming request but logs **aren't** sent to any external systems. 
 By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), with the exceptions of GraphQL variables, which are used to enhance the developer experience, and the Client-IP, which provides you with the means to identify malicious actors. By configuring the router, you have the option to opt out of sharing certain information. It is also possible to run the router standalone without any connection to external systems.
 
 {% hint style="warning" %}
-Disabling modules will result in a degraded experience on the Cosmo Platform because many features rely on the information the router sends to us.
+Disabling features will result in a degraded experience on the Cosmo Platform because many features rely on the information the router sends to us.
 {% endhint %}
