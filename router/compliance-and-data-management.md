@@ -1,7 +1,7 @@
 ---
 description: >-
-  Get an overview about what data the router collects and exports by default.
-  Configurations can be adjusted to manage strict data privacy.
+  Get an overview about what data the router collects and its purposes. Learn to
+  adjust configurations to ensure stringent data privacy management.
 ---
 
 # Compliance and Data Management
