@@ -87,24 +87,6 @@ telemetry:
 ```
 {% endcode %}
 
-### My traces are not showing up.
-
-In certain conditions, it can happen that traces are not listed in the Studio. We have observed these cases.&#x20;
-
-1. Platforms like Google Cloud Run automatically propagate trace headers according to the Trace-Context specification in every service call.
-2. Your client request has already set a traceId, but it did not send the span to Cosmo Cloud.
-3. External, uncontrolled clients sent trace headers.
-
-In both cases, the issue is that not all spans will be sent to the Cosmo Platform. The Studio's Traces view is configured to fetch only the root spans. As a workaround you can force the router to start the root span at the router.
-
-{% code title="config.yaml" %}
-```yaml
-telemetry:
-  tracing:
-    with_new_root: true
-```
-{% endcode %}
-
 #### Example: Enable B3 propagation
 
 If you want to enable [B3](https://github.com/openzipkin/b3-propagation) for example, you can set `b3` to `true` but you also need to add the trace headers to the CORS config to not run into issues.
@@ -130,3 +112,23 @@ This will limit the capability to debug and replay GraphQL requests in the Studi
 ### WebSockets
 
 Tracing has not yet been implemented for WebSocket messages. If you require this feature, please do not hesitate to contact us.
+
+## FAQ
+
+### My traces are not showing up.
+
+In certain conditions, it can happen that traces are not listed in the Studio. We have observed these cases.&#x20;
+
+1. Platforms like Google Cloud Run automatically propagate trace headers according to the Trace-Context specification in every service call.
+2. Your client request has already set a traceId, but it did not send the span to Cosmo Cloud.
+3. External, uncontrolled clients sent trace headers.
+
+In both cases, the issue is that not all spans will be sent to the Cosmo Platform. The Studio's Traces view is configured to fetch only the root spans. As a workaround you can force the router to start the root span at the router.
+
+{% code title="config.yaml" %}
+```yaml
+telemetry:
+  tracing:
+    with_new_root: true
+```
+{% endcode %}
