@@ -83,14 +83,27 @@ telemetry:
       # https://www.jaegertracing.io/ (compliant with opentracing)
       jaeger: false
       # https://github.com/openzipkin/b3-propagation (zipkin)
-      b3: false
-       
+      b3: false   
 ```
 {% endcode %}
 
-{% hint style="warning" %}
-We've observed platforms like **Google Cloud Run** automatically propagating trace headers with the [Trace-Context](https://www.w3.org/TR/trace-context/) specification in every service call. This is beneficial if you want to integrate with the platform, but it creates issues with Cosmo and other OpenTelemetry (OTEL) providers because not all spans will be sent to the platform. In order to prevent this, disable `trace_context` propagation and use a different specification.
-{% endhint %}
+### My traces are not showing up.
+
+In certain conditions, it can happen that traces are not listed in the Studio. We have observed these cases.&#x20;
+
+1. Platforms like Google Cloud Run automatically propagate trace headers according to the Trace-Context specification in every service call.
+2. Your client request has already set a traceId, but it did not send the span to Cosmo Cloud.
+3. External, uncontrolled clients sent trace headers.
+
+In both cases, the issue is that not all spans will be sent to the Cosmo Platform. The Studio's Traces view is configured to fetch only the root spans. As a workaround you can force the router to start the root span at the router.
+
+{% code title="config.yaml" %}
+```yaml
+telemetry:
+  tracing:
+    with_new_root: true
+```
+{% endcode %}
 
 #### Example: Enable B3 propagation
 
