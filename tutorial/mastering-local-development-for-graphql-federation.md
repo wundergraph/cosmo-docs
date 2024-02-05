@@ -49,28 +49,28 @@ subgraphs:
 After you have configured everything, you can generate the static router config as follows:
 
 ```bash
-wgc router compose -i compose.yaml -o config.json. 
+wgc router compose -i compose.yaml -o config.json
 ```
 
 This command produces a `config.json` that can be passed to the router in the next step.
 
 ## Run the config with the router
 
-Create a `.env` file in the router working directory:
+Create a `config.yaml` file in the same directory as your router binary.
 
-{% code title=".env" %}
-```bash
-# The path to the file we generated previously
-ROUTER_CONFIG_PATH=config.json
-```
-{% endcode %}
+<pre class="language-yaml" data-title="config.yaml"><code class="lang-yaml"># Path to the previous generated file
+router_config_path: config.json
+graph:
+   # Result of `wgc router token create`. Can be omitted for local testing.
+<strong>   token: ""
+</strong></code></pre>
 
 {% hint style="info" %}
-If you omit `GRAPH_API_TOKEN` analytics and tracing are disabled. For production please create a token  [`wgc router token create`](../cli/router/token/create.md) and use polling instead. This ensures that the latest valid config is deployed to your routers automatically.
+If you omit the token, analytics and tracing are disabled. For production create a token  [`wgc router token create`](../cli/router/token/create.md) and use polling instead. This ensures that the latest valid config is deployed to your routers automatically.
 {% endhint %}
 
-Run the router and go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes. The next time you want to update your graph you can run:
+Finally, run the router and go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes.
 
 ```bash
-wgc router compose -i compose.yaml -o config.json && router
+./router
 ```
