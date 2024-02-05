@@ -115,7 +115,7 @@ Tracing has not yet been implemented for WebSocket messages. If you require this
 
 ## FAQ
 
-### My traces are not showing up.
+### Why aren't my traces showing up in the Studio?
 
 In certain conditions, it can happen that traces are not listed in the Studio. We have observed these cases.&#x20;
 
