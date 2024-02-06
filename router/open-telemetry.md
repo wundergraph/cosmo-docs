@@ -119,7 +119,7 @@ Tracing has not yet been implemented for WebSocket messages. If you require this
 
 Yes, but this is currently limited to private backend applications e.g. subgraphs because we don't provide a secure mechanism to issue short-lived tokens in public applications like Web-Apps. Never expose your GRAPH\_TOKEN to the public. A possible solution to make this work is to run an [otelcollector](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/collector/opentelemetry-collector-intro/) and utilize the export functionality to forward telemetry data to Cosmo Cloud. This will enable you to configure your own authentication layer and observe malicious behaviors. It is also a [recommended](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/best-practices/opentelemetry-best-practices-browser/) approach to ingest data to multiple OTEL platforms.
 
-### Why aren't my traces showing up in the Studio?
+### Why is my trace incomplete?
 
 In certain conditions, it can happen that traces are not listed in the Studio. We have observed these cases.&#x20;
 
@@ -127,12 +127,4 @@ In certain conditions, it can happen that traces are not listed in the Studio. W
 2. Your client request has already set a trace context, but it did not send the span to Cosmo Cloud.
 3. External, uncontrolled clients sent trace headers.
 
-In both cases, the issue is that not all spans will be sent to the Cosmo Platform. The Studio's Traces view is configured to list only the root spans. As a workaround, you can force the router to start the root span always at the router.
-
-{% code title="config.yaml" %}
-```yaml
-telemetry:
-  tracing:
-    with_new_root: true
-```
-{% endcode %}
+In both cases, the issue is that not all spans will be sent to the Cosmo Platform. You have to ensure that all spans are sent to us so we can reconstruct the full trace.
