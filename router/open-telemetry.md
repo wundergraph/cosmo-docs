@@ -127,4 +127,4 @@ In certain conditions, it can happen that traces are not listed in the Studio. W
 2. Your client request has already set a trace context, but it did not send the span to Cosmo Cloud.
 3. External, uncontrolled clients sent trace headers.
 
-In both cases, the issue is that not all spans will be sent to the Cosmo Platform. You have to ensure that all spans are sent to us so we can reconstruct the full trace.
+In all cases, the issue is that not all spans will be sent to the Cosmo Platform. You have to ensure that all spans are sent to us so we can reconstruct the full trace.

@@ -1,8 +1,8 @@
 ---
 description: >-
-  Lists all the requests made to your federated graph. For each request, it
-  shows the relevant details, such as the operation performed, the client who
-  made the request, and any error message
+  Lists all the requests made to your router. For each request, it shows the
+  relevant details, such as the operation performed, the client who made the
+  request, and any error message
 ---
 
 # Traces
