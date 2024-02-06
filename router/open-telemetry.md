@@ -121,7 +121,7 @@ Yes, but this is currently limited to private backend applications e.g. subgraph
 
 ### Why is my trace incomplete?
 
-In certain conditions, it can happen that traces are not listed in the Studio. We have observed these cases.&#x20;
+In certain conditions, it can happen that spans are not listed in the Studio. We have observed these cases.&#x20;
 
 1. Platforms like Google Cloud Run automatically propagate trace headers according to the Trace-Context specification in every service call.
 2. Your client request has already set a trace context, but it did not send the span to Cosmo Cloud.
