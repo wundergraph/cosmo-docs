@@ -29,7 +29,7 @@ telemetry:
 ```
 {% endcode %}
 
-This will limit the capability to debug and replay GraphQL requests in the Studio.
+If you disable it, the capability to debug and replay GraphQL requests in the Studio will be limited.
 
 ## Metrics
 
