@@ -65,6 +65,10 @@ The router logs every incoming request at the INFO log level. Request logs **are
 * Router Version, Router Config Version
 * Response Status, Latency
 
+## Retention
+
+If you use Cosmo Cloud, your data is not stored indefinitely. Depending on your plan, we delete telemetry data every 30 days and schema usage data every 90 days.
+
 ## Summary
 
 By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), except for GraphQL variables, which are used to enhance the developer experience, and the Client-IP, which enables you to identify unique actors. By configuring the router, you can opt out of sharing certain information. Additionally, it is possible to run the router in standalone mode without any connection to external systems.
