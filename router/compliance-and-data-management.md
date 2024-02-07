@@ -55,7 +55,7 @@ When the router starts, it attempts to connect with the control plane to self-re
 
 ## Router CDN
 
-Every time you update your schema via [wgc](broken-reference), we will upload the latest router configuration to our Content Delivery Network (CDN) to ensure high availability. This router configuration, accessible only by you, includes the optimized query plan and the schemas of your subgraph.
+Every time you update your schema via [wgc](broken-reference), we will upload the latest router configuration to our Content Delivery Network (CDN) to ensure high availability. This router configuration, accessible only by you, includes the optimized query plan and the schemas of your subgraph. The router uses this endpoint to periodically fetch updates.
 
 ## Request logging
 
