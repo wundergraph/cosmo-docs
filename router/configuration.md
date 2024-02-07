@@ -548,6 +548,9 @@ telemetry:
   tracing:
     enabled: true
     sampling_rate: 1
+    batch_timeout: '10s'
+    export_graphql_variables: true
+    with_new_root: false
     propagation:
       # https://www.w3.org/TR/trace-context/
       trace_context: true
