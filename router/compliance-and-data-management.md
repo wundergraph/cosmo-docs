@@ -51,7 +51,7 @@ Besides measuring common request metrics, we also collect information about Grap
 
 ## Router self-registering
 
-When the router starts, it attempts to connect with the control plane to self-register. This mechanism is used to exchange cryptographic keys and ensure that certain limits are maintained when data is sent to Cosmo Cloud.
+When the router starts, it attempts to connect with the control plane to self-register. This mechanism is used to exchange cryptographic keys when using [ART](advanced-request-tracing-art.md) and to ensure that certain limits are maintained when data is sent to Cosmo Cloud.
 
 ## Router CDN
 
