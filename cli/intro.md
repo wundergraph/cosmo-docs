@@ -9,6 +9,10 @@ description: >-
 
 ## Installation
 
+{% hint style="info" %}
+Please ensure you have installed at least one version of Node.js that is in "long-term support" ([LTS](https://nodejs.org/en/about/previous-releases)).
+{% endhint %}
+
 The CLI tool is part of the npm registry. You can start using it by simply running the following command.
 
 ```bash
