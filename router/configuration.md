@@ -478,6 +478,41 @@ engine:
     report_memory_usage: false
 ```
 
+## Rate Limiting
+
+### General Rate Limiting Configuration
+
+<table data-full-width="false"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>oneof=simple</td><td></td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td></td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td></td><td></td></tr></tbody></table>
+
+### Storage
+
+<table data-full-width="false"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>REDIS_ADDR</td><td>addr</td><td>true</td><td></td><td>localhost:6379</td></tr><tr><td>REDIS_PASSWORD</td><td>password</td><td>false</td><td></td><td></td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
+
+### Simple Strategy
+
+<table data-full-width="false"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_SIMPLE_RATE</td><td>rate</td><td>true</td><td>Allowed request rate (number)</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_BURST</td><td>burst</td><td>true</td><td>Allowed burst rate (number) - max rate per one request</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_PERIOD</td><td>period</td><td>true</td><td>The rate limiting period, e.g. "10s", "1m", etc...</td><td>1s</td></tr><tr><td>RATE_LIMIT_SIMPLE_REJECT_EXCEEDING_REQUESTS</td><td>reject_exceeding_requests</td><td>false</td><td>Reject the complete request if a sub-request exceeds the rate limit. If set to false, partial responses are possible.</td><td>false</td></tr></tbody></table>
+
+### Example YAML Configuration
+
+Here's an example configuration of hot to set-up rate limiting.
+
+```yaml
+version: "1"
+
+rate_limit:
+  enabled: true
+  strategy: "simple"
+  storage:
+    addr: "localhost:6379"
+    password: "test"
+    key_prefix: "cosmo_rate_limit"
+  simple_strategy:
+    rate: 60
+    burst: 60
+    period: "60s"
+    reject_exceeding_requests: true
+```
+
 ## Environment Variables
 
 Many configuration options can be set as environment variables. For a complete list of options, please look at the [config file](configuration.md#complete-config-example).
@@ -664,6 +699,19 @@ engine:
   debug:
     report_websocket_connections: false
     report_memory_usage: false
+    
+rate_limit:
+  enabled: true
+  strategy: "simple"
+  storage:
+    addr: "localhost:6379"
+    password: "test"
+    key_prefix: "cosmo_rate_limit"
+  simple_strategy:
+    rate: 60
+    burst: 60
+    period: "60s"
+    reject_exceeding_requests: true
 </code></pre>
 
 You can also point to a custom config file by overwriting `CONFIG_PATH` environment variable.
