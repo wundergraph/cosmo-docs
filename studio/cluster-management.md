@@ -23,7 +23,7 @@ The list displays all running router instances. Upon closer inspection, you can 
 * **Status:** Identify if the server is up and running. In the future, we will conduct advanced validation that takes various metrics into consideration.
 * **Version:** The deployed binary version of the router.
 * **Cluster:** The logical cluster name. Is specified by the `cluster.name` setting. By default it is an empty string.
-* **Uptime:** The duration for which the instance has been up and running.
+* **Uptime:** The duration for which the schema version has been up and running.
 * **Mem / CPU:** The utilization of the router instance. Arrows signal the trend between two data samples.
 
 {% hint style="warning" %}
