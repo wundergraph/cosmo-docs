@@ -90,6 +90,7 @@
   * [Webhooks](studio/alerts-and-notifications/webhooks.md)
   * [Slack Integration](studio/alerts-and-notifications/slack-integration.md)
 * [Graph Access Control](studio/graph-access-control.md)
+* [Cluster Management](studio/cluster-management.md)
 * [RBAC](studio/rbac.md)
 * [SSO](studio/sso/README.md)
   * [Okta](studio/sso/okta.md)
