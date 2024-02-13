@@ -101,7 +101,7 @@ telemetry:
 ```
 {% endcode %}
 
-Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts.
+Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts. If not specified, a random unique ID is used.
 
 ## Prometheus
 
@@ -111,9 +111,8 @@ To get a list of all Prometheus metrics, we advise navigating to the Prometheus 
 
 Sometimes it is useful to have the flexibility to exclude specific metrics or labels to reduce the load "cardinality" of your metrics server. You can do this easily by excluding them in the router config. We support a Go Regex string. You can test your Regex at [https://regex101.com/](https://regex101.com/).
 
+{% code title="config.yaml" %}
 ```yaml
-# config.yaml
-
 telemetry:
   # OpenTelemetry Metrics
   metrics:
@@ -124,6 +123,7 @@ telemetry:
       exclude_metric_labels:
         - "^wg_client_version$"
 ```
+{% endcode %}
 
 This excludes `router_http_requests_in_flight` histogram and the label `wg_client_version` from all metrics.
 
@@ -135,12 +135,14 @@ Default process and Go metrics can't be excluded. If you haven't run a query aga
 
 In container environments, it is necessary to expose your server on `0.0.0.0` to make the port accessible from outside.You can enable it by setting the following configuration.
 
+{% code title="config.yaml" %}
 ```yaml
 telemetry:
   metrics:
     prometheus:
       listen_addr: "0.0.0.0:8088"
 ```
+{% endcode %}
 
 Alternatively, you can use the environment variable.
 
