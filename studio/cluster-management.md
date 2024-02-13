@@ -7,7 +7,7 @@ description: >-
 # Cluster Management
 
 {% hint style="info" %}
-Requires a router with version >= 0.64.0
+Requires a router with version >= 0.66.1
 {% endhint %}
 
 When the router starts, we will periodically send metric data to Cosmo Cloud. We use this information to display all running routers and to evaluate their vitals.
