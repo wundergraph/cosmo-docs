@@ -30,6 +30,6 @@ The list displays all running router instances. Upon closer inspection, you can 
 If your router fails to push uptime metrics for any reason, the instance will not appear. As long as one metric sample reaches us within 45 seconds, we assume the router is operational.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/router_instance_details.png" alt=""><figcaption><p>Instance details</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/instance-details.png" alt=""><figcaption><p>Instance details</p></figcaption></figure>
 
 If you click on a router instance, a summary displaying all the metrics available for your router instance will be shown. We will reserve this space to add additional metrics and diagrams in the future. If you have any ideas or requirements, please don't hesitate to make a [feature request](https://github.com/wundergraph/cosmo/issues/new?assignees=\&labels=enhancement%2Cneeds+triage\&projects=\&template=feature\_request.yaml).
