@@ -65,7 +65,7 @@ When using Cosmo Studio as a target to publish your Subgraphs, you'll be using "
 npx wgc subgraph publish products --subscription-protocol sse --schema ../demo/subgraphs/products/products.graphql
 ```
 
-Available options are "sse", "sse-post", and "ws".
+Available options are "sse", "sse\_post", and "ws".
 
 #### Setting a custom Subscriptions URL on wgc publish
 
