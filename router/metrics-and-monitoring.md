@@ -58,24 +58,24 @@ All metrics are tracked along the following dimensions:
 
 #### Static (Known before Router start):
 
-* **`wg_federated_graph_id`**: The ID of the running graph
-* **`wg_router_version`**: The current router binary version
-* **`wg_router_config_version`**: The current router config version
+* **`wg.federated_graph.id`**: The ID of the running graph
+* **`wg.router.version`**: The current router binary version
+* **`wg.router.config.version`**: The current router config version
 
 #### Request/Response based:
 
-* **`wg_operation_protocol`**: The used protocol `http` , `ws`
-* **`wg_operation_name`**: The name of the operation
-* **`wg_operation_type`**: The type of the operation e.g. `query`
-* **`http_status_code`**: The status code of the request
-* **`wg_client_name`**: The client name
-* **`wg_client_version`**: The client version
-* **`wg_request_error`**: Identify if an error occurred. This applies to a request that didn't result in a successful response. Only set when it is `true`. Be aware that a Status-Code `200` can still be an error in GraphQL.
+* **`wg.operation.protocol`**: The used protocol `http` , `ws`
+* **`wg.operation.name`**: The name of the operation
+* **`wg.operation.type`**: The type of the operation e.g. `query`
+* **`http.status_code`**: The status code of the request
+* **`wg.client.name`**: The client name
+* **`wg.client.version`**: The client version
+* **`wg.request_error`**: Identify if an error occurred. This applies to a request that didn't result in a successful response. Only set when it is `true`. Be aware that a Status-Code `200` can still be an error in GraphQL.
 
 #### Subgraph Request/ Response:
 
-* **`wg_subgraph_name`**: The name of the subgraph
-* **`wg_subgraph_id`**: The ID of the subgraph
+* **`wg.subgraph.name`**: The name of the subgraph
+* **`wg.subgraph.id`**: The ID of the subgraph
 
 ### Resource attributes
 
