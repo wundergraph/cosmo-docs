@@ -27,7 +27,7 @@ The list displays all running router instances. Upon closer inspection, you can 
 * **Mem / CPU:** The utilization of the router instance. Arrows signal the trend between two data samples.
 
 {% hint style="warning" %}
-If your router fails to push uptime metrics for any reason, the instance will not appear. As long as one metric sample reaches us within 60 seconds, we assume the router is operational.
+If your router fails to push uptime metrics for any reason, the instance will not appear. As long as one metric sample reaches us within 45 seconds, we assume the router is operational.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/router_instance_details.png" alt=""><figcaption><p>Instance details</p></figcaption></figure>
