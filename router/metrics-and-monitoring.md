@@ -30,6 +30,7 @@ We collect the following metrics to get useful insights in the HTTP traffic.
 We collect the following metrics to get useful insights of the router runtime behavior.
 
 * **`runtime.uptime`**: Seconds since application was initialized
+* **`server.uptime`**: Seconds since the server was initialized. Typically, this time represents how long a specific version of the graph has been running when polling from the controlplane is enabled.
 * **`process.cpu.usage`**: Total CPU usage of this process in percentage of host total CPU capacity
 * **`process.runtime.go.mem.heap_alloc`**: Bytes of allocated heap objects
 * **`process.runtime.go.mem.heap_idle`**: Bytes in idle (unused) spans
