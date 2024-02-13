@@ -16,12 +16,13 @@
 * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
 * [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
 
-## Open Federation
+## Federation
 
-* [Directives](open-federation/directives/README.md)
-  * [@shareable](open-federation/directives/shareable.md)
-  * [@authenticated](open-federation/directives/authenticated.md)
-  * [@requiresScopes](open-federation/directives/requiresscopes.md)
+* [Directives](federation/directives/README.md)
+  * [@shareable](federation/directives/shareable.md)
+  * [@authenticated](federation/directives/authenticated.md)
+  * [@requiresScopes](federation/directives/requiresscopes.md)
+* [Federation Compatibility Matrix](federation/federation-compatibility-matrix.md)
 
 ## CLI
 
