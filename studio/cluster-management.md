@@ -18,16 +18,16 @@ When the router starts, we will periodically send metric data to Cosmo Cloud. We
 
 The list displays all running router instances. Upon closer inspection, you can verify the currently deployed graph composition and vital metrics such as CPU and memory utilization. Here is a summary of all provided information:
 
-* **Name:** The application name specified under the `telemetry.serviceName` option. By default, it is set to `cosmo-router`. Below we show the `hostname` where the router is running on.
-* **Instance ID:** If not specified in the `instance_id` option, a new ID will be generated with each router start. A stable ID ensures that metrics with the same ID are grouped together and no new router appears.
+* **Name:** The application name specified under the `TELEMETRY_SERVICE_NAME` option. By default, it is set to `cosmo-router`. Below we show the `hostname` where the router is running on.
+* **Instance ID:** If not specified as `INSTANCE_ID` environment variable, a new ID will be generated with each router start. A stable ID ensures that metrics with the same ID are grouped together and no new router appears.
 * **Status:** Identify if the server is up and running. In the future, we will conduct advanced validation that takes various metrics into consideration.
 * **Version:** The deployed binary version of the router.
-* **Cluster:** The logical cluster name. Is specified by the `cluster.name` setting. By default it is an empty string.
+* **Cluster:** The logical cluster name. Is specified by the `CLUSTER_NAME` environment variable. By default it is an empty string.
 * **Uptime:** The duration indicates how long the process has been operational. By clicking on details, you can view the server's uptime as well. Typically, this time represents how long a specific version of the graph has been running when polling from the controlplane is enabled.
 * **Mem / CPU:** The utilization of the router instance. Arrows signal the trend between two data samples.
 
 {% hint style="warning" %}
-If your router fails to push uptime metrics for any reason, the instance will not appear. As long as one metric sample reaches us within 45 seconds, we assume the router is operational.
+If your router fails to push uptime metrics for any reason, the instance will not disappear. As long as one metric sample reaches us within 45 seconds, we assume the router is operational.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/instance-details.png" alt=""><figcaption><p>Instance details</p></figcaption></figure>
