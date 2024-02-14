@@ -11,11 +11,17 @@ OTEL metrics are the foundation for both the OTEL and Prometheus metric storage 
 * We do not expose [asynchronous instruments](metrics-and-monitoring.md#asynchronous-instruments) through Prometheus. This decision is pending further feedback collection.
 * In Prometheus, metrics are formatted in snake\_case and conclude with specific suffixes.
 
-### Metrics
+## Metrics
 
-He is a summary of all metrics we collect. By default the router exports metrics periodically every 15 seconds.
+### Synchronous and asynchronous instruments
 
-#### Synchronous instruments
+OpenTelemetry instruments are either synchronous or asynchronous. Synchronous instruments take a measurement when they are called e.g. when a request is made. The measurement is done as another call during program execution, just like any other function call. Periodically, the aggregation of these measurements is exported by a configured exporter.
+
+Asynchronous instruments, on the other hand, provide a measurement at an interval, not triggered explicitly through program execution. All measurements on asynchronous instruments are performed once per export cycle.
+
+By default, the routers exports OTEL data **every** 15 seconds.
+
+#### List of synchronous instruments
 
 We collect the following metrics to get useful insights in the HTTP traffic.
 
@@ -25,7 +31,7 @@ We collect the following metrics to get useful insights in the HTTP traffic.
 * **`router.http.request.duration_milliseconds`**: End-to-end duration of incoming requests in (histogram)
 * **`router.http.requests.in_flight.count`**: Number of in-flight requests. (Only static and subgraph dimensions are attached)
 
-#### Asynchronous instruments
+#### List of asynchronous instruments
 
 We collect the following metrics to get useful insights of the router runtime behavior.
 
@@ -57,7 +63,7 @@ telemetry:
 
 All metrics are tracked along the following dimensions:
 
-#### Static (Known before Router start):
+#### Static (Known at Router start):
 
 * **`wg.federated_graph.id`**: The ID of the running graph
 * **`wg.router.version`**: The current router binary version

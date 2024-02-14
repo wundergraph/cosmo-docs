@@ -39,6 +39,7 @@ We export [OTEL](https://opentelemetry.io/) metric information by default to pro
 * Count of total received and written bytes
 * Count of total in-flight requests
 * Latency of router requests
+* Runtime behavior
 
 All metrics are tracked across different dimensions, such as Operation Name and Subgraph Name. Please refer to the [metrics](metrics-and-monitoring.md#dimensions) page for more details.
 
