@@ -10,7 +10,7 @@ description: >-
 Requires a router with version >= 0.66.1
 {% endhint %}
 
-When the router starts, we will periodically send metric data to Cosmo Cloud. We use this information to display all running routers and to evaluate their vitals.
+As part of our OpenTelemetry instrumentation, the router sends periodically data to Cosmo Cloud. We use this information to display all running routers and to evaluate their vitals.
 
 ## Routers
 

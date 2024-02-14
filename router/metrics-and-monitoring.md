@@ -161,13 +161,13 @@ PROMETHEUS_LISTEN_ADDR: 0.0.0.0:8088
 
 Here you can see a few example queries to query useful information about your client traffic:
 
-### Get Router Request Rate (over 5min inverval) by Operation
+### Get Router Request Rate (over 5min interval) by Operation
 
 ```promql
 sum by (wg_operation_name) (rate(router_http_requests_total{app="cosmo-router",wg_subgraph_name="",wg_operation_name!=""}[5m]))
 ```
 
-### Get Subgraph's Request Rate (over 5min inverval) by Operation
+### Get Subgraph's Request Rate (over 5min interval) by Operation
 
 ```promql
 sum by (wg_subgraph_name) (rate(router_http_requests_total{app="cosmo-router",wg_subgraph_name!=""}[5m]))
