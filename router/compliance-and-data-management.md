@@ -18,18 +18,18 @@ We export [OTEL](https://opentelemetry.io/) trace information by default to prov
 
 The Operation Content is in normalization form, meaning user data is not included.&#x20;
 
-GraphQL variables can pose a potential risk because they include request data. To mitigate this, you can disable variable export in the following way. In the future, we will provide tools to redact specific arguments.
+GraphQL variables are very useful for reproducing exact queries, but they also pose a potential risk because they include request data. To mitigate this, you have to explicitly opt in. In the future, we will provide tools to redact specific arguments.
 
 {% code title="config.yaml" %}
 ```yaml
 version: "1"
 telemetry:
   tracing:
-      export_graphql_variables: false # TRACING_EXPORT_GRAPHQL_VARIABLES
+      export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
 ```
 {% endcode %}
 
-If you disable it, the capability to debug and replay GraphQL requests in the Studio will be limited.
+This enables the option to replay GraphQL queries with variables in the Studio.
 
 ## Metrics
 

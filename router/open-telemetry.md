@@ -99,15 +99,15 @@ If you want to enable [B3](https://github.com/openzipkin/b3-propagation) for exa
 
 ### GraphQL variables
 
-GraphQL variables are useful for debugging to replay queries but they can pose a potential risk because they include request data. To mitigate this, you can disable variable export in the following way. In the future, we will provide tools to redact specific arguments.
+GraphQL variables are useful for debugging to replay queries but they can pose a potential risk because they include request data. To mitigate this, you have to explicitly opt in. In the future, we will provide tools to redact specific arguments.
 
 ```yaml
 telemetry:
   tracing:
-      export_graphql_variables: false # TRACING_EXPORT_GRAPHQL_VARIABLES
+      export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
 ```
 
-If you disable it, the capability to debug and replay GraphQL requests in the Studio will be limited.
+This enables the option to replay GraphQL queries with variables in the Studio.
 
 ### WebSockets
 
