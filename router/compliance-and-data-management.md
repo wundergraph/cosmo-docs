@@ -72,7 +72,7 @@ If you use Cosmo Cloud, your data is not stored indefinitely. Depending on your 
 
 ## Summary
 
-By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), except for GraphQL variables, which are used to enhance the developer experience, and the Client-IP, which enables you to identify unique actors. By configuring the router, you can opt out of sharing certain information. Additionally, it is possible to run the router in standalone mode without any connection to external systems.
+By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), except the Client-IP (anonymized), which enables you to identify unique actors. By configuring the router, you can opt out of sharing certain information. Additionally, it is possible to run the router in standalone mode without any connection to external systems.
 
 {% hint style="warning" %}
 Disabling features will result in a degraded experience on the Cosmo Platform because many features rely on the information the router sends to us.
