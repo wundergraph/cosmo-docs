@@ -24,7 +24,7 @@ The order in which you create graphs does not matter. You can either create subg
 
 ## Labels
 
-Labels are a `key=value` pair separated by a `=` sign. Ex: `team=A` `env=prod`
+Labels are a `key=value` pair separated by a **`=`** sign. Ex: `team=A` `region=us-east-1`
 
 You can assign labels to only subgraphs. Labels have the following restrictions
 
@@ -38,27 +38,29 @@ Label matchers are used with Federated Graphs to determine which subgraphs are c
 
 To understand how they work here is an example.
 
-#### Federated Graph&#x20;
+#### Federated Graph example
 
-`--label-matcher team=A,team=B team=C`&#x20;
+We create a federated graph from all subgraphs that match the label `Team A` or `Team B` and `Region us-east-1`. This can be expressed in the following way:
 
-is the same as
+`--label-matcher team=A,team=B region=us-east-1`&#x20;
 
-`--label-matcher team=A,team=B --label-matcher team=C`&#x20;
+the long version is
 
-The above matcher translates to `(team=A || team=B) && team=C`
+`--label-matcher team=A,team=B --label-matcher region=us-east-1`&#x20;
 
-Create a federated graph from all subgraphs that match the label `Team A` or `Team B` and `Team C`.
+The above _matcher_ translates to logically to `(team=A || team=B) && region=us-east-1`
 
-#### Subgraphs&#x20;
+#### Subgraphs example:
 
-1\. `--labels team=A`
+Assuming we have the following subgraphs with exact one label:
 
-2\. `--labels team=D`
+1\. Products `--labels team=A`
 
-3\. `--labels team=C`
+2\. Hobbies `--labels team=D`
 
-This will create a federated graph consisting of subgraphs 1 and 3.
+3\. Users `--labels region=us-east-1`
+
+Based on the two examples above this setup will create a federated graph consisting of subgraphs _Products_ and _Users_.
 
 ## Validate composition
 
