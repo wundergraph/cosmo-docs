@@ -74,6 +74,7 @@
 * [Schema Explorer](studio/schema-explorer.md)
 * [Schema Registry](studio/schema-registry.md)
 * [Schema Checks](studio/schema-checks.md)
+* [Overrides](studio/overrides.md)
 * [Changelog](studio/changelog.md)
 * [Playground++](studio/playground++.md)
 * [Graph Documentation](studio/readme.md)

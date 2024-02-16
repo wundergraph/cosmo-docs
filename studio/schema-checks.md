@@ -45,6 +45,14 @@ You can force a breaking change to be released even when all checks except compo
 
 Understand which operations and clients are affected by the breaking changes. You can check which ones along all your changes affected that particular operation. Besides that, you can inspect the operation document or share the specific operation with your colleagues.
 
+#### Operation Check Overrides
+
+You can override certain changes as safe for future checks. Learn more by clicking on the link below.
+
+{% content-ref url="overrides.md" %}
+[overrides.md](overrides.md)
+{% endcontent-ref %}
+
 {% hint style="info" %}
 Operations Check is not performed if there are no breaking changes in your proposed schema.
 {% endhint %}
