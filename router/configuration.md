@@ -19,7 +19,7 @@ The router provides three different ways of customization:
 We know configuration is hard, especially for a software component like the router that can be customized entirely to your needs. In order to simplify this, we use [JSON schema](https://json-schema.org/) to validate the router configuration. This comes with huge benefits: Auto-completion and documentation right at your fingertips. Follow the steps based on your IDE:
 
 * **VsCode**: Install the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension in your IDE.
-* **JetBrains**: Support out of the box.
+* **JetBrains**: Support out of the box but in some circumstances it conflicts with other default mappings. **Go to** _`Languages & Frameworks`_ -> _`Schemas and DTDs`_ -> _`JSON Schemas Mappings`_ configure the mapping yourself.
 
 As the next step, add the following line to the head of your `config.yaml`file. This line informs your IDE, to download the correct JSON schema file to validate the config file.
 
