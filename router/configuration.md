@@ -79,7 +79,7 @@ Now, you should get auto-completion 🌟 .
 
 ## Environment Variables
 
-Many configuration options can be set as environment variables. For a complete list of options, please look at the [config file](configuration.md#complete-config-example).
+Many configuration options can be set as environment variables. For a complete list of options, please look at the [Router](configuration.md#router) config tables.
 
 ## Router
 
