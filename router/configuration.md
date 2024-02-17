@@ -31,6 +31,12 @@ version: '1'
 ```
 {% endcode %}
 
+If you want to pin to a specifc router version use the following URL:
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/router%400.67.0/router/pkg/config/config.schema.json
+```
+
 Now, you should get auto-completion 🌟 .
 
 ## Router
