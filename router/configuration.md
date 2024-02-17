@@ -6,15 +6,36 @@ description: Learn how to configure your router.
 
 The router provides three different ways of customization:
 
-1. The config file. This file allows configuring the global behavior of the router. For a full reference of all available options see below. You can either pass [environment variables](configuration.md#environment-variables) or use a local [`config.yaml`](configuration.md#config-file) for convenience.
-2. The router execution config. This file contains information on how to resolve your federated schema. The engine uses the information to build a highly optimized query planner. The content is fetched by default from the controlplane or CDN but you can also provide this as a file. For more information see [`wgc router compose`](../cli/router/compose.md) to build the file locally for development or [`wgc router fetch`](../cli/router/fetch.md) to download the latest production version.
-3. Custom Go [modules](custom-modules.md). It is unlikely that we will provide every possible feature as an in-built functionality. For advanced use cases or more control, you can build Go modules and compile the Router in a few commands. If you are uncertain about if your use case should be implemented as a custom module, don't hesitate to open an issue. We might already have a plan for this or can assist you with the implementation.
+1. **Configure the router runtime:** This file allows configuring the global behavior of the router. For a full reference of all available options see below. You can either pass [environment variables](configuration.md#environment-variables) or use a local [`config.yaml`](configuration.md#config-file) for convenience.
+2. **Configure how your graph is served:** This file contains information on how to resolve your federated schema. The engine uses the information to build a highly optimized query planner. The content is fetched by default from the controlplane or CDN but you can also provide this as a file. For more information see [`wgc router compose`](../cli/router/compose.md) to build the file locally for development or [`wgc router fetch`](../cli/router/fetch.md) to download the latest production version.
+3. **Customize the router programatically through** Go [modules](custom-modules.md). It is unlikely that we will provide every possible feature as an in-built functionality. For advanced use cases or more control, you can build Go modules and compile the Router in a few commands. If you are uncertain about if your use case should be implemented as a custom module, don't hesitate to open an issue. We might already have a plan for this or can assist you with the implementation.
 
 {% hint style="info" %}
 **Recommendation** Passing secrets as environment variables and using the config to store everything else is a common and pragmatic approach.
 {% endhint %}
 
+## Config Validation & Auto-completion
+
+We know configuration is hard, especially for a software component like the router that can be customized entirely to your needs. In order to simplify this, we migrated from code validation to JSON schema. This comes with huge benefits: Auto-completion and documentation right at your fingertips. Follow the steps based on your IDE:
+
+* **VsCode**: Install the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension in your IDE.
+* **JetBrains**: Support out of the box.
+
+As the next step, add the following line to the head of your `config.yaml` file. This line informs your IDE, to download the correct JSON schema file to validate the config file.
+
+{% code title="config.yaml" %}
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/main/router/pkg/config/schema.json
+
+version: '1'
+```
+{% endcode %}
+
+Now, you should get auto-completion 🌟 .
+
 ## Router
+
+The following sections describe each configuration in detail with all available options and their defaults.
 
 <table data-full-width="false"><thead><tr><th width="291">Environment Variable</th><th width="207">YAML</th><th width="81" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>LISTEN_ADDR</td><td>listen_addr</td><td>true</td><td>The server listener address.</td><td>localhost:3002</td></tr><tr><td>CONTROLPLANE_URL</td><td>controlplane_url</td><td>true</td><td>The controlplane url.</td><td><a href="https://cosmo-cp.wundergraph.com">https://cosmo-cp.wundergraph.com</a></td></tr><tr><td>PLAYGROUND_ENABLED</td><td>playground_enabled</td><td>false</td><td>Enables the GraphQL playground on (<code>$LISTEN_ADDR/</code>)</td><td>true</td></tr><tr><td>PLAYGROUND_PATH</td><td>playground_path</td><td>false</td><td>The path where the playground is served</td><td>"/"</td></tr><tr><td>INTROSPECTION_ENABLED</td><td>introspection_enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>LOG_LEVEL</td><td>log_level</td><td>false</td><td>debug / info / warning / error / fatal / panic</td><td>info</td></tr><tr><td>JSON_LOG</td><td>json_log</td><td>false</td><td>Render the log output in JSON format (true) or human readable (false)</td><td>true</td></tr><tr><td>SHUTDOWN_DELAY</td><td>shutdown_delay</td><td>true</td><td>Maximum time in seconds the server has to shutdown gracefully. Should be higher than <code>GRACE_PERIOD</code></td><td>60s</td></tr><tr><td>GRACE_PERIOD</td><td>grace_period</td><td>true</td><td>Maximum time in seconds the server has between schema updates to gracefully close client connections. Should be smaller than <code>SHUTDOWN_DELAY</code></td><td>20s</td></tr><tr><td>POLL_INTERVAL</td><td>poll_interval</td><td>true</td><td>The interval of how often the router should check for new schema updates</td><td>10s</td></tr><tr><td>HEALTH_CHECK_PATH</td><td>health_check_path</td><td>false</td><td>Health check path. Returns <code>200</code> when the router is alive</td><td>/health</td></tr><tr><td>READINESS_CHECK_PATH</td><td>readiness_check_path</td><td>false</td><td>Readiness check path. Return <code>200</code> when the router is ready to accept traffic, otherwise <code>503</code></td><td>/health/ready</td></tr><tr><td>LIVENESS_CHECK_PATH</td><td>liveness_check_path</td><td>false</td><td>Liveness check path. Return 200 when the router is alive</td><td>/health/live</td></tr><tr><td>GRAPHQL_PATH</td><td>graphql_path</td><td>false</td><td>The path where the GraphQL Handler is served</td><td>/graphql</td></tr><tr><td>PLAYGROUND_PATH</td><td>playground_path</td><td>false</td><td>The path where the playground is served</td><td>/</td></tr><tr><td>LOCALHOST_FALLBACK_INSIDE_DOCKER</td><td>localhost_fallback_inside_docker</td><td>false</td><td>Enable fallback for requests that fail to connect to localhost while running in Docker</td><td>true</td></tr><tr><td>DEV_MODE</td><td>dev_mode</td><td>false</td><td>Enables pretty log output and allows to use <a data-mention href="advanced-request-tracing-art.md">advanced-request-tracing-art.md</a> without further security protection.</td><td>false</td></tr><tr><td>INSTANCE_ID</td><td></td><td>false</td><td>If not specified, a new ID will be generated with each router start. A stable ID ensures that metrics with the same ID are grouped together and the same server can be identified on the platform.</td><td></td></tr></tbody></table>
 
