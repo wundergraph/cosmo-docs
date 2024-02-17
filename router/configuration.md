@@ -16,7 +16,7 @@ The router provides three different ways of customization:
 
 ## Config Validation & Auto-completion
 
-We know configuration is hard, especially for a software component like the router that can be customized entirely to your needs. In order to simplify this, we migrated from code validation to JSON schema. This comes with huge benefits: Auto-completion and documentation right at your fingertips. Follow the steps based on your IDE:
+We know configuration is hard, especially for a software component like the router that can be customized entirely to your needs. In order to simplify this, we use [JSON schema](https://json-schema.org/). This comes with huge benefits: Auto-completion and documentation right at your fingertips. Follow the steps based on your IDE:
 
 * **VsCode**: Install the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension in your IDE.
 * **JetBrains**: Support out of the box.
