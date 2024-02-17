@@ -15,6 +15,7 @@ The Cosmo Router comes with subscription support out of the box without any limi
 * [graphql-ws](https://github.com/enisdenjo/graphql-ws): **(default)** Coherent, zero-dependency, lazy, simple, GraphQL over WebSocket Protocol compliant server and client.
 * [Server-Sent Events (SSE)](https://en.wikipedia.org/wiki/Server-sent\_events): One-Way Messaging. Both with `GET` and `POST` requests. Recommended for unidirectional updates. More resource efficient than WebSockets.
 * [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws): Legacy transport to WebSocket-based GraphQL subscriptions. Please use `graphql-ws` or `SSE` if you have the choice.
+* [absinthe](https://github.com/absinthe-graphql/absinthe\_phoenix): Legacy transport for Clients that still use the Absinthe (Phoenix) protocol.
 
 <figure><img src="../../.gitbook/assets/subscriptions-architecture (1).png" alt=""><figcaption><p>The Router connects your Clients and Subgraphs to establish a Real-time connection.</p></figcaption></figure>
 

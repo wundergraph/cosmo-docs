@@ -409,6 +409,35 @@ These rules apply to requests being made from clients to the Router.
 
 <table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>max_request_body_size</td><td>false</td><td></td><td>5mb</td></tr></tbody></table>
 
+## WebSocket
+
+Configure WebSocket handlers, protocols, and more.
+
+### WebSocket Configuration
+
+<table data-full-width="false"><thead><tr><th width="248">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ENABLED</td><td>enabled</td><td>true</td><td></td><td>true</td></tr><tr><td></td><td>absinthe_protocol</td><td>false</td><td><a data-mention href="configuration.md#absinthe-protocol-configuration">#absinthe-protocol-configuration</a></td><td></td></tr><tr><td>WEBSOCKETS_FORWARD_UPGRADE_HEADERS</td><td>forward_upgrade_headers</td><td>false</td><td>Forward all useful Headers from the Upgrade Request, like User-Agent or Authorization in the extensions field when subscribing on a Subgraph</td><td>true</td></tr><tr><td>WEBSOCKETS_FORWARD_UPGRADE_QUERY_PARAMS</td><td>forward_upgrade_query_params</td><td>false</td><td>Forward all query parameters from the Upgrade Request in the extensions field when subscribing on a Subgraph </td><td>true</td></tr><tr><td>WEBSOCKETS_FORWARD_INITIAL_PAYLOAD</td><td>forward_initial_payload</td><td>false</td><td>Forward the initial payload from a client subscription in the extensions field when subscribing on a Subgraph</td><td>true</td></tr></tbody></table>
+
+### Absinthe Protocol Configuration
+
+Legacy WebSocket clients that use the Absinthe protocol might not be able to send a Subprotocol Header. For such clients, you can use the Absinthe Endpoint which automatically chooses the Subprotocol for them so that no Subprotocol Header needs to be set.
+
+<table data-full-width="false"><thead><tr><th width="394">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ABSINTHE_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>WEBSOCKETS_ABSINTHE_HANDLER_PATH</td><td>handler_path</td><td>false</td><td>The path to mount the Absinthe handler on</td><td>/absinthe/socket</td></tr></tbody></table>
+
+### Example WebSocket YAML config:
+
+```yaml
+version: "1"
+
+websocket:
+  enabled: true
+  absinthe_protocol:
+    enabled: true
+    handler_path: /absinthe/socket
+  forward_initial_payload: true
+  forward_upgrade_headers: true
+  forward_upgrade_query_params: true
+```
+
 ## Authentication
 
 Configure different authentication providers.
