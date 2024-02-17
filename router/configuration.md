@@ -21,11 +21,11 @@ We know configuration is hard, especially for a software component like the rout
 * **VsCode**: Install the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension in your IDE.
 * **JetBrains**: Support out of the box.
 
-As the next step, add the following line to the head of your `config.yaml` file. This line informs your IDE, to download the correct JSON schema file to validate the config file.
+As the next step, add the following line to the head of your `config.yaml`file. This line informs your IDE, to download the correct JSON schema file to validate the config file.
 
 {% code title="config.yaml" %}
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/main/router/pkg/config/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/main/router/pkg/config/config.schema.json
 
 version: '1'
 ```
