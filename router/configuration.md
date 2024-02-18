@@ -11,14 +11,10 @@ The router provides three different ways of customization:
 3. **Customize the router programatically through** Go [modules](custom-modules.md). It is unlikely that we will provide every possible feature as an in-built functionality. For advanced use cases or more control, you can build Go modules and compile the Router in a few commands. If you are uncertain about if your use case should be implemented as a custom module, don't hesitate to open an issue. We might already have a plan for this or can assist you with the implementation.
 
 {% hint style="info" %}
-**Recommendation** Passing secrets as environment variables and using the config to store everything else is a common and pragmatic approach.
+**Recommendation** Create a config file and use environment variable expansion to avoid storing secrets on the file system.
 {% endhint %}
 
 ## Config file
-
-{% hint style="warning" %}
-Values specified in the config file have **precedence** over Environment variables. This also includes empty values so only specify values that should be overwritten. That means, you can see the config file as a single source of truth.
-{% endhint %}
 
 For convenience, you can create a `config.yaml` to specify all router options. Start the router in the same directory or pass the path to the file as a `CONFIG_PATH` environment variable.
 
@@ -27,17 +23,25 @@ For convenience, you can create a `config.yaml` to specify all router options. S
 version: '1'
 
 graph:
-    token: 'mytoken'
+    token: "${GRAPH_API_TOKEN}"
 ```
 {% endcode %}
+
+{% hint style="warning" %}
+Values specified in the config file have **precedence** over Environment variables. This also includes empty values so only specify values that should be overwritten. That means, you can see the config file as a single source of truth.
+{% endhint %}
 
 ### Expand Environment Variables
 
 You can expand environment variables in the file like this:
 
-```
+{% code title="config.yaml" %}
+```yaml
+version: '1'
+
 log_level: "${LOG_LEVEL}"
 ```
+{% endcode %}
 
 This will replace the value of the environment variable `LOG_LEVEL` with the value of the key `log_level` in your config file. For numeric values, ensure quotes are omitted.
 
