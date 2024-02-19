@@ -1,5 +1,7 @@
 ---
-description: Lists router tokens of a federated graph.
+description: >-
+  Lists router tokens of a federated graph. Only shows metadata not the actual
+  token.
 ---
 
 # List
@@ -22,22 +24,10 @@ The `npx wgc router token list` command lists all the tokens of a federated grap
 
 `-n, --namespace` : The namespace of the federated graph (Default: "default").
 
-```bash
--o, --out [string]
-```
-
-The option to write the output to a file. Replace `[string]` with the file path.
-
-```bash
--r, --raw
-```
-
-The option to write the output to the console.
-
 ## Examples
 
 ```bash
 npx wgc router token list production
 ```
 
-Lists all the tokens of the federated graph named "production".&#x20;
+Lists all the tokens of the federated graph named "mygraph" within the _default_ namespace.
