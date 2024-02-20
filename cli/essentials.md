@@ -38,6 +38,10 @@ Label matchers are used with Federated Graphs to determine which subgraphs are c
 
 To understand how they work here is an example.
 
+{% hint style="info" %}
+NOTE: You can create subgraphs and federated graphs without labels and label matchers. In such a case, federated graphs with empty label matchers will only compose subgraphs with empty labels. The vice versa is also true, subgraphs without labels can only be composed by federated graphs with empty label matchers.
+{% endhint %}
+
 #### Federated Graph example
 
 We create a federated graph from all subgraphs that match the label `Team A` or `Team B` and `Region us-east-1`. This can be expressed in the following way:
