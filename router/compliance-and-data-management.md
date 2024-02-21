@@ -62,7 +62,7 @@ Every time you update your schema via [wgc](broken-reference), we will upload th
 
 The router logs every incoming request at the INFO log level. Request logs **aren't** sent to any external systems and can only be accessed in the environment where the router runs. The log contains the following information:
 
-* Request Method, Path, Query, User-Agent, Client-IP
+* Request Method, Path, Query, User-Agent, Client-IP (anonymized)
 * Router Version, Router Config Version
 * Response Status, Latency
 
@@ -72,7 +72,7 @@ If you use Cosmo Cloud, your data is not stored indefinitely. Depending on your 
 
 ## Summary
 
-By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), except the Client-IP (anonymized), which enables you to identify unique actors. By configuring the router, you can opt out of sharing certain information. Additionally, it is possible to run the router in standalone mode without any connection to external systems.
+By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), Client-IP are anonymized by default. By configuring the router, you can opt out of sharing certain information. Additionally, it is possible to run the router in standalone mode without any connection to external systems.
 
 {% hint style="warning" %}
 Disabling features will result in a degraded experience on the Cosmo Platform because many features rely on the information the router sends to us.

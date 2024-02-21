@@ -135,6 +135,25 @@ graph:
   token: "<your-graph-token>"
 ```
 
+## Compliance
+
+The configuration for the compliance. Includes for example the configuration for the anonymization of the IP addresses.
+
+### IP Anonymization
+
+<table data-full-width="true"><thead><tr><th width="345">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_ANONYMIZE_IP_ENABLED</td><td>enabled</td><td>false</td><td>Enables IP anonymization in traces and logs.</td><td>true</td></tr><tr><td>SECURITY_ANONYMIZE_IP_METHOD</td><td>method</td><td>false</td><td>The metod to anonymize IP addresses. Can be "hash" or "redact".</td><td>"redact"</td></tr></tbody></table>
+
+#### Example YAML config:
+
+```yaml
+version: "1"
+ 
+compliance:
+  anonymize_ip:
+    enabled: true
+    method: redact # hash or redact
+```
+
 ## Cluster
 
 <table data-full-width="true"><thead><tr><th width="231">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CLUSTER_NAME</td><td>name</td><td>false</td><td></td><td></td></tr></tbody></table>
