@@ -8,6 +8,19 @@ description: >-
 
 In a nutshell, the router is an HTTP server that accepts GraphQL requests and responds with an appropriate response. During this process, a request goes through different stages and each stage can generate and export data. What data is exported depends on the router's configuration. By default, the following modules are enabled. You can disable or fine tune these settings. Please refer to the router [configuration](configuration.md) page.
 
+## Compliance
+
+By default, IP anonymization is enabled. This ensures that no sensitive data will ever leave your router. You can change the anonymization method, for example, to "hash," which allows for anonymous analytics.
+
+{% code title="config.yaml" %}
+```yaml
+compliance:
+  anonymize_ip:
+    enabled: true
+    method: redact # hash or redact
+```
+{% endcode %}
+
 ## Tracing
 
 We export [OTEL](https://opentelemetry.io/) trace information by default to provide [distributed tracing](../studio/analytics/distributed-tracing.md). That includes:
