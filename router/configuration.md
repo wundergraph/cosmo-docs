@@ -99,7 +99,7 @@ Sizes can be specified in 2MB, 1mib.
 
 #### Example configuration:
 
-{% code fullWidth="false" %}
+{% code title="config.yaml" fullWidth="false" %}
 ```yaml
 version: "1"
   
@@ -128,12 +128,14 @@ Overall configuration for the Graph that's configured for this Router.
 
 Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
 graph:
   token: "<your-graph-token>"
 ```
+{% endcode %}
 
 ## Compliance
 
@@ -145,6 +147,7 @@ The configuration for the compliance. Includes for example the configuration for
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
  
@@ -153,6 +156,7 @@ compliance:
     enabled: true
     method: redact # hash or redact
 ```
+{% endcode %}
 
 ## Cluster
 
@@ -160,6 +164,7 @@ compliance:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
  
@@ -167,6 +172,7 @@ version: "1"
 cluster:
   name: "us-central1-cosmo-cloud "
 ```
+{% endcode %}
 
 ## Telemetry
 
@@ -176,6 +182,7 @@ cluster:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
  
@@ -184,6 +191,7 @@ telemetry:
   # Common options
   service_name: "cosmo-router"
 ```
+{% endcode %}
 
 ## Tracing
 
@@ -191,6 +199,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
  
@@ -208,6 +217,7 @@ telemetry:
     export_graphql_variables: false
     with_new_root: false
 ```
+{% endcode %}
 
 ### Exporters
 
@@ -215,6 +225,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
  
@@ -231,6 +242,7 @@ telemetry:
         batch_timeout: 10s
         export_timeout: 30s
 ```
+{% endcode %}
 
 ### Propagation
 
@@ -238,6 +250,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
  
@@ -255,6 +268,7 @@ telemetry:
       # https://github.com/openzipkin/b3-propagation (zipkin)
       b3: false
 ```
+{% endcode %}
 
 ## Metrics
 
@@ -264,6 +278,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -275,6 +290,7 @@ telemetry:
       enabled: true
       router_runtime: true
 ```
+{% endcode %}
 
 ### Prometheus
 
@@ -282,6 +298,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -295,6 +312,7 @@ telemetry:
       exclude_metrics: []
       exclude_metric_labels: []
 ```
+{% endcode %}
 
 ### Exporter
 
@@ -302,6 +320,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -330,6 +349,7 @@ telemetry:
       exclude_metrics: []
       exclude_metric_labels: []
 ```
+{% endcode %}
 
 ## GraphQL Metrics
 
@@ -337,6 +357,7 @@ telemetry:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -344,6 +365,7 @@ graphql_metrics:
     enabled: true
     collector_endpoint: 'https://cosmo-metrics.wundergraph.com'
 ```
+{% endcode %}
 
 ## CORS
 
@@ -351,6 +373,7 @@ graphql_metrics:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -367,6 +390,7 @@ cors:
   allow_credentials: true
   max_age_minutes: 5m
 ```
+{% endcode %}
 
 ## Custom Modules
 
@@ -374,6 +398,7 @@ Configure your custom Modules. More information on this feature can be found her
 
 Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -382,6 +407,7 @@ modules:
     # Arbitrary values, unmarshalled by the module
     value: 1
 ```
+{% endcode %}
 
 ## Headers
 
@@ -395,6 +421,7 @@ Apply to requests to "all" Subgraphs
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -408,6 +435,7 @@ headers:
       - op: "propagate"
         matching: (?i)^x-deprecated-.*
 ```
+{% endcode %}
 
 ### Request Header Rule
 
@@ -417,6 +445,7 @@ Apply to requests to specific Subgraphs.
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -429,6 +458,7 @@ headers:
         - op: "propagate"
           named: X-Test-Header
 ```
+{% endcode %}
 
 ## Traffic Shaping
 
@@ -436,6 +466,7 @@ Configure rules for traffic shaping like maximum request body size, timeouts, re
 
 Example YAML config:
 
+{% code title="" %}
 ```yaml
 version: "1"
 
@@ -463,6 +494,7 @@ traffic_shaping:
       interval: 3s
       max_duration: 10s
 ```
+{% endcode %}
 
 ### Subgraph Request Rules
 
@@ -496,6 +528,7 @@ Legacy WebSocket clients that use the Absinthe protocol might not be able to sen
 
 ### Example WebSocket YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -508,6 +541,7 @@ websocket:
   forward_upgrade_headers: true
   forward_upgrade_query_params: true
 ```
+{% endcode %}
 
 ## Authentication
 
@@ -523,6 +557,7 @@ Configure different authentication providers.
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -536,6 +571,7 @@ authentication:
         header_name: Authorization # Optional
         header_value_prefix: Bearer # Optional
 ```
+{% endcode %}
 
 ## Authorization
 
@@ -543,6 +579,7 @@ authentication:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -550,6 +587,7 @@ authorization:
   require_authentication: false
   reject_operation_if_unauthorized: false
 ```
+{% endcode %}
 
 ## CDN
 
@@ -557,6 +595,7 @@ authorization:
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -564,6 +603,7 @@ cdn:
    url: https://cosmo-cdn.wundergraph.com
    cache_size: 100MB
 ```
+{% endcode %}
 
 ## Events
 
@@ -571,6 +611,7 @@ The Events section lets you define Event Sources for [event-driven-federated-sub
 
 Currently, we only support to use a single Event Source (NATS) with more to come in the future.
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -579,6 +620,7 @@ events:
     - provider: NATS
       url: "nats://localhost:4222"
 ```
+{% endcode %}
 
 ### Event Source
 
@@ -592,6 +634,7 @@ Configure the GraphQL Execution Engine of the Router.
 
 #### Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -606,6 +649,7 @@ engine:
   websocket_read_timeout: "1s"
   execution_plan_cache_size: 10000
 ```
+{% endcode %}
 
 ### Debug Configuration
 
@@ -613,6 +657,7 @@ engine:
 
 Example YAML config:
 
+{% code title="config.yaml" %}
 ```yaml
 version: "1"
 
@@ -621,6 +666,7 @@ engine:
     report_websocket_connections: false
     report_memory_usage: false
 ```
+{% endcode %}
 
 ## Rate Limiting
 
