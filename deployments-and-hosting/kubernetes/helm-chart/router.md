@@ -62,7 +62,7 @@ existingConfigmap: "router-config"
 
 ### Inline router configuration
 
-Instead of creating a separate configmap, you can also inline the configuration values as part of the router chart values.
+Instead of creating a separate configmap, you can also inline the configuration values as part of the router chart values. This is handy but should not be used for secrets. Secrets should be passed in the `configuration` section or through a custom secret map.
 
 ```yaml
 # Use this section to pass the graphApiToken or to configure simple settings.
