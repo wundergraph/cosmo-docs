@@ -26,9 +26,9 @@ configuration:
 ```
 {% endcode %}
 
-After that you can install the chart with the release name `router`.
+After that you can install the chart with the release name `router`. You can use the command also to upgrade a release e.g. after a configuration update.
 
-<pre class="language-bash"><code class="lang-bash"><strong>helm install router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
+<pre class="language-bash"><code class="lang-bash"><strong>helm upgrade --install router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
 </strong><strong>    --version 0.0.1 \
 </strong><strong>    --values ./values.yaml
 </strong></code></pre>
@@ -60,12 +60,17 @@ existingConfigmap: "router-config"
 ```
 {% endcode %}
 
-After running the following command, your router should restart and pick up the changes.
+### Inline router configuration
 
-```bash
-helm upgrade router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
-    --version 0.0.1 \
-    --values ./values.yaml
+Instead of creating a separate configmap, you can also inline the configuration values as part of the router chart values.
+
+```yaml
+# Use this section to pass the graphApiToken or to configure simple settings.
+# -- You can use this to provide the router configuration via yaml. Values here have precedence over the configurations section.
+# -- For a full list of available configuration options, see https://cosmo-docs.wundergraph.com/router/configuration
+commonConfiguration: |-
+  version: "1"
+  log_level: "info"
 ```
 
 ### Install with a static Router Execution Config
@@ -75,12 +80,12 @@ If you follow the default instructions the execution config is polled from the c
 #### 1. Download the latest valid execution config
 
 ```bash
-wgc router fetch <graph-name> -n <namespace ["default"]> -o router.json
+wgc router fetch <graph-name> -n <namespace> -o router.json
 ```
 
 #### 2. Set the file content on the helm value
 
-```
+```bash
 helm upgrade router oci://ghcr.io/wundergraph/cosmo/helm-charts/router \
     --version 0.0.1 \
     --set-file configuration.executionConfig=./router.json
