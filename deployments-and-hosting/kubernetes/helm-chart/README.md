@@ -14,9 +14,10 @@ Please checkout to the Helm [directory](https://github.com/wundergraph/cosmo/tre
 3. [Sub-charts ](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts)(`helm/cosmo/charts`) The Cosmo Umbrella charts consist of multiple sub-charts.
    1. Controlplane
    2. GraphqlMetrics
-   3. Studio
-   4. Router
-   5. CDN
+   3. OTELCollector
+   4. Studio
+   5. Router
+   6. CDN
 
 Every helm chart contains a [CHART.md](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/CHART.md) that describes the available configuration options with default values and documentation. We auto-generate this on every update.
 
