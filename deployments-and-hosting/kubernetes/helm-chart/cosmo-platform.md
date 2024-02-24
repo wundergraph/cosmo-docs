@@ -34,7 +34,7 @@ Username: foo@wundergraph.com
 Password: wunder@123
 ```
 
-If you want to interact from wgc[Broken link](broken-reference "mention") with the controlplane, you can use the following credentials:
+If you want to interact from [wgc](broken-reference) with the controlplane, you can use the following credentials:
 
 ```bash
 export COSMO_API_KEY="cosmo_669b576aaadc10ee1ae81d9193425705"
