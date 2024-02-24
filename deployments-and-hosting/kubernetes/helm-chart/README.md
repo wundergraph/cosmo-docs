@@ -19,3 +19,11 @@ Please checkout to the Helm [directory](https://github.com/wundergraph/cosmo/tre
    5. CDN
 
 Every helm chart contains a [CHART.md](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/CHART.md) that describes the available configuration options with default values and documentation. We auto-generate this on every update.
+
+Storage components are managed through external Helm Charts from [Bitnami](https://charts.bitnami.com/bitnami).
+
+1. PostgresSQL
+2. Keycloak
+3. ClickHouse
+4. Minio
+5. Redis
