@@ -5,3 +5,7 @@ One of the key distinctions between WunderGraph Cosmo and other platforms, such 
 To make this manageable, we provide a production-grade Helm Chart, which allows you to deploy Cosmo to any Kubernetes service, including EKS, AKS, and GKE. Furthermore, you can also deploy to [Minikube](https://minikube.sigs.k8s.io/docs/) what we do for testing in development or CI.
 
 In the next sections, we will explain the different deployment options.
+
+{% hint style="info" %}
+Setting up Cosmo for optimal maintenance and scalability involves understanding its components. Ongoing maintenance is another critical factor to operate such a platform successfully. Without assistance, your team may use valuable time that could otherwise be devoted to your business activities. We strongly advise [reaching out to us](https://wundergraph.com/contact/sales) for the best configuration and deployment support.
+{% endhint %}

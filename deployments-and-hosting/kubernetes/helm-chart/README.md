@@ -20,7 +20,7 @@ Please checkout to the Helm [directory](https://github.com/wundergraph/cosmo/tre
 
 Every helm chart contains a [CHART.md](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/CHART.md) that describes the available configuration options with default values and documentation. We auto-generate this on every update.
 
-Storage components are managed through external Helm Charts from [Bitnami](https://charts.bitnami.com/bitnami).
+Storage components are managed through external Helm Charts from [Bitnami](https://artifacthub.io/packages/search?repo=bitnami\&sort=relevance\&page=1).
 
 1. PostgresSQL
 2. Keycloak
