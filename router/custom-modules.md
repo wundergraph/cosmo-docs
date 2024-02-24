@@ -13,11 +13,15 @@ In order to complete this section you need to have Golang 1.20 (or higher) and d
 
 The Cosmo Router can be easily extended by providing custom modules. Modules are pure Go code and can implement one or multiple interfaces. The following interfaces are provided:
 
-* **`core.RouterMiddlewareHandler`** Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Request Validation, Header manipulation.
+* **`core.RouterMiddlewareHandler`** Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
 * **`core.EnginePreOriginHandler`** Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
 * **`core.EnginePostOriginHandler`** Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 * **`core.Provisioner`** Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
 * **`core.Cleaner`** Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
+
+{% hint style="info" %}
+`*OriginHandler` handlers are called concurrently when your GraphQL operation results in multiple subgraph requests. Due to that circumstance, you should handle the initial router request/response objects `ctx.Request()` and `ctx.ResponseWriter()` as read-only objects. Any modification without protecting them from concurrent writes, e.g., by a mutex, results in a race condition.
+{% endhint %}
 
 ## Example
 
@@ -146,6 +150,11 @@ func (m *JWTModule) OnOriginRequest(request *http.Request, ctx core.RequestConte
 }
 ```
 
+{% hint style="info" %}
+For a full example, please check out\
+[https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
+{% endhint %}
+
 ## Return GraphQL conform errors
 
 Please always use `core.WriteResponseError` to return an error. It ensures that the request is properly tracked for tracing and metrics.
@@ -161,12 +170,12 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
 
 ## Request Handler lifecycle
 
-Request / Response lifecycle of a single subgraph request.
+The current module handler allow to intercept and modify request / response subgraphs.
 
 ```
 Incoming client request
     │
-    └─▶ core.RouterMiddlewareHandler
+    └─▶ core.RouterMiddlewareHandler (Early return, Validation)
        │
        └─▶ core.EnginePreOriginHandler (Header mods, Custom Response, Caching)
        │
@@ -199,14 +208,16 @@ In order to start your router run:
 
 ```bash
 docker run \
-    --rm \
-    --name cosmo-router \
-    -e FEDERATED_GRAPH_NAME=<name_of_your_fed_graph> \
-    -e GRAPH_API_TOKEN=<router_token> \
-    -e LISTEN_ADDR=0.0.0.0:3002 \
-    --platform=linux/amd64 \
-    -p 3002:3002 \
-    docker.io/library/router-custom:latest
+  --name cosmo-router \
+  --rm \
+  -p 3002:3002 \
+  --add-host=host.docker.internal:host-gateway \
+  --platform=linux/amd64 \
+  --pull always \
+  -e DEV_MODE=true \
+  -e LISTEN_ADDR=0.0.0.0:3002 \
+  -e GRAPH_API_TOKEN=<graph-api-token> \
+  docker.io/library/router-custom:latest
 ```
 
 ### Versioning
