@@ -7,10 +7,6 @@ description: >-
 
 # Helm Chart
 
-{% hint style="info" %}
-Not all charts have been published yet. The source code is available in the OSS Repository [here](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo).
-{% endhint %}
-
 Please checkout to the Helm [directory](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo) in the OpenSource repository. The structure is as follows:
 
 1. [Local Development](https://github.com/wundergraph/cosmo/blob/main/helm/README.md) (`helm/README.md`): Instructions about how to develop the chart locally with Minikube or any other Kubernetes cluster.

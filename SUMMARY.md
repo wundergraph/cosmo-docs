@@ -136,6 +136,7 @@
 * [Intro](deployments-and-hosting/intro.md)
 * [Kubernetes](deployments-and-hosting/kubernetes/README.md)
   * [Helm Chart](deployments-and-hosting/kubernetes/helm-chart/README.md)
+    * [Cosmo Platform](deployments-and-hosting/kubernetes/helm-chart/cosmo-platform.md)
     * [Router](deployments-and-hosting/kubernetes/helm-chart/router.md)
 * [Docker](deployments-and-hosting/docker.md)
 * [Cosmo Cloud](deployments-and-hosting/cosmo-cloud.md)
