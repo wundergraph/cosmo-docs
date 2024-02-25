@@ -206,7 +206,7 @@ type MyModule struct {
 
 ### Example Config file
 
-Based on the example above we will populate the field `Value` with the value `1`. You can also validate your config in the `Provision` handler.
+Based on the example above we will populate the field `Value` with the value `1`. You can also validate your config in the `core.Provisioner` handler.
 
 {% code title="config.yaml" %}
 ```yaml
