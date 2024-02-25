@@ -38,7 +38,7 @@ import (
 )
 
 func init() {
-	// Register your module here
+	// Register your module here and it will be loaded at router start
 	core.RegisterModule(&MyModule{})
 }
 
