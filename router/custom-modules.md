@@ -186,6 +186,38 @@ Incoming client request
        └─▶ "Fulfill subgraph response"
 ```
 
+## Module Configuration
+
+If you need to pass external configuration values to your module, you can do so easily by annotating the fields in your module struct. Fields must start with an uppercase letter to make them accessible.
+
+```go
+const myModuleID = "myModule"
+
+type MyModule struct {
+	// Properties that are set by the config file are automatically populated based on the `mapstructure` tag
+	// Create a new section under `modules.<name>` in the config file with the same name as your module.
+	// Don't forget in Go the first letter of a property must be uppercase to be exported
+
+	Value uint64 `mapstructure:"value"`
+
+	Logger *zap.Logger
+}
+```
+
+### Example Config file
+
+Based on the example above we will populate the field `Value` with the value `1`. You can also validate your config in the `Provision` handler.
+
+{% code title="config.yaml" %}
+```yaml
+version: '1'
+
+modules:
+  myModule: # Id of your module
+    Value: 1
+```
+{% endcode %}
+
 ## Development
 
 Due to the circumstance that modules are pure Go code, we can leverage all tooling. If you have VSCode or Goland you can easily debug and profile your code. Let's make it running locally first:
