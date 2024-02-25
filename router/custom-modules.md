@@ -240,12 +240,11 @@ In order to start your router run:
 
 ```bash
 docker run \
-  --name cosmo-router \
+  --name custom-cosmo-router \
   --rm \
   -p 3002:3002 \
   --add-host=host.docker.internal:host-gateway \
   --platform=linux/amd64 \
-  --pull always \
   -e DEV_MODE=true \
   -e LISTEN_ADDR=0.0.0.0:3002 \
   -e GRAPH_API_TOKEN=<graph-api-token> \
