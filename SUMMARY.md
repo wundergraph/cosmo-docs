@@ -41,6 +41,7 @@
   * [Check](cli/subgraph/check.md)
   * [Update](cli/subgraph/update.md)
   * [Delete](cli/subgraph/delete.md)
+  * [Fetch](cli/subgraph/fetch.md)
   * [Move](cli/subgraph/move.md)
   * [Introspect](cli/subgraph/introspect.md)
   * [Fix](cli/subgraph/fix.md)
