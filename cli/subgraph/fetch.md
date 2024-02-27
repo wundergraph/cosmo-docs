@@ -10,12 +10,12 @@ description: >-
 ## Usage
 
 ```bash
-npx wgc subgraph-graph fetch <name>
+npx wgc subgraph fetch <name>
 ```
 
 ## Description
 
-The `npx wgc subgraph-graph fetch` command allows you to fetch the latest Schema Definition Language (SDL) of a subgraph graph from the Cosmo platform's control plane. The fetched SDL represents the last schema of the subgraph graph. You can pass the name of the federated graph to fetch the latest successfully composed subgraph schema from the controlplane.
+The `npx wgc subgraph fetch` command allows you to fetch the latest Schema Definition Language (SDL) of a subgraph graph from the Cosmo platform's control plane. The fetched SDL represents the last schema of the subgraph graph. You can pass the name of the federated graph to fetch the latest successfully composed subgraph schema from the controlplane.
 
 ## Parameters
 
