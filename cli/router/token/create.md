@@ -1,7 +1,7 @@
 ---
 description: >-
   Creates a token scoped to a federated graph. The token permits the router to
-  communicate with the controlplane and send metrics to the OTEL collectors.
+  communicate with the platform and to export metrics to the collectors.
 ---
 
 # Create
