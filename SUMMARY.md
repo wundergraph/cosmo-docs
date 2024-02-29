@@ -4,6 +4,7 @@
 * [Architecture](architecture.md)
 * [Release Management](release-management.md)
 * [Enterprise](enterprise.md)
+* [Self Hosted](self-hosted.md)
 
 ## Tutorial
 
