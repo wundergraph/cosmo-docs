@@ -1,8 +1,8 @@
 ---
 description: >-
   EDFS combines the power of GraphQL Federation and Event-Driven Architecture
-  (Kafka, NATS, SQS) to re-validate a user subscription after an event occurs in
-  your system.
+  (Kafka, NATS, SQS) to update a user GraphQL Subscription after an event occurs
+  in your system.
 ---
 
 # Event-Driven Federated Subscriptions (EDFS)
