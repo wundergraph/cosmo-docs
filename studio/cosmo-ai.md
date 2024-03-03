@@ -24,7 +24,7 @@ You can run "[wgc subgraph fix](../cli/subgraph/fix.md)" to get a possible solut
 
 Navigate to your organization settings and click on "Enable" in the "Cosmo AI" section. By clicking this button, you agree to the terms described above.
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>Enable Cosmo AI</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (99).png" alt=""><figcaption><p>Enable Cosmo AI</p></figcaption></figure>
 
 ## Demo
 
