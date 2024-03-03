@@ -30,7 +30,7 @@ type Employee {
 }
 ```
 
-As you can see, the \`employeeUpdated\` field marks the root of a Subscription. With classic Federation, we'd be forced to implement this root Subscription field on a particular Subgraph. This is not ideal, because it ties the ownership of the field to one single Subgraph. If two Subgraphs contribute fields to the Employee type, which is usually the case in federated Graphs, we'd have to communicate across Subgraphs to trigger a Subscription.
+As you can see, the `employeeUpdated` field marks the root of a Subscription. With classic Federation, we'd be forced to implement this root Subscription field on a particular Subgraph. This is not ideal, because it ties the ownership of the field to one single Subgraph. If two Subgraphs contribute fields to the Employee type, which is usually the case in federated Graphs, we'd have to communicate across Subgraphs to trigger a Subscription.
 
 In addition to the first problem, Subscriptions also make Subgraphs stateful. Each time a client connects to the Router via WebSockets, the Router has to open another WebSocket connection to the Subgraph. This means that you're not able to use Serverless infrastructure for your Subgraphs. In addition, the deployment and maintenance simply become more complex as you have to manage a lot of open connections.
 
@@ -48,11 +48,11 @@ directive @eventsPublish(topic: String!) on FIELD_DEFINITION
 directive @eventsSubscribe(topic: String!) on FIELD_DEFINITION
 ```
 
-The \`eventsRequest\` directive allows you to implement Request/Response semantics. This is useful if you want to extend a Graph through an Event Source.
+The `eventsRequest` directive allows you to implement Request/Response semantics. This is useful if you want to extend a Graph through an Event Source.
 
-The \`eventsPublish\` directive allows you to publish an event on a topic through a Mutation.
+The `eventsPublish` directive allows you to publish an event on a topic through a Mutation.
 
-Using the \`eventsSubscribe\` directive, you can drive a Subscription through a topic.
+Using the `eventsSubscribe` directive, you can drive a Subscription through a topic.
 
 An Event-Driven Subgraph does not need to be implemented, it's simply a Subgraph Schema that tells the Router how to connect certain root fields to the Event Source. Scroll down for an example.
 
@@ -60,7 +60,7 @@ An Event-Driven Subgraph does not need to be implemented, it's simply a Subgraph
 
 To use EDFS, you need to have an Event Source running and connected to the Router. Currently, the only supported Event Source is NATS, but this can easily be extended.
 
-To get started, run a NATS instance and add the following configuration to your \`config.yaml\` Router Configuration:
+To get started, run a NATS instance and add the following configuration to your `config.yaml` Router Configuration:
 
 ```yaml
 events:
@@ -71,11 +71,11 @@ events:
 
 We've intentionally moved this part of the configuration out of the Schema to keep the directives clean and focused on the implementation. In addition, keeping the implementation details of the Event Source out of the Schema is a clear separation of concerns. Infrastructure teams can be concerned about Event Sources and how to configure them, while API Developers can focus on using the Event Source and connecting Event Topics to their Subgraph Schema.
 
-If you run \`make\` in the Cosmo Monorepo, you'll automatically get a NATS instance running on the default port (4222) using Docker.
+If you run `make` in the Cosmo Monorepo, you'll automatically get a NATS instance running on the default port (4222) using Docker.
 
 ### Example Configuration
 
-Below, you'll find an example Schema that connects the \`eventsRequest\` directive to a Query root field (employeeFromEvent), a Mutation root field (updateEmployee) that's connected to another topic using \`eventsPublish\` and a Subscription root field (employeeUpdated) that's connected via \`eventsSubscribe\`. Each of these fields is completely independent.
+Below, you'll find an example Schema that connects the `eventsRequest` directive to a Query root field (employeeFromEvent), a Mutation root field (updateEmployee) that's connected to another topic using \`eventsPublish\` and a Subscription root field (employeeUpdated) that's connected via \`eventsSubscribe\`. Each of these fields is completely independent.
 
 ```graphql
 directive @eventsRequest(topic: String!) on FIELD_DEFINITION
@@ -126,7 +126,7 @@ If we send a Subscription with the \`employeeID\` argument \`1\`, the topic woul
 
 ### Request/Reply
 
-The \`eventsRequest\` directive creates a response topic (internally) and sends the JSON representation of all arguments to the topic specified in the topic argument. The Router then waits on the response topic for the result. The Router expects all fields to be part of the response that are defined in the Entity type in this Schema, as well as the \`\_\_typename\` field to identify the Entity. In the example, the Employee Entity contains an \`id\` field, so the following response would be valid:
+The `eventsRequest` directive creates a response topic (internally) and sends the JSON representation of all arguments to the topic specified in the topic argument. The Router then waits on the response topic for the result. The Router expects all fields to be part of the response that are defined in the Entity type in this Schema, as well as the `__typename` field to identify the Entity. In the example, the Employee Entity contains an \`id\` field, so the following response would be valid:
 
 {% code title="valid.json" fullWidth="false" %}
 ```json
@@ -146,7 +146,7 @@ Once the initial result is coming back from the "Event Subgraph", the Router is 
 
 #### Publish
 
-The \`eventsPublish\` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the \`eventsPublish\` directive MUST return the type \`PublishEventResult\` with one single field \`success\` of type \`Boolean!\`, indicating whether publishing the event was successful or not.
+The `eventsPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `PublishEventResult` with one single field `success` of type `` Boolean!` ``, indicating whether publishing the event was successful or not.
 
 Given that we send the following Mutation:
 
@@ -192,7 +192,7 @@ subscription EmployeeUpdates($id: ID!){
 {"id": 1}
 ```
 
-The Router connects to the topic "employeeUpdated.1" and waits for the next message to be published. All fields that are defined in the response entity MUST be sent to the topic to be valid. Additional fields that are not part of this "Events Subgraph" will be resolved by the Router. In addition, it is required to send the \`\_\_typename\` field to identify the Entity.
+The Router connects to the topic "employeeUpdated.1" and waits for the next message to be published. All fields that are defined in the response entity MUST be sent to the topic to be valid. Additional fields that are not part of this "Events Subgraph" will be resolved by the Router. In addition, it is required to send the `__typename` field to identify the Entity.
 
 Here's an example of a valid message:
 
@@ -202,7 +202,7 @@ Here's an example of a valid message:
 ```
 {% endcode %}
 
-Here's an invalid message as the \`\_\_typename\` field is missing:
+Here's an invalid message as the `__typename` field is missing:
 
 {% code title="invalid.json" %}
 ```json
@@ -210,7 +210,7 @@ Here's an invalid message as the \`\_\_typename\` field is missing:
 ```
 {% endcode %}
 
-It's important to send the \`\_\_typename\` field because this allows EDFS to also work for Union and Interface types.
+It's important to send the `__typename` field because this allows EDFS to also work for Union and Interface types.
 
 It's worth noting that the Router will not send any responses before you publish a message on the topic. If you need the most recent result, first make a Query, and then subscribe to the Topic. The Router will send the first response only after a message is published on the rendered topic.
 
