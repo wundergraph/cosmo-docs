@@ -12,7 +12,7 @@ description: >-
 Available since version [0.71.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.71.0)
 {% endhint %}
 
-The Cosmo Router supports TLS to secure and authenticate communications for both client and subgraph connections. For subgraph connections, encryption and authentication are automatically enabled when the subgraph URL uses the `https://` prefix. For client connections, you can configure TLS as follow:
+The Cosmo Router supports TLS to secure and authenticate communications for both client and subgraph connections. For subgraph connections, encryption and authentication are automatically enabled when the subgraph URL uses the `https://` protocol. For client connections, you can configure TLS as follow:
 
 {% code title="config.yaml" %}
 ```yaml
@@ -24,7 +24,7 @@ tls:
 ```
 {% endcode %}
 
-You must specify paths to you custom certificate and key file.&#x20;
+You must provide both files to ensure TLS.
 
 ### Use cases
 
