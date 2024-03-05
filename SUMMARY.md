@@ -120,6 +120,7 @@
   * [Forward Client Extensions](router/proxy-capabilities/forward-client-extensions.md)
 * [Traffic shaping](router/traffic-shaping.md)
 * [Deployment](router/deployment.md)
+* [Security](router/security.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
 * [Performance Debugging](router/performance-debugging.md)

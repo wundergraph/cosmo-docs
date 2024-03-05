@@ -137,6 +137,49 @@ graph:
 ```
 {% endcode %}
 
+## TLS
+
+The Router supports TLS and mTLS for secure communication with your clients and infrastructure components like load balancer.
+
+### Server TLS
+
+<table data-full-width="true"><thead><tr><th width="345">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TLS_SERVER_ENABLED</td><td>enabled</td><td>false</td><td>Enables server TLS support.</td><td>false</td></tr><tr><td>TLS_SERVER_CERT_FILE</td><td>cert_file</td><td>false</td><td>The path to the server certificate file.</td><td></td></tr><tr><td>TLS_SERVER_KEY_FILE</td><td>key_file</td><td>false</td><td>The path to the server private key file.</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+ 
+tls:
+  server:
+    enabled: true
+    key_file: ../your/key.pem
+    cert_file: ../your/cert.pem
+```
+{% endcode %}
+
+### Client Authentication
+
+<table data-full-width="true"><thead><tr><th width="345">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TLS_CLIENT_AUTH_CERT_FILE</td><td>cert_file</td><td>false</td><td>Enables client authentication support. The file to the certificate file used to authenthicate clients.</td><td>""</td></tr><tr><td>TLS_CLIENT_AUTH_REQUIRED</td><td>required</td><td>false</td><td>Enforces a valid client certificate to establish a connection.</td><td>false</td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+ 
+tls:
+  server:
+    enabled: true # Required for client_auth
+    key_file: ../your/key.pem
+    cert_file: ../your/cert.pem
+    client_auth:
+      required: true
+      cert_file: ../your/cert.pem
+```
+{% endcode %}
+
 ## Compliance
 
 The configuration for the compliance. Includes for example the configuration for the anonymization of the IP addresses.

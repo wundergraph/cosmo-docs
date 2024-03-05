@@ -1,0 +1,80 @@
+---
+description: >-
+  The Router supports TLS and mTLS for secure communication with your clients
+  and infrastructure components like load balancer.
+---
+
+# Security
+
+## TLS
+
+{% hint style="info" %}
+Available since version [0.71.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.71.0)
+{% endhint %}
+
+The Cosmo Router supports TLS to secure and authenticate communications for both client and subgraph connections. For subgraph connections, encryption and authentication are automatically enabled when the subgraph URL uses the `https://` prefix. For client connections, you can configure TLS as follow:
+
+{% code title="config.yaml" %}
+```yaml
+tls:
+  server:
+    enabled: true
+    key_file: ../your/key.pem
+    cert_file: ../your/cert.pem
+```
+{% endcode %}
+
+You must specify paths to you custom certificate and key file.&#x20;
+
+### Use cases
+
+* A typical use case for TLS is to secure communications between your load balancer and router.
+* Enable HTTP/2. TLS is mandatory for HTTP/2 operation. Once enabled, requests are upgraded to HTTP/2 whenever possible.
+
+## Client authentication or Mutual TLS (mTLS)
+
+In a standard SSL transaction, the client verifies the server's validity when establishing a secure connection. This involves checking the server's certificate prior to starting the SSL transaction. However, there may be situations where you wish for the server to authenticate the client connecting to it.
+
+When client authentication is activated via `client_auth.cert_file` the client can send a certificate to the server that is validated by the server before a connection is established. By default it is not a requirement and the server support clients with valid and without certificates. You can set `required` to `true` to enforce that a client must be verified and authentic. If the validation does not succeed the client connection is canceled.
+
+{% code title="config.yaml" %}
+```yaml
+tls:
+  server:
+    enabled: true # Required for client_auth
+    key_file: ../your/key.pem
+    cert_file: ../your/cert.pem
+    client_auth:
+      required: true
+      cert_file: ../your/cert.pem
+```
+{% endcode %}
+
+While client authentication and mTLS are closely related concepts, they are not exactly the same. mTLS is an extension of TLS (Transport Layer Security) that requires both the server and the client to authenticate each other. This ensures that both parties in a communication are who they claim to be, adding an extra layer of security. mTLS involves the exchange of certificates from both parties during the TLS handshake process.
+
+You can enable mTLS by using `client_auth` with `required=true` on the server and the correct TLS settings on the client side.
+
+### Example in Go Clients
+
+```go
+cert, _ := tls.LoadX509KeyPair("your/cert.pem", "your/key.pem")
+
+caCert, _ := os.ReadFile("your/cert.pem")
+
+caCertPool := x509.NewCertPool()
+caCertPool.AppendCertsFromPEM(caCert
+
+client := &http.Client{
+		Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{
+			RootCAs:      caCertPool,
+			Certificates: []tls.Certificate{cert},
+		},
+	},
+}
+
+// Make request
+_, err = client.Do(req)
+```
+
+That's it! The router should now be able to receive TLS connections **only** from clients who authenticate themselves using a certificate issued by your trusted CA.
