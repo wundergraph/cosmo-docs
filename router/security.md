@@ -70,7 +70,7 @@ TLS_RSA_WITH_3DES_EDE_CBC_SHA
 ```
 
 {% hint style="info" %}
-If your configuration does not meet your requirements, don't hesitate to contact us or open an issue on GitHub.
+If our configuration does not meet your requirements, don't hesitate to contact us or open an issue on GitHub.
 {% endhint %}
 
 ## Client authentication or Mutual TLS (mTLS)
