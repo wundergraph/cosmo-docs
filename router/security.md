@@ -1,7 +1,7 @@
 ---
 description: >-
   The Router supports TLS and mTLS for secure communication with your clients
-  and infrastructure components like load balancer.
+  and infrastructure components like load-balancer.
 ---
 
 # Security
@@ -30,6 +30,48 @@ You must specify paths to you custom certificate and key file.&#x20;
 
 * A typical use case for TLS is to secure communications between your load balancer and router.
 * Enable HTTP/2. TLS is mandatory for HTTP/2 operation. Once enabled, requests are upgraded to HTTP/2 whenever possible.
+
+### Cipher
+
+By default, we support the inherit the defaults of Go TLS configuration. This means the following TLS protocols are supported:
+
+* TLS 1.3
+* TLS 1.2
+* TLS 1.1
+* TLS 1.0
+
+{% hint style="warning" %}
+We strongly advice against using TLS below 1.2 for security reasons.
+{% endhint %}
+
+In terms of cipher support, we also refer to the Go defaults:
+
+```go
+// AEADs w/ ECDHE
+TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+
+// CBC w/ ECDHE
+TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+
+// AEADs w/o ECDHE
+TLS_RSA_WITH_AES_128_GCM_SHA256,
+TLS_RSA_WITH_AES_256_GCM_SHA384,
+
+// CBC w/o ECDHE
+TLS_RSA_WITH_AES_128_CBC_SHA,
+TLS_RSA_WITH_AES_256_CBC_SHA,
+
+// 3DES
+TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,
+TLS_RSA_WITH_3DES_EDE_CBC_SHA
+```
+
+{% hint style="info" %}
+If your configuration does not meet your requirements, don't hesitate to contact us or open an issue on GitHub.
+{% endhint %}
 
 ## Client authentication or Mutual TLS (mTLS)
 
