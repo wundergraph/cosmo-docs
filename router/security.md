@@ -33,7 +33,7 @@ You must specify paths to you custom certificate and key file.&#x20;
 
 ### Cipher
 
-By default, we the inherit the defaults of Go TLS configuration. This means the following TLS protocols are supported:
+By default, we inherit the defaults of Go TLS configuration. This means the following TLS protocols are supported:
 
 * TLS 1.3
 * TLS 1.2
