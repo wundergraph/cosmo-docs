@@ -109,9 +109,9 @@ telemetry:
 
 This enables the option to replay GraphQL queries with variables in the Studio.
 
-### WebSockets
+### Subscriptions
 
-Tracing has not yet been implemented for WebSocket messages. If you require this feature, please do not hesitate to contact us.
+Tracing has not yet been implemented for subscriptions. If you require this feature, please do not hesitate to contact us.
 
 ## FAQ
 
