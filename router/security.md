@@ -77,7 +77,7 @@ If our configuration does not meet your requirements, don't hesitate to contact 
 
 In a standard SSL transaction, the client verifies the server's validity when establishing a secure connection. This involves checking the server's certificate prior to starting the SSL transaction. However, there may be situations where you wish for the server to authenticate the client connecting to it.
 
-When client authentication is activated via `client_auth.cert_file` the client can send a certificate to the server that is validated by the server before a connection is established. By default it is not a requirement and the server support clients with valid and without certificates. You can set `required` to `true` to enforce that a client must be verified and authentic. If the validation does not succeed the client connection is canceled.
+When client authentication is activated via `client_auth.cert_file` the client can send a certificate to the server that is validated by the server before a connection is established. By default it is not a requirement and the server support clients with valid and without certificates. You can set `required` to `true` to enforce that a client must be verified and authentic. If the validation does not succeed the client connection is refused.
 
 {% code title="config.yaml" %}
 ```yaml
