@@ -7,7 +7,7 @@ description: >-
 # Compose
 
 {% hint style="info" %}
-IMPORTANT: Please note that since this command runs locally, the subgraphs may or may not exist on the control plane. It is recommended to **not** use this for production. For production, you can fetch the router execution config for your federated graph using the [fetch](fetch.md) command instead.
+IMPORTANT: Please note that since this command runs locally, the subgraphs may or may not exist on the control plane. It is recommended to **not** use this for production, if you plan to the Cosmo Platform as schema and analytics platform. For production, you can fetch the latest router-execution-config for your federated graph using the [fetch](fetch.md) command instead.
 {% endhint %}
 
 ## Usage
