@@ -102,6 +102,8 @@
   * [Keycloak](studio/sso/keycloak.md)
 * [Audit log](studio/audit-log.md)
 * [Cosmo AI](studio/cosmo-ai.md)
+* [Lint Policy](studio/lint-policy/README.md)
+  * [Linter rules](studio/lint-policy/linter-rules.md)
 
 ## Router
 
