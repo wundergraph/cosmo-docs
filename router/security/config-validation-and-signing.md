@@ -63,7 +63,7 @@ graph:
 ```
 {% endcode %}
 
-The router will then calculate the artifact's hash locally and compare it to the signature received from the CDN. If the two match, the configuration is applied; otherwise, the router rejects it and terminates. If the router was already running successfully, it will continue to operate but will refuse to apply configurations that do not match the expected signature.
+The router will then calculate the artifact's hash locally and compare it to the signature received from the CDN or filesystem. If the two match, the configuration is applied; otherwise, the router rejects it and terminates. If the router was already running successfully, it will continue to operate but will refuse to apply configurations that do not match the expected signature.
 
 Instead of polling for updates from the CDN, the Graph Plan can also be transmitted via a file. To leverage the same validation and signing mechanism in this approach, you must supply the `--graph-sign-key` parameter to the [`wgc router fetch`](../../cli/router/fetch.md) command as well. This ensures consistency in security measures, whether the configuration is obtained from the CDN or directly from a file.
 
