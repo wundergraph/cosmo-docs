@@ -29,7 +29,7 @@ The payload for this operation will be structured as follows:
 ```
 {% endcode %}
 
-It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a [Hash-based Message Authentication Code (HMAC)](https://en.wikipedia.org/wiki/HMAC) of the configuration, encoded in `BASE64`.
+It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a [Hash-based Message Authentication Code (HMAC)](https://en.wikipedia.org/wiki/HMAC) of the configuration, encoded in `BASE64`. This procedure is very common today, almost all major webhook providers use the `SHA-256` hash function in the [SHA-2](https://en.wikipedia.org/wiki/SHA-2) series for signature verification of their webhooks. These webhook providers include Stripe, GitHub and Okta. Webhook signature verification serves the same purpose as the signature verification required for our router. We want to ensure that the router config has not been tampered with after delivery.
 
 The expected response must have a 200 status code and contain the SHA-256 signature:
 
