@@ -4,9 +4,7 @@ description: >-
   and infrastructure components like load-balancer.
 ---
 
-# Security
-
-## TLS
+# TLS
 
 {% hint style="info" %}
 Available since version [0.71.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.71.0)
