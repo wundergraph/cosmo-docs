@@ -29,7 +29,7 @@ The payload for this operation will be structured as follows:
 ```
 {% endcode %}
 
-It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a SHA-256 hash of the configuration, encoded in BASE64.
+It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a `SHA-256` hash of the configuration, encoded in `BASE64`.
 
 The expected response should have a 200 status code and contain the SHA-256 signature:
 
@@ -39,7 +39,15 @@ The expected response should have a 200 status code and contain the SHA-256 sign
 }
 ```
 
-Optionally, you can return a non 200 status code, to signal a validation error. This will prevent the controlplane to deploy the composition. The error will be visible on the composition detail page.
+Optionally, you can return a 400 status code with an error property to signal a validation error:
+
+```json
+{
+    "error": "Invalid subgraph url detected"
+}
+```
+
+This will prevent the controlplane to deploy the composition. The error will be visible on the composition detail page in the Studio.
 
 ### Router configuration
 
