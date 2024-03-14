@@ -39,7 +39,7 @@ The expected response should have a 200 status code and contain the SHA-256 sign
 }
 ```
 
-Optionally, you can return a non 200 status code, to signal a validation error. This will prevent the controlplane to deploy the composition.
+Optionally, you can return a non 200 status code, to signal a validation error. This will prevent the controlplane to deploy the composition. The error will be visible on the composition detail page.
 
 ### Router configuration
 
