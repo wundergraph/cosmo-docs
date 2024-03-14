@@ -100,6 +100,7 @@
   * [Okta](studio/sso/okta.md)
   * [Auth0](studio/sso/auth0.md)
   * [Keycloak](studio/sso/keycloak.md)
+  * [Microsoft Entra](studio/sso/microsoft-entra.md)
 * [Audit log](studio/audit-log.md)
 * [Cosmo AI](studio/cosmo-ai.md)
 * [Lint Policy](studio/lint-policy/README.md)
