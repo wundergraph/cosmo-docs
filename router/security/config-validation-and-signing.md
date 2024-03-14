@@ -29,13 +29,13 @@ The payload for this operation will be structured as follows:
 ```
 {% endcode %}
 
-It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a `SHA-256` hash of the configuration, encoded in `BASE64`.
+It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a [Hash-based Message Authentication Code (HMAC)](https://en.wikipedia.org/wiki/HMAC) of the configuration, encoded in `BASE64`.
 
-The expected response should have a 200 status code and contain the SHA-256 signature:
+The expected response must have a 200 status code and contain the SHA-256 signature:
 
 ```json
 {
-    "signatureSHA256": "3QYmdUS25ONvhWlm7K5ply65uvqoeGs4qxKWto5napo="
+    "signatureSha256": "3QYmdUS25ONvhWlm7K5ply65uvqoeGs4qxKWto5napo="
 }
 ```
 
