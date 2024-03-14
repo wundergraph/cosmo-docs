@@ -57,13 +57,13 @@ Steps to set Entra as an OIDC identity provider:-
 
 * Select **ID tokens** and then click on **Configure.**
 * Now navigate to **Token configuration, and** click on **Add groups claim.**
+* Select **Security groups,** expand **ID,** select **Group ID** and click on **Add.**
 
-<figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.52.03 AM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.44.33 PM.png" alt=""><figcaption></figcaption></figure>
 
-* Select **Security groups,** expand **ID,** select **Group ID** and click on **Add**
 * Navigate to **API Permissions, and** click on **Add a permission.**
 
-<figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.57.18 AM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.41.25 PM.png" alt=""><figcaption></figcaption></figure>
 
 * Click on **Microsoft Graph,** and then on **Delegated permissions,** select **email, openid and profile** and then click on **Add permissions.**
 * Now you can assign users/groups to the application, and only those users will be able to log into Cosmo using the URL provided on setting up the provider.
