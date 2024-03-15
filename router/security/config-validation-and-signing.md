@@ -15,7 +15,9 @@ Available since version [0.74.0](https://github.com/wundergraph/cosmo/releases/t
 
 The router configuration includes a Graph Plan, which encapsulates all the necessary information for planning and executing queries. It also specifies the URLs of your subgraphs. This configuration can be periodically fetched from the CDN or downloaded via `wgc` cli to the file system. In either scenario, the content originates from our platform. It is crucial to detect and mitigate tampering attacks, where an adversary might alter the configuration to reroute your traffic to an unauthorized server. To address this concern, we have developed a feature named "Config Validation & Signing" to identify and prevent such attacks.
 
-When setting up a federated graph, you must use the `--admission-webhook-url` option, pointing it to your publicly accessible admission server. Our system will invoke the `/validate-config` handler on your server each time a composition occurs. Only in case of a successful composition and proper response of your admission hook the config is made available to your router.
+When setting up a federated graph, you must use the `--admission-webhook-url` option, pointing it to your publicly accessible admission server. **For security reasons, ensure your admission server uses HTTPS as transport prototcol.**
+
+Our system will invoke the `/validate-config` handler on your server each time a composition occurs. Only in case of a successful composition and proper response of your admission hook the config is made available to your router.
 
 The payload for this operation will be structured as follows:
 
@@ -29,9 +31,9 @@ The payload for this operation will be structured as follows:
 ```
 {% endcode %}
 
-It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a [HMAC-SHA256](https://en.wikipedia.org/wiki/HMAC) of the configuration, encoded in BASE64. This procedure is very common today, almost all major webhook providers use the SHA-256 hash function in the [SHA-2](https://en.wikipedia.org/wiki/SHA-2) series for signature verification of their webhooks. These webhook providers include Stripe, GitHub and Okta. Webhook signature verification serves the same purpose as the signature verification required for our router. We want to ensure that the router config has not been tampered with after delivery.
+It is your responsibility to retrieve the router configuration by making a GET request to the `privateConfigUrl`, validate the configuration, and then return a [HMAC-SHA256](https://en.wikipedia.org/wiki/HMAC) of the configuration, encoded in BASE64. Webhook signature verification serves the same purpose as the signature verification of the router config. We want to ensure that the router config has not been tampered with after delivery. This procedure is very common today, almost all major webhook providers use the SHA-256 hash function in the [SHA-2](https://en.wikipedia.org/wiki/SHA-2) series for signature verification of their webhooks. These webhook providers include Stripe, GitHub and Okta.
 
-The expected response must have a 200 status code and contain the **HMAC-SHA256** signature:
+After you have calculated the hash, the expected response must have a 200 status code and contain the **HMAC-SHA256** signature:
 
 ```json
 {
@@ -39,7 +41,7 @@ The expected response must have a 200 status code and contain the **HMAC-SHA256*
 }
 ```
 
-Optionally, you can return a 400 status code with an error property to signal a validation error:
+Alternatively, you can return a 400 status code with an error property to signal a validation error:
 
 ```json
 {
