@@ -29,6 +29,7 @@ The `npx wgc subgraph updatwe` command allows you to update an existing subgraph
   * Example: `--routing-url http://new-domain.com/graphql`
 * `--label [labels...]`: The labels to apply or change for the subgraph. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. Use this option to update the subgraph's metadata.
   * Example: `--label team=A`
+* `--unset-labels`: This will remove all labels. It will not add new labels if both this and --labels option is passed.
 * `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions. To remove a previously set subscription URL, use the flag without provided a URL argument.
 * `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.

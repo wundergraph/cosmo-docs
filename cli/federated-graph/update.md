@@ -26,23 +26,15 @@ The `npx wgc federated-graph update` command allows you to update an existing fe
 
 `-n, --namespace` : The namespace of the federated graph (Default: "default").
 
-```bash
--r <routing-url>, --routing-url <routing-url>
-```
+`-r , --routing-url` : The updated routing URL of your router. This URL defines the endpoint where the router will be accessible. The federated graph will be accessible through this updated router URL.
 
-The updated routing URL of your router. This URL defines the endpoint where the router will be accessible. The federated graph will be accessible through this updated router URL.
+`--label-matcher <labels...>`: The updated labels used to select the subgraphs to be federated. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. The federated graph will include the subgraphs that match the updated labels.
 
-```bash
---label-matcher <labels...>
-```
+`--unset-label-matcher`: This will remove all label matchers. It will not add new label matchers if both this and --label-matchers option is passed.
 
-The updated labels used to select the subgraphs to be federated. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. The federated graph will include the subgraphs that match the updated labels.
+`--admission-webhook-url <url>` the admission webhook url. This is the url that the controlplane will use to implement admission control for the federated graph.
 
-```
---readme <path-to-readme> 
-```
-
-The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
+`--readme <path-to-readme>` : The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
 
 ## Examples
 
