@@ -20,23 +20,11 @@ The `npx wgc federated-graph create` command allows you to create a new federate
 
 ## Required Options
 
-```bash
--r <routing-url>, --routing-url <routing-url>
-```
+`-r , --routing-url`: The routing URL of your router. This URL defines the endpoint where the router will be accessible. The federated graph will be accessible through this router.
 
-The routing URL of your router. This URL defines the endpoint where the router will be accessible. The federated graph will be accessible through this router.
+`--label-matcher <labels...>`: The labels used to select the subgraphs to be federated. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. The federated graph will include the subgraphs that match the specified labels.
 
-```bash
---label-matcher <labels...>
-```
-
-The labels used to select the subgraphs to be federated. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. The federated graph will include the subgraphs that match the specified labels.
-
-```
---readme <path-to-readme> 
-```
-
-The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
+`--readme`: The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
 
 ## Options
 
