@@ -1,3 +1,3 @@
 # Switch from Apollo to Cosmo
 
-See [Migrate from Apollo](../studio/migrate-from-apollo.md).
+Please refer to [Migrate from Apollo](../studio/migrate-from-apollo.md).
