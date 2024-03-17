@@ -31,7 +31,7 @@ Follow the five steps below to get from zero to managed Federation.
 
 You can clone the example project which has all the reference code that you need. It consists of 2 subgraphs namely posts and users, a Router, and the CI/CD configuration with GitHub actions.
 
-{% embed url="https://github.com/wundergraph/cosmo-demo" %}
+{% @github-files/github-code-block %}
 
 ### Install the Cosmo CLI tool
 
