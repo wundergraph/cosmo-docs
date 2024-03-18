@@ -24,8 +24,8 @@ The payload for this operation will be structured as follows:
 {% code title="POST - /validate-config" %}
 ```json
 {
-    "federated_graph": "1cab819a-c319-4fe1-a644-5360970eb083",
-    "organization_id": "1e49b02a-72fb-458b-8d05-bb89cba2af05",
+    "federatedGraphId": "1cab819a-c319-4fe1-a644-5360970eb083",
+    "organizationId": "1e49b02a-72fb-458b-8d05-bb89cba2af05",
     "privateConfigUrl": "https://cdn.wundergraph.com/orgId/graphId/routerconfigs/draft.json?token=..."
 }
 ```
