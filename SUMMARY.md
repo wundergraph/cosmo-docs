@@ -146,5 +146,7 @@
   * [Helm Chart](deployments-and-hosting/kubernetes/helm-chart/README.md)
     * [Cosmo Platform](deployments-and-hosting/kubernetes/helm-chart/cosmo-platform.md)
     * [Router](deployments-and-hosting/kubernetes/helm-chart/router.md)
+* [Terraform](deployments-and-hosting/terraform/README.md)
+  * [AWS Fargate](deployments-and-hosting/terraform/aws-fargate.md)
 * [Docker](deployments-and-hosting/docker.md)
 * [Cosmo Cloud](deployments-and-hosting/cosmo-cloud.md)
