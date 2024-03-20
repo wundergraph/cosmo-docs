@@ -1,0 +1,29 @@
+---
+description: >-
+  Converts the monograph into a federated graph. Once done you can update label
+  matchers and labels to compose with more graphs in your organization.
+---
+
+# Migrate
+
+## Usage
+
+```bash
+npx wgc monograph migrate <name>
+```
+
+## Description
+
+The `npx wgc monograph update` command allows you to migrate an existing monograph to a federated graph.
+
+{% hint style="info" %}
+IMPORTANT: Migration will assign new labels to the graph and underlying subgraph. Since the new labels are unique, recomposition does not take palce. After migration, you can update the labels to your desired ones to compose with other graphs in the namespace.
+{% endhint %}
+
+## Parameters
+
+* `<name>`: The name of the monograph you want to migrate.
+
+## Options
+
+* `-n, --namespace` : The namespace of the monograph (Defaults to 'default')

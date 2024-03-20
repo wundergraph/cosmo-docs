@@ -1,0 +1,49 @@
+---
+description: Creates a monograph on the control plane.
+---
+
+# Create
+
+## Usage
+
+```bash
+npx wgc monograph create <name> -r <routing-url> -u <graph-url>
+```
+
+## Description
+
+The `npx wgc monograph create` command allows you to create a new monograph on the Cosmo platform's control plane. A monograph does not allow for GraphQL Federation as it is strictly limited to one subgrpah. This subgraph is automatically created for you internally and you do not need to interact with it directly.
+
+## Parameters
+
+* `<name>`: The name of the monograph you want to create. Replace `<name>` with the desired name for your monograph.
+
+## Required Options
+
+`-r , --routing-url`: The routing URL of your router. This URL defines the endpoint where the router will be accessible. The monograph will be accessible through this router.
+
+`-u , --graph-url`: The url of your GraphQL server that is accessible from the router.
+
+## Other Options
+
+* `-n, --namespace` : The namespace of the monograph (Default: "default").
+* `--admission-webhook-url <url>` the admission webhook url. This is the url that the controlplane will use to implement admission control for the  monograph.
+* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
+* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
+  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
+  * `sse`: Use Server-Sent Events with a GET request.
+  * `sse_post`: Use Server-Sent events with a POST request.
+* `--readme` : The markdown file which describes the monograph.
+
+## Examples
+
+```bash
+npx wgc monograph create production -r http://router.example.com/graphql -u https://spacex-production.up.railway.app
+```
+
+Create a monograph named "production" with a routing URL of "[http://router.example.com/graphql](http://router.example.com/graphql)"  and a GraphQL server endpoint of [https://spacex-production.up.railway.app](https://spacex-production.up.railway.app).
+
+## Notes
+
+* The `npx wgc monograph create` command interacts with the Cosmo platform's control plane to create the specified monograph.
+* The routing URL of the router should be accessible by the monograph to handle incoming queries and route them to the GraphQL server.

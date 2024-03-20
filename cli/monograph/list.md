@@ -1,5 +1,5 @@
 ---
-description: Lists all the federated graphs.
+description: Lists all the monographs.
 ---
 
 # List
@@ -7,12 +7,12 @@ description: Lists all the federated graphs.
 ## Usage
 
 ```bash
-npx wgc federated-graph list
+npx wgc monograph list
 ```
 
 ## Description
 
-The `npx wgc federated-graph list` command allows you to list all the federated graphs under your organization.
+The `npx wgc monograph list` command allows you to list all the monographs under your organization.
 
 ## Options
 

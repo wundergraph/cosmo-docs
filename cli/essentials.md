@@ -18,6 +18,16 @@ Namespaces have the following restrictions:
 
 Namespaces allow to create and organize multiple environments. Every federated graph represents physically a router instance and every subgraph is a service connected to the router.
 
+## Monographs vs Federated Graphs
+
+### Federated Graphs
+
+Federated Graphs are the goto method of creating graphs in Cosmo. They compose multiple subgraphs into a unified Federated GraphQL schema.&#x20;
+
+### Monographs
+
+Monographs are graphs that do not perform GraphQL Federation. They consist strictly of a single subgraph that is created internally for you. Monograph commands abstract away the complexities with interacting with that subgraph. Everything supported by Federated Graphs is also supported by Monographs.
+
 ## Order of execution
 
 The order in which you create graphs does not matter. You can either create subgraphs first or federated graphs. Depending on the labels the appropriate subgraphs will be taken into account for composing your federated graphs.
