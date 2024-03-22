@@ -8,6 +8,8 @@ description: >-
 
 **Chart Repository:** `ghcr.io/wundergraph/cosmo/helm-charts/cosmo`
 
+**ArtifactHub**: [https://artifacthub.io/packages/helm/cosmo-platform/cosmo](https://artifacthub.io/packages/helm/cosmo-platform/cosmo)
+
 **Source:** [Repository](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo)
 
 {% hint style="info" %}

@@ -6,6 +6,8 @@ description: The following instructions help you install the Router Chart on Kub
 
 **Chart Repository:** `oci://ghcr.io/wundergraph/cosmo/helm-charts/router`
 
+**ArtifactHub**: [https://artifacthub.io/packages/helm/cosmo-router/router](https://artifacthub.io/packages/helm/cosmo-router/router)
+
 **Source:** [Repository](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router)
 
 {% hint style="info" %}
