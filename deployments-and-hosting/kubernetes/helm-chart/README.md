@@ -10,7 +10,7 @@ description: >-
 Please checkout to the Helm [directory](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo) in the OpenSource repository. The structure is as follows:
 
 1. [Local Development](https://github.com/wundergraph/cosmo/blob/main/helm/README.md) (`helm/README.md`): Instructions about how to develop the chart locally with Minikube or any other Kubernetes cluster.
-2. [How to use the Chart ](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/README.md)(`helm/cosmo/README.md`): Explains how the umbrella chart is constructed.
+2. [How to use the Chart ](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/README.md)(`helm/cosmo/DEV.md`): Explains how the umbrella chart is constructed.
 3. [Sub-charts ](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts)(`helm/cosmo/charts`) The Cosmo Umbrella charts consist of multiple sub-charts.
    1. Controlplane
    2. GraphqlMetrics
