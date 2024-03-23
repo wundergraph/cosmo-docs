@@ -41,6 +41,7 @@ If you want to interact from [wgc](broken-reference) with the controlplane, you 
 ```bash
 export COSMO_API_KEY="cosmo_669b576aaadc10ee1ae81d9193425705"
 export COSMO_API_URL="<url-to-your-controlplane>"
+export CDN_URL="<url-to-your-cdn>"
 npx wgc -h
 ```
 
