@@ -13,7 +13,6 @@ docker run \
     --name cosmo-router \
     -e GRAPH_API_TOKEN=<router_api_token> \
     -e LISTEN_ADDR=0.0.0.0:3002 \
-    --platform=linux/amd64 \
     -p 3002:3002 \
     ghcr.io/wundergraph/cosmo/router:latest
 ```

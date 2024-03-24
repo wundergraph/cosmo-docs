@@ -37,7 +37,6 @@ docker run \
   -e GRAPH_API_TOKEN=<secret> \
   -e LISTEN_ADDR=0.0.0.0:3002 \
   --add-host=host.docker.internal:host-gateway \
-  --platform=linux/amd64 \
   -p 3002:3002 \
   ghcr.io/wundergraph/cosmo/router:latest
 ```

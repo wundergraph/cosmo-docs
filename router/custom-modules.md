@@ -244,7 +244,6 @@ docker run \
   --rm \
   -p 3002:3002 \
   --add-host=host.docker.internal:host-gateway \
-  --platform=linux/amd64 \
   -e DEV_MODE=true \
   -e LISTEN_ADDR=0.0.0.0:3002 \
   -e GRAPH_API_TOKEN=<graph-api-token> \
