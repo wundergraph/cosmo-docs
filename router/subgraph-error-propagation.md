@@ -27,7 +27,7 @@ Here's an example error response:
 }
 ```
 
-For debugging purposes, you might want to switch Error passing on, which will wrap the Subgraph error in an extensions errors object. You can do so via [this config](configuration.md#subgraph-error-propagation).
+For debugging purposes, you might want to switch Error passing on, which will wrap the Subgraph error in an extensions errors object. You can do so via [this config](configuration.md#subgraph-error-propagation). As an alternative, you can also switch on the [dev mode](configuration.md#config-file).
 
 The response with an error looks like this:
 
