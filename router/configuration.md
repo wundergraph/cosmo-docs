@@ -14,7 +14,7 @@ The router provides three different ways of customization:
 **Recommendation** Create a config file and use environment variable expansion to avoid storing secrets on the file system.
 {% endhint %}
 
-## Config file
+### Config file
 
 For convenience, you can create a `config.yaml` to specify all router options. Start the router in the same directory or pass the path to the file as a `CONFIG_PATH` environment variable.
 
@@ -31,7 +31,7 @@ graph:
 Values specified in the config file have **precedence** over Environment variables. This also includes empty values so only specify values that should be overwritten. That means, you can see the config file as a single source of truth.
 {% endhint %}
 
-### Expand Environment Variables
+#### Expand Environment Variables
 
 You can expand environment variables in the file like this:
 
@@ -45,7 +45,7 @@ log_level: "${LOG_LEVEL}"
 
 This will replace the value of the environment variable `LOG_LEVEL` with the value of the key `log_level` in your config file. For numeric values, ensure quotes are omitted.
 
-### Config Validation & Auto-completion
+#### Config Validation & Auto-completion
 
 We know configuration is hard, especially for a software component like the router that can be customized entirely to your needs. In order to simplify this, we use [JSON schema](https://json-schema.org/) to validate the router configuration. This comes with huge benefits, all right at your fingertips:
 
@@ -56,7 +56,7 @@ We know configuration is hard, especially for a software component like the rout
 
 Some options require the router to validate them. This requires starting the router. Once your router has started successfully, you can be sure that your configuration is valid.
 
-### IDE Configuration
+#### IDE Configuration
 
 * **VsCode**: Install the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension in your IDE.
 * **JetBrains**: Support out of the box but in some circumstances it conflicts with other default mappings. **Go to** _`Languages & Frameworks`_ -> _`Schemas and DTDs`_ -> _`JSON Schemas Mappings`_ configure the mapping yourself.
@@ -81,11 +81,11 @@ If you want to pin to a specific router version use the following URL:
 
 Now, you should get auto-completion 🌟 .
 
-## Environment Variables
+### Environment Variables
 
 Many configuration options can be set as environment variables. For a complete list of options, please look at the [Router](configuration.md#router) config tables.
 
-## Router
+### Router
 
 The following sections describe each configuration in detail with all available options and their defaults.
 
@@ -120,7 +120,7 @@ router_config_path: ""
 ```
 {% endcode %}
 
-## Graph
+### Graph
 
 Overall configuration for the Graph that's configured for this Router.
 
@@ -137,11 +137,11 @@ graph:
 ```
 {% endcode %}
 
-## TLS
+### TLS
 
 The Router supports TLS and mTLS for secure communication with your clients and infrastructure components like load balancer.
 
-### Server TLS
+#### Server TLS
 
 <table data-full-width="true"><thead><tr><th width="345">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TLS_SERVER_ENABLED</td><td>enabled</td><td>false</td><td>Enables server TLS support.</td><td>false</td></tr><tr><td>TLS_SERVER_CERT_FILE</td><td>cert_file</td><td>false</td><td>The path to the server certificate file.</td><td></td></tr><tr><td>TLS_SERVER_KEY_FILE</td><td>key_file</td><td>false</td><td>The path to the server private key file.</td><td></td></tr></tbody></table>
 
@@ -159,7 +159,7 @@ tls:
 ```
 {% endcode %}
 
-### Client Authentication
+#### Client Authentication
 
 <table data-full-width="true"><thead><tr><th width="345">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TLS_CLIENT_AUTH_CERT_FILE</td><td>cert_file</td><td>false</td><td>Enables client authentication support. The file to the certificate file used to authenthicate clients.</td><td>""</td></tr><tr><td>TLS_CLIENT_AUTH_REQUIRED</td><td>required</td><td>false</td><td>Enforces a valid client certificate to establish a connection.</td><td>false</td></tr></tbody></table>
 
@@ -180,11 +180,11 @@ tls:
 ```
 {% endcode %}
 
-## Compliance
+### Compliance
 
 The configuration for the compliance. Includes for example the configuration for the anonymization of the IP addresses.
 
-### IP Anonymization
+#### IP Anonymization
 
 <table data-full-width="true"><thead><tr><th width="345">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_ANONYMIZE_IP_ENABLED</td><td>enabled</td><td>false</td><td>Enables IP anonymization in traces and logs.</td><td>true</td></tr><tr><td>SECURITY_ANONYMIZE_IP_METHOD</td><td>method</td><td>false</td><td>The metod to anonymize IP addresses. Can be "hash" or "redact".</td><td>"redact"</td></tr></tbody></table>
 
@@ -201,7 +201,7 @@ compliance:
 ```
 {% endcode %}
 
-## Cluster
+### Cluster
 
 <table data-full-width="true"><thead><tr><th width="231">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CLUSTER_NAME</td><td>name</td><td>false</td><td></td><td></td></tr></tbody></table>
 
@@ -217,7 +217,7 @@ cluster:
 ```
 {% endcode %}
 
-## Telemetry
+### Telemetry
 
 
 
@@ -236,7 +236,7 @@ telemetry:
 ```
 {% endcode %}
 
-## Tracing
+### Tracing
 
 <table data-full-width="true"><thead><tr><th width="378">Environment Variable</th><th width="233">YAML</th><th width="112" data-type="checkbox">Required</th><th width="199">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TRACING_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>TRACING_SAMPLING_RATE</td><td>sampling_rate</td><td>true</td><td><p>min 0.0</p><p>max 1.0</p></td><td>1</td></tr><tr><td>TRACING_BATCH_TIMEOUT</td><td></td><td>false</td><td>The maximum delay allowed before spans are exported.</td><td>10s</td></tr><tr><td>TRACING_EXPORT_GRAPHQL_VARIABLES</td><td>export_graphql_variables</td><td>false</td><td>Export GraphQL variables as span attribute. Variables may contain sensitive data.</td><td>false</td></tr><tr><td></td><td>with_new_root</td><td>false</td><td>Starts the root span always at the router.</td><td>false</td></tr></tbody></table>
 
@@ -262,7 +262,7 @@ telemetry:
 ```
 {% endcode %}
 
-### Exporters
+#### Exporters
 
 <table data-full-width="true"><thead><tr><th width="230">Environment Variable</th><th width="245">YAML</th><th width="112" data-type="checkbox">Required</th><th width="164">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td>bool</td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td></td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
 
@@ -287,7 +287,7 @@ telemetry:
 ```
 {% endcode %}
 
-### Propagation
+#### Propagation
 
 <table data-full-width="true"><thead><tr><th width="219">Environment Variable</th><th width="186">YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>trace_context</td><td>false</td><td></td><td>true</td></tr><tr><td></td><td>jaeger</td><td>false</td><td></td><td></td></tr><tr><td></td><td>b3</td><td>false</td><td></td><td></td></tr><tr><td></td><td>baggage</td><td>false</td><td></td><td></td></tr></tbody></table>
 
@@ -313,9 +313,9 @@ telemetry:
 ```
 {% endcode %}
 
-## Metrics
+### Metrics
 
-### OLTP
+#### OLTP
 
 <table data-full-width="true"><thead><tr><th width="285">Environment Variable</th><th width="168">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>METRICS_OTLP_ENABLED</td><td>enabled</td><td>true</td><td>Enables OTEL metrics instrumentation</td><td>true</td></tr><tr><td>METRICS_OTLP_ROUTER_RUNTIME</td><td>router_runtime</td><td>false</td><td></td><td>true</td></tr></tbody></table>
 
@@ -335,7 +335,7 @@ telemetry:
 ```
 {% endcode %}
 
-### Prometheus
+#### Prometheus
 
 <table data-full-width="true"><thead><tr><th width="387">Environment Variable</th><th width="207">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>PROMETHEUS_ENABLED</td><td>enabled</td><td>true</td><td>Enables prometheus metrics support</td><td>true</td></tr><tr><td>PROMETHEUS_HTTP_PATH</td><td>path</td><td>false</td><td>The HTTP path where metrics are exposed.</td><td>"/metrics"</td></tr><tr><td>PROMETHEUS_LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The prometheus listener address</td><td>"127.0.0.1:8088"</td></tr><tr><td>PROMETHEUS_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td></td><td></td></tr><tr><td>PROMETHEUS_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td></td><td></td></tr></tbody></table>
 
@@ -357,7 +357,7 @@ telemetry:
 ```
 {% endcode %}
 
-### Exporter
+#### Exporter
 
 <table data-full-width="true"><thead><tr><th width="223">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="206">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td></td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td></td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
 
@@ -394,7 +394,7 @@ telemetry:
 ```
 {% endcode %}
 
-## GraphQL Metrics
+### GraphQL Metrics
 
 <table data-full-width="true"><thead><tr><th width="406">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>GRAPHQL_METRICS_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>GRAPHQL_METRICS_COLLECTOR_ENDPOINT</td><td>collector_endpoint</td><td>true</td><td>Default endpoint</td><td><a href="https://cosmo-metrics.wundergraph.com">https://cosmo-metrics.wundergraph.com</a></td></tr></tbody></table>
 
@@ -410,7 +410,7 @@ graphql_metrics:
 ```
 {% endcode %}
 
-## CORS
+### CORS
 
 <table data-full-width="true"><thead><tr><th width="295">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CORS_ALLOW_ORIGINS</td><td>allow_origins</td><td>false</td><td></td><td>*</td></tr><tr><td>CORS_ALLOW_METHODS</td><td>allow_methods</td><td>false</td><td></td><td>HEAD,GET,POST</td></tr><tr><td>CORS_ALLOW_HEADERS</td><td>allow_headers</td><td>false</td><td></td><td>Origin,Content-Length,Content-Type</td></tr><tr><td>CORS_ALLOW_CREDENTIALS</td><td>allow_credentials</td><td>false</td><td></td><td>true</td></tr><tr><td>CORS_MAX_AGE</td><td>max_age</td><td>false</td><td></td><td>5m</td></tr></tbody></table>
 
@@ -435,7 +435,7 @@ cors:
 ```
 {% endcode %}
 
-## Custom Modules
+### Custom Modules
 
 Configure your custom Modules. More information on this feature can be found here: [custom-modules.md](custom-modules.md "mention")
 
@@ -452,11 +452,11 @@ modules:
 ```
 {% endcode %}
 
-## Headers
+### Headers
 
 Configure Header propagation rules for all Subgraphs or individual Subgraphs by name.
 
-### Global Header Rules
+#### Global Header Rules
 
 Apply to requests to "all" Subgraphs
 
@@ -480,7 +480,7 @@ headers:
 ```
 {% endcode %}
 
-### Request Header Rule
+#### Request Header Rule
 
 Apply to requests to specific Subgraphs.
 
@@ -503,11 +503,11 @@ headers:
 ```
 {% endcode %}
 
-## Traffic Shaping
+### Traffic Shaping
 
 Configure rules for traffic shaping like maximum request body size, timeouts, retry behavior, etc. For more info, check this section in the docs: [traffic-shaping.md](traffic-shaping.md "mention")
 
-Example YAML config:
+#### Example YAML config:
 
 {% code title="" %}
 ```yaml
@@ -539,37 +539,37 @@ traffic_shaping:
 ```
 {% endcode %}
 
-### Subgraph Request Rules
+#### Subgraph Request Rules
 
 These rules apply to requests being made from the Router to all Subgraphs.
 
 <table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>retry</td><td>false</td><td><a data-mention href="configuration.md#traffic-shaping-jitter-retry">#traffic-shaping-jitter-retry</a></td><td></td></tr><tr><td></td><td>request_timeout</td><td>true</td><td></td><td>60s</td></tr><tr><td></td><td>dial_timeout</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>response_header_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>expect_continue_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>tls_handshake_timeout</td><td>false</td><td></td><td>10s</td></tr><tr><td></td><td>keep_alive_idle_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>keep_alive_probe_interval</td><td>false</td><td></td><td>30s</td></tr></tbody></table>
 
-### Jitter Retry
+#### Jitter Retry
 
 <table data-full-width="true"><thead><tr><th width="236">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RETRY_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td></td><td>algorithm</td><td>false</td><td>backoff_jitter</td><td>backoff_jitter</td></tr><tr><td></td><td>max_attempts</td><td>true</td><td></td><td></td></tr><tr><td></td><td>max_duration</td><td>true</td><td></td><td></td></tr><tr><td></td><td>interval</td><td>true</td><td></td><td></td></tr></tbody></table>
 
-### Client Request Request Rules
+#### Client Request Request Rules
 
 These rules apply to requests being made from clients to the Router.
 
 <table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>max_request_body_size</td><td>false</td><td></td><td>5mb</td></tr></tbody></table>
 
-## WebSocket
+### WebSocket
 
 Configure WebSocket handlers, protocols, and more.
 
-### WebSocket Configuration
+#### WebSocket Configuration
 
 <table data-full-width="true"><thead><tr><th width="248">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ENABLED</td><td>enabled</td><td>true</td><td></td><td>true</td></tr><tr><td></td><td>absinthe_protocol</td><td>false</td><td><a data-mention href="configuration.md#absinthe-protocol-configuration">#absinthe-protocol-configuration</a></td><td></td></tr><tr><td>WEBSOCKETS_FORWARD_UPGRADE_HEADERS</td><td>forward_upgrade_headers</td><td>false</td><td>Forward all useful Headers from the Upgrade Request, like User-Agent or Authorization in the extensions field when subscribing on a Subgraph</td><td>true</td></tr><tr><td>WEBSOCKETS_FORWARD_UPGRADE_QUERY_PARAMS</td><td>forward_upgrade_query_params</td><td>false</td><td>Forward all query parameters from the Upgrade Request in the extensions field when subscribing on a Subgraph </td><td>true</td></tr><tr><td>WEBSOCKETS_FORWARD_INITIAL_PAYLOAD</td><td>forward_initial_payload</td><td>false</td><td>Forward the initial payload from a client subscription in the extensions field when subscribing on a Subgraph</td><td>true</td></tr></tbody></table>
 
-### Absinthe Protocol Configuration
+#### Absinthe Protocol Configuration
 
 Legacy WebSocket clients that use the Absinthe protocol might not be able to send a Subprotocol Header. For such clients, you can use the Absinthe Endpoint which automatically chooses the Subprotocol for them so that no Subprotocol Header needs to be set.
 
 <table data-full-width="false"><thead><tr><th width="394">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ABSINTHE_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>WEBSOCKETS_ABSINTHE_HANDLER_PATH</td><td>handler_path</td><td>false</td><td>The path to mount the Absinthe handler on</td><td>/absinthe/socket</td></tr></tbody></table>
 
-### Example WebSocket YAML config:
+#### Example WebSocket YAML config:
 
 {% code title="config.yaml" %}
 ```yaml
@@ -586,15 +586,15 @@ websocket:
 ```
 {% endcode %}
 
-## Authentication
+### Authentication
 
 Configure different authentication providers.
 
-### Provider
+#### Provider
 
 <table data-full-width="true"><thead><tr><th width="215">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>name</td><td>false</td><td>Name of the provider</td><td></td></tr><tr><td></td><td>jwks</td><td>false</td><td>JWK Provider</td><td></td></tr></tbody></table>
 
-### JWK Provider
+#### JWK Provider
 
 <table data-full-width="true"><thead><tr><th width="208">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>url</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_names</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_value_prefixes</td><td>false</td><td></td><td></td></tr><tr><td></td><td>refresh_interval</td><td>true</td><td></td><td>1m</td></tr></tbody></table>
 
@@ -616,7 +616,7 @@ authentication:
 ```
 {% endcode %}
 
-## Authorization
+### Authorization
 
 <table data-full-width="true"><thead><tr><th width="368">Environment Variable</th><th width="289">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>REQUIRE_AUTHENTICATION</td><td>require_authentication</td><td>false</td><td>Set to true to disallow unauthenticated requests</td><td>false</td></tr><tr><td>REJECT_OPERATION_IF_UNAUTHORIZED</td><td>reject_operation_if_unauthorized</td><td>false</td><td>If enabled, the Router will return 401 with no response data when the evaluation of field-based permissions (<a data-mention href="../federation/directives/authenticated.md">authenticated.md</a>or <a data-mention href="../federation/directives/requiresscopes.md">requiresscopes.md</a>fails)</td><td>false</td></tr></tbody></table>
 
@@ -632,7 +632,7 @@ authorization:
 ```
 {% endcode %}
 
-## CDN
+### CDN
 
 <table data-full-width="true"><thead><tr><th width="232">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CDN_URL</td><td>url</td><td>false</td><td>The URL of the CDN where the Router will fetch its Config</td><td><a href="https://cosmo-cdn.wundergraph.com">https://cosmo-cdn.wundergraph.com</a></td></tr><tr><td>CDN_CACHE_SIZE</td><td>cache_size</td><td>false</td><td>Cosmo Router caches responses from the CDN in memory, this defines the cache size.</td><td>100MB</td></tr></tbody></table>
 
@@ -648,7 +648,7 @@ cdn:
 ```
 {% endcode %}
 
-## Events
+### Events
 
 The Events section lets you define Event Sources for [event-driven-federated-subscriptions-edfs.md](event-driven-federated-subscriptions-edfs.md "mention").
 
@@ -665,11 +665,11 @@ events:
 ```
 {% endcode %}
 
-### Event Source
+#### Event Source
 
 <table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>provider</td><td>true</td><td>one of: NATS</td><td></td></tr><tr><td></td><td>url</td><td>true</td><td>The URL of the event source, e.g. "nats://localhost:4222"</td><td></td></tr></tbody></table>
 
-## Router Engine Configuration
+### Router Engine Configuration
 
 Configure the GraphQL Execution Engine of the Router.
 
@@ -694,11 +694,11 @@ engine:
 ```
 {% endcode %}
 
-### Debug Configuration
+#### Debug Configuration
 
 <table data-full-width="true"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>report_websocket_connections</td><td>false</td><td>Report the number of WebSocket Connections and active Subscriptions in regular intervals to the log</td><td>false</td></tr><tr><td></td><td>report_memory_usage</td><td>false</td><td>Report the Memory usage of Cosmo Router to the log in regular intervals</td><td>false</td></tr></tbody></table>
 
-Example YAML config:
+#### Example YAML config:
 
 {% code title="config.yaml" %}
 ```yaml
@@ -711,27 +711,27 @@ engine:
 ```
 {% endcode %}
 
-## Rate Limiting
+### Rate Limiting
 
-### General Rate Limiting Configuration
+#### General Rate Limiting Configuration
 
 <table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>oneof=simple</td><td></td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td></td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td></td><td></td></tr></tbody></table>
 
-### Storage
+#### Storage
 
 <table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>REDIS_ADDR</td><td>addr</td><td>true</td><td></td><td>localhost:6379</td></tr><tr><td>REDIS_PASSWORD</td><td>password</td><td>false</td><td></td><td></td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
 
-### Simple Strategy
+#### Simple Strategy
 
 <table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_SIMPLE_RATE</td><td>rate</td><td>true</td><td>Allowed request rate (number)</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_BURST</td><td>burst</td><td>true</td><td>Allowed burst rate (number) - max rate per one request</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_PERIOD</td><td>period</td><td>true</td><td>The rate limiting period, e.g. "10s", "1m", etc...</td><td>1s</td></tr><tr><td>RATE_LIMIT_SIMPLE_REJECT_EXCEEDING_REQUESTS</td><td>reject_exceeding_requests</td><td>false</td><td>Reject the complete request if a sub-request exceeds the rate limit. If set to false, partial responses are possible.</td><td>false</td></tr></tbody></table>
 
-## Subgraph Error Propagation
+### Subgraph Error Propagation
 
 The configuration for the subgraph error propagation. The subgraph error propagation is used to propagate the errors from the subgraphs to the client.
 
 <table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SUBGRAPH_ERROR_PROPAGATION_ENABLED</td><td>enabled</td><td>false</td><td>Enable error propagation. If the value is true, Subgraph errors will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_STATUS_CODES</td><td>status_codes</td><td>false</td><td>Propagate Subgraph status codes. If the value is true, Subgraph Response status codes will be propagated to the client.</td><td>false</td></tr></tbody></table>
 
-Example YAML configuration:
+#### Example YAML configuration:
 
 ```yaml
 version: "1"
