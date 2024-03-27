@@ -10,7 +10,7 @@ Persisted operations allow you to register queries / mutations / subscriptions w
 
 This not only saves bandwidth but can also help reduce the attack surface by allowing only safelisted operations.
 
-## Architecture
+### Architecture
 
 <figure><img src="../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
 
@@ -18,7 +18,7 @@ Persisted operations are usually registered within Cosmo during your release pip
 
 The control plane replicates these operations in the Cosmo CDN, where the routers can fetch them. All operations in the CDN are protected and only readable by routers running the federated graph the operations were registered to.
 
-## Using persisted operations
+### Using persisted operations
 
 Persisted operations require some tooling on the client side. Consult the documentation for your GraphQL client library to find out how to generate a query manifest or query map.
 
@@ -48,3 +48,9 @@ Finally, you should enable persisted operations in your GraphQL client library.
 To see all available options for  `wgc operations push, see` [push.md](../cli/operations/push.md "mention").
 
 Additionally, check the [Using Persisted Operation with Federated GraphQL](../tutorial/using-persisted-operations.md) tutorial for a step by step guide.
+
+### Disallowing non-persisted Operations
+
+If you're going all in on Security, you'd want to only allow Persisted Operations in your Production Environment.
+
+By default, non-persisted (dynamic) GraphQL Operations are allowed, which you can disable using the [Security Configuration](configuration.md#security) of the Router.

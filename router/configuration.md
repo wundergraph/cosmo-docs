@@ -740,3 +740,20 @@ subgraph_error_propagation:
     enabled: true
     status_codes: true
 ```
+
+### Security
+
+The configuration for the security. The security is used to configure the security settings for the Router.
+
+<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_BLOCK_MUTATIONS</td><td>block_mutations</td><td>false</td><td>Block mutation Operations. If the value is true, the mutations are blocked.</td><td>false</td></tr><tr><td>SECURITY_BLOCK_SUBSCRIPTIONS</td><td>block_subscriptions</td><td>false</td><td>Block subscription Operations. If the value is true, the subscriptions are blocked.</td><td>false</td></tr><tr><td>SECURITY_BLOCK_NON_PERSISTED_OPERATIONS</td><td>block_non_persisted_operations</td><td>false</td><td>Block non-persisted Operations. If the value is true, the non-persisted operations are blocked.</td><td>false</td></tr></tbody></table>
+
+#### Example YAML Configuration
+
+```yaml
+version: "1"
+
+security:
+    block_mutations: true
+    block_subscriptions: true
+    block_non_persisted_operations: true
+```
