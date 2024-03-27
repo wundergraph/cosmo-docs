@@ -725,3 +725,18 @@ engine:
 
 <table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_SIMPLE_RATE</td><td>rate</td><td>true</td><td>Allowed request rate (number)</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_BURST</td><td>burst</td><td>true</td><td>Allowed burst rate (number) - max rate per one request</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_PERIOD</td><td>period</td><td>true</td><td>The rate limiting period, e.g. "10s", "1m", etc...</td><td>1s</td></tr><tr><td>RATE_LIMIT_SIMPLE_REJECT_EXCEEDING_REQUESTS</td><td>reject_exceeding_requests</td><td>false</td><td>Reject the complete request if a sub-request exceeds the rate limit. If set to false, partial responses are possible.</td><td>false</td></tr></tbody></table>
 
+## Subgraph Error Propagation
+
+The configuration for the subgraph error propagation. The subgraph error propagation is used to propagate the errors from the subgraphs to the client.
+
+<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SUBGRAPH_ERROR_PROPAGATION_ENABLED</td><td>enabled</td><td>false</td><td>Enable error propagation. If the value is true, Subgraph errors will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_STATUS_CODES</td><td>status_codes</td><td>false</td><td>Propagate Subgraph status codes. If the value is true, Subgraph Response status codes will be propagated to the client.</td><td>false</td></tr></tbody></table>
+
+Example YAML configuration:
+
+```yaml
+version: "1"
+
+subgraph_error_propagation:
+    enabled: true
+    status_codes: true
+```

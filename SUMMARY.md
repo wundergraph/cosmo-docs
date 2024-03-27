@@ -143,6 +143,7 @@
 * [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
 * [Event-Driven Federated Subscriptions (EDFS)](router/event-driven-federated-subscriptions-edfs.md)
 * [Compliance and Data Management](router/compliance-and-data-management.md)
+* [Subgraph Error Propagation](router/subgraph-error-propagation.md)
 
 ## Control Plane
 

@@ -55,7 +55,7 @@ subgraphs:
       protocol: "sse_post"
 ```
 
-### Configure Subscriptions using Cosmo Studio
+### Configure Subscriptions using wgc
 
 When using Cosmo Studio as a target to publish your Subgraphs, you'll be using "wgc publish" to upload the Subgraph configuration to the Studio. In this case, you can supply the protocol using the following config.
 
