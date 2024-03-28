@@ -17,10 +17,6 @@ docker run \
     ghcr.io/wundergraph/cosmo/router:latest
 ```
 
-{% hint style="info" %}
-_`--platform=linux/amd64`_ is required because we don't provide ARM images yet.
-{% endhint %}
-
 You can generate a token with the [`wgc router token create`](../cli/router/token/create.md) CLI command.
 
 ## Health checks
@@ -103,3 +99,84 @@ The specific resource recommendations depend on your constraints, but we have ob
 
 * 3 instances for high availability.
 * Each instance is equipped with 2 CPUs and 1GB of RAM.
+
+## Custom Config
+
+In Docker and Kubernetes, you can mount configuration files. In that way, you don't have to build a custom Docker image. By default, the router looks for a config at the location where it starts. This location is `/config.yaml` in our official Docker image. You can overwrite the path by setting the `CONFIG_PATH` environment variable.
+
+### Docker
+
+Here we mount the router config from the host system. Take a closer look at `-v` flag.
+
+```bash
+docker run \
+    --name cosmo-router \
+    -e GRAPH_API_TOKEN=<router_api_token> \
+    -e LISTEN_ADDR=0.0.0.0:3002 \
+    -v config.yaml:/config.yaml # Mount the config in the same location as the binary
+    -p 3002:3002 \
+    ghcr.io/wundergraph/cosmo/router:latest
+```
+
+### Kubernetes
+
+In Kubernetes we have the concept of volumes and volumeMounts to realize the same behaviour as in docker.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+        - name: router
+          volumeMounts: # Mount the config in the same location as the binary
+            - name: router-config
+              mountPath: /config.yaml
+              subPath: config.yaml
+      volumes: # Create a volume from a configMap
+        - name: router-config
+          configMap:
+            name: myConfigMap
+```
+
+## Custom Image
+
+In some scenarios, you have to provide a custom Dockerfile, e.g., when you need to build your custom Router binary. Here is an example of how the Dockerfile can look.
+
+```docker
+FROM --platform=${BUILDPLATFORM} golang:1.21 as builder
+
+ARG TARGETOS
+ARG TARGETARCH
+
+ARG VERSION=dev
+ENV VERSION=$VERSION
+
+WORKDIR /app/
+
+# Copy only the files required for go mod download
+COPY go.* .
+
+# Download dependencies
+RUN go mod download
+
+# Copy the rest of the files
+COPY . .
+
+# Run tests
+RUN make test
+
+# Build router
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -trimpath -ldflags "-extldflags -static -X github.com/wundergraph/cosmo/router/core.Version=${VERSION}" -a -o router cmd/router/main.go
+
+FROM --platform=${BUILDPLATFORM} gcr.io/distroless/base-debian12
+
+COPY --from=builder /app/router /router
+
+CMD ["/router"]
+
+EXPOSE 3002
+```
+
+If you are wondering about the `BUILDPLATFORM`, `TARGETOS`, `TARGETARCH` arguments, those are needed when building multi-arch images. You can remove them if you don't need them.
