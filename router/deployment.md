@@ -120,7 +120,7 @@ docker run \
 
 ### Kubernetes
 
-In Kubernetes we have the concept of volumes and volumeMounts to realize the same behaviour as in docker.
+In Kubernetes, we have the concepts of volumes and volumeMounts to realize the same behavior as in Docker. Below is a configuration example for the volume only.
 
 ```yaml
 apiVersion: apps/v1
