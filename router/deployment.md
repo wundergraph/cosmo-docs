@@ -113,7 +113,7 @@ docker run \
     --name cosmo-router \
     -e GRAPH_API_TOKEN=<router_api_token> \
     -e LISTEN_ADDR=0.0.0.0:3002 \
-    -v config.yaml:/config.yaml # Mount the config in the same location as the binary
+    -v config.yaml:/config.yaml \ # Mount the config in the same location as the binary
     -p 3002:3002 \
     ghcr.io/wundergraph/cosmo/router:latest
 ```
@@ -168,7 +168,7 @@ COPY . .
 RUN make test
 
 # Build router
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -trimpath -ldflags "-extldflags -static -X github.com/wundergraph/cosmo/router/core.Version=${VERSION}" -a -o router cmd/router/main.go
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -trimpath -ldflags "-extldflags -static -X github.com/wundergraph/cosmo/router/core.Version=${VERSION}" -a -o router cmd/custom/main.go
 
 FROM --platform=${BUILDPLATFORM} gcr.io/distroless/base-debian12
 
