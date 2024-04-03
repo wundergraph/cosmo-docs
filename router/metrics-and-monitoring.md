@@ -123,19 +123,6 @@ For Prometheus integration, all extension codes will be consolidated into a comm
 router_http_requests_error_total{wg_subgraph_error_extended_code="AUTHORIZED,YOUR_ERROR_CODE"}
 ```
 
-You can use a relabel config to create multiple metrics from the comma-separated label value.
-
-```yaml
-scrape_configs:
-  - job_name: dummy
-    consul_sd_configs:
-      - server: 'localhost:8500'
-    relabel_configs:
-      - source_labels: [wg_subgraph_error_extended_code]
-        regex: ([^,]+)
-        action: keep
-```
-
 ## Prometheus
 
 To get a list of all Prometheus metrics, we advise navigating to the Prometheus endpoint [http://127.0.0.1:8088/metrics](http://127.0.0.1:8088/metrics). However, it's important to initiate a request first; failing to do so will result in no request metrics being displayed.
