@@ -29,7 +29,8 @@ We collect the following metrics to get useful insights in the HTTP traffic.
 * **`router.http.response.content_length`**: Total bytes of incoming requests
 * **`router.http.request.content_length`**: Total bytes of outgoing responses
 * **`router.http.request.duration_milliseconds`**: End-to-end duration of incoming requests in (histogram)
-* **`router.http.requests.in_flight.count`**: Number of in-flight requests. (Only static and subgraph dimensions are attached)
+* **`router.http.requests.in_flight`**: Number of in-flight requests. (Only static and subgraph dimensions are attached)
+* **`router.http.requests.error`**: Total number of failed requests.
 
 #### List of asynchronous instruments
 
@@ -83,6 +84,8 @@ All metrics are tracked along the following dimensions:
 
 * **`wg.subgraph.name`**: The name of the subgraph
 * **`wg.subgraph.id`**: The ID of the subgraph
+* **`wg.subgraph.error.extended_code`**: The GraphQL extension code from the downstream service. Only set for the `Engine - Fetch` span and **`router.http.requests.error`** metric.
+* **`wg.subgraph.error.message`**: The GraphQL error message from the downstream service. Only set for the `Engine - Fetch` span and **`router.http.requests.error`** metric.
 
 ### Resource attributes
 
@@ -109,6 +112,29 @@ telemetry:
 {% endcode %}
 
 Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts. If not specified, a random unique ID is used.
+
+## Subgraph errors
+
+When the router sends a request to your subgraphs and encounters a failure, we capture each subgraph error as individual OpenTelemetry (OTEL) events associated with the **`Engine - Fetch`** Span. These events include details such as the subgraph name, ID, error message, and extension code (if available). Additionally, we increment the **`router.http.requests.error`** metric.
+
+For Prometheus integration, all extension codes will be consolidated into a comma-separated list and placed under the label `wg_subgraph_error_extended_code`. This is presently a constraint [#5136](https://github.com/open-telemetry/opentelemetry-go/issues/5136) dictated by how OTEL exports data in the Prometheus format. We are actively developing an improved version that will enable querying all metrics by their unique error codes. In the interim, you will need to either perform a pre-aggregation step or query all codes. For example:&#x20;
+
+```promql
+router_http_requests_error_total{wg_subgraph_error_extended_code="AUTHORIZED,YOUR_ERROR_CODE"}
+```
+
+You can use a relabel config to create multiple metrics from the comma-separated label value.
+
+```yaml
+scrape_configs:
+  - job_name: dummy
+    consul_sd_configs:
+      - server: 'localhost:8500'
+    relabel_configs:
+      - source_labels: [wg_subgraph_error_extended_code]
+        regex: ([^,]+)
+        action: keep
+```
 
 ## Prometheus
 
