@@ -117,12 +117,6 @@ Please use meaningful names in the Studio to ensure clarity. The instance ID is 
 
 When the router sends a request to your subgraphs and encounters a failure, we capture each subgraph error as individual OpenTelemetry (OTEL) events associated with the **`Engine - Fetch`** Span. These events include details such as the subgraph name, ID, error message, and extension code (if available). Additionally, we increment the **`router.http.requests.error`** metric.
 
-For Prometheus integration, all extension codes will be consolidated into a comma-separated list and placed under the label `wg_subgraph_error_extended_code`. This is presently a constraint [#5136](https://github.com/open-telemetry/opentelemetry-go/issues/5136) dictated by how OTEL exports data in the Prometheus format. We are actively developing an improved version that will enable querying all metrics by their unique error codes. In the interim, you will need to either perform a pre-aggregation step or query all codes. For example:&#x20;
-
-```promql
-router_http_requests_error_total{wg_subgraph_error_extended_code="AUTHORIZED,YOUR_ERROR_CODE"}
-```
-
 ## Prometheus
 
 To get a list of all Prometheus metrics, we advise navigating to the Prometheus endpoint [http://127.0.0.1:8088/metrics](http://127.0.0.1:8088/metrics). However, it's important to initiate a request first; failing to do so will result in no request metrics being displayed.
