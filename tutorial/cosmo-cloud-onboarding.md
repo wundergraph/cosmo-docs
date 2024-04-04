@@ -19,6 +19,14 @@ To better understand your use case and ensure that the onboarding process is as 
 In order to complete this tutorial you need to have Node.js 16 (or higher), npm, and docker installed. This tutorial doesn't provide demo subgraphs. Prepare one before you continue.
 {% endhint %}
 
+## Prerequisites
+
+* Create an account at [https://cosmo.wundergraph.com/login](https://cosmo.wundergraph.com/login)
+
+{% hint style="info" %}
+When onboarding a team, it is more efficient for the organization's administrator to invite individuals on the "Members" page rather than having everyone sign up manually.
+{% endhint %}
+
 ## Install the CLI
 
 Run the following command to install our CLI.
@@ -27,21 +35,13 @@ Run the following command to install our CLI.
 npm install -g wgc@latest
 ```
 
-Before you can run any command you need to export the following environment variables to authenticate against Cosmo Cloud.
+Log-in with the following command.
 
 ```bash
-# You can put this in your .bashrc or .zshrc
-export COSMO_API_KEY=${api_key}
-# Validate if the key is read correctly
-wgc --version
+wgc auth login
 ```
 
-You should see the following output **without any warnings:**
-
-```bash
-❯ wgc --version
-0.6.1
-```
+This will open your browser, and you are instructed to log into your Cosmo account. Once logged in, you get a prompt in your terminal to select your organization.
 
 ## Create a federated graph
 
