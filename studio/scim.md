@@ -6,7 +6,7 @@ description: >-
 
 # SCIM
 
-SCIM, known as System for Cross-domain Identity Management, is a standardized protocol that automates user identity management across various systems and applications. It achieves this through RESTful APIs, facilitating smooth communication between identity providers and service providers.&#x20;
+SCIM, known as System for Cross-domain Identity Management, is a standardized protocol that automates user identity management across various systems and applications. It achieves this through RESTful APIs, facilitating smooth communication between identity providers e.g. Okta and service providers like Cosmo.
 
 SCIM enables organizations to automate tasks like user provisioning, updating, and de-provisioning, thereby streamlining administrative processes. As of today we support the following integration:
 
