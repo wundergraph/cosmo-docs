@@ -1,8 +1,14 @@
+---
+description: >-
+  Provision and manage users in your workspace with the System for Cross-domain
+  Identity Management (SCIM) standard.
+---
+
 # SCIM
 
-Consolidating workforce management into a single platform proves more efficient than handling it separately for each product utilized. SCIM aims to synchronize identity data seamlessly between the company's identity provider and its array of employed products.
+SCIM, known as System for Cross-domain Identity Management, is a standardized protocol that automates user identity management across various systems and applications. It achieves this through RESTful APIs, facilitating smooth communication between identity providers and service providers.&#x20;
 
-SCIM provides the following:-
+SCIM enables organizations to automate tasks like user provisioning, updating, and de-provisioning, thereby streamlining administrative processes. As of today we support the following integration:
 
 1. Create users
    * When a user is added to the SCIM app, it creates the user on Cosmo and then adds them to their respective organization.
