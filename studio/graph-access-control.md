@@ -11,7 +11,7 @@ description: >-
 Resource-Based Access Control is an enterprise feature, please contact us to enable it.
 {% endhint %}
 
-Resource-Based Access Control (RBAC) is a method for restricting system access to authorized users, based on the resources they need to access. In this context, we are referring specifically to **federated-** and **sub-graphs**. While a user can always see any resource in his organization, not everyone can modify it. Graph Access Control works primarily in combination with [API-Keys](api-keys.md).
+Resource-Based Access Control (RBAC) is a method for restricting system access to authorized users, based on the resources they need to access. In this context, we are referring specifically to **federated-** and **sub-graphs**. While a user can always see any resource in his organization, not everyone can modify it. Graph Access Control works primarily in combination with [API-Keys](api-keys/).
 
 ### Enable Access-Control
 
