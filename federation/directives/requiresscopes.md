@@ -9,17 +9,21 @@ description: >-
 
 ## Minimum requirements
 
-<table><thead><tr><th width="349">Package</th><th>Minimum version</th></tr></thead><tbody><tr><td>router</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/router%400.60.0">0.60.0</a></td></tr><tr><td>controlplane</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/controlplane%400.58.0">0.58.0</a></td></tr><tr><td>wgc</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/wgc%400.39.0">0.39.0</a></td></tr></tbody></table>
+<table><thead><tr><th width="349">Package</th><th>Minimum version</th></tr></thead><tbody><tr><td>controlplane</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/controlplane%400.58.0">0.58.0</a></td></tr><tr><td>router</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/router%400.60.0">0.60.0</a></td></tr><tr><td>wgc</td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/wgc%400.39.0">0.39.0</a></td></tr></tbody></table>
 
 Make sure you have correctly set up [Authentication & Authorization](../../router/authentication-and-authorization.md).
 
 ## Definition
 
+{% code fullWidth="false" %}
 ```graphql
-directive @requiresScopes(scopes: [[openfed__Scope!]!]!) on ENUM | FIELD_DEFINITION | INTERFACE | OBJECT | SCALAR
+directive @requiresScopes(
+    scopes: [[openfed__Scope!]!]!
+) on ENUM | FIELD_DEFINITION | INTERFACE | OBJECT | SCALAR
 
 scalar openfed__Scope
 ```
+{% endcode %}
 
 ## Arguments
 
@@ -61,11 +65,17 @@ If an agent wished to select Query.fieldTwo, it would require BOTH the "read:fie
 
 Consider the following @requiresScopes declared on Query.fieldThree
 
+{% code fullWidth="false" %}
 ```graphql
 type Query {
-  fieldThree: String! @requiresScopes(scopes: [["read:field", "read:scalar"], ["read:query", "read:private"], ["read:all"]])
+  fieldThree: String! @requiresScopes(scopes: [
+    ["read:field", "read:scalar"],
+    ["read:query", "read:private"],
+    ["read:all"]
+  ])
 }
 ```
+{% endcode %}
 
 If an agent wished to select Query.fieldThree, it would require at least one of the following sets of scopes: (("read:field" AND "read:scalar") OR ("read:query" AND "read:private") OR ("read:all"))
 
@@ -330,7 +340,9 @@ These scopes are combined through the "AND" operator:
 ```graphql
 # subgraph-e (normalized)
 type Query {
-  enumField: Enum! @requiresScopes(scopes: [["read:private", "read:query", "read:enum"]])
+  enumField: Enum! @requiresScopes(scopes: [
+    ["read:private", "read:query", "read:enum"]
+  ])
 }
 
 enum Enum {
@@ -342,16 +354,21 @@ But sometimes, a field definition must combine more complicated declarations of 
 
 Consider the following example:
 
+{% code fullWidth="false" %}
 ```graphql
 # subgraph-f (raw)
 type Query @requiresScopes(scopes: [["read:query"], ["read:root"]]) {
-  enumField: Enum! @requiresScopes(scopes: [["read:private", "read:field"], ["read:private", "read:object"]])
+  enumField: Enum! @requiresScopes(scopes: [
+    ["read:private", "read:field"],
+    ["read:private", "read:object"]
+  ])
 }
 
 enum Enum @requiresScopes(scopes: [["read:enum"]]) {
   VALUE
 }
 ```
+{% endcode %}
 
 In this instance, the field definition Query.enumField is once again "inheriting" two more declarations of @requiresScopes. But this time, there are multiple sets of OR and AND scopes, and each set of OR scopes is required by each _other_ set of OR scopes.
 
@@ -376,16 +393,23 @@ The results are four new sets representing AND scopes, and each set of AND scope
 
 Which would appear in the normalized subgraph like so:
 
+{% code fullWidth="false" %}
 ```graphql
 # subgraph-f (normalized)
 type Query {
-  enumField: Enum! @requiresScopes(scopes: [["read:private", "read:field", "read:query", "read:enum"], ["read:private", "read:field", "read:root", "read:enum"], ["read:private", "read:object", "read:query", "read:enum"], ["read:private", "read:object", "read:root", "read:enum"]])
+  enumField: Enum! @requiresScopes(scopes: [
+    ["read:private", "read:field", "read:query", "read:enum"],
+    ["read:private", "read:field", "read:root", "read:enum"],
+    ["read:private", "read:object", "read:query", "read:enum"],
+    ["read:private", "read:object", "read:root", "read:enum"]
+  ])
 }
 
 enum Enum {
   VALUE
 }
 ```
+{% endcode %}
 
 ## Federation
 

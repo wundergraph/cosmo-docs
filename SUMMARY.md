@@ -19,11 +19,16 @@
 
 ## Federation
 
+* [Federation Compatibility Matrix](federation/federation-compatibility-matrix.md)
 * [Directives](federation/directives/README.md)
   * [@shareable](federation/directives/shareable.md)
   * [@authenticated](federation/directives/authenticated.md)
   * [@requiresScopes](federation/directives/requiresscopes.md)
-* [Federation Compatibility Matrix](federation/federation-compatibility-matrix.md)
+* [Event-Driven Federated Subscriptions](federation/event-driven-federated-subscriptions/README.md)
+  * [The Event-Driven Graph (composition)](federation/event-driven-federated-subscriptions/the-event-driven-graph-composition.md)
+  * [NATS Connector](federation/event-driven-federated-subscriptions/nats-connector/README.md)
+    * [Router configuration](federation/event-driven-federated-subscriptions/nats-connector/router-configuration.md)
+    * [Stream and consumer configuration](federation/event-driven-federated-subscriptions/nats-connector/stream-and-consumer-configuration.md)
 
 ## CLI
 
