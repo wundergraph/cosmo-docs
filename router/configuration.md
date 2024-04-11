@@ -713,7 +713,7 @@ engine:
 
 ### Rate Limiting
 
-Configure rate limiting on a per-request basis.
+Configures a rate limiter on the outgoing subgraphs requests. When enabled, a rate of 10 req/s with a burst of 10 requests is configured.
 
 {% hint style="info" %}
 The rate limiter requires Redis version 3.2 or newer since it relies on [replicate\_commands](https://redis.io/commands/eval#replicating-commands-instead-of-scripts) feature. ElastiCache for Redis only works in non-clustered mode. You can enable a failover instance to achieve high availability.
