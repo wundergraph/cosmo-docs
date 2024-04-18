@@ -29,6 +29,10 @@ headers:
         named: "X-User-Id"
         default: "123"             # Set the value when the header was not set
         
+      - op: "propagate"
+        named: "X-Test-1"
+        rename: "X-Test"           # Rewrites the header from X-Test-1 to X-Test
+        
   subgraphs:
     specific-subgraph: # Will only affect this subgraph
       request:
@@ -50,6 +54,8 @@ Currently, we support the following header rules:
 * **propagate** - Forwards all matching client request headers to the subgraphs. You can choose between one of the following matchers:
   * **named** - It exactly matches on the header name.
   * **matching -** Regex matches on the header name. You can use[ regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router _never_ propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop\_headers) (such as `Connection`) when propagating by regex.
+  * **rename**: Replaces the identified header based on its name or matching criteria and transfers the value to the newly specified header.
+  * **default**: Fallback to this value when the `named`, `matching` or `rename` header could not be found.
 
 {% hint style="warning" %}
 Go canonicalize headers by default e.g. `x-my-header` to `X-My-Header.` Write your rule accordingly or use **`(?i)`**`^X-Test-.*` flags to make your regex case insensitive.
