@@ -100,6 +100,8 @@ The specific resource recommendations depend on your constraints, but we have ob
 * 3 instances for high availability.
 * Each instance is equipped with 2 CPUs and 1GB of RAM.
 
+Thanks to the utilization of Go and internal optimizations, the router demonstrates strong vertical scalability in relation to CPU and memory.
+
 ## Custom Config
 
 In Docker and Kubernetes, you can mount configuration files. In that way, you don't have to build a custom Docker image. By default, the router looks for a config at the location where it starts. This location is `/config.yaml` in our official Docker image. You can overwrite the path by setting the `CONFIG_PATH` environment variable.
