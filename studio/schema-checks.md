@@ -6,11 +6,12 @@ description: >-
 
 # Schema Checks
 
-A schema check allows you to validate if a proposed schema change will produce any error before shipping it to production. We differentiate between three different kinds of errors:
+A schema check allows you to validate if a proposed schema change will produce any error before shipping it to production. We differentiate between four different kinds of errors:
 
 1. **Composition errors:** Describes if the proposed schema can be composed with all other subgraphs in the federated graph. It will never be possible to publish a schema that has composition errors because it would result in a non-executable plan for the router.
 2. **Breaking Change Detection:** Describes if the proposed schema is free of changes that break existing client operations. You can't ship breaking changes except you force them manually through an "Override" or automatically by using "[Operations Check](schema-checks.md#operation-checks)" see below.
 3. **Operations Check:** Describes if the proposed schema affects any client operations based on real usage data. This is done by sending schema usage traffic to [Cosmo Cloud](../deployments-and-hosting/cosmo-cloud.md) from your routers. If you propose a breaking change and no active clients use the affected schema changes the check will pass.
+4. **Lint Check**: Describes if the proposed schema is free of lint errors that are against your lint configuration.
 
 You can run schema checks with [`wgc subgraph check`](../cli/subgraph/check.md) in the CI and optionally with native [Github integration](../tutorial/pr-based-workflow-for-federation.md). After you have identified the possible effects of your changes you can publish them to your router with [`wgc subgraph publish`](../cli/subgraph/publish.md)  .
 
@@ -62,4 +63,10 @@ Operations Check is not performed if there are no breaking changes in your propo
 ### Operation Details
 
 If you click on a specific operation, you can view all the changes that have impacted it. Each change is linked to the schema explorer and the field usage page. By default, the field usage opened from here displays the traffic during the timeframe of the check.
+
+### Lint Checks
+
+Lists all the lint errors/warnings found in the proposed schema.
+
+<figure><img src="../.gitbook/assets/image (107).png" alt=""><figcaption></figcaption></figure>
 
