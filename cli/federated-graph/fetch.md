@@ -14,7 +14,7 @@ npx wgc federated-graph fetch <name>
 
 ## Description
 
-The `npx wgc federated-graph fetch` command allows you to fetch the latest valid Schema Definition Language (SDL) of a federated graph from the Cosmo platform's control plane. The fetched SDL represents the unified schema of the federated graph. You can use this command to retrieve the SDL and, if needed, pipe the output to a file.
+The `npx wgc federated-graph fetch` command allows you to fetch the latest valid Schema Definition Language (SDL) of a federated graph and all its subgraphs and the latest valid router config of a federated graph from the Cosmo platform's control plane. The fetched SDL represents the unified schema of the federated graph. You can use this command to retrieve the SDL.
 
 ## Parameters
 
@@ -23,7 +23,31 @@ The `npx wgc federated-graph fetch` command allows you to fetch the latest valid
 ## Options
 
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
-* `-o, --out` : Destination file for the SDL. Prints to standard output if not provided.
+* `-o, --out` : Destination folder for the SDL of the federated graph and its subgraphs.
+* `-a, --apollo-compatibility` : Enable Apollo compatibility to generate the composition configs and script to generate schema using rover.
+
+## Apollo Compatibility
+
+This mode will help smooth migration from the Apollo router to the WunderGraph Cosmo router. Initially, the users can use the schema registry from Cosmo and use this mode to update their routers/gateways. Later they can move from Apollo Router/Gateway to WunderGraph Router.
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption><p>Apollo Compatibility mode</p></figcaption></figure>
+
+## Output
+
+The output of this command is stored in the structure mentioned below
+
+* **\<graph-name>-\<namespace>:** The top-level folder which contains 2 folders, subgraphs and supergraphs.
+* **subgraphs** folder: This folder contains the files of all the subgraph's SDLs.
+* **supergraph** folder: This folder contains the SDL, router config of the federated graph.
+  * cosmoSchema.graphql - The SDL of the federated graph.
+  * cosmoConfig.json - The router config of the federated graph.
+
+If **Apollo-compatibility mode** is enabled, the output will contain a few more folders/files, they are as follows:-
+
+* **cosmo-composition.yaml:** The Cosmo federated graph configuration file includes configuration options for each of your subgraphs. This file can be used to generate the router config using the [compose](../router/compose.md) command.
+* **rover-composition.yaml:** The Apollo supergraph configuration file includes configuration options for each of your subgraphs.
+* **scripts** folder
+  * apollo.sh - This script is used to generate the supergraph schema using rover, and the generated file would be in the **supergraph** folder and the name of the file would be '**apolloSchema.graphql**'.
 
 ## Examples
 
@@ -31,15 +55,10 @@ The `npx wgc federated-graph fetch` command allows you to fetch the latest valid
 npx wgc federated-graph fetch production
 ```
 
-Fetch the latest valid SDL of the federated graph named "production."
+Fetches the latest valid SDL and router config of the federated graph named "production" and SDL of all its subgraphs.
 
 ```bash
-npx wgc federated-graph fetch production > production-schema.graphql
+npx wgc federated-graph fetch production --apollo-compatibility
 ```
 
-Fetch the latest valid SDL of the federated graph named "production" and save it to a file named "production-schema.graphql."
-
-## Notes
-
-* The `npx wgc federated-graph fetch` command interacts with the Cosmo platform's control plane to fetch the latest valid SDL of the specified federated graph. Ensure that you have the necessary permissions to perform this operation.
-* The fetched SDL represents the unified schema of the federated graph, which includes the composition of multiple subgraphs.
+Fetches the latest valid SDL and router config of the federated graph named "production" and SDL of all its subgraphs. As Apollo compatibility mode is enabled, it generates the extra files mentioned above.
