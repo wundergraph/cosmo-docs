@@ -733,9 +733,9 @@ The rate limiter requires Redis version 3.2 or newer since it relies on [replica
 
 ### Subgraph Error Propagation
 
-The configuration for the subgraph error propagation. The subgraph error propagation is used to propagate the errors from the subgraphs to the client.
+The configuration for the subgraph error propagation.  Errors can be exposed to the client in a "wrapped" form to hide Subgraph internals, or it's possible to "pass-through" Subgraph errors directly to the client.
 
-<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SUBGRAPH_ERROR_PROPAGATION_ENABLED</td><td>enabled</td><td>false</td><td>Enable error propagation. If the value is true, Subgraph errors will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_STATUS_CODES</td><td>status_codes</td><td>false</td><td>Propagate Subgraph status codes. If the value is true, Subgraph Response status codes will be propagated to the client.</td><td>false</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SUBGRAPH_ERROR_PROPAGATION_ENABLED</td><td>enabled</td><td>false</td><td>Enable error propagation. If the value is true, Subgraph errors will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_STATUS_CODES</td><td>status_codes</td><td>false</td><td>Propagate Subgraph status codes. If the value is true, Subgraph Response status codes will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_MODE</td><td>mode</td><td>false</td><td>The mode of error propagation. The supported modes are 'wrapped' and 'pass-through'. The 'wrapped' mode wraps the error in a custom error object to hide internals. The 'pass-through' mode returns the error as is from the Subgraph.</td><td>wrapped</td></tr></tbody></table>
 
 #### Example YAML configuration:
 
@@ -745,6 +745,7 @@ version: "1"
 subgraph_error_propagation:
     enabled: true
     status_codes: true
+    mode: "wrapped" # or "pass-through"
 ```
 
 ### Security
