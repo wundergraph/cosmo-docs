@@ -32,7 +32,7 @@ The `npx wgc federated-graph update` command allows you to update an existing fe
 
 `--unset-label-matcher`: This will remove all label matchers. It will not add new label matchers if both this and --label-matchers option is passed.
 
-`--admission-webhook-url <url>` the admission webhook url. This is the url that the controlplane will use to implement admission control for the federated graph.
+`--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 
 `--readme <path-to-readme>` : The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
 
