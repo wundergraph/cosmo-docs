@@ -63,7 +63,7 @@ Upon receiving the signature, we will associate it with the artifact. The subseq
 ```yaml
 version: '1'
 graph: 
-  sign_key: 'sign_key' # or AUTH_SIGNATURE_KEY 
+  sign_key: 'sign_key' # or GRAPH_CONFIG_SIGN_KEY 
 ```
 {% endcode %}
 
