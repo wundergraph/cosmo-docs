@@ -30,7 +30,7 @@ The `npx wgc federated-graph create` command allows you to create a new federate
 
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `-r, --routing-url` :The routing url of your router. This is the url that the router will be accessible at.
-* `--admission-webhook-url <url>` the admission webhook url. This is the url that the controlplane will use to implement admission control for the federated graph.
+* `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 * `--label-matcher [labels...]` : The label matcher is used to select the subgraphs to federate. The labels are passed in the format = =. They are separated by spaces and grouped using comma. Example: --label-matcher team=A,team=B env=prod
 * `--readme` : The markdown file which describes the federated graph.
 

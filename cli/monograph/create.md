@@ -27,7 +27,7 @@ The `npx wgc monograph create` command allows you to create a new monograph on t
 ## Other Options
 
 * `-n, --namespace` : The namespace of the monograph (Default: "default").
-* `--admission-webhook-url <url>` the admission webhook url. This is the url that the controlplane will use to implement admission control for the  monograph.
+* `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 * `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
 * `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.

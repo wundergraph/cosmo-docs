@@ -15,7 +15,7 @@ Available since version [0.74.0](https://github.com/wundergraph/cosmo/releases/t
 
 The router configuration includes a Graph Plan, which encapsulates all the necessary information for planning and executing queries. It also specifies the URLs of your subgraphs. This configuration can be periodically fetched from the CDN or downloaded via `wgc` cli to the file system. In either scenario, the content originates from our platform. It is crucial to detect and mitigate tampering attacks, where an adversary might alter the configuration to reroute your traffic to an unauthorized server. To address this concern, we have developed a feature named "Config Validation & Signing" to identify and prevent such attacks.
 
-When setting up a federated graph, you must use the `--admission-webhook-url` option, pointing it to your publicly accessible admission server. **For security reasons, ensure your admission server uses HTTPS as transport prototcol.**
+When setting up a federated graph, you must use the `--admission-webhook-url` option, pointing it to your publicly accessible admission server. Example: `https://admission.example.com` (without the `/validate-config` path name). **For security reasons, ensure your admission server uses HTTPS as transport prototcol.**
 
 Our system will invoke the `/validate-config` handler on your server each time a composition occurs. Only in case of a successful composition and proper response of your admission hook the config is made available to your router.
 
