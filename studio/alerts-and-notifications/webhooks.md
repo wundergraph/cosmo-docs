@@ -68,3 +68,16 @@ function verifySignature(body, receivedSignature, secret) {
 // Usage:
 const isVerified = verifySignature(JSON.stringify(req.body), req.headers['x-cosmo-signature-256'], YOUR_SECRET);
 ```
+
+## How to set up Webhook notifications
+
+* Navigate to the notifications page on Cosmo
+* In the Webhooks tab, click on the **Create** button.
+
+<figure><img src="../../.gitbook/assets/image (109).png" alt=""><figcaption></figcaption></figure>
+
+* Provide the endpoint of the webhook, and the webhook secret for verification and then select the events you want to be notified of.
+
+<figure><img src="../../.gitbook/assets/image (110).png" alt=""><figcaption></figcaption></figure>
+
+* Lastly, click on the **Create** button.
