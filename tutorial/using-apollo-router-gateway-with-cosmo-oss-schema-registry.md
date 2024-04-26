@@ -25,7 +25,7 @@ As the router/gateway can be migrated gradually, this method becomes the fastest
 Now, let's walk through the steps with the help of a [demo project](https://github.com/wundergraph/apollo-federation-compatibility-demo)
 
 * Create an [API key](../studio/api-keys/) on Cosmo.
-* Let's set up the graphs on Cosmo by running the command `make setup-cosmo <api-key>`.
+* Let's set up the graphs on Cosmo by running the command `make setup-cosmo COSMO_API_KEY=<api-key>`.
 * Populate the Cosmo API key and the webhook secret as environment variables in the Webhook-app folder.
 * Start the webhook server by running the command `make run-webhook-app` from the root.
 * Set up the webhook alert on Cosmo, by providing the endpoint, and the secret and then select the FEDERATED\_GRAPH\_SCHEMA\_UPDATED event with the above-created graph.
