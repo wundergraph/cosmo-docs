@@ -17,7 +17,7 @@ Cosmo enables teams and Organizations to manage and scale (federated) GraphQL Ar
 
 WunderGraph Cosmo can easily run locally, on-premises, or in the cloud as a managed service. Cosmo is a batteries-included solution, covering everything from routing to analytics with the whole platform.
 
-Cosmo supports monolithic GraphQL APIs as well as Federation v1 and v2 including Subscriptions.
+Cosmo supports monolithic GraphQL APIs as well as Federation v1 and v2 including Subscriptions
 
 
 
