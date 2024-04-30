@@ -4,17 +4,17 @@ description: >-
   file. This is primarily used for debugging purposes
 ---
 
-# Fetch
+# Fetch-Schema
 
 ## Usage
 
 ```bash
-npx wgc monograph fetch <name>
+npx wgc monograph fetch-schema <name>
 ```
 
 ## Description
 
-The `npx wgc monograph fetch` command allows you to fetch the latest valid Schema Definition Language (SDL) of a monograph from the Cosmo platform's control plane. You can use this command to retrieve the SDL and, if needed, pipe the output to a file.
+The `npx wgc monograph fetch-schema` command allows you to fetch the latest valid Schema Definition Language (SDL) of a monograph from the Cosmo platform's control plane. You can use this command to retrieve the SDL and, if needed, pipe the output to a file.
 
 ## Parameters
 
@@ -28,17 +28,17 @@ The `npx wgc monograph fetch` command allows you to fetch the latest valid Schem
 ## Examples
 
 ```bash
-npx wgc monograph fetch production
+npx wgc monograph fetch-schema production
 ```
 
 Fetch the latest valid SDL of the monograph named "production."
 
 ```bash
-npx wgc monograph fetch production -o production-schema.graphql
+npx wgc monograph fetch-schema production -o production-schema.graphql
 ```
 
 Fetch the latest valid SDL of the monograph named "production" and save it to a file named "production-schema.graphql."
 
 ## Notes
 
-* The `npx wgc monograph fetch` command interacts with the Cosmo platform's control plane to fetch the latest valid SDL of the specified monograph. Ensure that you have the necessary permissions to perform this operation.
+* The `npx wgc monograph fetch-schema` command interacts with the Cosmo platform's control plane to fetch the latest valid SDL of the specified monograph. Ensure that you have the necessary permissions to perform this operation.

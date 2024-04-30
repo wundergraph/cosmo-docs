@@ -1,7 +1,7 @@
 ---
 description: >-
-  Fetches the latest valid SDL of a federated graph. The output can be piped to
-  a file. This is primarily used for debugging purposes
+  Fetches the latest valid SDL of a federated graph and all its subgraphs and
+  the latest valid router config of a federated graph.
 ---
 
 # Fetch
@@ -14,7 +14,7 @@ npx wgc federated-graph fetch <name>
 
 ## Description
 
-The `npx wgc federated-graph fetch` command allows you to fetch the latest valid Schema Definition Language (SDL) of a federated graph and all its subgraphs and the latest valid router config of a federated graph from the Cosmo platform's control plane. The fetched SDL represents the unified schema of the federated graph. You can use this command to retrieve the SDL.
+The `npx wgc federated-graph fetch` command allows you to download the latest valid Schema Definition Language (SDL) of a federated graph and all its subgraphs and the latest valid router config of a federated graph from the Cosmo platform's control plane. The fetched SDL represents the unified schema of the federated graph. You can use this command to retrieve the SDL.
 
 ## Parameters
 
