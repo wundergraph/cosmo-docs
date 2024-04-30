@@ -71,7 +71,32 @@ The router will then calculate the artifact's hash locally and compare it to the
 
 Instead of polling for updates from the CDN, the Graph Plan can also be passed via a file to the router. To leverage the same validation and signing mechanism in this approach, you must supply the `--graph-sign-key` parameter to the [`wgc router fetch`](../../cli/router/fetch.md) command as well. This ensures consistency in security measures, whether the configuration is obtained from the CDN or directly from a file.
 
-## Example Implementation
+## Example Router Config Validation
 
-The admission webook handler has to be publicly available. We provide an [example](https://github.com/wundergraph/cosmo/tree/main/admission-server) implementation In Hono, a framework that can be deployed to multiple platform like Cloudflare Worker, Fastly, Deno, Bun or Node.js.
+In this example, we demonstrate how to access the data-source configurations that are used to configure the subgraphs in the router. You could implement a check that ensures all subgraph URLs belong to a domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio.
 
+```typescript
+import { RouterConfig } from '@wundergraph/cosmo-connect/dist/node/v1/node_pb';
+
+const config = RouterConfig.fromJsonString(configAsText);
+
+const datasources = config.engineConfig?.datasourceConfigurations || [];
+
+for (const ds of datasources) {
+  const url = ds.customGraphql?.fetch?.url?.staticVariableContent;
+  // Check here if the url is valid for the fetch
+  
+  // return c.json({ error: 'Invalid url' }, 400);
+
+  if (ds.customGraphql?.subscription?.enabled) {
+    const url = ds.customGraphql.subscription.url?.staticVariableContent;
+    // Check here if the url is valid for the subscription
+    
+    // return c.json({ error: 'Invalid url' }, 400);
+  }
+}
+```
+
+## Example Server Implementation
+
+The admission webhook handler has to be publicly available. We provide an [example](https://github.com/wundergraph/cosmo/tree/main/admission-server) implementation In Hono, a framework that can be deployed to multiple platform like Cloudflare Worker, Fastly, Deno, Bun or Node.js.
