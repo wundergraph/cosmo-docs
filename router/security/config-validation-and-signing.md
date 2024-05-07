@@ -76,9 +76,9 @@ Instead of polling for updates from the CDN, the Graph Plan can also be passed v
 In this example, we demonstrate how to access the data-source configurations that are used to configure the subgraphs in the router. You could implement a check that ensures all subgraph URLs belong to a domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio.
 
 ```typescript
-import { RouterConfig } from '@wundergraph/cosmo-connect/dist/node/v1/node_pb';
+import { routerConfigFromJsonString } from '@wundergraph/cosmo-shared';
 
-const config = RouterConfig.fromJsonString(configAsText);
+const config = routerConfigFromJsonString(configAsText);
 
 const datasources = config.engineConfig?.datasourceConfigurations || [];
 
