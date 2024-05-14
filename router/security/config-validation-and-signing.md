@@ -15,7 +15,11 @@ Available since version [0.74.0](https://github.com/wundergraph/cosmo/releases/t
 
 The router configuration includes a Graph Plan, which encapsulates all the necessary information for planning and executing queries. It also specifies the URLs of your subgraphs. This configuration can be periodically fetched from the CDN or downloaded via `wgc` cli to the file system. In either scenario, the content originates from our platform. It is crucial to detect and mitigate tampering attacks, where an adversary might alter the configuration to reroute your traffic to an unauthorized server. To address this concern, we have developed a feature named "Config Validation & Signing" to identify and prevent such attacks.
 
-When setting up a federated graph, you must use the `--admission-webhook-url` option, pointing it to your publicly accessible admission server. Example: `https://admission.example.com` (without the `/validate-config` path name). **For security reasons, ensure your admission server uses HTTPS as transport prototcol.**
+When setting up a federated graph, you must use the `--admission-webhook-url` option, pointing it to your publicly accessible admission server. Example: `https://admission.example.com` (without the `/validate-config` path name).
+
+{% hint style="warning" %}
+For security reasons, ensure your admission server uses HTTPS as transport prototcol.
+{% endhint %}
 
 Our system will invoke the `/validate-config` handler on your server each time a composition occurs. Only in case of a successful composition and proper response of your admission hook the config is made available to your router.
 
@@ -37,19 +41,23 @@ Webhook signature verification serves the same purpose as the signature verifica
 
 After you have calculated the hash, the expected response must have a 200 status code and contain the **HMAC-SHA256** signature:
 
+{% code title="200 OK" %}
 ```json
 {
     "signatureSha256": "3QYmdUS25ONvhWlm7K5ply65uvqoeGs4qxKWto5napo="
 }
 ```
+{% endcode %}
 
 Alternatively, you can return a 400 status code with an error property to signal a validation error:
 
+{% code title="400 BAD REQUEST" %}
 ```json
 {
     "error": "Invalid subgraph url detected"
 }
 ```
+{% endcode %}
 
 This will prevent the controlplane to deploy the composition. The error will be visible on the composition detail page in the Studio.
 
@@ -71,31 +79,64 @@ The router will then calculate the artifact's hash locally and compare it to the
 
 Instead of polling for updates from the CDN, the Graph Plan can also be passed via a file to the router. To leverage the same validation and signing mechanism in this approach, you must supply the `--graph-sign-key` parameter to the [`wgc router fetch`](../../cli/router/fetch.md) command as well. This ensures consistency in security measures, whether the configuration is obtained from the CDN or directly from a file.
 
-## Example Router Config Validation
+## Config Validation
 
-In this example, we demonstrate how to access the data-source configurations that are used to configure the subgraphs in the router. You could implement a check that ensures all subgraph URLs belong to a domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio.
+An attacker has various methods to influence the router's behavior. Depending on their intent, they might aim to cause downtime or steal data. From an economic perspective, it is more likely that an attacker seeks to steal sensitive information. Therefore, we will focus on sections detailing how to validate the most important configuration settings.
+
+### 1. Subgraph datasource URL's
+
+**Scenario**: An attacker change the subgraph URL to redirect customer traffic to a different server.
+
+**Impact**: <mark style="color:red;">HIGH</mark>❗️(Possible outage with data leak)
+
+**Action**: Implement a check that ensures all subgraph URLs belong to the same domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio. The exact check depends on your service configuration. If your subgraphs don't belong to the same domain, you can maintain an allowlist and compare it with all the urls we encounter in the config.&#x20;
 
 ```typescript
 import { routerConfigFromJsonString } from '@wundergraph/cosmo-shared';
 
 const config = routerConfigFromJsonString(configAsText);
+const companyDomain = "wundergraph.com";
 
 const datasources = config.engineConfig?.datasourceConfigurations || [];
 
-for (const ds of datasources) {
-  const url = ds.customGraphql?.fetch?.url?.staticVariableContent;
-  // Check here if the url is valid for the fetch
-  
-  // return c.json({ error: 'Invalid url' }, 400);
+try {
+  for (const ds of datasources) {
+    const url = ds.customGraphql?.fetch?.url?.staticVariableContent;
+    if (url) {
+      validateUrl(url);
+    }
 
-  if (ds.customGraphql?.subscription?.enabled) {
-    const url = ds.customGraphql.subscription.url?.staticVariableContent;
-    // Check here if the url is valid for the subscription
-    
-    // return c.json({ error: 'Invalid url' }, 400);
+    if (ds.customGraphql?.subscription?.enabled) {
+      const url = ds.customGraphql.subscription.url?.staticVariableContent;
+      if (url) {
+        validateUrl(url);
+      }
+    }
   }
+} catch (e: any) {
+  return c.json({ error: e.message }, 400);
+}
+
+function validateUrl(url: string): boolean {
+  const u = new URL('', url)
+
+  // Validate if https is used
+  if (!u.protocol.startsWith('http')) {
+     throw new Error('Invalid url, must be https');
+  }
+
+  // Validate if the hostname belongs to the organization
+  if (u.hostname !== companyDomain) {
+      throw new Error('Invalid url, must be a wundergraph url');
+  }
+
+  return false
 }
 ```
+
+{% hint style="info" %}
+We plan to encapsulate the most common validation rules into an NPM package, so you don't have to deal with the internal configuration structure. For now, please take inspiration from the examples and seek for help when things are not clear.
+{% endhint %}
 
 ## Example Server Implementation
 
