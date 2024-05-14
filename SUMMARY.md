@@ -149,6 +149,7 @@
 * [Security](router/security/README.md)
   * [TLS](router/security/tls.md)
   * [Config Validation & Signing](router/security/config-validation-and-signing.md)
+  * [Hardening Guide](router/security/hardening-guide.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
 * [Performance Debugging](router/performance-debugging.md)
