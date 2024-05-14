@@ -102,7 +102,7 @@ security:
 
 ## Disable Subscriptions / Mutation if not used
 
-If not used in production, subscriptions or mutation should be disabled to avoid any surprises.
+Ideally, you should never expose more than necessary. Sometimes this is unavoidable or you want to enforce it for security reasons. In that case, you can disable subscriptions or mutation to avoid any surprises.
 
 {% code title="router.yaml" %}
 ```yaml
