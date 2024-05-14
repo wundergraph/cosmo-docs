@@ -112,6 +112,22 @@ security:
 ```
 {% endcode %}
 
+## Enable TLS and HTTP/2
+
+To ensure a secure connection between your load balancer and router, you can enable [TLS](tls.md). When TLS is configured and your load balancer supports HTTP/2, all requests are upgraded. This enables all the benefits of the protocol, such as multiplexing.
+
+By default TLS is not used. The following configuration should be applied:
+
+{% code title="router.yaml" %}
+```yaml
+tls:
+  server:
+    enabled: true
+    key_file: ../your/key.pem
+    cert_file: ../your/cert.pem
+```
+{% endcode %}
+
 ## Log Level
 
 When deploying GraphQL services in production, it's crucial to manage logging effectively to balance between capturing essential information and minimizing performance overhead and storage consumption. For those reasons, we recommend to use the log level `ERROR` in production.
