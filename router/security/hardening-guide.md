@@ -18,7 +18,7 @@ introspection_enabled: false
 
 The development mode enables certain configuration for a better developer experience. Beside pretty logs it enables [ART](../advanced-request-tracing-art.md) for local development. ART can expose sensitive information and should never be used in a production environment without Cosmo Studio.
 
-By default the development mode disabled. The following configuration should be applied:
+By default the development mode is disabled. The following configuration should be applied:
 
 {% code title="router.yaml" %}
 ```yaml
