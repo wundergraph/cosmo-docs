@@ -41,7 +41,7 @@ graph:
 
 ## Enable Rate Limiting
 
-The router can protect your subgraphs from overloading by implementing a [GCRA](https://en.wikipedia.org/wiki/Generic\_cell\_rate\_algorithm) (leaky bucket) rate limiter based on Redis. We encourage everyone to use it unless you already have protection in place. The exact limits depend on your usage pattern.
+The router can protect your subgraphs from overloading by implementing a [GCRA](https://en.wikipedia.org/wiki/Generic\_cell\_rate\_algorithm) (leaky bucket) rate limiter based on Redis. We encourage everyone to use it unless you already have protection in place. Before applying it to production, please test it thoroughly. We recommend setting higher limits initially to avoid any interruptions.
 
 By default rate limiting is disabled. The following configuration should be applied:
 
@@ -61,15 +61,22 @@ rate_limit:
 
 ## Configure CORS
 
-If you did not have an intermediate proxy in between that takes care about CORS requests, we recommend to only allow the origins that you trust.
+If you don't have an intermediate proxy handling CORS requests, we recommend allowing only the origins you trust. This also applies to headers and methods.
 
 By default all origins are allowed. The following configuration should be applied
 
 {% code title="router.yaml" %}
 ```yaml
-cors:
-    allow_origins:
-      - "your-origin.com"
+cors: 
+  allow_methods:
+    - "POST"
+    - "GET"
+  allow_origins:
+    - "mydomain.com"
+  allow_headers:
+    - "Authorization"
+  max_age: 5m
+  allow_credentials: true
 ```
 {% endcode %}
 
