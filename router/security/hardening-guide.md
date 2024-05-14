@@ -16,7 +16,7 @@ introspection_enabled: false
 
 ## Disable Development Mode
 
-The development mode enabled certain configuration for a better developer experience. Beside pretty logs it enables [ART](../advanced-request-tracing-art.md) for local development. ART can expose sensitive information and should never be used in a production environment without Cosmo Studio.
+The development mode enables certain configuration for a better developer experience. Beside pretty logs it enables [ART](../advanced-request-tracing-art.md) for local development. ART can expose sensitive information and should never be used in a production environment without Cosmo Studio.
 
 By default the development mode disabled. The following configuration should be applied:
 
