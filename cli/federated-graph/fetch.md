@@ -37,14 +37,14 @@ This mode will help smooth migration from the Apollo router to the WunderGraph C
 The output of this command is stored in the structure mentioned below
 
 * **\<graph-name>-\<namespace>:** The top-level folder which contains 2 folders, subgraphs and supergraphs.
-* **subgraphs** folder: This folder contains the files of all the subgraph's SDLs.
-* **supergraph** folder: This folder contains the SDL, router config of the federated graph.
-  * cosmoSchema.graphql - The SDL of the federated graph.
-  * cosmoConfig.json - The router config of the federated graph.
+  * **subgraphs** folder: This folder contains the files of all the subgraph's SDLs.
+  * **supergraph** folder: This folder contains the SDL, router config of the federated graph.
+    * cosmoSchema.graphql - The SDL of the federated graph.
+    * cosmoConfig.json - The router config of the federated graph.
+  * **cosmo-composition.yaml:** The Cosmo federated graph configuration file includes configuration options for each of your subgraphs. This file can be used to generate the router config using the [compose](../router/compose.md) command.
 
 If **Apollo-compatibility mode** is enabled, the output will contain a few more folders/files, they are as follows:-
 
-* **cosmo-composition.yaml:** The Cosmo federated graph configuration file includes configuration options for each of your subgraphs. This file can be used to generate the router config using the [compose](../router/compose.md) command.
 * **rover-composition.yaml:** The Apollo supergraph configuration file includes configuration options for each of your subgraphs.
 * **scripts** folder
   * apollo.sh - This script is used to generate the supergraph schema using rover, and the generated file would be in the **supergraph** folder and the name of the file would be '**apolloSchema.graphql**'.
