@@ -143,6 +143,6 @@ By default the level is **INFO**. The following configuration should be applied
 
 {% code title="router.yaml" %}
 ```yaml
-log_level: "ERROR"
+log_level: "error"
 ```
 {% endcode %}
