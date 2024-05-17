@@ -18,7 +18,7 @@ As the router/gateway can be migrated gradually, this method becomes the fastest
    * Use the [Migrate from Apollo](../studio/migrate-from-apollo.md) button.
    * It can be done manually using the [subgraph create](../cli/subgraph/create.md), [subgraph publish](../cli/subgraph/publish.md) and [federated-graph create](../cli/federated-graph/create.md) commands.
 2. Once the graphs are completely migrated, we have to implement a webhook which runs the [fetch command](../cli/federated-graph/fetch.md) to generate the supergraph schema, which can be used to update the router/gateway.
-3. Now, we can set a [`webhook alert`](../studio/alerts-and-notifications/webhooks.md#how-to-set-up-webhook-notifications) on Cosmo.
+3. Now, we can set a [webhook alert](../studio/alerts-and-notifications/webhooks.md#how-to-set-up-webhook-notifications) on Cosmo.
 
 ### Demo project with step-by-step instructions
 

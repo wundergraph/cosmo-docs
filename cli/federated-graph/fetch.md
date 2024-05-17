@@ -25,6 +25,7 @@ The `npx wgc federated-graph fetch` command allows you to download the latest va
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `-o, --out` : Destination folder for the SDL of the federated graph and its subgraphs.
 * `-a, --apollo-compatibility` : Enable Apollo compatibility to generate the composition configs and script to generate schema using rover.
+* `-v, --federation-version`:  The version of federation to be used by rover in the format "1", "2", or "2.x.y". Default is 2.5.0.
 
 ## Apollo Compatibility
 
@@ -58,7 +59,7 @@ npx wgc federated-graph fetch production
 Fetches the latest valid SDL and router config of the federated graph named "production" and SDL of all its subgraphs.
 
 ```bash
-npx wgc federated-graph fetch production --apollo-compatibility
+npx wgc federated-graph fetch production --apollo-compatibility -v 2.6.1
 ```
 
-Fetches the latest valid SDL and router config of the federated graph named "production" and SDL of all its subgraphs. As Apollo compatibility mode is enabled, it generates the extra files mentioned above.
+Fetches the latest valid SDL and router config of the federated graph named "production" and SDL of all its subgraphs. As Apollo compatibility mode is enabled, it generates the extra files mentioned above. Using the  `-v` option, pass the version of the federation used by the rover, if not provided it falls back to "2.5.0".
