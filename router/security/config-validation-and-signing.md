@@ -121,7 +121,7 @@ function validateUrl(url: string): boolean {
   const u = new URL('', url)
 
   // Validate if https is used
-  if (!u.protocol.startsWith('http')) {
+  if (!u.protocol.startsWith('https')) {
      throw new Error('Invalid url, must be https');
   }
 
