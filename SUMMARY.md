@@ -86,6 +86,9 @@
   * [Logout](cli/auth/logout.md)
 * [Operations](cli/operations/README.md)
   * [Push](cli/operations/push.md)
+* [Schema Contracts](cli/schema-contracts/README.md)
+  * [Create](cli/schema-contracts/create.md)
+  * [Update](cli/schema-contracts/update.md)
 
 ## Studio
 
