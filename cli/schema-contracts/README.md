@@ -40,7 +40,7 @@ We do not want to expose the phone number to certain clients. Therefore we tag t
 
 ### Create
 
-A contract is created with the [`wgc contract create`](create.md) command. You need to supply the list of tags that will be used to perform the filtering of the schema.  An example for the above subgrpah would be&#x20;
+A contract is created with the [`wgc contract create`](create.md) command. You need to supply the list of tags that will be used to perform the filtering of the schema.  An example for the above subgraph would be&#x20;
 
 <pre class="language-bash"><code class="lang-bash"><strong>npx wgc contract create prod-external \
 </strong>    --source production \
@@ -74,10 +74,10 @@ When composing a graph, 2 schemas are generated.&#x20;
 A contract schema is recomposed when the following events occur
 
 * The contract is created.
-* In case of federated graphs, if any subgrpah is moved, updated, added or deleted.
+* In case of federated graphs, if any subgraph is moved, updated, added or deleted.
 * If the source federated graph is moved to a new namespace.
 * If the label matchers of the source federated graph is changed.
-* In case of monogrpah, if the source monogrpah is published with a new schema.
+* In case of monograph, if the source monograph is published with a new schema.
 * The contract routing URL  has changed.
 
 ## Schema checks
