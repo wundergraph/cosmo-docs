@@ -31,6 +31,7 @@ The `npx wgc monograph update` command allows you to update an existing monograp
   * `sse`: Use Server-Sent Events with a GET request.
   * `sse_post`: Use Server-Sent events with a POST request.
 * `--readme <path-to-readme>:` The path to the markdown file which describes the monograph.
+* `--websocket-subprotocol:` The subprotocol to use when subscribing to the monograph. The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
 
 ## Example
 

@@ -142,6 +142,7 @@
 * [Subscriptions](router/subscriptions/README.md)
   * [Server-Sent-Events (SSE)](router/subscriptions/server-sent-events-sse.md)
   * [Router Configuration for Subscriptions](router/subscriptions/router-configuration-for-subscriptions.md)
+  * [Websocket Subprotocols](router/subscriptions/websocket-subprotocols.md)
 * [Persisted Operations](router/persisted-operations.md)
 * [Metrics & Monitoring](router/metrics-and-monitoring.md)
 * [Open Telemetry](router/open-telemetry.md)

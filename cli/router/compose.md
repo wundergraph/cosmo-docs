@@ -38,6 +38,8 @@ subgraphs:
     subscription:
       url: http://localhost:4001/sse #Optional, defaults to routing_url
       protocol: sse # Optional, defaults to ws (websockets)
+      websocket_subprotocol: graphql-ws # Optional, defaults to auto. 
+      # Available options are auto, graphql-ws, graphql-transport-ws
   - name: family
     routing_url: http://localhost:4002/graphql
     introspection:

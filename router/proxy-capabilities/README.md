@@ -82,11 +82,33 @@ All rules are evaluated in the order they are defined.
 Please inform us if you have more advanced use cases that cannot be accommodated with the current feature set. You can still use [Custom Modules](../custom-modules.md) to implement any logic yourself. You can aggregate, remove, or add headers as you like.
 {% endhint %}
 
-## Override Subgraph routing URLs <a href="#subgraph-routing-urls" id="subgraph-routing-urls"></a>
+## Override Subgraph config <a href="#subgraph-routing-urls" id="subgraph-routing-urls"></a>
 
 By default, we read the routing URL for each of your subgraphs from the router execution config. In most cases, no additional configuration is required.
 
-However, if you _do_ need to override a particular subgraph's routing URL (for example, to handle changing network topography), you can do so with the `override_subgraph_url` option:
+However, if you _do_ need to override a particular subgraph's routing URL (for example, to handle changing network topography), you can do so with the following config
+
+#### New way
+
+Using the new way, the entire subgraph config can be overridden.
+
+```yaml
+overrides:
+  subgraphs:
+    some-subgraph:
+      routing_url: http://router:3002/graphql
+      subscription_url: http://router:3002/graphql/ws
+      subscription_protocol: ws
+      subscription_websocket_subprotocol: graphql-ws
+```
+
+The available options for subscription\_protocol are ws, sse and sse\_post.
+
+The available options for subscription\_websocket\_subprotocol are graphql-ws, graphql-transport-ws and auto.
+
+#### Old way (Will be deprecated soon)
+
+Using the old way only the routing URL of the subgraph can be overridden.
 
 ```yaml
 override_routing_url:

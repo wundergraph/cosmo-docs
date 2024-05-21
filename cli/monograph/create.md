@@ -34,6 +34,7 @@ The `npx wgc monograph create` command allows you to create a new monograph on t
   * `sse`: Use Server-Sent Events with a GET request.
   * `sse_post`: Use Server-Sent events with a POST request.
 * `--readme` : The markdown file which describes the monograph.
+* `--websocket-subprotocol:` The subprotocol to use when subscribing to the monograph. The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
 
 ## Examples
 
@@ -41,7 +42,7 @@ The `npx wgc monograph create` command allows you to create a new monograph on t
 npx wgc monograph create production -r http://router.example.com/graphql -u https://spacex-production.up.railway.app
 ```
 
-Create a monograph named "production" with a routing URL of "[http://router.example.com/graphql](http://router.example.com/graphql)"  and a GraphQL server endpoint of [https://spacex-production.up.railway.app](https://spacex-production.up.railway.app).
+Create a monograph named "production" with a routing URL of "[http://router.example.com/graphql](http://router.example.com/graphql)" and a GraphQL server endpoint of [https://spacex-production.up.railway.app](https://spacex-production.up.railway.app).
 
 ## Notes
 
