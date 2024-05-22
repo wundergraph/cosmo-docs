@@ -130,6 +130,7 @@
 * [Cosmo AI](studio/cosmo-ai.md)
 * [Lint Policy](studio/lint-policy/README.md)
   * [Linter rules](studio/lint-policy/linter-rules.md)
+* [Schema Contracts](studio/schema-contracts.md)
 * [Invitations](studio/invitations.md)
 
 ## Router
