@@ -25,6 +25,7 @@
   * [@shareable](federation/directives/shareable.md)
   * [@authenticated](federation/directives/authenticated.md)
   * [@requiresScopes](federation/directives/requiresscopes.md)
+  * [@openfed\_\_subscriptionFilter](federation/directives/shareable-1.md)
 * [Event-Driven Federated Subscriptions](federation/event-driven-federated-subscriptions/README.md)
   * [NATS](federation/event-driven-federated-subscriptions/nats.md)
   * [Kafka](federation/event-driven-federated-subscriptions/kafka.md)
