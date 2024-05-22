@@ -102,7 +102,7 @@ events:
 You can create the abstract subgraph with the following [wgc](../../cli/intro.md) command:
 
 ```bash
-pnpm wgc subgraph publish employee --namespace default --schema edfs-graph.graphqls --routing-url http://localhost:4004/graphql
+wgc subgraph publish employee --namespace default --schema edfs-graph.graphqls --routing-url http://localhost:4004/graphql
 ```
 
 The routing url is still mandatory due a limitation. You can specify anything to make it pass.
