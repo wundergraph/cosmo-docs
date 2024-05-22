@@ -1,16 +1,33 @@
 ---
 description: >-
-  Schema contracts helps you provide filtered out versions of your composed
-  graph to different customers.
+  Schema Contracts enable you to build a multi-purpose, multi-audience Graph,
+  which can be split into Subsets for different use cases. This simplifies
+  development and keeps your Graph maintainable.
 ---
 
 # Schema Contracts
 
-## Overview
+### Use Cases
 
-Contracts helps you filter out schema elements from your federated graph or monograph and provide a subset of the graph schema to meet the needs of each individual customer.
+#### Tailored APIs for specific Consumers
 
-<figure><img src="../.gitbook/assets/image (113).png" alt=""><figcaption></figcaption></figure>
+Federation aims to combine all your Services into a unified Graph, making them more accessible and easier to consume.
+
+As your Graph grows in size across different domains, you'd eventually want to tailor the API experience towards specific user groups.
+
+Schema Contracts give you a powerful solution to filter out unnecessary parts of the Schema for some API consumers, giving them a tailored Developer Experience that's geared towards their expectations and not bloated with irrelevant fields.
+
+#### Improving Security and Data Privacy
+
+Another important concern is Security. Schema Contracts allow you to filter out fields and types that should only be accessible to a specific audience, e.g. admins or internal users.
+
+If you're building a unified Graph that spans use cases from internal to partners or even public, you'd want to filter out those parts from the Schema that could leak internal information.
+
+### Overview
+
+With Schema Contracts, you can apply a Filter to Monographs and Federated Graphs, simply by annotating your Schema with tags and filtering out some of them.
+
+<figure><img src="../.gitbook/assets/image (113).png" alt=""><figcaption><p>Example of dividing a Composed Schema into two Client Schemas using Schema Contracts</p></figcaption></figure>
 
 ## Terminology
 
