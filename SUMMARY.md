@@ -97,6 +97,7 @@
 * [Schema Explorer](studio/schema-explorer.md)
 * [Schema Registry](studio/schema-registry.md)
 * [Schema Checks](studio/schema-checks.md)
+* [Schema Contracts](studio/schema-contracts.md)
 * [Overrides](studio/overrides.md)
 * [Changelog](studio/changelog.md)
 * [Playground++](studio/playground++.md)
@@ -130,7 +131,6 @@
 * [Cosmo AI](studio/cosmo-ai.md)
 * [Lint Policy](studio/lint-policy/README.md)
   * [Linter rules](studio/lint-policy/linter-rules.md)
-* [Schema Contracts](studio/schema-contracts.md)
 * [Invitations](studio/invitations.md)
 
 ## Router
