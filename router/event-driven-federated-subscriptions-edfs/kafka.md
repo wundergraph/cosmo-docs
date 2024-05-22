@@ -106,3 +106,7 @@ wgc subgraph publish employee --namespace default --schema edfs-graph.graphqls -
 ```
 
 The routing url is still mandatory due a limitation. You can specify anything to make it pass.
+
+## System diagram
+
+<figure><img src="../../.gitbook/assets/image (116).png" alt=""><figcaption></figcaption></figure>
