@@ -32,4 +32,4 @@ The `@openfed__subscriptionFilter` directive declares that a field definition ca
 
 <table><thead><tr><th>Argument Name</th><th width="455">Argument Type</th></tr></thead><tbody><tr><td>condition</td><td>openfed__SubscriptionFilterCondition!</td></tr></tbody></table>
 
-The "condition" argument requires an object that represent the filter condition. It can nested to express OR, AND and NOT conditions.
+The "condition" argument requires an object that represent the filter condition. It can be nested to express OR, AND and NOT conditions.
