@@ -3,7 +3,7 @@
 ## Definitions
 
 {% hint style="warning" %}
-The `providerId` argument, including the default value "default", _must_ correspond to an equivalent property in events.providers entry of the router config.yml.
+The `providerId` argument, including the default value "default", _must_ correspond to an equivalent property in _events.providers.nats_ entry of the router config.yml.
 {% endhint %}
 
 ### @edfs\_natsPublish
