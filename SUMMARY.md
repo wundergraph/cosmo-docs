@@ -26,10 +26,9 @@
   * [@authenticated](federation/directives/authenticated.md)
   * [@requiresScopes](federation/directives/requiresscopes.md)
 * [Event-Driven Federated Subscriptions](federation/event-driven-federated-subscriptions/README.md)
-  * [The Event-Driven Graph (composition)](federation/event-driven-federated-subscriptions/the-event-driven-graph-composition.md)
-  * [NATS Connector](federation/event-driven-federated-subscriptions/nats-connector/README.md)
-    * [Router configuration](federation/event-driven-federated-subscriptions/nats-connector/router-configuration.md)
-    * [Stream and consumer configuration](federation/event-driven-federated-subscriptions/nats-connector/stream-and-consumer-configuration.md)
+  * [NATS](federation/event-driven-federated-subscriptions/nats.md)
+  * [Kafka](federation/event-driven-federated-subscriptions/kafka.md)
+  * [Composition Rules](federation/event-driven-federated-subscriptions/composition-rules.md)
 
 ## CLI
 
@@ -159,7 +158,10 @@
   * [Debugging](router/development/debugging.md)
 * [Performance Debugging](router/performance-debugging.md)
 * [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
-* [Event-Driven Federated Subscriptions (EDFS)](router/event-driven-federated-subscriptions-edfs.md)
+* [Event-Driven Federated Subscriptions (EDFS)](router/event-driven-federated-subscriptions-edfs/README.md)
+  * [NATS](router/event-driven-federated-subscriptions-edfs/nats/README.md)
+    * [Stream and consumer configuration](router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration.md)
+  * [Kafka](router/event-driven-federated-subscriptions-edfs/kafka.md)
 * [Compliance and Data Management](router/compliance-and-data-management.md)
 * [Subgraph Error Propagation](router/subgraph-error-propagation.md)
 

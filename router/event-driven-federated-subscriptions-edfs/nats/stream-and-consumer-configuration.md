@@ -13,14 +13,11 @@ By configuring a stream and consumer, messages that are sent while a subscriptio
 
 ## Event-Driven Graph schema configuration
 
-The `@edfs__subscribe` directive defines an optional `streamConfiguration` argument. Providing this input object allows the configuration of a stream and consumer on a NATS connection.
+The `@edfs__natsSubscribe` directive defines an optional `streamConfiguration` argument. Providing this input object allows the configuration of a stream and consumer on a NATS connection.
 
 Note that if the `streamConfiguration` argument is undefined, the connection will be interpreted not to use a stream/consumer. If defined, all input object fields are required:
 
-| Input name   | Type    | Value                    |
-| ------------ | ------- | ------------------------ |
-| consumerName | String! | The name of the consumer |
-| streamName   | String! | The name of the stream   |
+<table><thead><tr><th>Input name</th><th width="256">Type</th><th>Value</th></tr></thead><tbody><tr><td>consumerName</td><td>String!</td><td>The name of the consumer</td></tr><tr><td>streamName</td><td>String!</td><td>The name of the stream</td></tr></tbody></table>
 
 ## NATS configuration
 
@@ -53,24 +50,21 @@ nats consumer add stream-name consumer-name
 
 ## Example
 
-In the example below, the NATS connection source "my-nats" has also defined a stream configuration. The `streamName` input has been set to "myStream", and the `consumerName` input has been set to "myConsumer".
+In the example below, the NATS provider `my-nats` has also defined a stream configuration. The `streamName` input has been set to "myStream", and the `consumerName` input has been set to `myConsumer`.
 
 {% code fullWidth="true" %}
 ```graphql
-directive @key(fields: openfed__FieldSet!, resolvable: Boolean = true) repeatable on INTERFACE | OBJECT
-directive @keydirective @edfs__subscribe(
-    subjects: [String!]!, sourceName: String! = "default", streamConfiguration: edfs__StreamConfiguration,
-) on FIELD_DEFINITION
+directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
 
-input edfs__StreamConfiguration {
+input edfs__NatsStreamConfiguration {
     consumerName: String!
     streamName: String!
 }
 
 type Subscription {
-    userUpdated(id: Int!): User! @edfs__subscribe(
+    userUpdated(id: Int!): User! @edfs__natsSubscribe(
         subjects: ["user.{{ args.id }}"],
-        sourceName: "my-nats",
+        providerId: "my-nats",
         streamConfiguration: { consumerName: "myConsumer", streamName: "myStream" },
     )
 }

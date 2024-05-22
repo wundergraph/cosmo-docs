@@ -4,10 +4,5 @@ description: Defining an Event-Driven Graph with Event-Driven Federated Subscrip
 
 # Event-Driven Federated Subscriptions
 
-{% content-ref url="the-event-driven-graph-composition.md" %}
-[the-event-driven-graph-composition.md](the-event-driven-graph-composition.md)
-{% endcontent-ref %}
+An Event-Driven Graph (EDG) is best thought to be an abstract subgraph that facilitates Event-Driven Federated Subscriptions (EDFS). If a subgraph uses or defines any event driven directives, it will be interpreted to be an Event-Driven Graph.&#x20;
 
-{% content-ref url="nats-connector/" %}
-[nats-connector](nats-connector/)
-{% endcontent-ref %}

@@ -656,24 +656,50 @@ cdn:
 
 ### Events
 
-The Events section lets you define Event Sources for [event-driven-federated-subscriptions-edfs.md](event-driven-federated-subscriptions-edfs.md "mention").
+The Events section lets you define Event Sources for [event-driven-federated-subscriptions-edfs](event-driven-federated-subscriptions-edfs/ "mention").
 
-Currently, we only support to use a single Event Source (NATS) with more to come in the future.
+We support NATS and Kafka as event bus provider.
 
 {% code title="config.yaml" %}
 ```yaml
 version: "1"
 
 events:
-  sources:
-    - provider: NATS
-      url: "nats://localhost:4222"
+  providers:
+    nats:
+      - id: default
+        url: "nats://localhost:4222"
+        authentication:
+          token: "token" # or
+          user_info:
+            username: "username"
+            password: "password"
+    kafka:
+      - id: my-kafka
+        tls:
+          enabled: true
+        authentication:
+          sasl_plain:
+            password: "password"
+            username: "username"
+        brokers:
+          - "localhost:9092"
 ```
 {% endcode %}
 
-#### Event Source
+#### Provider
 
-<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>provider</td><td>true</td><td>one of: NATS</td><td></td></tr><tr><td></td><td>url</td><td>true</td><td>The URL of the event source, e.g. "nats://localhost:4222"</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>provider</td><td>true</td><td>one of: nats, kafka</td><td></td></tr></tbody></table>
+
+#### NATS Provider
+
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="308">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>id</td><td>true</td><td>The ID of the provider. This have to match with the ID specified in the subgraph schema.</td><td></td></tr><tr><td></td><td>url</td><td>true</td><td>NATS Connection string</td><td></td></tr><tr><td></td><td>authentication</td><td>false</td><td>Authentication configuration for the NATS provider.</td><td></td></tr><tr><td></td><td>authentication.token</td><td>false</td><td>Token based authentication.</td><td></td></tr><tr><td></td><td>authentication.user_info</td><td>false</td><td>User-Info based authentication.</td><td></td></tr><tr><td></td><td>authentication.user_info.username</td><td>false</td><td>Username.</td><td></td></tr><tr><td></td><td>authentication.user_info.password</td><td>false</td><td>Password.</td><td></td></tr></tbody></table>
+
+#### Kafka Provider
+
+<table data-full-width="true"><thead><tr><th width="156">Environment Variable</th><th width="311">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>id</td><td>true</td><td>The ID of the provider. This have to match with the ID specified in the subgraph schema.</td><td></td></tr><tr><td></td><td>brokers</td><td>true</td><td>A list of broker URLs.</td><td>[]</td></tr><tr><td></td><td>authentication</td><td>false</td><td>Authentication settings</td><td></td></tr><tr><td></td><td>authentication.sasl_plain</td><td>false</td><td>SASL/Plain Authentication method</td><td></td></tr><tr><td></td><td>authentication.sasl_plain.username</td><td>false</td><td>SASL/Plain Username</td><td></td></tr><tr><td></td><td>authentication.sasl_plain.password</td><td>false</td><td>SASL/Plain Password</td><td></td></tr><tr><td></td><td>tls</td><td>false</td><td>TLS configuration for the Kafka provider. If enabled, it uses SystemCertPool for RootCAs by default.</td><td></td></tr><tr><td></td><td>tls.enabled</td><td>false</td><td>Enable the TLS.</td><td></td></tr></tbody></table>
+
+#### Nats Provider
 
 ### Router Engine Configuration
 
