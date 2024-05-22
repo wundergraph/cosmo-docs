@@ -78,6 +78,14 @@ type edfs__PublishResult {
 }
 ```
 
+You can create the abstract subgraph with the following [wgc](../../cli/intro.md) command:
+
+```bash
+wgc subgraph publish employee --namespace default --schema edfs-graph.graphqls --routing-url http://localhost:4004/graphql
+```
+
+The routing url is still mandatory due a limitation. You can specify anything to make it pass.
+
 ## Router config
 
 Based on the example above, you will need a compatible router configuration.
@@ -99,14 +107,24 @@ events:
 ```
 {% endcode %}
 
-You can create the abstract subgraph with the following [wgc](../../cli/intro.md) command:
+## Example Query
 
-```bash
-wgc subgraph publish employee --namespace default --schema edfs-graph.graphqls --routing-url http://localhost:4004/graphql
+This query assumes that your implemented employee subgraph can resolve the fields.
+
+```graphql
+subscription {
+  filteredEmployeeUpdatedMyKafka(employeeID: 1) {
+    id
+    tag
+    details {
+      surname
+    }
+  }
+}
 ```
 
-The routing url is still mandatory due a limitation. You can specify anything to make it pass.
+
 
 ## System diagram
 
-<figure><img src="../../.gitbook/assets/image (116).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (118).png" alt=""><figcaption></figcaption></figure>
