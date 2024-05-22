@@ -561,7 +561,7 @@ Configure WebSocket handlers, protocols, and more.
 
 #### WebSocket Configuration
 
-<table data-full-width="true"><thead><tr><th width="248">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ENABLED</td><td>enabled</td><td>true</td><td></td><td>true</td></tr><tr><td></td><td>absinthe_protocol</td><td>false</td><td><a data-mention href="configuration.md#absinthe-protocol-configuration">#absinthe-protocol-configuration</a></td><td></td></tr><tr><td>WEBSOCKETS_FORWARD_UPGRADE_HEADERS</td><td>forward_upgrade_headers</td><td>false</td><td>Forward all useful Headers from the Upgrade Request, like User-Agent or Authorization in the extensions field when subscribing on a Subgraph</td><td>true</td></tr><tr><td>WEBSOCKETS_FORWARD_UPGRADE_QUERY_PARAMS</td><td>forward_upgrade_query_params</td><td>false</td><td>Forward all query parameters from the Upgrade Request in the extensions field when subscribing on a Subgraph </td><td>true</td></tr><tr><td>WEBSOCKETS_FORWARD_INITIAL_PAYLOAD</td><td>forward_initial_payload</td><td>false</td><td>Forward the initial payload from a client subscription in the extensions field when subscribing on a Subgraph</td><td>true</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="248">Environment Variable</th><th width="305">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ENABLED</td><td>enabled</td><td>true</td><td></td><td>true</td></tr><tr><td></td><td>absinthe_protocol</td><td>false</td><td><a data-mention href="configuration.md#absinthe-protocol-configuration">#absinthe-protocol-configuration</a></td><td></td></tr><tr><td></td><td>forward_upgrade_headers</td><td>false</td><td>Forward all useful Headers from the Upgrade Request, like User-Agent or Authorization in the extensions field when subscribing on a Subgraph</td><td></td></tr><tr><td></td><td>forward_upgrade_query_params</td><td>false</td><td>Forward all query parameters from the Upgrade Request in the extensions field when subscribing on a Subgraph </td><td></td></tr><tr><td>WEBSOCKETS_FORWARD_INITIAL_PAYLOAD</td><td>forward_initial_payload</td><td>false</td><td>Forward the initial payload from a client subscription in the extensions field when subscribing on a Subgraph</td><td>true</td></tr></tbody></table>
 
 #### Absinthe Protocol Configuration
 
@@ -581,8 +581,14 @@ websocket:
     enabled: true
     handler_path: /absinthe/socket
   forward_initial_payload: true
-  forward_upgrade_headers: true
-  forward_upgrade_query_params: true
+  forward_upgrade_headers:
+    enabled: true
+    allow_list: # an empty list allows all headers
+      - "Authorization" # forward only the Authorization Header
+  forward_upgrade_query_params:
+    enabled: true
+    allow_list:
+      - "Authorization"
 ```
 {% endcode %}
 
