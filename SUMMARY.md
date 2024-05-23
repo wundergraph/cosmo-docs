@@ -80,6 +80,7 @@
     * [Delete](cli/router/token/delete.md)
   * [Fetch](cli/router/fetch.md)
   * [Compose](cli/router/compose.md)
+  * [Download binary](cli/router/download-binary.md)
 * [Auth](cli/auth/README.md)
   * [Login](cli/auth/login.md)
   * [Whoami](cli/auth/whoami.md)
