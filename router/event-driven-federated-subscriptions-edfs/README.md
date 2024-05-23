@@ -255,7 +255,7 @@ Given the following subscription:
 
 <pre class="language-graphql"><code class="lang-graphql">input openfed__SubscriptionFieldCondition {
     fieldPath: String!
-    values: [String!]!
+    values: [openfed__SubscriptionFilterValue!]!
 }
 
 input openfed__SubscriptionFilterCondition {
@@ -264,6 +264,8 @@ input openfed__SubscriptionFilterCondition {
     NOT: openfed__SubscriptionFilterCondition
     OR: [openfed__SubscriptionFilterCondition!]
 }
+
+scalar openfed__SubscriptionFilterValue
 
 <strong>type Subscription {
 </strong><strong>    filteredEmployeeUpdated(id: Int!): Employee!

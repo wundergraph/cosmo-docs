@@ -24,9 +24,11 @@ directive @edfs__kafkaSubscribe(topics: [String!]!, providerId: String! = "defau
 
 directive @openfed__subscriptionFilter(condition: openfed__SubscriptionFilterCondition!) on FIELD_DEFINITION
 
+scalar openfed__SubscriptionFilterValue
+
 input openfed__SubscriptionFieldCondition {
     fieldPath: String!
-    values: [String!]!
+    values: [openfed__SubscriptionFilterValue]!
 }
 
 input openfed__SubscriptionFilterCondition {

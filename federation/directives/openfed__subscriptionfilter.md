@@ -9,9 +9,13 @@ description: >-
 ## Definition
 
 ```graphql
+directive @openfed__subscriptionFilter(condition: openfed__SubscriptionFilterCondition!) on FIELD_DEFINITION
+
+scalar openfed__SubscriptionFilterValue
+
 input openfed__SubscriptionFieldCondition {
     fieldPath: String!
-    values: [String!]!
+    values: [openfed__SubscriptionFilterValue]!
 }
 
 input openfed__SubscriptionFilterCondition {
@@ -20,8 +24,6 @@ input openfed__SubscriptionFilterCondition {
     NOT: openfed__SubscriptionFilterCondition
     OR: [openfed__SubscriptionFilterCondition!]
 }
-
-directive @openfed__subscriptionFilter(condition: openfed__SubscriptionFilterCondition!) on FIELD_DEFINITION
 ```
 
 ## Overview
