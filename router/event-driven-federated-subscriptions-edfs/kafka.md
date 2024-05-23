@@ -60,7 +60,7 @@ type Subscription {
         @openfed__subscriptionFilter(condition: {
             OR: [
                 { IN: { fieldPath: "id", values: ["{{ args.input.ids }}"] } },
-                { IN: { fieldPath: "id", values: ["1"] } },
+                { IN: { fieldPath: "id", values: [1] } },
             ],
         })
 }

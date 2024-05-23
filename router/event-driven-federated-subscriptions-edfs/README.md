@@ -253,9 +253,11 @@ The `@openfed__subscriptionFilter` directive allows you to filter subscription m
 
 Given the following subscription:
 
-<pre class="language-graphql"><code class="lang-graphql">input openfed__SubscriptionFieldCondition {
+<pre class="language-graphql"><code class="lang-graphql">scalar openfed__SubscriptionFilterValue
+
+input openfed__SubscriptionFieldCondition {
     fieldPath: String!
-    values: [openfed__SubscriptionFilterValue!]!
+    values: [openfed__SubscriptionFilterValue]!
 }
 
 input openfed__SubscriptionFilterCondition {
@@ -264,8 +266,6 @@ input openfed__SubscriptionFilterCondition {
     NOT: openfed__SubscriptionFilterCondition
     OR: [openfed__SubscriptionFilterCondition!]
 }
-
-scalar openfed__SubscriptionFilterValue
 
 <strong>type Subscription {
 </strong><strong>    filteredEmployeeUpdated(id: Int!): Employee!
