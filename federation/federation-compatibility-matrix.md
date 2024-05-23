@@ -24,13 +24,13 @@ description: >-
 
 ### 2.0
 
-| Directive                  | State                                                                         |
-| -------------------------- | ----------------------------------------------------------------------------- |
-| @inaccessible              | <mark style="color:orange;">Partially Supported (full support planned)</mark> |
-| @override                  | <mark style="color:green;">Supported</mark>                                   |
-| @shareable                 | <mark style="color:green;">Supported</mark>                                   |
-| @key "resolvable" argument | <mark style="color:green;">Supported</mark>                                   |
-| @link                      | <mark style="color:green;">Supported (but unnecessary)</mark>                 |
+| Directive                  | State                                                         |
+| -------------------------- | ------------------------------------------------------------- |
+| @inaccessible              | <mark style="color:green;">Supported</mark>                   |
+| @override                  | <mark style="color:green;">Supported</mark>                   |
+| @shareable                 | <mark style="color:green;">Supported</mark>                   |
+| @key "resolvable" argument | <mark style="color:green;">Supported</mark>                   |
+| @link                      | <mark style="color:green;">Supported (but unnecessary)</mark> |
 
 ### 2.1
 
