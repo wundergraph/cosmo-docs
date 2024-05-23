@@ -30,11 +30,6 @@ input edfs__NatsStreamConfiguration {
     streamName: String!
 }
 
-input edfs__StreamConfiguration {
-    consumerName: String!
-    streamName: String!
-}
-
 # Custom
 
 type Query {
