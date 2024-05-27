@@ -83,17 +83,17 @@ Instead of polling for updates from the CDN, the Graph Plan can also be passed v
 
 An attacker has various methods to influence the router's behavior. Depending on their intent, they might aim to cause downtime or steal data. From an economic perspective, it is more likely that an attacker seeks to steal sensitive information. Therefore, we will focus on sections detailing how to validate the most important configuration settings.
 
-### 1. Subgraph datasource URL's
+### Scenario - Manipulation of subgraph datasource URL's
 
-**Scenario**:&#x20;
+Description:&#x20;
 
 An attacker change the subgraph URL to redirect customer traffic to a different server.
 
-**Impact**:
+Impact:
 
 High❗️(Possible outage with data leak)
 
-**Action**:&#x20;
+Action:&#x20;
 
 Implement a check that ensures all subgraph URLs belong to the same domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio. The exact check depends on your service configuration. If your subgraphs don't belong to the same domain, you can maintain an allowlist and compare it with all the urls we encounter in the config.
 
