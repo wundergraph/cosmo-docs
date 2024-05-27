@@ -85,11 +85,21 @@ An attacker has various methods to influence the router's behavior. Depending on
 
 ### 1. Subgraph datasource URL's
 
-**Scenario**: An attacker change the subgraph URL to redirect customer traffic to a different server.
+**Scenario**:&#x20;
 
-**Impact**: <mark style="color:red;">HIGH</mark>❗️(Possible outage with data leak)
+An attacker change the subgraph URL to redirect customer traffic to a different server.
 
-**Action**: Implement a check that ensures all subgraph URLs belong to the same domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio. The exact check depends on your service configuration. If your subgraphs don't belong to the same domain, you can maintain an allowlist and compare it with all the urls we encounter in the config.&#x20;
+**Impact**:
+
+High❗️(Possible outage with data leak)
+
+**Action**:&#x20;
+
+Implement a check that ensures all subgraph URLs belong to the same domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio. The exact check depends on your service configuration. If your subgraphs don't belong to the same domain, you can maintain an allowlist and compare it with all the urls we encounter in the config.
+
+<details>
+
+<summary>Example implementation</summary>
 
 ```typescript
 import { routerConfigFromJsonString } from '@wundergraph/cosmo-shared';
@@ -133,6 +143,8 @@ function validateUrl(url: string): boolean {
   return false
 }
 ```
+
+</details>
 
 {% hint style="info" %}
 We plan to encapsulate the most common validation rules into an NPM package, so you don't have to deal with the internal configuration structure. For now, please take inspiration from the examples and seek for help when things are not clear.
