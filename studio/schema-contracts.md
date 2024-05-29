@@ -1,31 +1,25 @@
 ---
 description: >-
-  Schema Contracts enable you to build a multi-purpose, multi-audience Graph,
-  which can be split into Subsets for different use cases. This simplifies
-  development and keeps your Graph maintainable.
+  Schema Contracts enable you to build a multi-purpose, multi-audience graph,
+  which can be split into subsets for different use cases. This simplifies
+  development and keeps your graph maintainable.
 ---
 
 # Schema Contracts
 
-### Use Cases
+## Use Cases
 
-#### Tailored APIs for specific Consumers
+### Tailored APIs for Specific Consumers
 
-Federation aims to combine all your Services into a unified Graph, making them more accessible and easier to consume.
+Federation aims to combine all your services into a unified graph, making each more accessible and easier to consume than it otherwise would be in isolation. However, as your graph grows in size, potentially across different domains, supporting ever-varying use-cases, eventually you may want to tailor the API experience for specific user groups. Schema Contracts provide a powerful solution to do just that--filtering out unnecessary parts of the graph for some API consumers--giving them a tailored developer experience that's in-line with their expectations and not bloated with fields that are irrelevant for their purposes--while maintaining full access to the entire graph for others.
 
-As your Graph grows in size across different domains, you'd eventually want to tailor the API experience towards specific user groups.
+### Improved Security and Data Privacy
 
-Schema Contracts give you a powerful solution to filter out unnecessary parts of the Schema for some API consumers, giving them a tailored Developer Experience that's geared towards their expectations and not bloated with irrelevant fields.
+For graphs that serve different stakeholders across the organization, third-party partners, and/or even the public, security is a top concern. It goes without saying that getting the right information into the right hands and keeping sensitive information out of the wrong hands is table stakes when it comes to multi-stakeholder graphs. Schema Contracts, with its ability to filter in and out portions of the graph that should only be accessible to specific audiences, is a natural fit for this purpose.
 
-#### Improving Security and Data Privacy
+## Overview
 
-Another important concern is Security. Schema Contracts allow you to filter out fields and types that should only be accessible to a specific audience, e.g. admins or internal users.
-
-If you're building a unified Graph that spans use cases from internal to partners or even public, you'd want to filter out those parts from the Schema that could leak internal information.
-
-### Overview
-
-With Schema Contracts, you can apply a Filter to Monographs and Federated Graphs, simply by annotating your Schema with tags and filtering out some of them.
+Getting started with Schema Contracts is simple. Simply annotate your schema with `tags` and begin delineating the portions of your graph that you wish to keep separate. It's that easy.
 
 <figure><img src="../.gitbook/assets/image (113).png" alt=""><figcaption><p>Example of dividing a Composed Schema into two Client Schemas using Schema Contracts</p></figcaption></figure>
 
@@ -36,7 +30,7 @@ With Schema Contracts, you can apply a Filter to Monographs and Federated Graphs
 
 ## Schema Design
 
-Contracts use the `@tag` directive to detect which schema elements need to be removed. You can apply the directive to objects, interfaces, inputs, types and fields. Here is an example: Consider the below subgraph to be published.
+Schema Contracts use the `@tag` directive to detect which schema elements need to be removed. You can apply the directive to objects, interfaces, inputs, types and fields. Here is an example: Consider the below subgraph to be published.
 
 ```graphql
 type Query {
