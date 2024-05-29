@@ -8,17 +8,17 @@ The Cosmo Platform is entirely Open Source.
 
 ## Releases
 
-Tagged releases are published in the exact version to [NPMJS.com](https://www.npmjs.com/) and Github Container Registry.
+Tagged releases are published in the exact version to NPMJS.com and Github Container Registry.
 
 ### Release Notes
 
-Every release contains a summary of features, bug fixes, and breaking changes, and optionally a migration guide. You can find all official releases at [WunderGraph Cosmo Releases](https://github.com/wundergraph/cosmo/releases).
+Every release contains a summary of features, bug fixes, breaking changes, and optionally a migration guide. You can find all official releases at [WunderGraph Cosmo Releases](https://github.com/wundergraph/cosmo/releases).
 
 All published docker images are listed at [WunderGraph Cosmo Packages](https://github.com/orgs/wundergraph/packages?repo\_name=cosmo).
 
 ## Docker tagging strategy
 
-For every pull request and merge into the main branch, we will build separate Docker images. Feel free to be an early adopter and provide valuable feedback to us and the community.
+For every pull request and merge into the main branch, we build separate Docker images.&#x20;
 
 Official releases are tagged as follows:
 
@@ -37,8 +37,8 @@ For more information, check out the release [documentation](https://github.com/w
 
 ## Router binaries
 
-For every Router release, we will build binaries for all operating systems and attach them to the [Github release](https://github.com/wundergraph/cosmo/releases/tag/router%400.22.1).
+For every Router release, we build binaries for all operating systems and attach them to the [Github release](https://github.com/wundergraph/cosmo/releases/tag/router%400.22.1).
 
 ## Stay up-to-date
 
-You can subscribe to notifications on the [Cosmo Repository](https://github.com/wundergraph/cosmo). Click on Watch -> Custom  -> Releases. Now, you get a notification for new releases.
+You can subscribe to notifications on the [Cosmo Repository](https://github.com/wundergraph/cosmo) for alerts when new releases are made available. Click on Watch -> Custom  -> Releases.&#x20;

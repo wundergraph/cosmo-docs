@@ -10,11 +10,11 @@ Every company and project is different. Our team of Solution Architects is happy
 
 ### Cosmo is built on top of Open Source & Open Standards
 
-Cosmo is fully open-source and will always remain so. Its extensive range of features makes it one of the most advanced, secure, and cost-efficient GraphQL Platforms for both small and large companies.
+Cosmo is fully open-source and will always remain so. Its extensive range of features makes it one of the most advanced, secure, and cost-efficient GraphQL platforms for both small and large companies.
 
 While you have the option to operate the open-source solution independently, we strongly advise considering our services. This recommendation comes from a place of caution and care: Managing a platform at this complexity level without the necessary expertise could pose risks to your business. We're here to assist, ensuring you make the most of this solution safely and effectively.
 
-At Wundergraph, we have an in-depth understanding of how the software works and how to operate every single component.
+At WunderGraph, we have an in-depth understanding of how the software works and how to operate every single component.
 
 <figure><img src="https://lh7-us.googleusercontent.com/ESnTq7gsqCLfXBKWpZ0hRsbRWrjnwA11DgSzTYb9dccTF_jfO0f626XL6kQI1ItKtmXEhA91eaKfVyKGu6zfq_NYP8j6NoRTr6UYuldacRZqtE5-j12DAgVL8IjT7FDv0amlt5MI0ZWy5eWq-dqkT07I2w=s2048" alt=""><figcaption><p>Cosmo Architecture Overview</p></figcaption></figure>
 
@@ -24,15 +24,15 @@ We're building the most secure GraphQL Federation solution by betting on three e
 2. Open Standards
 3. Transparency
 
-Cosmo builds on top of the following Open Source Technologies:
+Cosmo builds on top of the following Open Source technologies:
 
 * Kubernetes (for deployments)
-* PostgreSQL (central storage or record)
+* PostgreSQL (central storage of record)
 * Redis (Workflows, CRON Jobs, Cache)
-* ClickHouse (Analytics, Traces, Metrics)
+* ClickHouse (Analytics, Tracing, Metrics)
 * Keycloak (Federated Authentication)
 
-In addition, we're using the following standards and protocols:
+In addition, we use the following standards and protocols:
 
 * OpenTelemetry
 * OpenFederation
@@ -41,32 +41,28 @@ In addition, we're using the following standards and protocols:
 
 ### Cosmo Enterprise: Dedicated Cloud
 
-For the most advanced use cases, we offer Cosmo Dedicated Cloud, a fully isolated, end-to-end secure Soc2-certified deployment of Cosmo Cloud.
+For the most advanced use cases, we offer Cosmo Dedicated Cloud, a fully isolated, end-to-end secure, SOC 2-certified deployment of Cosmo Cloud.
 
-Dedicated Cloud is a fully managed service with SLAs, available in AWS, GCP, and Azure.
+Cosmo Dedicated Cloud is a fully managed service with SLAs, available in AWS, GCP, and Azure.
 
 Custom release cycles can be defined, so you're not forced to follow all major updates at the same pace as the regular Cosmo Cloud.
 
 <figure><img src=".gitbook/assets/cosmo-architecture-final (4).png" alt=""><figcaption></figcaption></figure>
 
-### On-premises support for strictly regulated industries
+### Support for Strictly Regulated Industries
 
-We understand that some companies operate under very strict regulations. In such scenarios, you can opt for the most expensive Cosmo deployment Option, going 100% on-premises.
+Some organizations operate under very strict regulation. WunderGraph Cosmo Cloud is SOC 2 compliant and fully fit for purpose. However, in the strictest of such scenarios and as a last resort, WunderGraph Cosmo can be fully self-hosted and self-managed. And our team of Solution Architects and Support Engineers stand ready to help navigate the increased costs and complexities that naturally arise in these scenarios.
 
-With our team of Solution Architects and Support Engineers, it's possible to run Cosmo entirely on-premises. You're able to update this deployment at your own pace and we maintain a version of Cosmo that your company is comfortable with in terms of update schedule.
+Indeed, the process of setting up any solution to satisfy security audits, SLAs, and other internal constraints, can be complex, time-consuming, and error prone--and self-hosting / self-managing WunderGraph Cosmo is no exception. From ensuring end-to-end encryption, to configuring every component correctly, our team is ready to help create scalable, maintainable, and healthy deployments that shine even in the toughest of conditions.&#x20;
 
-The process of setting up Cosmo in a way to pass security audits is complex. It's important to ensure end-to-end encryption and configure every component correctly. In addition, you will probably want to deploy Cosmo in a scalable way, to ensure the maintainability and healthiness of the system.
+Teams turn to WunderGraph for help with:&#x20;
 
-Our team is happy to assist with these tasks. Here's a subset of tasks and questions our team can help you with:
-
-* Network architecture & security
-* Configuration, upgrading, and maintenance of all components
-* Database Migration assistance on Version updates for PostgreSQL & Clickhouse
-* Capacity planning for Cosmo Router, OTEL & GraphQL Metrics Collectors
-* Ensuring horizontal scalability of individual components
-* Planning and facilitating upgrades
-* Defining maintenance and Operations processes
-* Integrating Cosmo into your existing Operations Stack, e.g. for Observability
+* Network Architecture & Security;
+* Component Configuration, Upgrades, and Maintenance;
+* Database Migrations;
+* Capacity Planning for Cosmo Router, OTEL, & GraphQL Metrics Collectors;
+* Horizontal Scalability;
+* And So Much More!
 
 ### 100% Air-Gapped GraphQL Federation
 
