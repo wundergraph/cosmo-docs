@@ -7,12 +7,12 @@ description: >-
 # Webhooks
 
 {% hint style="info" %}
-If you want to refer organization webhook events, check the docs [here](../studio/alerts-and-notifications/webhooks.md)
+For organization webhook events, check the docs, [here](../studio/alerts-and-notifications/webhooks.md).
 {% endhint %}
 
 ## Configuration
 
-To enable webhooks, you can configure `WEBHOOK_URL` and `WEBHOOK_SECRET` environment variables and you will start receiving the following events.
+To enable webhooks, configure the `WEBHOOK_URL` and `WEBHOOK_SECRET` environment variables. Once enabled, the URL specified will start receiving the following events:
 
 ## Platform Events
 
@@ -59,7 +59,7 @@ Triggered when graph migration is initiated.
 Triggered when graph migration succeeds.
 
 * `federated_graph`: An object representing the federated graph details.
-  * `id`: The unique identifier for the federated graph.
+  * `id`: The unique identifier of the federated graph.
   * `name`: The name of the federated graph.
 * `actor_id` (optional): The identifier of the actor initializing the migration.
 
