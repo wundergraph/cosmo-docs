@@ -184,3 +184,7 @@
   * [AWS Fargate](deployments-and-hosting/terraform/aws-fargate.md)
 * [Docker](deployments-and-hosting/docker.md)
 * [Cosmo Cloud](deployments-and-hosting/cosmo-cloud.md)
+
+## Guides
+
+* [Namespaces](guides/namespaces.md)
