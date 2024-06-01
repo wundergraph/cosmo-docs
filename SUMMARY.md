@@ -18,6 +18,10 @@
 * [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
 * [Using Apollo Router / Gateway with Cosmo OSS Schema Registry](tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry.md)
 
+## Guides
+
+* [Namespaces](guides/namespaces.md)
+
 ## Federation
 
 * [Federation Compatibility Matrix](federation/federation-compatibility-matrix.md)
@@ -184,7 +188,3 @@
   * [AWS Fargate](deployments-and-hosting/terraform/aws-fargate.md)
 * [Docker](deployments-and-hosting/docker.md)
 * [Cosmo Cloud](deployments-and-hosting/cosmo-cloud.md)
-
-## Guides
-
-* [Namespaces](guides/namespaces.md)
