@@ -1,6 +1,6 @@
 # Namespaces
 
-Namespaces allow you to group and/or isolate different instances of the same federated graph. This is useful for managing multi-stage deployment pipelines with separate deployment environments, such as `development`, `staging`, and `production`. Every federated graph has a `default` namespace to which all graph instances are published unless otherwise specified. To specify a namespace other than the `default`, supply the `--namespace` or `-n` parameter when executing WonderGraph Cosmo CLI (`wgc`) commands.
+Namespaces allow you to group and/or isolate different instances of the same federated graph. This is useful for managing multi-stage deployment pipelines with separate deployment environments, such as `development`, `staging`, and `production`. Every federated graph has a `default` namespace to which all graph instances are published unless otherwise specified. To specify a namespace other than the `default`, supply the `--namespace` or `-n` parameter when executing WunderGraph Cosmo CLI (`wgc`) commands.
 
 **Create Graph in `default` Namespace:**
 
@@ -63,7 +63,7 @@ Namespace names must begin and end with an alphanumeric character; with the exce
 
 ### Listing Namespaces
 
-List all `namespaces` for your organization using the WunderGraph Cosmo CLI `namespace list` command. By default, the list of namespaces in your organization will be displayed in a table. To format the output as JSON, supply the `--raw` or `-r` flag when executing the WonderGraph Cosmo CLI (`wgc`) `namespace` `list` command. To persist the output (as JSON) to the file system, supply the `--out` or `-o` parameter when executing the WonderGraph Cosmo CLI (`wgc`) `namespace` `list` command.
+List all `namespaces` for your organization using the WunderGraph Cosmo CLI `namespace list` command. By default, the list of namespaces in your organization will be displayed in a table. To format the output as JSON, supply the `--raw` or `-r` flag when executing the WunderGraph Cosmo CLI (`wgc`) `namespace` `list` command. To persist the output (as JSON) to the file system, supply the `--out` or `-o` parameter when executing the WunderGraph Cosmo CLI (`wgc`) `namespace` `list` command.
 
 **List Organization Namespaces**
 
@@ -95,7 +95,7 @@ wgc namespace rename my-existing-namespace --to my-new-namespace
 
 ### Deleting Namespaces
 
-Delete a `namespace` for your organization using the WunderGraph Cosmo CLI `namespace delete` command. Note that deleting a namespace will delete all resources within it; use caution--only administrators and the creator of a namespace can perform this action. Upon executing the command, you will be prompted for confirmation that you wish to proceed. To force the execution without confirmation, supply the `--force` or `-f` flag when executing WonderGraph Cosmo CLI (`wgc`) `namespace` `delete` command.
+Delete a `namespace` for your organization using the WunderGraph Cosmo CLI `namespace delete` command. Note that deleting a namespace will delete all resources within it; use caution--only administrators and the creator of a namespace can perform this action. Upon executing the command, you will be prompted for confirmation that you wish to proceed. To force the execution without confirmation, supply the `--force` or `-f` flag when executing WunderGraph Cosmo CLI (`wgc`) `namespace` `delete` command.
 
 **Delete Namespace (Requires Confirmation)**
 
