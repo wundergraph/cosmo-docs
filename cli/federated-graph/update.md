@@ -34,6 +34,8 @@ The `npx wgc federated-graph update` command allows you to update an existing fe
 
 `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 
+`--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
+
 `--readme <path-to-readme>` : The path to the markdown file which describes the federated graph. The readme can be used to communicate the information of the federated graph to other team members.
 
 ## Examples

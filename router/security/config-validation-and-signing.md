@@ -61,7 +61,27 @@ Alternatively, you can return a 400 status code with an error property to signal
 
 This will prevent the controlplane to deploy the composition. The error will be visible on the composition detail page in the Studio.
 
-### Router configuration
+## Sign Incoming Requests
+
+To ensure that requests made to your admission webhook url are intended to you. You can set a secret using the `--admission-webhook-secret` option when creating your graph. For existing graphs, the update command also allows you to set it. You need to compute the HMAC signature on your server and compare it to the signature in the `X-Cosmo-Signature-256` header. Below is an example in Node.js
+
+```typescript
+import crypto from 'crypto';
+
+function verifySignature(body, receivedSignature, secret) {
+  const computedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(body)
+    .digest('hex');
+
+  return crypto.timingSafeEqual(computedSignature, receivedSignature);
+}
+
+// Usage:
+const isVerified = verifySignature(JSON.stringify(req.body), req.headers['x-cosmo-signature-256'], YOUR_SECRET);
+```
+
+## Router configuration
 
 Upon receiving the signature, we will associate it with the artifact. The subsequent step involves initializing your router with the same signature key used during the hashing process on the admission server.
 
