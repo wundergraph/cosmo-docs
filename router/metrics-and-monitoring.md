@@ -23,7 +23,7 @@ By default, the routers exports OTEL data **every** 15 seconds.
 
 #### List of synchronous instruments
 
-We collect the following metrics to get useful insights in the HTTP traffic.
+We collect the following metrics to get useful insights in the HTTP traffic:
 
 * **`router.http.requests`**: Total count of incoming requests
 * **`router.http.response.content_length`**: Total bytes of incoming requests
@@ -32,9 +32,13 @@ We collect the following metrics to get useful insights in the HTTP traffic.
 * **`router.http.requests.in_flight`**: Number of in-flight requests. (Only static and subgraph dimensions are attached)
 * **`router.http.requests.error`**: Total number of failed requests.
 
+{% hint style="info" %}
+All synchronous metrics are tracked from the router start. If polling is enabled, the router will serve different metric series when the server has swapped.
+{% endhint %}
+
 #### List of asynchronous instruments
 
-We collect the following metrics to get useful insights of the router runtime behavior.
+We collect the following metrics to gain useful insights into the router's runtime behavior. Asynchronous metrics are not exposed on the Prometheus endpoint.
 
 * **`runtime.uptime`**: Seconds since application was initialized
 * **`server.uptime`**: Seconds since the server was initialized. Typically, this time represents how long a specific version of the graph has been running when polling from the controlplane is enabled.
@@ -49,6 +53,10 @@ We collect the following metrics to get useful insights of the router runtime be
 * **`process.runtime.go.gc.count`**: Number of completed garbage collection cycles
 * **`process.runtime.go.goroutines.count`**: Number of goroutines that currently exist
 * **`process.runtime.go.info`**: Information about the Go runtime environment e.g. Go version
+
+{% hint style="info" %}
+All asynchronous metrics are tracked from the router start. If polling is enabled, the router will serve different metric series when the server has swapped.
+{% endhint %}
 
 If you don't need runtime metrics, you can disable them in the config:
 
