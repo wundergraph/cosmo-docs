@@ -44,7 +44,11 @@ You can force a breaking change to be released even when all checks except compo
 
 ### Operation Checks
 
-Understand which operations and clients are affected by the breaking changes. You can check which ones along all your changes affected that particular operation. Besides that, you can inspect the operation document or share the specific operation with your colleagues.
+Understand which operations and clients are affected by the breaking changes. You can check which ones along all your changes affected that particular operation. Besides that, you can inspect the operation document or share the specific operation with your colleagues. Operation Checks can only function when your router sends schema usage metrics to Cosmo Cloud. This is the default behavior, provided you have not overwritten the default setting.
+
+{% hint style="warning" %}
+Currently, we do not track the usage of directives. This means that changing or deleting directives will always be detected as a non-breaking change, even if clients are using them.
+{% endhint %}
 
 #### Operation Check Overrides
 
