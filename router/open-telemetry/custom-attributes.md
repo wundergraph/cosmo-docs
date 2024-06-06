@@ -1,8 +1,8 @@
 ---
 description: >-
-  We already provide default attributes to every metric and span, but it is
-  often necessary and desirable to add additional context to them. We allow
-  static and dynamic values based on headers.
+  We provide default attributes for every metric and span, but it’s often
+  necessary to add extra context. To achieve this, we support both static and
+  dynamic values based on headers.
 ---
 
 # Custom Attributes
@@ -11,7 +11,11 @@ description: >-
 **Available since Router version 0.92.0**. Please note that each attribute increases cardinality. Furthermore, attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider.
 {% endhint %}
 
-There are scenarios where you may want to add additional attributes to your metrics and spans. One common use case is to add environment information, such as `env=prod`. We provide an easy way to achieve this by adding a few lines of configuration. All attributes are also added on the prometheus metrics.
+There are scenarios where you may want to add additional attributes to your metrics and spans. One common use case is to add environment information, such as `env=prod`. We provide an easy way to achieve this by adding a few lines of configuration.&#x20;
+
+### Prometheus
+
+All attributes are also added to the Prometheus metrics. Resource attributes are special and are only added as labels to the `target_info` metric.
 
 ## Static Attribute Value
 
