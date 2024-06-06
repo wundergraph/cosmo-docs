@@ -25,23 +25,35 @@ The `npx wgc subgraph create` command allows you to create a new subgraph within
 ## **Options**
 
 * `-n, --namespace` : The namespace of the subgrah (Default: "default").
+* `-edg, --event-driven-graph`: Irreversibly define the subgraph as an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/). If the subgraph is intended to be a regular subgraph, do not use this flag. Attempting to set `routing-url`, `subscription-url`, `subscription-protocol`, or `websocket-subprotocol` when this flag is set will produce an error.
 * `--label`: Assign multiple labels to the new subgraph. Labels are used to categorize and organize subgraphs based on specific criteria (e.g., team, department, project).
   * Example: `--label team=A`
-* `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from.
+* `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from. Will produce an error if the `-edg` flag is set.&#x20;
   * Example: `--routing-url http://localhost:4001/graphql`
-* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
-* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
+* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions. Will produce an error if the `-edg` flag is set.&#x20;
+* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. Will produce an error if the `-edg` flag is set. The available options are:
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
   * `sse`: Use Server-Sent Events with a GET request.
   * `sse_post`: Use Server-Sent events with a POST request.
 * `--readme <path-to-readme>:` The path to the markdown file which describes the subgraph.
-* `--websocket-subprotocol:` The subprotocol to use when subscribing to the subgraph. The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
+* `--websocket-subprotocol:` The subprotocol to use when subscribing to the subgraph. Will produce an error if the `-edg` flag is set. The supported protocols are `auto (default)`, `graphql-ws`, and `graphql-transport-ws`. It should be used only if the subscription protocol is `ws`.
 
-## **Example**
+## **Examples**
 
-1.  Create a new subgraph named "products" with the label "team=A" and the routing URL "[http://localhost:4001/graphql](http://localhost:4001/graphql)":
+### Regular subgraph
 
-    <pre class="language-bash"><code class="lang-bash"><strong>npx wgc subgraph create products --label team=A --routing-url http://localhost:4001/graphql
-    </strong></code></pre>
+* Create a new subgraph named "products" with the label "team=A" and the routing URL "[http://localhost:4001/graphql](http://localhost:4001/graphql)":
 
-\
+```bash
+npx wgc subgraph create products --label team=A --routing-url http://localhost:4001/graphql
+```
+
+### Event-Driven Graph
+
+* Create a new Event-Driven Graph named "events" with the label "team=A":
+
+```bash
+npx wgc subgraph create events --label team=A -edg
+```
+
+1.

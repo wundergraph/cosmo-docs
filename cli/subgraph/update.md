@@ -18,6 +18,10 @@ npx wgc subgraph update <name> [-r, --routing-url <url>] [--label [labels...]] [
 
 The `npx wgc subgraph update` command allows you to update an existing subgraph on the Cosmo platform's control plane. With this command, you can modify the routing URL and apply or change labels associated with the subgraph. Use `npx wgc subgraph update -h` to see all the available options.
 
+{% hint style="warning" %}
+If the subgraph was created as an [Event-Driven Graph (EDG)](../../federation/event-driven-federated-subscriptions/), attempting to provide any one of the following parameters will produce an error: `routing-url`, `susbcription-url`, `subscription-protocol`, or `websocket-subprotocol.`
+{% endhint %}
+
 ## Parameters
 
 * `<name>`: The name of the subgraph you want to update. This should be the exact name of the subgraph you wish to modify.
@@ -25,18 +29,18 @@ The `npx wgc subgraph update` command allows you to update an existing subgraph 
 ## Options
 
 * `-n, --namespace` : The namespace of the monograph (Default: "default").
-* `-r, --routing-url <url>`: The updated routing URL of your subgraph. This URL defines the endpoint where the subgraph will fetch data from. Use this option to change the subgraph's data source URL.
+* `-r, --routing-url <url>`: The updated routing URL of your subgraph. This URL defines the endpoint where the subgraph will fetch data from. Use this option to change the subgraph's data source URL. Will produce an error if the subgraph is an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/).
   * Example: `--routing-url http://new-domain.com/graphql`
 * `--label [labels...]`: The labels to apply or change for the subgraph. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. Use this option to update the subgraph's metadata.
   * Example: `--label team=A`
 * `--unset-labels`: This will remove all labels. It will not add new labels if both this and --labels option is passed.
-* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions. To remove a previously set subscription URL, use the flag without provided a URL argument.
-* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
+* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions. To remove a previously set subscription URL, use the flag without provided a URL argument. Will produce an error if the subgraph is an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/).
+* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. Will produce an error if the subgraph is an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/). The available options are:
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
   * `sse`: Use Server-Sent Events with a GET request.
   * `sse_post`: Use Server-Sent events with a POST request.
 * `--readme <path-to-readme>:` The path to the markdown file which describes the subgraph.
-* `--websocket-subprotocol:` The subprotocol to use when subscribing to the subgraph. The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
+* `--websocket-subprotocol:` The subprotocol to use when subscribing to the subgraph. Will produce an error if the subgraph is an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/). The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
 
 ## Examples
 

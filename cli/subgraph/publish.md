@@ -20,6 +20,10 @@ npx wgc subgraph publish [subgraphName] --schema [schemaFilePath]
 
 The `npx wgc subgraph publish` command enables you to publish a specific subgraph to the Cosmo platform. Publishing a subgraph makes it available for consumption by other services or applications, allowing them to send GraphQL queries and retrieve data from your subgraph. The `[subgraphName]` argument specifies the name of the subgraph you want to publish, while the `--schema` option defines the path to the GraphQL schema file that contains your subgraph's schema definition.
 
+{% hint style="danger" %}
+A previously created [Event-Driven Graph (EDG) ](../../federation/event-driven-federated-subscriptions/)cannot be changed into a regular subgraph. Similarly, a regular subgraph cannot be changed into an EDG. Attempting to do either of these actions will result in an error.
+{% endhint %}
+
 ## **Parameters**
 
 * `[subgraphName]`: The name of the subgraph you want to publish. Make sure to use the correct name of the subgraph you previously created.
@@ -34,9 +38,15 @@ The `npx wgc subgraph publish` command enables you to publish a specific subgrap
 
 Only needed when creating a subgraph with publish:
 
+{% hint style="warning" %}
+If the subgraph has already been created previously, the`routing-url`, `susbcription-url`,`subscription-protocol`, and `websocket-subprotocol parameters`will be ignored. Use [subgraph update](update.md) to update these values.\
+\
+If creating an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/) with publish, providing any of the four aforementioned parameters will produce an error.
+{% endhint %}
+
 * `--label`: (**Required**) Assign multiple labels to the new subgraph. Labels are used to categorize and organize subgraphs based on specific criteria (e.g., team, department, project).
   * Example: `--label team=A`
-* `--routing-url`: (**Required**) Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from.
+* `--routing-url`: (**Required for non Event-Driven Graphh**) Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from.
   * Example: `--routing-url http://localhost:4001/graphql`
 * `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
 * `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
