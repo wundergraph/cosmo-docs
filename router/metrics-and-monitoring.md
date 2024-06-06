@@ -121,6 +121,10 @@ telemetry:
 
 Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts. If not specified, a random unique ID is used.
 
+## Custom Attributes
+
+You can also add custom attributes to all metrics exporte over OTEL and Prometheus. Please refer to the [Custom Attributes](open-telemetry/custom-attributes.md) section.
+
 ## Subgraph errors
 
 When the router sends a request to your subgraphs and encounters a failure, we capture each subgraph error as individual OpenTelemetry (OTEL) events associated with the **`Engine - Fetch`** Span. These events include details such as the subgraph name, ID, error message, and extension code (if available). Additionally, we increment the **`router.http.requests.error`** metric.
