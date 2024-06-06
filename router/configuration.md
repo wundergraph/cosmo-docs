@@ -221,18 +221,31 @@ cluster:
 
 
 
-<table data-full-width="true"><thead><tr><th width="318">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TELEMETRY_SERVICE_NAME</td><td>service_name</td><td>true</td><td></td><td>cosmo-router</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="295">Environment Variable</th><th width="330">YAML</th><th width="112" data-type="checkbox">Required</th><th width="240">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TELEMETRY_SERVICE_NAME</td><td>service_name</td><td>true</td><td></td><td>cosmo-router</td></tr><tr><td></td><td>resource_attributes</td><td>false</td><td>The resource attributes to add to OTEL metrics and traces. The resource attributes identify the entity producing the traces and metrics.</td><td></td></tr><tr><td></td><td>resource_attributes.key</td><td>true</td><td>The key of the attribute.</td><td></td></tr><tr><td></td><td>resource_attributes.value</td><td>true</td><td>The value of the attribute.</td><td></td></tr><tr><td></td><td>attributes</td><td>false</td><td>The attributes to add to OTEL metrics and traces. Because Prometheus metrics rely on the OpenTelemetry metrics, the attributes are also added to the Prometheus metrics.</td><td></td></tr><tr><td></td><td>attributes.key</td><td>false</td><td>The key of the attribute.</td><td></td></tr><tr><td></td><td>attributes.default</td><td>false</td><td>The value of the attribute.</td><td></td></tr><tr><td></td><td>attributes.value_from</td><td>false</td><td>Defines a source for the attribute value e.g. from a request header. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>attributes.value_from.request_header</td><td>false</td><td>The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used. Don't forget to add the header to your CORS settings.</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
 {% code title="config.yaml" %}
 ```yaml
 version: "1"
+
+# Only needed when setting attributes based on a request header
+cors:
+  allow_headers:
+    - "x-service"
  
 # See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
 telemetry:
   # Common options
   service_name: "cosmo-router"
+  resource_attributes:
+    - key: env
+      value: "prod"
+  attributes:
+    - key: service
+      default: "static"
+      value_from:
+        request_header: "x-service"
 ```
 {% endcode %}
 

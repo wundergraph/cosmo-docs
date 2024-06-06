@@ -150,7 +150,7 @@
   * [Router Configuration for Subscriptions](router/subscriptions/router-configuration-for-subscriptions.md)
   * [Websocket Subprotocols](router/subscriptions/websocket-subprotocols.md)
 * [Persisted Operations](router/persisted-operations.md)
-* [Open Telemetry](router/open-telemetry/README.md)
+* [Open Telemetry](router/open-telemetry.md)
   * [Custom Attributes](router/open-telemetry/custom-attributes.md)
 * [Metrics & Monitoring](router/metrics-and-monitoring.md)
 * [Proxy capabilities](router/proxy-capabilities/README.md)
