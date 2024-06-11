@@ -21,6 +21,7 @@
 ## Guides
 
 * [Namespaces](guides/namespaces.md)
+* [Schema Contracts](guides/schema-contracts.md)
 
 ## Federation
 
