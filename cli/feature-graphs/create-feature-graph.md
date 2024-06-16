@@ -1,50 +1,37 @@
 # Create Feature Graph
 
-### Create
+## Usage
 
-Create Feature Graphs for your Federated Graph using the WunderGraph Cosmo CLI `feature-graph create` command. A name for the Feature Graph to be created must be provided as the first argument to the above command. Feature Graphs must be associated with an existing Subgraph. To associate a Feature Graph with a given Subgraph, supply the `--subgraph` parameter with the name of the Subgraph. A Routing URL for the Feature Graph must be provided. To provide a Routing URL for a Feature Graph, supply the `--routing-url` or `-r` parameter with the location at which the Feature Graph will be accessible.
-
-**Create Feature Graph**
-
-```shell
-wgc feature-graph create my-feature-graph \
-	--subgraph my-subgraph \
-	--routing-url http://localhost:4000
+```bash
+wgc feature-graph create my-feature-graph --subgraph my-subgraph --routing-url http://localhost:4000
 ```
+
+## Description
+
+Create Feature Graphs for your Federated Graph using the WunderGraph Cosmo CLI `feature-graph create` command. A name for the Feature Graph to be created must be provided as the first argument to the above command. Feature Graphs must be associated with an existing Subgraph in the same namesapce. To associate a Feature Graph with a given Subgraph, supply the `--subgraph` parameter with the name of the Subgraph. A Routing URL for the Feature Graph must be provided. To provide a Routing URL for a Feature Graph, supply the `--routing-url` or `-r` parameter with the location at which the Feature Graph will be accessible.
 
 Note that, by default, Feature Graphs are created in the `default` Namespace. To create a Feature Graph in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag create` command.
 
-**Create Feature Graph in `production` Namespace**
+## Parameters
 
-```shell
-wgc feature-graph create my-feature-graph \
-	--subgraph my-subgraph \
-	--routing-url http://localhost:4000 \
-	--namespace production
-```
+* `<name>`: The name of the feature graph you want to create.
 
-Optionally, Subscriptions for a Feature Graph can also be configured during creation. To configure Subscriptions for a Feature Graph, supply the `--subscription-url` and `--subscription-protocol` parameters with the location at which Subscriptions can be established and the protocol to be used to establish them, respectively. The supported protocols are `ws`, `sse`, and `sse_post`. Note that, in the absence of a specified `--subscription-url` parameter, the Routing URL for the Feature Graph will be used for Subscriptions by default. Should you need to configure the a WebSocket Subprotocol for your Feature Graph, supply the `--websocket-subprotocol` parameter with the desired protocol to be used. The supported WebSocket Sub Protocols are `auto`, `graphql-ws`, or `graphql-transport-ws`.
+## Required Options
 
-**Create Feature Graph with Subscriptions**
+`-r , --routing-url`: The routing URL of your router. This URL defines the endpoint where the router will be accessible. The contract graph will be accessible through this router.
 
-```shell
-wgc feature-graph create my-feature-graph \
-	--subgraph my-subgraph \
-	--routing-url http://localhost:4000 \
-	--subscription-url http://localhost:4000 \
-	--subscription-protocol sse
-```
+`-subgraph`: The subgraph name for which the feature graph is to be created.
 
-Additionally, the location of a README file for the Feature Graph can also be provided. To provide the location of a README for a Feature Graph, supply the `--readme` parameter with the file path at which the README is accessible.
+## Options
 
-**Create Feature Graph with README**
-
-```shell
-wgc feature-graph create my-feature-graph \
-	--subgraph my-subgraph \
-	--routing-url http://localhost:4000 \
-	--readme /path/to/feature-graph/README.md
-```
+* `-n, --namespace` : The namespace of the subgrah (Default: "default").
+* `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from. Will produce an error if the `-edg` flag is set.&#x20;
+  * Example: `--routing-url http://localhost:4001/graphql`
+* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions. Will produce an error if the `-edg` flag is set.&#x20;
+* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. Will produce an error if the `-edg` flag is set. The available options are:
+  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
+  * `sse`: Use Server-Sent Events with a GET request.
+  * `sse_post`: Use Server-Sent events with a POST request.
 
 If successful, a `Feature Graph was Created Successfully` message will be displayed in the console.
 
@@ -52,8 +39,16 @@ Note that Feature Graph creation will fail where any of the following are true:
 
 * Any of the required parameters for creation (`--subgraph`, `--routing-url`) are not provided;
 * The Subgraph specified to serve as the base for the Feature Graph does not exist in the same Namespace in which the Feature Graph is to be created;
-* The Subscription Protocol supplied to the `--subscription-protocol` parameter is not one of `sse`, `sse_post`, or `ws`;
-* The `--websocket-subprotocol`parameter is provided, but the `--subscription-protocol` parameter is not set to `ws`; or
-* The WebSocket Sub Protocol supplied to the `--websocket-subprotocol` parameter is not one of `auto`, `graphql-ws`, or `graphql-transport-ws`.
 
-In the event that Feature Graph creation fails, check the output of the WunderGraph Cosmo CLI for added context and additional troubleshooting instructions.
+In the event that Feature Flag creation fails, check the output of the WunderGraph Cosmo CLI for added context and additional troubleshooting instructions.
+
+## Examples
+
+1. Create a Feature Graph in the `default` namespace.
+
+```bash
+wgc feature-graph create my-feature-graph \
+	--subgraph my-subgraph \
+	--namespace default \
+	--routing-url http://localhost:4000
+```
