@@ -95,6 +95,13 @@
 * [Schema Contracts](cli/schema-contracts/README.md)
   * [Create](cli/schema-contracts/create.md)
   * [Update](cli/schema-contracts/update.md)
+* [Feature Graphs](cli/feature-graphs/README.md)
+  * [Create Feature Graph](cli/feature-graphs/create-feature-graph.md)
+* [Feature Flags](cli/feature-flags/README.md)
+  * [Create Feature Flag](cli/feature-flags/create-feature-flag.md)
+  * [Update Feature Flag](cli/feature-flags/update-feature-flag.md)
+  * [Enable Feature Flag](cli/feature-flags/enable-feature-flag.md)
+  * [Disable Feature Flag](cli/feature-flags/disable-feature-flag.md)
 
 ## Studio
 
