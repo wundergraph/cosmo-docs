@@ -8,9 +8,9 @@ wgc feature-graph create my-feature-graph --subgraph my-subgraph --routing-url h
 
 ## Description
 
-Create Feature Graphs for your Federated Graph using the WunderGraph Cosmo CLI `feature-graph create` command. A name for the Feature Graph to be created must be provided as the first argument to the above command. Feature Graphs must be associated with an existing Subgraph in the same namesapce. To associate a Feature Graph with a given Subgraph, supply the `--subgraph` parameter with the name of the Subgraph. A Routing URL for the Feature Graph must be provided. To provide a Routing URL for a Feature Graph, supply the `--routing-url` or `-r` parameter with the location at which the Feature Graph will be accessible.
+Create Feature Graphs for your Federated Graph. A name for the Feature Graph to be created must be provided as the first argument to the above command. Feature Graphs must be associated with an existing Subgraph in the same namespace. To associate a Feature Graph with a given Subgraph, supply the `--subgraph` parameter with the name of the Subgraph. A Routing URL for the Feature Graph must be provided. To provide a Routing URL for a Feature Graph, supply the `--routing-url` or `-r` parameter with the location at which the Feature Graph will be accessible.
 
-Note that, by default, Feature Graphs are created in the `default` Namespace. To create a Feature Graph in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag create` command.
+Note that, by default, Feature Graphs are created in the `default` Namespace. To create a Feature Graph in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the `wgc feature-flag create` command.
 
 ## Parameters
 

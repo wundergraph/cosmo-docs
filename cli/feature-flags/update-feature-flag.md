@@ -8,7 +8,7 @@ wgc feature-flag update my-flag -n default --feature-graphs myfg1 myfg2
 
 ## Description
 
-Update Feature Flags for your Federated Graph using the WunderGraph Cosmo CLI `feature-flag update` command. To update a Feature Flag in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag update` command.
+Update Feature Flags for your Federated Graph. To update a Feature Flag in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag update` command.
 
 **Update Feature Flag**&#x20;
 

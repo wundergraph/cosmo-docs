@@ -8,7 +8,7 @@ wgc feature-flag enable my-flag -n default
 
 ## Description
 
-Enable Feature Flags for your Federated Graph using the WunderGraph Cosmo CLI `feature-flag enable` command. By default, the WunderGraph Cosmo CLI `feature-flag enable` command will look for Feature Flags in the `default` Namespace. To enable a Feature Flag in a different Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag enable` command.
+Enable Feature Flags for your Federated Graph. By default, the command will look for Feature Flags in the `default` Namespace. To enable a Feature Flag in a different Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag enable` command.
 
 **Enable Feature Flag**&#x20;
 

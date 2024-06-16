@@ -8,7 +8,7 @@ wgc feature-flag create my-flag --feature-graphs my-graph
 
 ## Description
 
-Create Feature Flags for your Federated Graph using the WunderGraph Cosmo CLI `feature-flag create` command. A name for the Feature Flag to be created must be provided as the first argument to the above command. Further, Feature Flags must be associated with at least one Feature Graph. To associate a Feature Flag with a given [Feature Graph](../feature-graphs/), supply the `--feature-graphs` or `--fg` parameter with a list of Feature Graph names.
+Create Feature Flags for your Federated Graph. A name for the Feature Flag to be created must be provided as the first argument to the above command. Further, Feature Flags must be associated with at least one Feature Graph. To associate a Feature Flag with a given [Feature Graph](../feature-graphs/), supply the `--feature-graphs` or `--fg` parameter with a list of Feature Graph names.
 
 **Create Feature Flag with Multiple Feature Graphs**
 
@@ -17,7 +17,7 @@ wgc feature-flag create my-flag \
     --feature-graphs my-graph my-other-graph
 ```
 
-By default, Feature Flags are created in the `default` Namespace. To create a Feature Flag in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag create` command.
+By default, Feature Flags are created in the `default` Namespace. To create a Feature Flag in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the  `wgc feature-flag create` command.
 
 **Create Feature Flag  in `production` Namespace**
 

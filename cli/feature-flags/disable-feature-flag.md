@@ -8,7 +8,7 @@ wgc feature-flag disable my-flag -n default
 
 ## Description
 
-Disable Feature Flags for your Federated Graph using the WunderGraph Cosmo CLI `feature-flag disable` command. By default, the WunderGraph Cosmo CLI `feature-flag disable` command will look for Feature Flags in the `default` Namespace. To disable a Feature Flag in a different Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag disable` command.
+Disable Feature Flags for your Federated Graph. By default, the command will look for Feature Flags in the `default` Namespace. To disable a Feature Flag in a different Namespace, supply the `--namespace` or `-n` parameter when executing the `feature-flag disable` command.
 
 **Disable Feature Flag**&#x20;
 
