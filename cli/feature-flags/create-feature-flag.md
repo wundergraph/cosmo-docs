@@ -10,6 +10,10 @@ wgc feature-flag create my-flag --feature-graphs my-graph
 
 Create Feature Flags for your Federated Graph. A name for the Feature Flag to be created must be provided as the first argument to the above command. Further, Feature Flags must be associated with at least one Feature Graph. To associate a Feature Flag with a given [Feature Graph](../feature-graphs/), supply the `--feature-graphs` or `--fg` parameter with a list of Feature Graph names.
 
+{% hint style="info" %}
+A new feature flag is disabled by default to prevent accidental compositions. Run [`wgc ff enable <name>`](enable-feature-flag.md)to enable it.
+{% endhint %}
+
 ## Parameters
 
 * `<name>`: The name of the feature flag you want to create.
@@ -21,6 +25,7 @@ Create Feature Flags for your Federated Graph. A name for the Feature Flag to be
 ## Options
 
 * `-n, --namespace` : The namespace of the subgrah (Default: "default").
+* `-e --enabled`: Activates the feature flag after creation. A new feature flag is disabled by default to prevent accidental compositions.
 * `--label [labels...]:`The labels to apply to the feature flag. The labels are passed in the format `key=value.` Multiple values are space separated.
 
 ## Examples
