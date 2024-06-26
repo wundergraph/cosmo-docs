@@ -26,6 +26,19 @@ dev_mode: false
 ```
 {% endcode %}
 
+## Disable File Uploads
+
+The router implements the spec [https://github.com/jaydenseric/graphql-multipart-request-spec](https://github.com/jaydenseric/graphql-multipart-request-spec), that defines an interoperable multipart form field structure for GraphQL requests. Due to the nature of file uploads, unnecessary pressure may be placed on the router.
+
+By default file uploads are enabled. The following configuration should be applied:
+
+{% code title="router.yaml" %}
+```yaml
+file_upload:
+    enabled: false
+```
+{% endcode %}
+
 ## Enable Config Signing
 
 The router configuration contains rules and settings for how your supergraph is executed. You can either allow the router to poll the configuration automatically or deploy the configuration with each router deployment. In both cases, you must trust the origin that provides the configuration. To prevent configuration tampering, we have implemented a feature called [Config-Signing](config-validation-and-signing.md).
