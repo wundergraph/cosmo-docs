@@ -1,69 +1,53 @@
+---
+description: How to create a feature flag.
+---
+
 # Create Feature Flag
-
-## Usage
-
-```bash
-wgc feature-flag create my-flag --feature-graphs my-graph
-```
 
 ## Description
 
-Create Feature Flags for your Federated Graph. A name for the Feature Flag to be created must be provided as the first argument to the above command. Further, Feature Flags must be associated with at least one Feature Graph. To associate a Feature Flag with a given [Feature Graph](../feature-graphs/), supply the `--feature-graphs` or `--fg` parameter with a list of Feature Graph names.
+Create a new feature flag within the specified (otherwise "default") namespace. A feature flag comprises one or more "alternative subgraph versions", i.e., [feature subgraphs](../feature-subgraphs/), that can be applied to one or more federated graphs.
 
-{% hint style="info" %}
-A new feature flag is disabled by default to prevent accidental compositions. Run [`wgc ff enable <name>`](enable-feature-flag.md)to enable it or pass `--enable` when creating the flag.
+## Usage
+
+{% hint style="warning" %}
+A feature flag is disabled when created by default. To create and immediately enable a feature flag, include the `--enabled` flag. To enable after creation, see [`wgc ff enable`](enable-feature-flag.md).
+{% endhint %}
+
+```bash
+wgc feature-flag create my-flag --feature-subgraphs my-graph-one my-graph-two
+```
+
+The alias for `feature-flag` is `ff`.
+
+Note that unless specified by the `--namespace` parameter, the namespace will be automatically passed as "default".
+
+{% hint style="danger" %}
+If either the base composition (the Federated Graph with the original Subgraphs) or the Feature Flag composition fail, the Router Config will not be updated with the Feature Flag configuration.
 {% endhint %}
 
 ## Parameters
 
-* `<name>`: The name of the feature flag you want to create.
+* `<name>`: The name of the Feature Flag to create. Must be unique among all feature flags in the specified (otherwise "default") namespace.
 
 ## Required Options
 
-`--fg, --feature-graphs:` The names of the feature graphs that will form the feature flag. The feature graphs are passed in the format .The feature flag must have at least one feature graph. Multiple values are space separated.
+`--fs, --feature-subgraphs:` A list of names of the feature subgraphs that compose the feature flag. At least one feature subgraph name must be included, and multiple names are space delimited. Including a non-feature subgraph or a feature subgraph that does not exist in the specified (otherwise "default") namespace will produce an error.&#x20;
 
 ## Options
 
-* `-n, --namespace` : The namespace of the subgrah (Default: "default").
-* `-e --enabled`: Activates the feature flag after creation. A new feature flag is disabled by default to prevent accidental compositions.
-* `--label [labels...]:`The labels to apply to the feature flag. The labels are passed in the format `key=value.` Multiple values are space separated.
+* `-n, --namespace` : The namespace of the feature flag (defaults to "default"). Returns an error if the feature flag does not exist in that namespace.
+* `-e --enabled`: Activates the feature flag immediately upon creation. A new feature flag is disabled by default to prevent accidental compositions.
+* `--label [labels...]:`The labels to apply to the feature flag. The labels are passed in the format `key=value`, and multiple values are space delimited.
 
-## Examples
+## Example
 
-**Create Feature Flag with Multiple Feature Graphs**
-
-```shell
-wgc feature-flag create my-flag \
-    --feature-graphs my-graph my-other-graph
-```
-
-By default, Feature Flags are created in the `default` Namespace. To create a Feature Flag in a specific Namespace, supply the `--namespace` or `-n` parameter when executing the  `wgc feature-flag create` command.
-
-**Create Feature Flag  in `production` Namespace**
+Create the feature flag "my-flag" in the namespace "prod" with multiple feature subgraphs and the labels `team=A` and `team=B`:
 
 ```shell
 wgc feature-flag create my-flag \
-    --feature-graphs my-graph \
-    --namespace production 
+    --feature-subgraphs my-graph my-other-graph \
+    -n prod
+    --label team=A team=B
 ```
 
-To apply Labels to the Feature Flag, utilize the `--label` parameter when executing the `feature-flag create` command with a list of `<key>=<value>`pairs to apply.
-
-**Create Feature Flag  with `foo=bar` Label**
-
-```shell
-wgc feature-flag create my-flag \
-    --feature-graphs my-graph \
-    --label foo=bar 
-```
-
-If successful, a `Feature Flag was Created Successfully` message will be displayed in the console.&#x20;
-
-Note that updating a Feature Flag will fail where either Composition Errors or Deployment Errors are detected. Composition Errors occur when errors are encountered in composing the Federated Graph. Deployment Errors occur when composition is successful but pushing the resulting schema to the associated WunderGraph CLI Router was not.&#x20;
-
-Additionally, Feature Flag creation will fail where any of the following are true:
-
-* A Feature Flag with the same name already exists in the same Namespace;
-* The Feature Graph provided to the `--feature-graphs` parameter does not exist or cannot be found in the same Namespace in which the Feature Flag is to be created;
-
-In the event that Feature Flag creation fails, check the output of the WunderGraph Cosmo CLI for added context and additional troubleshooting instructions.

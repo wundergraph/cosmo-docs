@@ -1,0 +1,63 @@
+---
+description: How to create a feature subgraph.
+---
+
+# Create Feature Subgraph
+
+## Description
+
+Create a feature subgraph based on an existing subgraph for your federated graph within the specified (otherwise "default") namespace. A feature subgraph is an "alternative version" of an existing subgraph. One or more feature subgraphs are used to compose a [feature flag](../feature-flags/).
+
+## Usage
+
+{% hint style="warning" %}
+A feature subgraph does not function in isolation. One or more feature subgraphs must compose a [feature flag](../feature-flags/), which itself must be enabled to take effect.
+{% endhint %}
+
+```bash
+wgc feature-subgraph create my-feature-subgraph --subgraph my-subgraph --routing-url http://localhost:4000
+```
+
+The alias for `feature-subgraph` is `fs`.
+
+Note that unless specified by the `--namespace` parameter, the namespace will be automatically passed as "default".
+
+## Parameters
+
+* `<name>`: The name of the feature subgraph to create. Must be unique among all subgraphs and feature subgraphs within the specified (otherwise "default") namespace.
+
+## Required Options
+
+{% hint style="warning" %}
+If the routing URL is not supplied, or the base subgraph does not exist in the specified (otherwise "default") namespace, the command will fail.
+{% endhint %}
+
+`-r , --routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint from which the subgraph will fetch data.
+
+* Example: `--routing-url http://localhost:4001/graphql`
+
+`--subgraph`: The name of the existing base subgraph for which the feature subgraph is to be created.
+
+## Options
+
+{% hint style="info" %}
+Feature subgraphs do not use labels directly; labels are set by the [feature flag](../feature-flags/) that the feature subgraph(s) compose.
+{% endhint %}
+
+* `-n, --namespace` :  The namespace of the feature subgraph (defaults to "default"). Returns an error if the feature flag does not exist in that namespace.
+* `--subscription-url:` Use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
+* `--subscription-protocol:` Set a protocol to use for subscriptions. The available options are:
+  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
+  * `sse`: Use Server-Sent Events with a GET request.
+  * `sse_post`: Use Server-Sent events with a POST request.
+
+## Examples
+
+1. Create the feature subgraph "my-feature-subgraph" based on the existing subgraph "my-subgraph" in the namespace "prod".
+
+```bash
+wgc feature-subgraph create my-feature-subgraph \
+	--subgraph my-subgraph \
+	--namespace prod \
+	--routing-url http://localhost:4000
+```
