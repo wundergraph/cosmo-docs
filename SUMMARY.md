@@ -179,6 +179,7 @@
   * [Kafka](router/event-driven-federated-subscriptions-edfs/kafka.md)
 * [Compliance and Data Management](router/compliance-and-data-management.md)
 * [Subgraph Error Propagation](router/subgraph-error-propagation.md)
+* [File Upload](router/file-upload.md)
 
 ## Control Plane
 

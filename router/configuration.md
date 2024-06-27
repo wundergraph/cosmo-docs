@@ -813,3 +813,22 @@ security:
     block_subscriptions: true
     block_non_persisted_operations: true
 ```
+
+
+
+### File Upload
+
+The configuration for file upload. Configure whether it should be enabled along with file size and number of files.
+
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>FILE_UPLOAD_ENABLED</td><td>enabled</td><td>false</td><td>Whether the feature is enabled or not</td><td>true</td></tr><tr><td>FILE_UPLOAD_MAX_FILE_SIZE</td><td>max_file_size</td><td>false</td><td>The maximum size of a file that can be uploaded. The size is specified as a string with a number and a unit, e.g. 10KB, 1MB, 1GB. The supported units are 'KB', 'MB', 'GB'.</td><td>50MB</td></tr><tr><td>FILE_UPLOAD_MAX_FILES</td><td>max_files</td><td>false</td><td>The maximum number of files that can be uploaded per request.</td><td>10</td></tr></tbody></table>
+
+#### Example YAML Configuration
+
+```yaml
+version: "1"
+
+file_upload:
+    enabled: true
+    max_file_size: 1GB
+    max_files: 2
+```
