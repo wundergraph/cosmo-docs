@@ -6,19 +6,29 @@ description: Upload files through the router using GraphQL multipart request.
 
 ## Overview
 
-The feature is implemented following the specification in [https://github.com/jaydenseric/graphql-multipart-request-spec](https://github.com/jaydenseric/graphql-multipart-request-spec) making use of the `multipart/form-data` content type. Cosmo supports single file and multiple file uploads. There is no support for batch upload.
+This feature is implemented according to the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec), utilizing the `multipart/form-data` content type. Cosmo supports both single and multiple file uploads, but batch uploads are not supported.
 
-The router can be configured for file uploads as shown [here](configuration.md#file-upload).
+The router can be configured for file uploads with [these options](configuration.md#file-upload).
 
-## Multipart request structure
+## Multipart Request Structure
 
-1. `operations`: A JSON encoded operations object with files replaced with `null`.
-2. `map`: A JSON encoded map of where files occurred in the operations. For each file, the key is the file multipart form field name and the value is an array of operations paths.
-3. File fields: Each file extracted from the operations object with a unique, arbitrary field name.
+#### operations
+
+A JSON-encoded operations object with files replaced by `null`. This object defines the GraphQL query or mutation to be executed, along with the necessary variables.
+
+#### map
+
+A JSON-encoded map indicating where files appear in the operations. For each file, the key is the file's multipart form field name, and the value is an array of operations paths. This map ensures the correct association between the files and their respective variables in the GraphQL operation.
+
+#### File Fields
+
+Each file extracted from the operations object is assigned a unique, arbitrary field name. These fields are included in the multipart form data and correspond to the file paths specified in the map.
 
 ## Sample Setup
 
-You need to define a custom scalar `scalar Upload` in your schema. This will be used for the field type where you want to upload files.
+#### Define Custom Scalar
+
+You need to define a custom scalar `Upload` in your schema. This scalar will be used for the field type where you intend to upload files.
 
 ```graphql
 scalar Upload
@@ -29,21 +39,39 @@ type Mutation {
 }
 ```
 
-### Single file upload
+#### Single File Upload
 
-```
+To upload a single file, use the following `curl` command:
+
+```sh
 curl localhost:3002/graphql \
   -F operations='{ "query": "mutation ($file: Upload!) { singleUpload(file: $file) }", "variables": { "file": null } }' \
   -F map='{ "0": ["variables.file"] }' \
   -F 0=@a.txt
 ```
 
-### Multiple files upload
+This command sends a multipart request where:
 
-```
+* `operations` defines the GraphQL mutation with the `file` variable set to `null`.
+* `map` associates the form field `0` with `variables.file`.
+* `0=@a.txt` uploads the file `a.txt` with the form field name `0`.
+
+#### Multiple Files Upload
+
+To upload multiple files, use the following `curl` command:
+
+```sh
 curl localhost:3002/graphql \
   -F operations='{ "query": "mutation($files: [Upload!]!) { multipleUpload(files: $files) }", "variables": { "files": [null, null] } }' \
   -F map='{ "0": ["variables.files.0"], "1": ["variables.files.1"] }' \
   -F 0=@a.txt \
   -F 1=@b.txt
 ```
+
+This command sends a multipart request where:
+
+* `operations` defines the GraphQL mutation with the `files` variable set to an array of `null` values.
+* `map` associates the form fields `0` and `1` with `variables.files.0` and `variables.files.1` respectively.
+* `0=@a.txt` and `1=@b.txt` upload the files `a.txt` and `b.txt` with form field names `0` and `1`.
+
+By following these examples, you can configure your router to handle single and multiple file uploads effectively using GraphQL multipart requests. For more details, refer to the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec).
