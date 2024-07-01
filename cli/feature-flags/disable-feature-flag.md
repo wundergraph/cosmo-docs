@@ -6,7 +6,7 @@ description: How to disable a feature flag.
 
 ## Description
 
-Disable (deactivate) an existing feature flag within the specified (otherwise "default") namespace. A feature flag comprises one or more "alternative subgraph versions", i.e., [feature subgraphs](../feature-subgraphs/), that can be applied to one or more federated graphs.
+Disable (deactivate) an existing feature flag within the specified namespace (or the "default" namespace if unspecified). A feature flag is a group of one or more [feature subgraphs](../feature-subgraphs/). Each feature subgraph represents a replacement of a specific base subgraph that composes a federated graph.
 
 ## Usage
 

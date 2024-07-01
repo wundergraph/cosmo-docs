@@ -99,9 +99,9 @@
   * [Create Feature Subgraph](cli/feature-subgraphs/create-feature-subgraph.md)
 * [Feature Flags](cli/feature-flags/README.md)
   * [Create Feature Flag](cli/feature-flags/create-feature-flag.md)
-  * [Update Feature Flag](cli/feature-flags/update-feature-flag.md)
-  * [Enable Feature Flag](cli/feature-flags/enable-feature-flag.md)
   * [Disable Feature Flag](cli/feature-flags/disable-feature-flag.md)
+  * [Enable Feature Flag](cli/feature-flags/enable-feature-flag.md)
+  * [Update Feature Flag](cli/feature-flags/update-feature-flag.md)
 
 ## Studio
 
