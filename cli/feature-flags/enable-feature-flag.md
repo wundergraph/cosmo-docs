@@ -6,7 +6,14 @@ description: How to enable a feature flag.
 
 ## Description
 
-Enable (activate) an existing feature flag within the specified namespace (or the "default" namespace if unspecified). A feature flag is a group of one or more [feature subgraphs](../feature-subgraphs/). Each feature subgraph represents a replacement of a specific base subgraph that composes a federated graph.
+Enable (activate) an existing feature flag within the specified namespace (or the "default" namespace if unspecified). A feature flag is a group of one or more [feature subgraphs](../feature-subgraph/). Each feature subgraph represents a replacement of a specific base subgraph that composes a federated graph.
+
+## Minimum Requirements
+
+| Package | Minimum version |
+| ------- | --------------- |
+| wgc     | TBD             |
+| router  | TBD             |
 
 ## Usage
 

@@ -1,0 +1,198 @@
+---
+description: >-
+  An example of how feature flags could be used to release an experimental
+  feature to a subset of a federated graph's consumers.
+---
+
+# Gradual and experimental feature rollout with Feature Flags
+
+{% hint style="info" %}
+For an overview of what feature flags are and what they can achieve, see [Feature Flags](../concepts/feature-flags.md).
+{% endhint %}
+
+In this example, we are going to roll out a new, experimental feature in one of our services. However, we don't want this feature to be available to everyone immediately. Instead, it should be released gradually to only selected clients. This is functionality that can be achieved with feature flags.
+
+## Prerequisites
+
+Before getting started with feature flags, please ensure the following:
+
+1. You have created a federated graph that has been successfully composed with at least one published subgraph.
+2. You are using the minimum versions of [wgc](../cli/intro.md) and the [router](../router/intro.md):
+
+| Package | Minimum version   |
+| ------- | ----------------- |
+| wgc     | Not released yet! |
+| router  | Not released yet! |
+
+## Getting started
+
+{% hint style="info" %}
+This example will use the [namespace](../concepts/namespaces.md) "staging" for the CLI commands. If you are using the "default" namespace, you do not need to include any namespace parameters.
+{% endhint %}
+
+For this example, let's assume we have a federated graph, `MyGraph`, with the label matchers `team=A`. `MyGraph` has been successfully composed with two published subgraphs, `users` and `products`, which both define the labels `team=A`. Here are the schemas:
+
+Users service SDL
+
+```graphql
+# users service
+type Query {
+    users: [User!]!
+}
+
+type User @key(fields: "id") {
+ id: ID!
+ username: String!
+ email: String!
+}
+```
+
+#### Products service SDL
+
+```graphql
+# products service
+type Query {
+    products: [Product!]!
+}
+
+type Product {
+ upc: Int!
+}
+
+type User @key(fields: "id") {
+    id: ID!
+    basket: [Product!]!
+}
+```
+
+### The Feature
+
+The feature that we want to release is related to the `products` service. We want to extend the current functionality thus:
+
+1. Add a field that represents a shopping basket of products to the `User` entity.
+2. Add a mutation that allows products to be added to this new `basket` field.
+
+### Creating and publishing a Feature Subgraph
+
+First, we must create a feature subgraph that will eventually compose our feature flag. This is done with [`wgc feature-subgraph create`](../cli/feature-subgraph/create-feature-subgraph.md).  Every feature subgraph is linked to the "base" or "original" subgraph that it intends to replace. In this case, the feature we wish to gradually introduce to our customers is within the `products` service, so we pass `products` (the name of the service) to the `--subgraphs` parameter.
+
+```bash
+wgc fs products-feature \
+ --namespace staging
+ --routing-url https://staging.products-feature.wundergraph.com \
+ --subgraph products\
+```
+
+{% hint style="warning" %}
+Feature subgraphs do not define labels. Only feature flags (one or more feature subgraphs compose a feature flag) define labels, and those labels dictate to which federated graph(s) the feature flag applies.
+{% endhint %}
+
+After the new feature has been implemented and the corresponding service has been deployed, the new schema need to be published. The schema might look like so:
+
+#### Products-feature service SDL
+
+```graphql
+# products feature service
+type Query {
+    products: [Product!]!
+}
+
+type Mutation {
+    """The mutation addProductToUserBasket has been implemented"""
+    addProductToUserBasket(userId: ID!, upc: Int!): User
+}
+
+type Product {
+ upc: Int!
+ """The name field has been added to Product"""
+ name: String!
+}
+
+type User @key(fields: "id") {
+    id: ID!
+    basket: [Product!]!
+}
+```
+
+The schema for `products-feature` can be published using [`wgc subgraph publish`](../cli/subgraph/publish.md#publish-a-schema-to-an-existing-subgraph):
+
+```bash
+wgc subgraph publish products-feature \
+    --namespace staging \
+    --schema path/to/products-feature.graphql
+```
+
+No new compositions will be triggered yet, because the feature subgraph is not yet part of a feature flag.
+
+{% hint style="warning" %}
+Feature subgraphs do not work in isolation! To be applied to a federated graph, a feature subgraph must compose a feature flag, which itself must be enabled.
+{% endhint %}
+
+### Creating and enabling a Feature Flag
+
+To apply our feature subgraph(s) to our federated graph(s), they must first compose a feature flag. A feature flag is a collection of one or more feature subgraphs. When a feature flag is enabled, each feature subgraph that composes that feature flag will also become active. Similarly, if a feature flag is disabled, its constituent feature subgraphs will also become inactive.&#x20;
+
+{% hint style="warning" %}
+Note that each feature flag is bespoke, and a feature subgraph can belong to more than one feature flag. Toggling one feature flag does not affect another, even if there is overlap in the feature subgraphs that compose them.
+{% endhint %}
+
+A feature flag can be created using [`wgc feature-flag create`](../cli/feature-flags/create-feature-flag.md). A feature flag must be created with the provision of at least one space-delimited feature subgraph name to the `--feature-subgraphs` parameter. Defining labels with the `--label` parameter dictates to which federated graphs the feature flag applies. Lastly, feature flags are disabled upon creation by default, unless the `--enabled` flag is passed.  Note that in the example command below, the labels match the label matchers of the federated graph `MyGraph`.
+
+```bash
+wgc feature-flag create my-flag \
+    --namespace staging \
+    --label team=A \
+    --feature-subgraphs products-feature \
+    --enabled
+```
+
+Because `my-flag` was created with the `--enabled` flag, it will be enabled (activated) immediately upon creation. Consequently, two new compositions should have been triggered: a recomposition of the base federated graph and a composition that includes the enabled feature flag.
+
+A successful feature flag composition will produce an embedded feature flag configuration within the base router execution configuration.
+
+{% hint style="danger" %}
+If either the federated graph base composition or the feature flag composition is unsuccessful, the feature flag configuration will not be produced (or accessible) to the router.
+{% endhint %}
+
+### Using Cosmo Router to serve the Feature Flag to clients
+
+The new feature has been implemented, deployed, published, and made accessible to your Cosmo router. Now all that's left is instructing your router to serve the feature flag to your selected clients. Luckily, this is as easy as setting a header or a cookie in the request:
+
+{% hint style="warning" %}
+If both the feature flag header and cookie are set, the feature flag header will take precedence. If the feature flag can't be found, we will fallback to the default federated graph.
+{% endhint %}
+
+#### Feature Flag Header
+
+| Header         | Value                    |
+| -------------- | ------------------------ |
+| X-Feature-Flag | Name of the feature flag |
+
+A request to the federated graph feature flag will be made if the name of a valid feature flag is passed to the `X-Feature-Flag` header. If the name of the feature flag is invalid, the default federated graph will be served. An example is shown below:
+
+```bash
+curl --request POST \
+  --url https://staging.router.wundergraph.com/graphql \
+  --header 'Content-Type: application/json; charset=utf8' \
+  --header 'X-Feature-Flag: my-flag' \
+  --data '{"query":"query Products { products { name } }"}'
+```
+
+#### Cookie
+
+| Header | Value                                    |
+| ------ | ---------------------------------------- |
+| Cookie | feature\_flag={name of the feature flag} |
+
+A request to the federated graph feature flag will be made if the name of a valid feature flag is provided to the `Cookie` header in the format `feature_flag={name of the feature flag}`. If the name of the feature flag is invalid, the default federated graph will be served. An example is shown below:
+
+```bash
+curl --request POST \
+  --url https://staging.router.wundergraph.com/graphql \
+  --header 'Content-Type: application/json; charset=utf8' \
+  --header 'Cookie: feature_flag=my-flag' \
+  --data '{"query":"query Products { products { name } }"}'
+```
+
+Now, whenever the cookie or header are provided, the client will be able to use the new features, i.e., request the `Product.name` field or mutate a `User` with `addProductToUserBasket`. When the header or cookie is not included, the base (non-feature flag) federated graph will be served.
+

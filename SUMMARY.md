@@ -8,6 +8,7 @@
 
 ## Tutorial
 
+* [Gradual and experimental feature rollout with Feature Flags](tutorial/gradual-and-experimental-feature-rollout-with-feature-flags.md)
 * [Mastering Local Development for GraphQL Federation](tutorial/mastering-local-development-for-graphql-federation.md)
 * [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)
 * [Switch from Apollo to Cosmo](tutorial/switch-from-apollo-to-cosmo.md)
@@ -18,10 +19,11 @@
 * [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
 * [Using Apollo Router / Gateway with Cosmo OSS Schema Registry](tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry.md)
 
-## Guides
+## Concepts
 
-* [Namespaces](guides/namespaces.md)
-* [Schema Contracts](guides/schema-contracts.md)
+* [Feature Flags](concepts/feature-flags.md)
+* [Namespaces](concepts/namespaces.md)
+* [Schema Contracts](concepts/schema-contracts.md)
 
 ## Federation
 
@@ -95,8 +97,8 @@
 * [Schema Contracts](cli/schema-contracts/README.md)
   * [Create](cli/schema-contracts/create.md)
   * [Update](cli/schema-contracts/update.md)
-* [Feature Subgraphs](cli/feature-subgraphs/README.md)
-  * [Create Feature Subgraph](cli/feature-subgraphs/create-feature-subgraph.md)
+* [Feature Subgraph](cli/feature-subgraph/README.md)
+  * [Create Feature Subgraph](cli/feature-subgraph/create-feature-subgraph.md)
 * [Feature Flags](cli/feature-flags/README.md)
   * [Create Feature Flag](cli/feature-flags/create-feature-flag.md)
   * [Disable Feature Flag](cli/feature-flags/disable-feature-flag.md)
