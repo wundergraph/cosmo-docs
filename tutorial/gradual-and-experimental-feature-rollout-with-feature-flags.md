@@ -19,10 +19,10 @@ Before getting started with feature flags, please ensure the following:
 1. You have created a federated graph that has been successfully composed with at least one published subgraph.
 2. You are using the minimum versions of [wgc](../cli/intro.md) and the [router](../router/intro.md):
 
-| Package | Minimum version   |
-| ------- | ----------------- |
-| wgc     | Not released yet! |
-| router  | Not released yet! |
+| Component               | Minimum version |
+| ----------------------- | --------------- |
+| [wgc](broken-reference) | 0.58.0          |
+| router                  | 0.95.0          |
 
 ## Getting started
 
