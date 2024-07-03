@@ -8,10 +8,7 @@ A feature flag is a group of one or more [feature subgraphs](../feature-subgraph
 
 ## Minimum Requirements
 
-| Package | Minimum version |
-| ------- | --------------- |
-| wgc     | TBD             |
-| router  | TBD             |
+<table><thead><tr><th width="178">Package</th><th>Minimum version</th></tr></thead><tbody><tr><td><a href="broken-reference">wgc</a></td><td>0.58.0</td></tr><tr><td><a href="broken-reference">router</a></td><td>0.95.0</td></tr></tbody></table>
 
 {% content-ref url="create-feature-flag.md" %}
 [create-feature-flag.md](create-feature-flag.md)

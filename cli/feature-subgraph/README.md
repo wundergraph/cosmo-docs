@@ -10,10 +10,10 @@ Creating a feature subgraph does nothing in isolation. It must be added to an en
 
 ## Minimum Requirements
 
-| Package | Minimum version |
-| ------- | --------------- |
-| wgc     | TBD             |
-| router  | TBD             |
+| Package                    | Minimum version |
+| -------------------------- | --------------- |
+| [wgc](broken-reference)    | 0.58.0          |
+| [router](broken-reference) | 0.95.0          |
 
 {% content-ref url="create-feature-subgraph.md" %}
 [create-feature-subgraph.md](create-feature-subgraph.md)

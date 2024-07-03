@@ -8,13 +8,6 @@ description: How to create a feature subgraph.
 
 Create a feature subgraph based on an existing subgraph for your federated graph within the specified (otherwise "default") namespace. A feature subgraph is an "override" of an existing subgraph. One or more feature subgraphs are used to compose a [feature flag](../feature-flags/).
 
-## Minimum Requirements
-
-| Package | Minimum version |
-| ------- | --------------- |
-| wgc     | TBD             |
-| router  | TBD             |
-
 ## Usage
 
 {% hint style="warning" %}
