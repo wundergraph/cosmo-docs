@@ -6,7 +6,7 @@ description: >-
 
 # Feature Flags
 
-<figure><img src="../.gitbook/assets/image (122).png" alt=""><figcaption><p>Feature Flags and Feature Subgraphs</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (123).png" alt=""><figcaption><p>Feature Flag and Feature Subgraphs</p></figcaption></figure>
 
 ## What is a Feature Flag?
 
