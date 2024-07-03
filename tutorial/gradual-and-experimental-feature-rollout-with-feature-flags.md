@@ -19,10 +19,10 @@ Before getting started with feature flags, please ensure the following:
 1. You have created a federated graph that has been successfully composed with at least one published subgraph.
 2. You are using the minimum versions of [wgc](../cli/intro.md) and the [router](../router/intro.md):
 
-| Component               | Minimum version |
-| ----------------------- | --------------- |
-| [wgc](broken-reference) | 0.58.0          |
-| router                  | 0.95.0          |
+| Package                      | Minimum version                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| [wgc](../cli/intro.md)       | [0.58.0](https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0) |
+| [router](../router/intro.md) | [0.95.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0)    |
 
 ## Getting started
 

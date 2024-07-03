@@ -8,6 +8,13 @@ description: How to create a feature subgraph.
 
 Create a feature subgraph based on an existing subgraph for your federated graph within the specified (otherwise "default") namespace. A feature subgraph is an "override" of an existing subgraph. One or more feature subgraphs are used to compose a [feature flag](../feature-flags/).
 
+## Minimum Requirements
+
+| Package                         | Minimum version                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------ |
+| [wgc](../intro.md)              | [0.58.0](https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0) |
+| [router](../../router/intro.md) | [0.95.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0)    |
+
 ## Usage
 
 {% hint style="warning" %}

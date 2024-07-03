@@ -8,6 +8,13 @@ description: How to update a feature flag.
 
 Update an existing feature flag within the specified namespace (or the "default" namespace if unspecified). A feature flag is a group of one or more [feature subgraphs](../feature-subgraph/). Each feature subgraph represents a replacement of a specific base subgraph that composes a federated graph.
 
+## Minimum Requirements
+
+| Package                         | Minimum version                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------ |
+| [wgc](../intro.md)              | [0.58.0](https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0) |
+| [router](../../router/intro.md) | [0.95.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0)    |
+
 ## Usage
 
 ```bash
@@ -31,6 +38,7 @@ If either the base composition (the federated graph with the original subgraphs)
 * `--fs, --feature-subgraphs:` A list of names of the feature subgraphs that compose the feature flag. At least one feature subgraph name must be included, and multiple names are space delimited. Including a non-feature subgraph or a feature subgraph that does not exist in the specified (otherwise "default") namespace will produce an error. Including this option will overwrite the existing list.
 * `-n, --namespace` : The namespace of the feature flag (defaults to "default"). Returns an error if the feature flag does not exist in that namespace.
 * `--label [labels...]:`The labels to apply to the feature flag. The labels are passed in the format `key=value`, and multiple values are space delimited. Including this option will overwrite the existing list.
+* `--unsetlabels:` Removes all existing labels. If the `--label` parameter is also provided, it will be ignored.
 
 ## Example
 

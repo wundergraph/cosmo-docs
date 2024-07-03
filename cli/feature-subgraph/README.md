@@ -10,10 +10,10 @@ Creating a feature subgraph does nothing in isolation. It must be added to an en
 
 ## Minimum Requirements
 
-| Package                    | Minimum version |
-| -------------------------- | --------------- |
-| [wgc](broken-reference)    | 0.58.0          |
-| [router](broken-reference) | 0.95.0          |
+| Package                         | Minimum version                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------ |
+| [wgc](../intro.md)              | [0.58.0](https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0) |
+| [router](../../router/intro.md) | [0.95.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0)    |
 
 {% content-ref url="create-feature-subgraph.md" %}
 [create-feature-subgraph.md](create-feature-subgraph.md)
