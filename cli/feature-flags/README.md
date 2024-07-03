@@ -8,10 +8,7 @@ A feature flag is a group of one or more [feature subgraphs](../feature-subgraph
 
 ## Minimum Requirements
 
-| Package                         | Minimum version                                                                |
-| ------------------------------- | ------------------------------------------------------------------------------ |
-| [wgc](../intro.md)              | [0.58.0](https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0) |
-| [router](../../router/intro.md) | [0.95.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0)    |
+<table><thead><tr><th width="119">Package</th><th>Minimum version</th></tr></thead><tbody><tr><td><a href="../intro.md">wgc</a></td><td><a href="https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0">0.58.0</a></td></tr><tr><td><a href="../../router/intro.md">router</a></td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0">0.95.0</a></td></tr></tbody></table>
 
 {% content-ref url="create-feature-flag.md" %}
 [create-feature-flag.md](create-feature-flag.md)

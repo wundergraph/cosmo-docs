@@ -8,6 +8,10 @@ description: >-
 
 <figure><img src="../.gitbook/assets/image (123).png" alt=""><figcaption><p>Feature Flag and Feature Subgraphs</p></figcaption></figure>
 
+## Minimum Requirements
+
+<table><thead><tr><th width="119">Package</th><th>Minimum version</th></tr></thead><tbody><tr><td><a href="../cli/intro.md">wgc</a></td><td><a href="https://github.com/wundergraph/cosmo/compare/wgc@0.57.7...wgc@0.58.0">0.58.0</a></td></tr><tr><td><a href="../router/intro.md">router</a></td><td><a href="https://github.com/wundergraph/cosmo/releases/tag/router%400.95.0">0.95.0</a></td></tr></tbody></table>
+
 ## What is a Feature Flag?
 
 A feature flag is a toggle-able collection of "subgraph replacements", known as feature subgraphs, for one or more federated graphs. Feature flags enable you to release changes and experimental features incrementally to a subset of your consumer traffic, rather than all clients immediately.
