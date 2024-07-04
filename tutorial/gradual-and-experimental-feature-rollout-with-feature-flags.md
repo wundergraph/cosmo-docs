@@ -79,7 +79,7 @@ First, we must create a feature subgraph that will eventually compose our featur
 
 ```bash
 wgc fs products-feature \
- --namespace staging
+ --namespace staging \
  --routing-url https://staging.products-feature.wundergraph.com \
  --subgraph products
 ```
