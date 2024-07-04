@@ -56,12 +56,12 @@ type Query {
 }
 
 type Product {
- upc: Int!
+    upc: Int!
 }
 
 type User @key(fields: "id") {
     id: ID!
-    basket: [Product!]!
+    favoriteProduct: Product
 }
 ```
 
@@ -71,6 +71,7 @@ The feature that we want to release is related to the `products` service. We wan
 
 1. Add a field that represents a shopping basket of products to the `User` entity.
 2. Add a mutation that allows products to be added to this new `basket` field.
+3. Add a field that represents a product name to the `Product` type.
 
 ### Creating and publishing a Feature Subgraph
 
@@ -80,7 +81,7 @@ First, we must create a feature subgraph that will eventually compose our featur
 wgc fs products-feature \
  --namespace staging
  --routing-url https://staging.products-feature.wundergraph.com \
- --subgraph products\
+ --subgraph products
 ```
 
 {% hint style="warning" %}
@@ -103,13 +104,15 @@ type Mutation {
 }
 
 type Product {
- upc: Int!
- """The name field has been added to Product"""
- name: String!
+    upc: Int!
+    """The name field has been added to Product"""
+    name: String!
 }
 
 type User @key(fields: "id") {
     id: ID!
+    favoriteProduct: Product
+    """The basket field has been added to User"""
     basket: [Product!]!
 }
 ```
