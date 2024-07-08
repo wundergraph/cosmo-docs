@@ -1,8 +1,8 @@
 ---
-description: Configure SCIM with Okta.
+description: Configure SCIM with Okta using the app from OIN.
 ---
 
-# Okta
+# Okta (OIN version)
 
 Steps to set up SCIM with Okta
 
@@ -13,24 +13,19 @@ Steps to set up SCIM with Okta
 <figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.28.16 AM (1).png" alt=""><figcaption></figcaption></figure>
 
 * Navigate to the Applications view within your Okta Administrator Dashboard.
-* Click on **Create App Integration**.&#x20;
+* Click on **Browse App Catalog.**
 
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.35.28 AM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-07-08 at 7.09.37 PM.png" alt=""><figcaption></figcaption></figure>
 
-* A dialog appears, select SWA - Secure Web Authentication and then click **Next.**
+* Search for **Wundergraph Cosmo.**
+* Click on **Add Integration**.
 
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.36.11 AM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-07-08 at 7.14.28 PM.png" alt=""><figcaption></figcaption></figure>
 
-* Now give the app a name and populate the app's login URL with [**https://cosmo.wundergraph.com/login**](https://cosmo.wundergraph.com/login)**.**
-* For "**Who sets the credentials**", select **Administrator sets username,  user sets password.**
-* For the **application username**, select **Email** and then click **Finish.**
+* Now give the app a name and then click on **Next.**
+* Select **Administrator sets username,  user sets password** and for **Application username format** under **Credentials Details** select **Email** and then click **Done.**
 
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.40.49 AM.png" alt=""><figcaption></figcaption></figure>
-
-* Now navigate to the **General** tab, click on **Edit** in **App settings.**
-* Enable **SCIM provisioning** and then click on **Save.**
-
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.47.18 AM (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-07-08 at 7.20.06 PM.png" alt=""><figcaption></figcaption></figure>
 
 * Navigate to the settings page on WunderGraph Cosmo and enable **SCIM.**
 
@@ -43,23 +38,12 @@ Steps to set up SCIM with Okta
 <figure><img src="https://lh7-us.googleusercontent.com/pCIhVIIzMHT5yOBPgz4vjy4tgjCdZYnEGniHqnCJ5h991cyADdfiHvtsp8WnR3lnf_B4AP7yYpvaWggEXRhAjQ7CFmOyaTQea3iPBk92P89EcduZq8rbHuAW2iLYjIx9Ogd8ZMHH9ftQHsyyujngbes" alt=""><figcaption></figcaption></figure>
 
 * Copy the API key provided.
-* Navigate to the provisioning tab of the app created on okta, then click on **Edit**.
+* Navigate to the provisioning tab of the app created on okta, then click on **Configure API Integration**.
 
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.49.50 AM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-07-08 at 7.28.42 PM.png" alt=""><figcaption></figcaption></figure>
 
-* Populate the **SCIM connector base URL** with the copied **SCIM server URL** .
-* Populate the **Unique identifier field for users** with **"email".**
-* Select **Import New Users and Profile Updates, Push New Users and Push Profile Updates** for **Supported provisioning actions.**
-* Select **HTTP Header** for **Authentication Mode.**
-* Populate the **Authorization** field under HTTP Header with the above-copied API key.
-
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.58.36 AM.png" alt=""><figcaption></figcaption></figure>
-
-* Click on Test Connector Configuration, a dialog will appear showing the connector is configured successfully, click Close.
-
-<figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 1.09.56 AM.png" alt=""><figcaption></figcaption></figure>
-
-* Click on **Save.**
+* Check the **Enable API Integration** and then populate the **API token** with the **API key** copied in the previous steps.
+* Click on **Test API Credentials** and once it's verified successfully, click on **Save**
 * Navigate to the "**to App"** tab**, and** click on **Edit.**
 
 <figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 1.15.15 AM (1).png" alt=""><figcaption></figcaption></figure>

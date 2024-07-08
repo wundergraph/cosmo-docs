@@ -142,6 +142,7 @@
   * [Microsoft Entra](studio/sso/microsoft-entra.md)
 * [SCIM](studio/scim/README.md)
   * [Okta](studio/scim/okta.md)
+  * [Okta (OIN version)](studio/scim/okta-oin-version.md)
 * [Audit log](studio/audit-log.md)
 * [Cosmo AI](studio/cosmo-ai.md)
 * [Lint Policy](studio/lint-policy/README.md)
