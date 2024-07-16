@@ -17,7 +17,7 @@ docker run \
     ghcr.io/wundergraph/cosmo/router:latest
 ```
 
-You can generate a token with the [`wgc router token create`](../cli/router/token/create.md) CLI command.
+You can generate a token with the [`wgc router token create`](../../cli/router/token/create.md) CLI command.
 
 ## Health checks
 
@@ -75,7 +75,7 @@ Structured logging, also known as JSON logging, is enabled by default and can be
 
 ## Observability & Operations
 
-The router exposes useful metrics about the process and memory. All metrics can be scraped from the Prometheus metrics endpoint. For more information please visit the dedicated [Metrics](metrics-and-monitoring.md) section.
+The router exposes useful metrics about the process and memory. All metrics can be scraped from the Prometheus metrics endpoint. For more information please visit the dedicated [Metrics](../metrics-and-monitoring.md) section.
 
 ### Tracing Sampling Rate
 
@@ -84,12 +84,12 @@ In scenarios with low traffic, a sampling rate of 1 (100%) is acceptable. Howeve
 If you export to Cosmo Cloud, which is enabled by default, a sampling rate based on your subscription will be enforced. If your configured rate exceeds your account limit, a warning will be displayed. Please consider upgrading your plan or contact us for custom limits.
 
 {% hint style="warning" %}
-Ensure that your subgraphs use parent-based sampling to inherit the sampling rate. For more information see [OTEL instrumentation on Subgraphs](../tutorial/otel-instrumentation-on-subgraphs.md).
+Ensure that your subgraphs use parent-based sampling to inherit the sampling rate. For more information see [OTEL instrumentation on Subgraphs](../../tutorial/otel-instrumentation-on-subgraphs.md).
 {% endhint %}
 
 ## Configuration recommendations
 
-[Advanced Request Tracing](advanced-request-tracing-art.md)[ (ART)](advanced-request-tracing-art.md) is enabled by default; however, it will only be accessible if you have set `DEV_MODE=true` or `GRAPH_API_TOKEN`. In the latter case, we will exchange a public key from the control plane to ensure that only authorized requests from the Studio can access ART requests. This enables safe debugging of your router in production.
+[Advanced Request Tracing](../advanced-request-tracing-art.md)[ (ART)](../advanced-request-tracing-art.md) is enabled by default; however, it will only be accessible if you have set `DEV_MODE=true` or `GRAPH_API_TOKEN`. In the latter case, we will exchange a public key from the control plane to ensure that only authorized requests from the Studio can access ART requests. This enables safe debugging of your router in production.
 
 Therefore `DEV_MODE=true` should **NOT** be set when deploying your router to production.
 
