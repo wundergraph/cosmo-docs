@@ -8,7 +8,7 @@ description: >-
 
 ## Zero-Downtime Deployments
 
-By default, the router polls the CDN (Content Delivery Network) for configuration updates every 15 seconds. When the configuration changes, the router initiates a graceful shutdown of the current graph instance. During this process, both graph instances run simultaneously to avoid interrupting existing and new client traffic. Once all requests have been served, the previous graph instance is cleaned up.
+By default, the router polls the CDN (Content Delivery Network) for configuration updates every 15 seconds. When the configuration changes e.g. after publishing a subgraph schema, the router initiates a graceful shutdown of the current graph instance. During this process, both graph instances run simultaneously to avoid interrupting existing and new client traffic. Once all requests have been served, the previous graph instance is cleaned up.
 
 There are a few configuration flags that impact this procedure:
 
