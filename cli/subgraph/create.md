@@ -6,6 +6,10 @@ description: Creates a federated subgraph on the control plane.
 
 ## Usage
 
+{% hint style="warning" %}
+A subgraph name must be unique within a namespace.
+{% endhint %}
+
 ```bash
 npx wgc subgraph create [subgraphName] --label [labelName] --routing-url [url]
 ```
@@ -20,7 +24,7 @@ The `npx wgc subgraph create` command allows you to create a new subgraph within
 
 ## **Parameters**
 
-* `[subgraphName]`: The name of the subgraph you want to create. It should be a unique and descriptive identifier for the new subgraph.
+* `[subgraphName]`: The name of the subgraph you want to create. It should be a unique (within the namespace) and descriptive identifier for the new subgraph.
 
 ## **Options**
 
