@@ -132,8 +132,8 @@ type Subscription {
     employeeUpdated(employeeID: ID!): Employee! @edfs__natsSubscribe(subjects: ["employeeUpdated.{{ args.employeeID }}"])
 }
 
-type Employee @key(fields: "id") {
-  id: Int!
+type Employee @key(fields: "id", resolvable: false) {
+  id: Int! @external
 }
 ```
 
