@@ -370,7 +370,7 @@ telemetry:
 
 #### Exporter
 
-<table data-full-width="true"><thead><tr><th width="223">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="206">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td></td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td></td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="223">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="206">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td></td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td>The path to which the metrics are exported. This is ignored when using 'grpc' as exporter and can be omitted.</td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
