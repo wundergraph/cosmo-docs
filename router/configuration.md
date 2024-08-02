@@ -514,6 +514,89 @@ headers:
 ```
 {% endcode %}
 
+### Storage Providers
+
+The configuration for the storage providers. Storage providers can be used to store the persisted operations and the execution config.
+
+#### Example YAML config:
+
+{% code title="" %}
+```yaml
+version: "1"
+
+storage_providers:
+  cdn:
+    - url: https://cosmo-cdn.wundergraph.com
+      id: cdn
+  s3:
+    - id: "s3"
+      endpoint: "localhost:10000"
+      bucket: "cosmo"
+      access_key: "key"
+      secret_key: "secret"
+      region: us-east-1
+      secure: false
+```
+{% endcode %}
+
+#### Subgraph Request Rules
+
+These rules apply to requests being made from the Router to all Subgraphs.
+
+<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr></tbody></table>
+
+
+
+### Persisted Operations
+
+The configuration for the persisted operations allows you to maintain a fixed set of GraphQL operations that can be queried against the router without exposing your entire graph to the public. This approach enhances security and performance.
+
+#### Example YAML config:
+
+{% code title="" %}
+```yaml
+version: "1"
+
+persisted_operations:
+  cache: 
+    size: 100MB
+  storage: 
+    provider_id: s3
+    object_prefix: wundergraph
+```
+{% endcode %}
+
+#### Subgraph Request Rules
+
+These rules apply to requests being made from the Router to all Subgraphs.
+
+<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>persisted_operations</td><td>false</td><td>The configuration for the persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.cache</td><td>false</td><td>LRU cache for persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.cache.size</td><td>false</td><td>The size of the cache in SI unit.</td><td>"100MB"</td></tr><tr><td></td><td>persisted_operations.storage</td><td>false</td><td>The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td></td><td>persisted_operations.storage.object_prefix</td><td>true</td><td>The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256.json</td><td></td></tr></tbody></table>
+
+
+
+### Execution Config
+
+The configuration for the execution setup contains instructions for the router to plan and execute your GraphQL operations. You can specify the storage provider from which the configuration should be fetched.
+
+#### Example YAML config:
+
+{% code title="" %}
+```yaml
+version: "1"
+
+execution_config:
+  storage:
+    provider_id: s3
+    object_path: /prod
+```
+{% endcode %}
+
+#### Subgraph Request Rules
+
+These rules apply to requests being made from the Router to all Subgraphs.
+
+<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>execution_config</td><td>false</td><td>The configuration for the execution config.</td><td></td></tr><tr><td></td><td>execution_config.storage</td><td>false</td><td>The storage provider for the execution config. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the execution config.</td><td></td></tr><tr><td></td><td>execution_config.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td></td><td>execution_config.storage.object_path</td><td>true</td><td>The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket.</td><td></td></tr></tbody></table>
+
 ### Traffic Shaping
 
 Configure rules for traffic shaping like maximum request body size, timeouts, retry behavior, etc. For more info, check this section in the docs: [traffic-shaping](traffic-shaping/ "mention")
