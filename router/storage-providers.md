@@ -93,7 +93,7 @@ Upload the file to the bucket location : `prod/operations/c3ab8ff13720e8ad9047dd
 ```
 {% endcode %}
 
-Now, you can make a persisted operation (PO) request against the router, and it will fetch the operation from your S3 and execute it. Subsequent requests are cached and won't add additional latency requests.
+Now, you can make a persisted operation (PO) request against the router, and it will fetch the operation from your S3 and execute it. Subsequent requests are cached and won't add additional latency to subsequent requests.
 
 ```bash
 curl 'http://localhost:3002/graphql' \
