@@ -22,7 +22,9 @@ For both mechanisms, different storage providers can be used:
 
 Before you can use a storage provider, you have to define it in the [`storage_providers`](storage-providers.md) section of your `config.yaml` file.
 
+{% code title="router.yaml" %}
 ```yaml
+version: 1
 storage_providers:
   s3:
   - id: "s3"
@@ -33,6 +35,7 @@ storage_providers:
     region: "use-east-1"
     secure: false
 ```
+{% endcode %}
 
 {% hint style="info" %}
 **secure** has to be set to `true` when you point to an S3 that uses **https://**
@@ -42,12 +45,15 @@ storage_providers:
 
 After configuring the storage provider, you can use it by referencing it in the `provider_id` field.
 
+{% code title="router.yaml" %}
 ```yaml
+version: 1
 execution_config:
   storage:
     provider_id: s3
     object_path: "router.json"
 ```
+{% endcode %}
 
 The `object_path` field points to the file in your bucket that is updated after each schema deployment in your CI/CD pipeline. The following snippet illustrates how it could look like:
 
@@ -69,7 +75,9 @@ First, we publish our schema changes to Cosmo. After that, we will download the 
 
 After configuring the storage provider, you can use it by referencing it in the `provider_id` field.
 
+{% code title="router.yaml" %}
 ```yaml
+version: 1
 persisted_operations:
   cache:
     size: 100MB
@@ -77,6 +85,7 @@ persisted_operations:
     provider_id: s3
     object_prefix: "prod/operations"
 ```
+{% endcode %}
 
 The `object_prefix` field points to the location in the bucket where the persisted operations are uploaded. Each persisted operation needs to follow the naming convention: **SHA256** of the file + `.json` as filename extension. A persisted operation is a JSON document and must follow the following structure:
 
