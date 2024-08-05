@@ -22,7 +22,7 @@ For both mechanisms, different storage providers can be used:
 
 Before you can use a storage provider, you have to define it in the [`storage_providers`](storage-providers.md) section of your `config.yaml` file.
 
-{% code title="router.yaml" %}
+{% code title="config.yaml" %}
 ```yaml
 version: 1
 storage_providers:
@@ -45,7 +45,7 @@ storage_providers:
 
 After configuring the storage provider, you can use it by referencing it in the `provider_id` field.
 
-{% code title="router.yaml" %}
+{% code title="config.yaml" %}
 ```yaml
 version: 1
 execution_config:
@@ -75,7 +75,7 @@ First, we publish our schema changes to Cosmo. After that, we will download the 
 
 After configuring the storage provider, you can use it by referencing it in the `provider_id` field.
 
-{% code title="router.yaml" %}
+{% code title="config.yaml" %}
 ```yaml
 version: 1
 persisted_operations:
