@@ -18,3 +18,15 @@ Creating a feature subgraph does nothing in isolation. It must be added to an en
 {% content-ref url="create-feature-subgraph.md" %}
 [create-feature-subgraph.md](create-feature-subgraph.md)
 {% endcontent-ref %}
+
+{% content-ref url="publish-feature-subgraph.md" %}
+[publish-feature-subgraph.md](publish-feature-subgraph.md)
+{% endcontent-ref %}
+
+{% content-ref url="update-feature-subgraph.md" %}
+[update-feature-subgraph.md](update-feature-subgraph.md)
+{% endcontent-ref %}
+
+{% content-ref url="delete-feature-subgraph.md" %}
+[delete-feature-subgraph.md](delete-feature-subgraph.md)
+{% endcontent-ref %}

@@ -99,11 +99,15 @@
   * [Update](cli/schema-contracts/update.md)
 * [Feature Subgraph](cli/feature-subgraph/README.md)
   * [Create Feature Subgraph](cli/feature-subgraph/create-feature-subgraph.md)
+  * [Publish Feature Subgraph](cli/feature-subgraph/publish-feature-subgraph.md)
+  * [Update Feature Subgraph](cli/feature-subgraph/update-feature-subgraph.md)
+  * [Delete Feature Subgraph](cli/feature-subgraph/delete-feature-subgraph.md)
 * [Feature Flags](cli/feature-flags/README.md)
   * [Create Feature Flag](cli/feature-flags/create-feature-flag.md)
   * [Disable Feature Flag](cli/feature-flags/disable-feature-flag.md)
   * [Enable Feature Flag](cli/feature-flags/enable-feature-flag.md)
   * [Update Feature Flag](cli/feature-flags/update-feature-flag.md)
+  * [Delete Feature Flag](cli/feature-flags/delete-feature-flag.md)
 
 ## Studio
 

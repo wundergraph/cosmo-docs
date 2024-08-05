@@ -25,3 +25,7 @@ A feature flag is a group of one or more [feature subgraphs](../feature-subgraph
 {% content-ref url="update-feature-flag.md" %}
 [update-feature-flag.md](update-feature-flag.md)
 {% endcontent-ref %}
+
+{% content-ref url="delete-feature-flag.md" %}
+[delete-feature-flag.md](delete-feature-flag.md)
+{% endcontent-ref %}

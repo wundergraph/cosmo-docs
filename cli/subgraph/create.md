@@ -59,5 +59,3 @@ npx wgc subgraph create products --label team=A --routing-url http://localhost:4
 ```bash
 npx wgc subgraph create events --label team=A -edg
 ```
-
-1.
