@@ -96,7 +96,7 @@ Given the following persisted operation:
 Upload the file to the bucket location as follow:
 
 <pre class="language-bash"><code class="lang-bash"><strong># Upload the persisted operation to S3
-</strong>aws s3 cp c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2.json s3://cosmo/prod/operations/c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2.json
+</strong>aws s3 cp c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2.json s3://cosmo/prod/operations/
 </code></pre>
 
 Now, you can make a persisted operation (PO) request against the router, and it will fetch the operation from your S3 and execute it. Subsequent requests are cached and won't add additional latency to subsequent requests.
