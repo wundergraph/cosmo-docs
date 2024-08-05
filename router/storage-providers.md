@@ -16,7 +16,11 @@ For both mechanisms, different storage providers can be used:
 * **CDN**: The default provider that used by Cosmo Cloud.
 * **Amazon S3**: An object storage protocol. We support any S3 compatible object-storage e.g. Minio and AWS.
 
-**By removing the dependency on Cosmo Cloud, you no longer rely on us for operations while still benefiting from all its features.** When using a custom storage provider, you are responsible for manually pushing those artifacts as part of your CI process. In the next section, we will explain how to do this:
+{% hint style="success" %}
+By removing the dependency on Cosmo Cloud, your router no longer rely on us for operations while still benefiting from all its features.
+{% endhint %}
+
+When using a custom storage provider, you are responsible for manually pushing those artifacts as part of your CI process. In the next section, we will explain how to do this:
 
 ## Define a provider
 
