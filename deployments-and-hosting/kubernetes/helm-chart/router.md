@@ -23,7 +23,7 @@ Create the following file to not bother with cli flags.
 {% code title="values.yaml" %}
 ```yaml
 configuration:
-  # -- The router token is used to authenticate the router against the controlplane (required)
+  # -- The router token is used to authenticate against the Cosmo platform (required)
   graphApiToken: "replace-me"
 ```
 {% endcode %}
