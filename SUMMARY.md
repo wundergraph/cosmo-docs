@@ -169,6 +169,7 @@
 * [Traffic shaping](router/traffic-shaping/README.md)
   * [Retry](router/traffic-shaping/retry.md)
   * [Timeout](router/traffic-shaping/timeout.md)
+* [Storage Providers](router/storage-providers.md)
 * [Deployment](router/deployment/README.md)
   * [Config Hot-Reload](router/deployment/config-hot-reload.md)
 * [Security](router/security/README.md)
