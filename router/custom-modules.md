@@ -88,14 +88,14 @@ When loading multiple modules, the order is not inherently guaranteed. To ensure
 
 ```go
 core.ModuleInfo{
-    // This is the ID of your module, it must be unique
-    ID: "myModule",
-    // The priority of your module, lower the number higher the priority
-    // Value should be > 0
-    Priority: 1,
-    New: func() app.Module {
-	return MyModule{}
-    },
+	// This is the ID of your module, it must be unique
+	ID: "myModule",
+	// The priority of your module, lower the number higher the priority
+	// Value should be > 0
+	Priority: 1,
+	New: func() app.Module {
+		return MyModule{}
+	},
 }
 ```
 
