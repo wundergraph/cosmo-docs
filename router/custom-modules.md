@@ -65,6 +65,9 @@ func (m *MyModule) Module() core.ModuleInfo {
 	return core.ModuleInfo{
 		// This is the ID of your module, it must be unique
 		ID: "myModule",
+		// The priority of your module, lower the number higher the priority
+		// Value should be > 0
+		Priority: 1,
 		New: func() app.Module {
 			return MyModule{}
 		},
@@ -78,6 +81,25 @@ var (
 	_ core.RouterMiddlewareHandler = (*MyModule)(nil)
 )
 ```
+
+## Priority Loading of Modules
+
+When loading multiple modules, the order is not inherently guaranteed. To ensure a specific loading order, you can use the `Priority` option. Modules with lower priority numbers are loaded first. Below is an example configuration:
+
+```go
+core.ModuleInfo{
+    // This is the ID of your module, it must be unique
+    ID: "myModule",
+    // The priority of your module, lower the number higher the priority
+    // Value should be > 0
+    Priority: 1,
+    New: func() app.Module {
+	return MyModule{}
+    },
+}
+```
+
+In this example, the module `myModule` has a priority of 1, meaning it will be loaded before modules with higher priority values.
 
 ## Access the GraphQL operation
 
