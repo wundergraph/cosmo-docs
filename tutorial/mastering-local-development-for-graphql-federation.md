@@ -67,10 +67,13 @@ execution_config:
   file:
     # Path to the previous generated file
     path: "router.json" # or EXECUTION_CONFIG_FILE_PATH
+    watch: true # EXECUTION_CONFIG_FILE_WATCH
 graph:
    # Result of `wgc router token create`. Can be omitted for local testing.
-<strong>   token: ""
+<strong>   token: "" # GRAPH_API_TOKEN
 </strong></code></pre>
+
+We enabled the file watcher to hot-reload the server whenever you regenerate the `router.json` file. This is super handy for rapid-development.
 
 {% hint style="info" %}
 If you omit the token, analytics and tracing are disabled. For production create a token  [`wgc router token create`](../cli/router/token/create.md) and use polling instead. This ensures that the latest valid config is deployed to your routers automatically.
