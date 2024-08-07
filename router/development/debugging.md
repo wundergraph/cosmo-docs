@@ -10,7 +10,7 @@ Instead of letting the router fetch the config from the platform, you can also p
 
 ```bash
 docker run \
-    -e ROUTER_CONFIG_PATH=/app/router.json \
+    -e EXECUTION_CONFIG_FILE_PATH=/app/router.json \
     -v ./router.json:/app/router.json \
     --env-file ./.env router
 ```

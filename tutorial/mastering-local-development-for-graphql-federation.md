@@ -53,10 +53,10 @@ subgraphs:
 After you have configured everything, you can generate the static router config as follows:
 
 ```bash
-wgc router compose -i compose.yaml -o config.json
+wgc router compose -i compose.yaml -o router.json
 ```
 
-This command introspects all your subgraphs and produces a `config.json` that can be passed to the router in the next step.
+This command introspects all your subgraphs and produces a `router.json` that can be passed to the router in the next step.
 
 ### 3. Run the config with the router
 

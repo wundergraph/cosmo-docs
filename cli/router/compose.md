@@ -57,10 +57,10 @@ npx wgc router compose -i graph.yaml
 Compose subgraphs mentioned in the input file graph.yaml
 
 ```bash
-npx wgc router compose -i graph.yaml -o config.json
+npx wgc router compose -i graph.yaml -o router.json
 ```
 
-Compose subgraphs mentioned in graph.yaml and write it to `config.json`
+Compose subgraphs mentioned in graph.yaml and write it to `router.json`
 
 ## Notes
 
