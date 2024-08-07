@@ -7,12 +7,19 @@ description: Fetches the latest valid router execution config of a federated gra
 ## Usage
 
 ```bash
-npx wgc router fetch production -o config.json
+npx wgc router fetch production -o router.json
 ```
 
 ## Description
 
-The `npx wgc router fetch` command allows you to fetch the latest valid router execution config of a federated graph from the Cosmo platform's control plane. The config can be piped into a file, which the router can read with the `ROUTER_CONFIG_PATH` environment variable.
+The `npx wgc router fetch` command allows you to fetch the latest valid router execution config of a federated graph from the Cosmo platform's control plane. The config can be piped into a file, which the router can read with the `EXECUTION_CONFIG_FILE_PATH` environment variable or via yaml config
+
+```yaml
+execution_config: 
+  file:
+    # Path to the previous generated file
+    path: "router.json"
+```
 
 ## Parameters
 
@@ -28,7 +35,7 @@ The `npx wgc router fetch` command allows you to fetch the latest valid router e
 Fetch the latest router execution config of the federated graph named "production."
 
 ```bash
-npx wgc router fetch production -o config.json
+npx wgc router fetch production -o router.json
 ```
 
-Fetch the latest router config of the federated graph named "production" and save it to a file named "config.json"
+Fetch the latest router config of the federated graph named `production` and save it to a file named `router.json`

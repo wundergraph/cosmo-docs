@@ -63,8 +63,10 @@ This command introspects all your subgraphs and produces a `config.json` that ca
 Create a `config.yaml` file in the same directory as your router binary.
 
 <pre class="language-yaml" data-title="config.yaml"><code class="lang-yaml">dev_mode: true
-# Path to the previous generated file
-router_config_path: config.json
+execution_config: 
+  file:
+    # Path to the previous generated file
+    path: "router.json" # or EXECUTION_CONFIG_FILE_PATH
 graph:
    # Result of `wgc router token create`. Can be omitted for local testing.
 <strong>   token: ""
