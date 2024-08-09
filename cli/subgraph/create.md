@@ -29,7 +29,7 @@ The `npx wgc subgraph create` command allows you to create a new subgraph within
 ## **Options**
 
 * `-n, --namespace` : The namespace of the subgrah (Default: "default").
-* `-edg, --event-driven-graph`: Irreversibly define the subgraph as an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/). If the subgraph is intended to be a regular subgraph, do not use this flag. Attempting to set `routing-url`, `subscription-url`, `subscription-protocol`, or `websocket-subprotocol` when this flag is set will produce an error.
+* `--edg, --event-driven-graph`: Irreversibly define the subgraph as an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/). If the subgraph is intended to be a regular subgraph, do not use this flag. Attempting to set `routing-url`, `subscription-url`, `subscription-protocol`, or `websocket-subprotocol` when this flag is set will produce an error.
 * `--label`: Assign multiple labels to the new subgraph. Labels are used to categorize and organize subgraphs based on specific criteria (e.g., team, department, project).
   * Example: `--label team=A`
 * `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from. Will produce an error if the `-edg` flag is set.&#x20;
@@ -57,5 +57,5 @@ npx wgc subgraph create products --label team=A --routing-url http://localhost:4
 * Create a new Event-Driven Graph named "events" with the label "team=A":
 
 ```bash
-npx wgc subgraph create events --label team=A -edg
+npx wgc subgraph create events --label team=A --edg
 ```
