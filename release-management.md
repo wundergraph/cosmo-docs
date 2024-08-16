@@ -39,6 +39,22 @@ For more information, check out the release [documentation](https://github.com/w
 
 For every Router release, we build binaries for all operating systems and attach them to the [Github release](https://github.com/wundergraph/cosmo/releases/tag/router%400.22.1).
 
+### Helm Charts
+
+We publish Helm charts for the Cosmo Platform and the Router. You can find them on the [Artifact Hub](https://artifacthub.io/).
+
+* [cosmo-router](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router)
+* [cosmo-platform](https://artifacthub.io/packages/helm/cosmo-platform/cosmo)
+
+Both charts are part of the [Cosmo Repository](https://github.com/wundergraph/cosmo) :
+
+* [Helm Chart Cosmo Router](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/charts/router/CHANGELOG.md)&#x20;
+* [Helm Chart Cosmo Platform](https://github.com/wundergraph/cosmo/blob/main/helm/cosmo/README.md)
+
+Versioned changes can be found in the respective changelog of each chart.
+
+The charts are packaged as oci artifact here oci://ghcr.io/wundergraph/cosmo/helm-charts.
+
 ## Stay up-to-date
 
 You can subscribe to notifications on the [Cosmo Repository](https://github.com/wundergraph/cosmo) for alerts when new releases are made available. Click on Watch -> Custom  -> Releases.&#x20;
