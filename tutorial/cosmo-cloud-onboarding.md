@@ -16,7 +16,7 @@ To better understand your use case and ensure that the onboarding process is as 
 * Do you have to migrate from an existing platform like Apollo?
 
 {% hint style="info" %}
-In order to complete this tutorial you need to have Node.js 16 (or higher), npm, and docker installed. This tutorial doesn't provide demo subgraphs. Prepare one before you continue.
+In order to complete this tutorial you need to have [Node.js LTS](https://nodejs.org/en/download/) (or higher), npm, and docker installed. This tutorial doesn't provide demo subgraphs. Prepare one before you continue.
 {% endhint %}
 
 ## Prerequisites
@@ -50,7 +50,6 @@ Run the following command to create your first federated graph:
 ```bash
 wgc federated-graph create <graph_name> \
     --namespace default \
-    --label-matcher team=A,team=B \
     --routing-url http://localhost:3002/graphql
 ```
 
@@ -63,7 +62,6 @@ A federated graph without any subgraph is kind of useless. Let's create a subgra
 ```bash
 wgc subgraph create <subgraph_name> \
     --namespace default \
-    --label team=A \
     --routing-url http://localhost:4001/graphql
 ```
 
