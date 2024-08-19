@@ -17,5 +17,6 @@ The `npx wgc subgraph list` command allows you to list all the subgraphs under y
 ## Options
 
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
-* `-r, --raw` : Prints to the console in json format instead of table
-* `-o, --out` : Destination file for the json output. Has precedence over `raw`
+* `-r, --raw` : Prints to the console in json format instead of table (Deprecated).
+* `-j, --json` : Prints to the console in json format instead of table.
+* `-o, --out` : Destination file for the json output. Has precedence over both `raw` and `json`
