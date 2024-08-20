@@ -24,7 +24,7 @@ Check the docs here to see how the usage for each type looks like
 
 Open the search modal by hitting `Cmd/Ctrl + K` on your keyboard. Jump to any type you like to view.
 
-<figure><img src="../.gitbook/assets/image (96).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Screenshot 2024-08-20 at 13.52.53.png" alt="A screenshot displaying the Schema Explorer: Search modal"><figcaption><p>The Schema Explorer: Search modal</p></figcaption></figure>
 
 ## Deprecated Fields
 

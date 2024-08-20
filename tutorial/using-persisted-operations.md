@@ -19,7 +19,7 @@ Persisted Operations, also known as Trusted Documents or Persisted Queries, allo
 
 Let's start by writing an operation in our playground. The easiest way to open it is to use [Cosmo Studio](https://cosmo.wundergraph.com). Navigate to your federated graph's `Playground` by clicking its link in the sidebar.
 
-<figure><img src="../.gitbook/assets/image (87).png" alt="" width="188"><figcaption><p>Opening the Cosmo Studio playground</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/Screenshot 2024-08-20 at 11.22.51.png" alt="A screenshot highlighting the WunderGraph Cosmo &#x22;Playground&#x22; button" width="109"><figcaption><p>Opening the Cosmo Studio playground</p></figcaption></figure>
 
 Now type and execute the following operation:
 

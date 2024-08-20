@@ -6,7 +6,7 @@ description: Migrate from Apollo GraphOS to WunderGraph Cosmo with a single clic
 
 If you are a user of Apollo GraphOS with configured graphs, then you can migrate to WunderGraph Cosmo with a click of a button.
 
-<figure><img src="../.gitbook/assets/Screenshot 2023-09-01 at 5.51.41 PM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Screenshot 2024-08-20 at 11.14.17.png" alt="A screenshot of the WunderGraph Cosmo Graphs page highlighting the &#x22;Migrate from Apollo&#x22; button"><figcaption><p>Migrate from Apollo button</p></figcaption></figure>
 
 Once you have clicked on "Migrate from Apollo", a modal will appear. This modal will request your "Graph API Key" for the federated graph you wish to migrate.
 
@@ -35,7 +35,7 @@ Your API key is never saved nor stored; it is only temporarily used to fetch the
 
 <figure><img src="../.gitbook/assets/Screenshot 2023-09-13 at 1.36.14 AM.png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Screenshot 2024-08-20 at 11.18.39.png" alt="A screenshot of the &#x22;Migrate from Apollo&#x22; modal"><figcaption><p>Migrate from Apollo modal</p></figcaption></figure>
 
 Once you have acquired the key, paste the key into the Graph API Key input, type the name of the variant to be migrated into the Graph Variant Name input and click on the "Migrate" button.
 

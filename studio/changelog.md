@@ -8,7 +8,7 @@ description: >-
 
 The schema changes are listed in a chronological order, with the most recent changes appearing at the top. Each entry provides specific details about what was added or removed from the schema. This includes changes to types, fields, directives, and any other elements that make up your federated graph's schema.
 
-<figure><img src="../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Fw35gev9un60xF9u11Tq1%2Fimage.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt="A screenshot displaying the WudnerGraph Cosmo Changelog page"><figcaption><p>An changelog example on WunderGraph Cosmo</p></figcaption></figure>
 
 #### Additions
 

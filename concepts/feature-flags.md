@@ -22,7 +22,7 @@ What problems can feature flags and their constituent feature subgraphs solve?
 
 ### Incremental Feature Rollout
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>Traffic splitting</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>Traffic splitting</p></figcaption></figure>
 
 Feature flags allow you to roll out new features gradually. You can enable a feature for a small percentage of users and monitor its performance. If everything goes well, you can increase the percentage of users who see the feature. If the feature requires further iteration, you can disable the feature without deploying a new version of the API.
 

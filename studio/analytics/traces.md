@@ -11,13 +11,13 @@ description: >-
 The amount of traces depends on the sampling rate of the OTEL instrumentation in the router.
 {% endhint %}
 
-<figure><img src="../../.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production_analytics_range=720(Screenshots) (2).png" alt=""><figcaption><p>Traces overview</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 12.05.49.png" alt="A screenshot displaying an overview of the WunderGraph Cosmo Analytics: Traces page"><figcaption><p>WunderGraph Cosmo Analytics: Traces overview</p></figcaption></figure>
 
 ### Date Range
 
 The date range filter lets you narrow down the list of requests based on when they were made. You can select one of the pre-defined ranges or select a custom date and time.&#x20;
 
-<figure><img src="../../.gitbook/assets/Screenshot 2023-11-08 at 11.40.44.png" alt=""><figcaption><p>Date range selector</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 12.07.21.png" alt="A screenshot displaying the date range selector for WunderGraph Cosmo Analytics"><figcaption><p>Date range selector</p></figcaption></figure>
 
 ### Filters
 
@@ -25,7 +25,7 @@ Filters allow you to narrow down to specific requests and are a powerful tool to
 
 _The available filters can be different depending on the selected date range or grouping field._
 
-<figure><img src="../../.gitbook/assets/Screenshot 2023-11-08 at 11.48.13.png" alt=""><figcaption><p>Selecting a filter</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 12.11.13.png" alt="A screenshot displaying the Analytics: Traces filter selection menu"><figcaption><p>Selecting an Analytics: Traces filter</p></figcaption></figure>
 
 ### Grouping
 
@@ -38,14 +38,10 @@ The grouping feature allows you to group the data in the table by none, operatio
 
 Clicking on a row under groups other than \`none\` will relink the table to "group by none" and apply the appropriate filter. For example, if you click on a row in "group by operation name", it will take you back to the table grouped by none but only show requests with the operation name you selected.
 
-<figure><img src="../../.gitbook/assets/Screenshot 2023-11-08 at 11.43.28.png" alt=""><figcaption><p>Select group by</p></figcaption></figure>
-
-
-
-
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 12.17.34.png" alt="A screenshot displaying the Analytics: Traces &#x22;Group By&#x22; menu"><figcaption><p>Analytics: Traces "Group By" menu</p></figcaption></figure>
 
 ### Auto-refresh
 
 The table supports auto refreshing though selected intervals of 10 seconds, 30 seconds, 1 minute and 5 minutes.
 
-<figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FXHMztzUPzclYhL5wv444%2Fimage.png" alt="" width="280"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 12.14.01.png" alt="A screenshot displaying the Analytics auto-refresh menu" width="260"><figcaption><p>The Analytics auto-refresh menu</p></figcaption></figure>
