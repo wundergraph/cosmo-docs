@@ -18,6 +18,7 @@
 * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
 * [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
 * [Using Apollo Router / Gateway with Cosmo OSS Schema Registry](tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry.md)
+* [Supergraph Previews for every Pull Request](tutorial/supergraph-previews-for-every-pull-request.md)
 
 ## Concepts
 
