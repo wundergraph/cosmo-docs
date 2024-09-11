@@ -906,6 +906,25 @@ security:
     block_non_persisted_operations: true
 ```
 
+### Query Depth
+
+The configuration for adding a query depth limit for query (how many nested levels you can have in a query). This limit prevents infinite querying, and also limits the size of the data returned. If the limit is 0, this limit isn't applied
+
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_QUERY_DEPTH_ENABLED</td><td>enabled</td><td>false</td><td>Enable query depth limits. If the value is true (default: false), and a valid limit value is set, a query depth will be calculated for your requests, and a limit applied to the queries</td><td>false</td></tr><tr><td>SECURITY_QUERY_DEPTH_LIMIT</td><td>limit</td><td>false</td><td>The depth limit for query. If the limit is 0, this limit isn't applied</td><td>0</td></tr><tr><td>SECURITY_QUERY_DEPTH_CACHE_SIZE</td><td>cache_size</td><td>false</td><td>The size of the cache for query depth. If users set a query depth limit, we cache the decision per query</td><td>1024</td></tr><tr><td>SECURITY_QUERY_DEPTH_IGNORE_PERSISTED_OPERATIONS</td><td>ignore_persisted_operations</td><td>false</td><td>Disable the max query depth limit for persisted operations. Since persisted operations are stored intentionally, users may want to disable the limit to consciously allow nested persisted operations</td><td>false</td></tr></tbody></table>
+
+#### Example YAML Configuration
+
+```
+version: "1"
+
+security:
+    depth_limit:
+        enabled: true
+        limit: 7
+        ignore_persisted_operations: true
+        cache_size: 1024
+```
+
 ### File Upload
 
 The configuration for file upload. Configure whether it should be enabled along with file size and number of files.
