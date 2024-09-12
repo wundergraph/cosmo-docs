@@ -925,11 +925,11 @@ The configuration for the security. The security is used to configure the securi
 version: "1"
 
 security:
-    block_mutations: true
-    block_subscriptions: true
-    block_non_persisted_operations: true
+    block_mutations: false
+    block_subscriptions: false
+    block_non_persisted_operations: false
     depth_limit:
-        enabled: true
+        enabled: false
         limit: 7
         ignore_persisted_operations: true
         cache_size: 1024
