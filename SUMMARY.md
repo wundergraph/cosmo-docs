@@ -152,6 +152,7 @@
 * [Cosmo AI](studio/cosmo-ai.md)
 * [Lint Policy](studio/lint-policy/README.md)
   * [Linter rules](studio/lint-policy/linter-rules.md)
+* [Graph Pruning](studio/graph-pruning.md)
 * [Invitations](studio/invitations.md)
 
 ## Router
