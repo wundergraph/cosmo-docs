@@ -49,6 +49,7 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
 * `--delete`: Check for breaking changes and composition errors in case the subgraph will be deleted.
+* `--skip-traffic-check` : This will skip checking against client traffic and any breaking change will fail the run.
 
 {% hint style="info" %}
 The check command requires either the `--schema or --delete parameter.`
