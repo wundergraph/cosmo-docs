@@ -34,21 +34,21 @@ Steps to set Entra as an OIDC identity provider:-
 
 * Navigate to the settings page on Cosmo.
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 * Give the connection a name, paste the **OpenID Connect metadata document** copied before, into the **Discovery Endpoint,** paste the **Client ID** and **Client secret** copied before into the **Client ID** and **Client Secret fields respectively,** and then click on **Connect.**
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
 * Configure the mapping between the roles in Cosmo and the groups in Microsoft Entra. The field **Group in the provider** should be populated with the **Object ID of a group from Entra.** Once all the mappers are configured, click on **Save**. Every member in those groups would get the respective role configured.
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 
 <figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.41.42 AM (1).png" alt=""><figcaption><p>Object ID of the groups in Entra</p></figcaption></figure>
 
 * Copy the sign-in and sign-out redirect URIs displayed in the dialog.
 
-<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 * Navigate back to the **App registrations** page, in the **All applications** tab select the app which we created.
 * Click on **Add a redirect URI, and** now click on **Add a platform,** select **Web** and then paste the Sign-in and Sign-out redirect URIs in the **Redirect URIs** and **Front-channel logout URL** respectively**.**

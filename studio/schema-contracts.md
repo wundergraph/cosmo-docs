@@ -21,7 +21,7 @@ For graphs that serve different stakeholders across the organization, third-part
 
 Getting started with Schema Contracts is simple. Simply annotate your schema with `tags` and begin delineating the portions of your graph that you wish to keep separate. It's that easy.
 
-<figure><img src="../.gitbook/assets/image (113).png" alt=""><figcaption><p>Example of dividing a Composed Schema into two Client Schemas using Schema Contracts</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (130).png" alt=""><figcaption><p>Example of dividing a Composed Schema into two Client Schemas using Schema Contracts</p></figcaption></figure>
 
 ## Terminology
 

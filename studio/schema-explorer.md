@@ -6,7 +6,7 @@ description: >-
 
 # Schema Explorer
 
-<figure><img src="../.gitbook/assets/image (97).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (113).png" alt=""><figcaption></figcaption></figure>
 
 ## Navigation
 
@@ -30,4 +30,4 @@ Open the search modal by hitting `Cmd/Ctrl + K` on your keyboard. Jump to any ty
 
 You can view all deprecated fields in your schema in one place along with their usage. This helps to determine if it is safe to remove the field/argument.
 
-<figure><img src="../.gitbook/assets/image (93).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (109).png" alt=""><figcaption></figcaption></figure>

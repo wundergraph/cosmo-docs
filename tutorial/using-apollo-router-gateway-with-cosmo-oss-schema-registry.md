@@ -8,7 +8,7 @@ description: The easiest way to migrate away from Apollo GraphOS
 
 The first step to migrate from Apollo GraphOS is to move the graphs from GraphOS to WunderGraph Cosmo. Once this is done, migration from the Apollo Router/Gateway to the Cosmo router can be done gradually using the Apollo compatibility mode.&#x20;
 
-<figure><img src="../.gitbook/assets/image (108).png" alt=""><figcaption><p>Apollo compatibility mode</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (125).png" alt=""><figcaption><p>Apollo compatibility mode</p></figcaption></figure>
 
 As the router/gateway can be migrated gradually, this method becomes the fastest way to initially migrate from Apollo to WunderGraph Cosmo.
 

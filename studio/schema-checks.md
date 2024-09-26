@@ -72,5 +72,5 @@ If you click on a specific operation, you can view all the changes that have imp
 
 Lists all the lint errors/warnings found in the proposed schema.
 
-<figure><img src="../.gitbook/assets/image (107).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (124).png" alt=""><figcaption></figcaption></figure>
 

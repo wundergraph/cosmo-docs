@@ -50,7 +50,7 @@ jobs:
 
 By installing the [Cosmo GitHub App](https://github.com/apps/wundergraph-cosmo) onto your repositories, we can apply status checks to commits in your pull request.
 
-<figure><img src="../.gitbook/assets/image (23).png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (39).png" alt="" width="375"><figcaption></figcaption></figure>
 
 The check fails if composition errors or breaking changes are detected. In the case of only breaking changes, you can override the status of the check in the Studio.
 

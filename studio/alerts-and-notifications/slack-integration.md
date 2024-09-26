@@ -16,7 +16,7 @@ description: >-
 
 * Select the channel where you want to receive messages and click on the 'Allow' button.
 
-<figure><img src="../../.gitbook/assets/image (76).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (92).png" alt=""><figcaption></figcaption></figure>
 
 * Give a name to the integration and select the events about which you wish to be notified.
 

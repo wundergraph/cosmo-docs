@@ -12,7 +12,7 @@ description: >-
 Discussions can be created from the schema page of both the graph and subgraph. We use a what-you-see-is-what-you-get (WYSIWYG) editor which supports popular markdown shortcuts.\
 
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
 
 ### Two way binding
 
@@ -32,7 +32,7 @@ Discussions created in the Explorer and SDL tabs (by clicking on a line number) 
 
 You can create discussions across different schema versions of the graph. Publishing new schemas will not get rid of any discussions. You can view all of them grouped by schema version for each graph or subgraph. You can even compare the schema of the discussion to the latest one.
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
 
 ## Replying, editing and deleting comments
 

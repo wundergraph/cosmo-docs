@@ -71,7 +71,7 @@ The first step is for each team to build and deploy their Subgraphs. You can dep
 
 For the sake of simplicity of this guide, we assume that you make the "Posts" Subgraph accessible on the URL \`https://posts.domain.com\` and the Users Subgraph on the \`https://users.domain.com\` URL.
 
-<figure><img src="../.gitbook/assets/image (70).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
 
 To get you through this tutorial as easily as possible, we've prepared two Subgraphs for you in the [Demo Project](https://github.com/wundergraph/cosmo-demo). You can use these two and follow all steps closely, or you can use your own Subgraphs and mimic the rest of the steps.
 
@@ -115,7 +115,7 @@ Once your teams have deployed their subgraphs, we now have to register them on C
 
 Note that we have the concept of labels. Each subgraph is given one or more labels which are then used by a federated graph to select the right subgraphs for composition. This gives ultimate flexibility for several teams to compose any desired graphs.
 
-<figure><img src="../.gitbook/assets/image (69).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (85).png" alt=""><figcaption></figcaption></figure>
 
 Here is an example using the demo project. Commands are run at the root of the project.
 
@@ -139,7 +139,7 @@ We have now registered both Subgraphs on Cosmo and published their GraphQL Schem
 
 Now it is time to compose the above subgraphs. We create a federated Graph by defining label-matchers. The matchers are being used to select the Subgraphs we'd like to add to our federated Graph.
 
-<figure><img src="../.gitbook/assets/image (62).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (78).png" alt=""><figcaption></figcaption></figure>
 
 Below is the command to create a federated graph. We need to specify the labels that it needs to consider and the routing URL. The routing URL is the endpoint of the router that we will deploy in the next step.
 
@@ -155,7 +155,7 @@ The final step before we can start querying our federated Graph is to configure 
 
 The Router has to connect to the Control Plane to fetch its Configuration and update it automatically when you make changes to the federated Graph.
 
-<figure><img src="../.gitbook/assets/image (60).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (76).png" alt=""><figcaption></figcaption></figure>
 
 As the router needs to authenticate against the Control Plane to be able to fetch the correct configuration, we have to create a Router Token first. We're doing so by using wgc with the name of our composed Graph (production).
 
@@ -185,7 +185,7 @@ Finally, we want to set up a workflow to facilitate collaboration across teams w
 
 The wgc CLI provides two commands to accomplish this task, `subgraph check` and `subgraph publish`.
 
-<figure><img src="../.gitbook/assets/image (68).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (84).png" alt=""><figcaption></figcaption></figure>
 
 You can use the following convention.
 
@@ -196,7 +196,7 @@ Example GitHub workflows to achieve the above are provided in the demo project u
 
 ## The overall picture
 
-<figure><img src="../.gitbook/assets/image (61).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (77).png" alt=""><figcaption></figcaption></figure>
 
 ## All Done!
 

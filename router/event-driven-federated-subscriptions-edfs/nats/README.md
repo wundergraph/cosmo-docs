@@ -4,7 +4,7 @@ description: NATS event provider support for EDFS
 
 # NATS
 
-<figure><img src="../../../.gitbook/assets/image (114).png" alt="" width="375"><figcaption><p>NATS with EDFS</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (131).png" alt="" width="375"><figcaption><p>NATS with EDFS</p></figcaption></figure>
 
 ## Minimum requirements
 
@@ -106,4 +106,4 @@ subscription {
 
 ## System diagram
 
-<figure><img src="../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
