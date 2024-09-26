@@ -6,4 +6,4 @@ description: >-
 
 # Schema Contracts
 
-Fo detailed information plase refer the [this page.](../../studio/schema-contracts.md)
+Fo detailed information plase refer the [this](../../concepts/schema-contracts.md) page.
