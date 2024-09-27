@@ -446,6 +446,29 @@ cors:
 ```
 {% endcode %}
 
+### Cache Control Policy
+
+Configure your cache control policy. More information on this feature can be found here: [#cache-control-policy](proxy-capabilities/#cache-control-policy "mention")
+
+<table data-full-width="true"><thead><tr><th width="295">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CACHE_CONTROL_POLICY_ENABLED</td><td>enabled</td><td>false</td><td>Set this to enable/disable the strict cache control policy. It is false by default</td><td>false</td></tr><tr><td>CACHE_CONTROL_POLICY_VALUE</td><td>value</td><td>false</td><td>The default value for the cache control policy. It will be applied to all requests, unless a subgraph has a more strict one</td><td></td></tr></tbody></table>
+
+#### Example YAML Config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+cache_control_policy:
+  enabled: true
+  value: "max-age=180, public"
+  subgraphs:
+    - name: "products"
+      value: "max-age=60, public"
+    - name: "pricing"
+      value: "no-cache"
+```
+{% endcode %}
+
 ### Custom Modules
 
 Configure your custom Modules. More information on this feature can be found here: [custom-modules.md](custom-modules.md "mention")
@@ -469,9 +492,9 @@ Configure Header propagation rules for all Subgraphs or individual Subgraphs by 
 
 #### Global Header Rules
 
-Apply to requests to "all" Subgraphs
+Apply to requests/responses to/from "all" Subgraphs. These will be applied globally in the graph
 
-<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request</td><td>false</td><td><a data-mention href="configuration.md#request-header-rule">#request-header-rule</a></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request</td><td>false</td><td>List of Request Header Rules</td><td></td></tr><tr><td></td><td>response</td><td>false</td><td>List of Response Header Rules</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -488,6 +511,13 @@ headers:
         named: X-Test-Header
       - op: "propagate"
         matching: (?i)^x-deprecated-.*
+      - op: "set"
+        name: "X-API-Key"
+        value: "my-secret-value"
+    response:
+      - op: "propagate"
+        algorithm: "append"
+        named: "X-Custom-Header"
 ```
 {% endcode %}
 
@@ -495,7 +525,7 @@ headers:
 
 Apply to requests to specific Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>false</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>true</td><td>oneof=propagate, set</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>rename</td><td>false</td><td>renames the header's key to the provided value</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr><tr><td></td><td>name</td><td>false</td><td>If <code>op</code> is <code>set</code>, <code>name</code> is the name of the desired header to set</td><td></td></tr><tr><td></td><td>value</td><td>false</td><td>If <code>op</code> is <code>set</code>, <code>value</code> is the value of the desired header to set</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -511,6 +541,41 @@ headers:
       request:
         - op: "propagate"
           named: X-Test-Header
+        - op: "set"
+          name: "X-API-Key"
+          value: "my-secret-value"
+```
+{% endcode %}
+
+#### Response Header Rule
+
+These rules can be applied to all responses, as well as just to specific subgraphs, and used to manipulate and propagate response headers from subgraphs to the client. By configuring the rule, users can define how headers should be handled when multiple subgraphs provide conflicting values for a specific header.&#x20;
+
+
+
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>true</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>algorithm</td><td>true</td><td>oneof=first_write, last_write, append</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against. This </td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr><tr><td></td><td>rename</td><td>false</td><td>renames the header's key to the provided value</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+# Header manipulation
+# See "https://cosmo-docs.wundergraph.com/router/proxy-capabilities" for more information
+headers:
+  subgraphs:
+    product: # Header rules for the "product" Subgraph
+      response:
+        - op: "propagate"
+          algorithm: "append"
+          named: "X-Test-Header"
+        - op: "propagate"
+          algorithm: "last_write"
+          named: "X-Test2-Header"
+        - op: "set"
+          name: "X-User-Key"
+          value: "my-user-value"
 ```
 {% endcode %}
 
