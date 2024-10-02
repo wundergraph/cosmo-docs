@@ -357,7 +357,8 @@ telemetry:
 version: "1"
 
 # See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
-telemetry:          
+telemetry:
+  metrics:
     # Expose OpenTelemetry metrics for scraping
     prometheus:
       enabled: true
