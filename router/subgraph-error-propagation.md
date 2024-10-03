@@ -1,35 +1,74 @@
 ---
 description: >-
-  Learn more on how you can configure propagating Errors from Subgraphs to the
+  Learn more on how you can configure propagating errors from Subgraphs to the
   client.
 ---
 
 # Subgraph Error Propagation
 
-As described in the Router Configuration section, you can configure [Subgraph Error Propagation](configuration.md#subgraph-error-propagation), which allows you to forward Errors from Subgraphs to the client.
+In the [**Router Configuration**](configuration.md) section, you can configure [**Subgraph Error Propagation**](configuration.md#subgraph-error-propagation), which allows errors from subgraphs to be forwarded to the client.
 
-{% hint style="warning" %}
-Enabling Subgraph Error Propagation might leak sensitive information, like Stack Traces, from your Subgraphs to the client.
+{% hint style="info" %}
+In **development mode**, the Router is configured to be as verbose as possible, providing extensive information to help with debugging and troubleshooting. This mode exposes additional details about subgraph errors, making it easier to identify the root causes of issues.
+
+```yaml
+dev_mode: false
+```
 {% endhint %}
 
-By default, the Router does not forward Subgraph Errors at all. Errors are wrapped in a generic errors object indicating only that there's a problem with the Subgraph, but not exposing any details. This is to ensure that no sensitive information is leaked.
+## Wrapped mode
 
-Here's an example error response:
+By default, the Router operates in **wrapped mode**, where errors are encapsulated in a generic error object. This indicates a problem with the subgraph, while more detailed error information is provided in the `errors` field within the `extensions` object.
+
+**Default Configuration**
+
+```yaml
+subgraph_error_propagation:
+  mode: wrapped
+  allowed_extension_fields:
+    - "code"
+```
+
+**Example Error Response**
 
 ```json
 {
   "errors": [
     {
-      "message": "Failed to fetch from Subgraph 'products' at path 'query'."
+      "message": "Failed to fetch from Subgraph 'employees'.",
+      "extensions": {
+        "errors": [
+          {
+            "message": "error resolving RootFieldThrowsError for Employee 12",
+            "path": ["employees", 9, "rootFieldThrowsError"],
+            "extensions": {
+              "code": "ERROR_CODE"
+            }
+          }
+        ]
+      }
     }
-  ],
-  "data": null
+  ]
 }
 ```
 
-For debugging purposes, you might want to switch Error passing on, which will wrap the Subgraph error in an extensions errors object. You can do so via [this config](configuration.md#subgraph-error-propagation). As an alternative, you can also switch on the [dev mode](configuration.md#config-file).
+By default, sensitive information in the `extensions` field is not exposed. In the extension object we only passthrough the `code` field. For more detailed error output, you can modify the configuration as follow:
 
-The response with an error looks like this:
+#### Extended Configuration Options
+
+```yaml
+subgraph_error_propagation:
+  mode: wrapped
+  default_extension_code: DOWNSTREAM_SERVICE_ERROR
+  omit_extensions: false
+  propagate_status_codes: true
+  omit_locations: true
+  attach_service_name: true # Attach the service name to the error
+  allowed_extension_fields:
+    - "code"
+```
+
+#### Example Error Response with Extended Configuration
 
 ```json
 {
@@ -37,11 +76,14 @@ The response with an error looks like this:
     {
       "message": "Failed to fetch from Subgraph 'employees' at path 'query.employees.@'.",
       "extensions": {
+        "serviceName": "employees",
+        "statusCode": 200,
         "errors": [
           {
-            "message": "Unauthorized",
+            "message": "error resolving RootFieldThrowsError for Employee 12",
+            "path": ["employees", 9, "rootFieldThrowsError"],
             "extensions": {
-              "code": "UNAUTHORIZED"
+              "code": "ERROR_CODE"
             }
           }
         ]
@@ -54,31 +96,59 @@ The response with an error looks like this:
 }
 ```
 
-This gives you information on what Subgraph fetch had an error, and what the original error was. We're wrapping the original error in the "extensions" object as we want to preserve the original error, but it wouldn't match the Supergraph structure. E.g. the path of the error will reflect the Subgraph Query, but not the Subergraph (client -acing) GraphQL Operation.
+This configuration provides detailed information about the subgraph that encountered the error, the response code of the subgraph, including all relevant subgraph error messages. Additionally, enabling the `attach_service_name` option allows the affected subgraph's name to be sent to the client, which can help in generating more informative error messages.
 
-In addition to just exposing the Subgraph error, you can also expose the Status Code from the Subgraph. Your Subgraph might return 401 Unauthorized in some cases. In such a scenario, it might be helpful to expose the Status Code.
+### Avoid exposing any information
+
+The **wrapped mode** is useful when you want to avoid exposing additional information about subgraph errors to the client. This mode provides a generic error response without revealing specific details. You can enable this by using the following configuration:
+
+**Configuration**
+
+```yaml
+subgraph_error_propagation:
+  mode: wrapped
+  omit_extensions: true
+```
+
+**Example Error Response**
 
 ```json
 {
   "errors": [
     {
-      "message": "Failed to fetch from Subgraph '3' at path 'query.employees.@'.",
-      "extensions": {
-        "errors": [
-          {
-            "message": "Unauthorized",
-            "extensions": {
-              "code": "UNAUTHORIZED"
-            }
-          }
-        ],
-        "statusCode": 401
-      }
+      "message": "Failed to fetch from Subgraph 'employees'.",
     }
-  ],
-  "data": {
-    "employees": null
-  }
+  ]
 }
 ```
 
+## Passthrough mode
+
+The **pass-through** mode returns errors exactly as they are received from the subgraph, without modification. This mode is commonly used in the GraphQL ecosystem to provide more transparency in error responses. As described in the previous section, you can fine-tune what information is exposed by adjusting the configuration.
+
+**Configuration**
+
+```yaml
+subgraph_error_propagation:
+  mode: pass-through
+  attach_service_name: true
+  allowed_extension_fields:
+    - "code"
+```
+
+**Example Error Response**
+
+```json
+{
+  "errors": [
+    {
+      "message": "error resolving RootFieldThrowsError for Employee 12",
+      "path": ["employees", 9, "rootFieldThrowsError"],
+      "extensions": {
+        "code": "ERROR_CODE",
+        "serviceName": "employees"
+      }
+    }
+  ]
+}
+```

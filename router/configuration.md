@@ -120,6 +120,38 @@ router_config_path: ""
 ```
 {% endcode %}
 
+### Access Logs
+
+<table data-full-width="true"><thead><tr><th width="334">Environment Variable</th><th width="331">YAML</th><th width="112" data-type="checkbox">Required</th><th width="320">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>access_logs</td><td>false</td><td>Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.</td><td></td></tr><tr><td>ACCESS_LOGS_ENABLED</td><td>access_logs.enabled</td><td>false</td><td>Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.</td><td>true</td></tr><tr><td></td><td>access_logs.buffer</td><td>false</td><td>The buffer is used to buffer the logs before writing them to the output.</td><td></td></tr><tr><td>ACCESS_LOGS_BUFFER_ENABLED</td><td>access_logs.buffer.enabled</td><td>false</td><td>Enable the buffer.</td><td>false</td></tr><tr><td>ACCESS_LOGS_BUFFER_SIZE</td><td>access_logs.buffer.size</td><td>false</td><td>The size of the buffer. The default value is 256KB.</td><td></td></tr><tr><td>ACCESS_LOGS_FLUSH_INTERVAL</td><td>access_logs.buffer.flush_interval</td><td>false</td><td>The interval at which the buffer is flushed. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.</td><td></td></tr><tr><td></td><td>access_logs.output</td><td>false</td><td>The log destination. The supported destinations are stdout and file. Only one option can be enabled. The default destination is stdout.</td><td></td></tr><tr><td>ACCESS_LOGS_OUTPUT_STDOUT_ENABLED</td><td>access_logs.output.stdout.enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>ACCESS_LOGS_OUTPUT_FILE_ENABLED</td><td>access_logs.output.file.enabled</td><td>false</td><td></td><td>false</td></tr><tr><td>ACCESS_LOGS_FILE_OUTPUT_PATH</td><td>access_logs.output.file.path</td><td>false</td><td>The path to the log file. The path is used to specify the path to the log file.</td><td></td></tr><tr><td></td><td>access_logs.fields</td><td>false</td><td>The fields to add to the logs. The fields are added to the logs as key-value pairs.</td><td></td></tr><tr><td></td><td>access_logs.fields[*].key</td><td>false</td><td>The key of the field to add to the logs.</td><td></td></tr><tr><td></td><td>access_logs.fields[*].default</td><td>false</td><td>The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.</td><td></td></tr><tr><td></td><td>access_logs[*].value_from</td><td>false</td><td>Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>access_logs.fields[*].value_from.request_header</td><td>false</td><td>The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.</td><td></td></tr><tr><td></td><td>access_logs.fields[*].value_from.context_field</td><td>false</td><td>The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used. <br><br><strong>Must one of:</strong> <br>operation_name,  operation_type, operation_service_names, operation_hash,persisted_operation_sha256, operation_sha256,response_error_message,graphql_error_codes, graphql_error_service_names, operation_parsing_time, operation_validation_time,operation_planning_time, operation_normalization_time</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+access_logs:
+  enabled: true
+  buffer:
+    enabled: false
+    size: 256KB
+    flush_interval: 10s
+  output:
+    file:
+      enabled: true
+      path: "access.log"
+  fields:
+    - key: "service"
+      value_from:
+        request_header: "x-service"
+    - key: "operationName"
+      value_from:
+        context_field: operation_name
+```
+{% endcode %}
+
+### Telemetry
+
 ### Graph
 
 Overall configuration for the Graph that's configured for this Router.
@@ -203,7 +235,7 @@ compliance:
 
 ### Cluster
 
-<table data-full-width="true"><thead><tr><th width="231">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CLUSTER_NAME</td><td>name</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="194">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CLUSTER_NAME</td><td>name</td><td>false</td><td>The logical name of the router cluster. The name is used for analytic purpose.</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -550,11 +582,9 @@ headers:
 
 #### Response Header Rule
 
-These rules can be applied to all responses, as well as just to specific subgraphs, and used to manipulate and propagate response headers from subgraphs to the client. By configuring the rule, users can define how headers should be handled when multiple subgraphs provide conflicting values for a specific header.&#x20;
+These rules can be applied to all responses, as well as just to specific subgraphs, and used to manipulate and propagate response headers from subgraphs to the client. By configuring the rule, users can define how headers should be handled when multiple subgraphs provide conflicting values for a specific header.
 
-
-
-<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>true</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>algorithm</td><td>true</td><td>oneof=first_write, last_write, append</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against. This </td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr><tr><td></td><td>rename</td><td>false</td><td>renames the header's key to the provided value</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>true</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>algorithm</td><td>true</td><td>oneof=first_write, last_write, append</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against. This</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr><tr><td></td><td>rename</td><td>false</td><td>renames the header's key to the provided value</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -611,8 +641,6 @@ These rules apply to requests being made from the Router to all Subgraphs.
 
 <table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr></tbody></table>
 
-
-
 ### Persisted Operations
 
 The configuration for the persisted operations allows you to maintain a fixed set of GraphQL operations that can be queried against the router without exposing your entire graph to the public. This approach enhances security and performance.
@@ -637,8 +665,6 @@ persisted_operations:
 These rules apply to requests being made from the Router to all Subgraphs.
 
 <table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>persisted_operations</td><td>false</td><td>The configuration for the persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.cache</td><td>false</td><td>LRU cache for persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_CACHE_SIZE</td><td>persisted_operations.cache.size</td><td>false</td><td>The size of the cache in SI unit.</td><td>"100MB"</td></tr><tr><td></td><td>persisted_operations.storage</td><td>false</td><td>The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_PROVIDER_ID</td><td>persisted_operations.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_OBJECT_PREFIX</td><td>persisted_operations.storage.object_prefix</td><td>true</td><td>The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256.json</td><td></td></tr></tbody></table>
-
-
 
 ### Execution Config
 
