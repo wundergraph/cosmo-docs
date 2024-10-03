@@ -109,15 +109,15 @@ An attacker has various methods to influence the router's behavior. Depending on
 
 ### Scenario - Manipulation of subgraph datasource URL's
 
-Description:&#x20;
+**Description:**&#x20;
 
 An attacker change the subgraph URL to redirect customer traffic to a different server.
 
-Impact:
+**Impact:**
 
 High❗️(Possible outage with data leak)
 
-Action:&#x20;
+**Action:**&#x20;
 
 Implement a check that ensures all subgraph URLs belong to the same domain of your organization. If not, return a non-200 status code with a descriptive error message. The error message will be visible in the studio. The exact check depends on your service configuration. If your subgraphs don't belong to the same domain, you can maintain an allowlist and compare it with all the urls we encounter in the config.
 
