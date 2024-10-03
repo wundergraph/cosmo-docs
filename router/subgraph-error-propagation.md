@@ -64,7 +64,7 @@ subgraph_error_propagation:
   propagate_status_codes: true
   omit_locations: true
   attach_service_name: true # Attach the service name to the error
-  allowed_extension_fields:
+  allowed_extension_fields: # Propagate additional fields from subgraphs
     - "code"
 ```
 
