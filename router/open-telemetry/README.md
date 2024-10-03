@@ -113,6 +113,18 @@ This enables the option to replay GraphQL queries with variables in the Studio.
 
 Tracing has not yet been implemented for subscriptions. If you require this feature, please do not hesitate to contact us.
 
+### Trace ID Response header
+
+This configuration allows you to include trace ID in the response headers, where the name of the header would be the value provided.
+
+```yaml
+telemetry:
+  tracing:
+    response_trace_id:
+      enabled: true
+      header_name: "my-trace-id" # default: "x-wg-trace-id"
+```
+
 ## FAQ
 
 ### Can I export OTEL data from my application?
