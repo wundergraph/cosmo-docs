@@ -49,7 +49,7 @@ The default log fields provide essential details about each HTTP request. These 
 * **ip**: The client’s IP address (redacted by default).
 * **user\_agent**: The `User-Agent` header value provided by the client.
 * **config\_version**: The version of the router configuration used to handle the request.
-* **latency**: The time taken to process the request, in seconds.
+* **latency**: The time taken to process the request, in float seconds.
 * **log\_type**: Identifies the type of log (useful for distinguishing access logs from other log types).
 
 #### Example Log Entry
@@ -159,10 +159,10 @@ Here’s an explanation of each field’s meaning:
 * **operationType**: This field logs the type of GraphQL operation being executed, such as a query, mutation, or subscription. It helps classify the request.
 * **persistentOperationSha256**: This field logs the SHA-256 hash of the persisted GraphQL operation. Persisted operations are pre-saved on the server for efficiency, and this hash allows tracking them.
 * **errorServiceNames**: This field logs the names of services that were involved when the operation resulted in an error. It helps identify which microservices or external APIs contributed to the issue.
-* **operationParsingTime**: This field logs the amount of time spent parsing the GraphQL operation. It measures how long it took to interpret the operation’s syntax.
-* **operationPlanningTime**: This field logs the time taken for planning the execution of the GraphQL operation, including resolving dependencies or building execution strategies.
-* **operationNormalizationTime**: This field logs the time spent normalizing the GraphQL operation, which involves standardizing the operation to ensure consistency in processing.
-* **operationValidationTime**: This field logs the time spent validating the GraphQL operation, ensuring that the operation is correct and adheres to the GraphQL schema and rules before execution.
+* **operationParsingTime**: This field logs the amount of time (float seconds) spent parsing the GraphQL operation. It measures how long it took to interpret the operation’s syntax.
+* **operationPlanningTime**: This field logs the time (float seconds) taken for planning the execution of the GraphQL operation, including resolving dependencies or building execution strategies.
+* **operationNormalizationTime**: This field logs the time (float seconds) spent normalizing the GraphQL operation, which involves standardizing the operation to ensure consistency in processing.
+* **operationValidationTime**: This field logs the time (float seconds) spent validating the GraphQL operation, ensuring that the operation is correct and adheres to the GraphQL schema and rules before execution.
 
 #### Error-Specific Log Fields
 
