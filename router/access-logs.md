@@ -178,6 +178,20 @@ Here are the fields that are specifically added in error cases:
 * **response\_error\_message**:\
   Contains the actual error message returned in the response. This message can be used to better understand what went wrong and why the request failed.
 
+#### Default value
+
+When extracting values from a header, it can be beneficial to ensure a default value is set. This can be achieved by defining the value as follows:
+
+```yaml
+access_logs:
+  enabled: true
+  fields:
+    - key: "service"
+      default: "gateway" # Here
+      value_from:
+        request_header: "x-service"
+```
+
 #### Example Log Entry
 
 ```json5
