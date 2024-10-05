@@ -4,6 +4,10 @@ description: Configuring Access Logs for Enhanced Traffic Monitoring.
 
 # Access logs
 
+{% hint style="info" %}
+Available since Router [0.118.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.118.0)
+{% endhint %}
+
 Access or request logs provide valuable insights into the traffic passing through your router instances. By default, logs are output to `stdout`, but logging to a file is also supported, which is recommended for high-load scenarios. However, only one logging mode—either `stdout` or file—can be enabled at any given time. The logs include a predefined set of fields that help identify HTTP requests. Additionally, custom fields can be configured to capture more detailed information from requests.
 
 ### Logging to stdout
