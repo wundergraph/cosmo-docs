@@ -124,7 +124,16 @@ subgraph_error_propagation:
 
 ## Passthrough mode
 
-The **pass-through** mode returns errors exactly as they are received from the subgraph, without modification. This mode is commonly used in the GraphQL ecosystem to provide more transparency in error responses. As described in the previous section, you can fine-tune what information is exposed by adjusting the configuration.
+The **pass-through** mode returns errors exactly as they are received from the subgraph, without modification. This mode is commonly used in the GraphQL ecosystem to provide more transparency in error responses. As described in the previous section, you can fine-tune what information is exposed by adjusting the configuration.&#x20;
+
+### Propagate only selected fields
+
+You can also fine tune which fields are propagated with `allowed_fields`. The following ones are always propagated
+
+* `message`
+* `path`
+
+If `omit_extensions` or `omit_locations` is set to false, `extensions` and `location` is automatically propagated.
 
 **Configuration**
 
@@ -134,6 +143,8 @@ subgraph_error_propagation:
   attach_service_name: true
   allowed_extension_fields:
     - "code"
+  allowed_fields:
+    - "userId"
 ```
 
 **Example Error Response**
@@ -144,6 +155,7 @@ subgraph_error_propagation:
     {
       "message": "error resolving RootFieldThrowsError for Employee 12",
       "path": ["employees", 9, "rootFieldThrowsError"],
+      "userId": "1234",
       "extensions": {
         "code": "ERROR_CODE",
         "serviceName": "employees"
