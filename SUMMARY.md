@@ -190,6 +190,7 @@
   * [Debugging](router/development/debugging.md)
 * [Performance Debugging](router/performance-debugging.md)
 * [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
+* [Query Plan](router/query-plan.md)
 * [Event-Driven Federated Subscriptions (EDFS)](router/event-driven-federated-subscriptions-edfs/README.md)
   * [NATS](router/event-driven-federated-subscriptions-edfs/nats/README.md)
     * [Stream and consumer configuration](router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration.md)

@@ -18,7 +18,7 @@ The architecture of the Cosmo Platform is founded on several key principles.
 
 Next, let's take a look at the Reference Architecture, which is also the blueprint of Cosmo Cloud.
 
-<figure><img src=".gitbook/assets/image (141).png" alt=""><figcaption><p>Cosmo Reference Architecture Overview</p></figcaption></figure>
+<figure><img src=".gitbook/assets/image (141) (1).png" alt=""><figcaption><p>Cosmo Reference Architecture Overview</p></figcaption></figure>
 
 The Cosmo Platform architecture comprises several integral components. The **Router** efficiently manages traffic and routes requests between clients and Subgraphs, relying solely on the **CDN** to load its configuration.
 
