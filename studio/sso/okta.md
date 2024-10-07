@@ -17,6 +17,7 @@ Steps to set Okta as an OIDC identity provider
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FBeNdVqXwJByNIMvdm8np%2FScreenshot%202023-11-03%20at%201.57.15%20PM.png" alt=""><figcaption></figcaption></figure>
 
+* For **Grant Type,** keep the defaults.
 * For **Assignments, s**elect one of the options based on your choice and then click on **Save.**
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FVGQZ4CtOEJpZL64YLJkL%2FScreenshot%202023-11-03%20at%201.59.21%20PM.png" alt=""><figcaption></figcaption></figure>
