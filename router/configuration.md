@@ -1055,3 +1055,23 @@ file_upload:
     max_file_size: 1GB
     max_files: 2
 ```
+
+### Client Header
+
+The configuration for custom names for client name and client version headers.
+
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>name</td><td>false</td><td>The custom name of the client name header.</td><td></td></tr><tr><td></td><td>version</td><td>false</td><td>The custom name of the client version header.</td><td></td></tr></tbody></table>
+
+#### Example YAML Configuration
+
+```yaml
+version: "1"
+
+client_header:
+  name: "Client-Name"
+  version: "Client-Version"
+```
+
+By default, we support `Graphql-Client-Name` , `Graphql-Client-Version`, `Apollo-Graphql-Client-Name`, `Apollo-Graphql-Client-Version`.
+
+The custom names are given more precedence.
