@@ -101,14 +101,14 @@ Composition Errors
 
 If you want to associate custom information with the checks being performed, you can do so by setting the following environment variables:
 
-* `COSMO_VCS_AUTHOR`: The author's email address associated with the commit (e.g., `foo@bar.com`).
-* `COSMO_VCS_COMMIT`: The specific commit hash for the changes you are testing (e.g., `de233ddwqedqwe`).
-* `COSMO_VCS_BRANCH`: The branch name where the commit resides (e.g., `master`).
+* `COSMO_VCS_AUTHOR`: The author's email address associated with the commit (e.g: `foo@bar.com`).
+* `COSMO_VCS_COMMIT`: The specific commit hash for the changes you are testing (e.g: `de233ddwqedqwe`).
+* `COSMO_VCS_BRANCH`: The branch name where the commit resides (e.g: `main`).
 
 ```
 COSMO_VCS_AUTHOR=foo@bar.com
 COSMO_VCS_COMMIT=de233ddwqedqwe
-COSMO_VCS_BRANCH=master
+COSMO_VCS_BRANCH=main
 ```
 
 ## Usage in CI and GitHub Integration
