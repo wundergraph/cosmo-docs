@@ -97,8 +97,19 @@ Composition Errors
 
 <table><thead><tr><th width="263">FEDERATED_GRAPH_NAME</th><th>ERROR_MESSAGE</th></tr></thead><tbody><tr><td>inventory</td><td>The subgraph "products" could not be federated for the following reason:<br>The object type "Employee" defines the directive "@override(from: "employees)" on the following field: "notes".<br>The required "from" argument of type "String!" must be provided with an existing subgraph name.<br>However, a subgraph by the name of "employees" does not exist.</td></tr></tbody></table>
 
-\
+## VCS Context
 
+If you want to associate custom information with the checks being performed, you can do so by setting the following environment variables:
+
+* `COSMO_VCS_AUTHOR`: The author's email address associated with the commit (e.g., `foo@bar.com`).
+* `COSMO_VCS_COMMIT`: The specific commit hash for the changes you are testing (e.g., `de233ddwqedqwe`).
+* `COSMO_VCS_BRANCH`: The branch name where the commit resides (e.g., `master`).
+
+```
+COSMO_VCS_AUTHOR=foo@bar.com
+COSMO_VCS_COMMIT=de233ddwqedqwe
+COSMO_VCS_BRANCH=master
+```
 
 ## Usage in CI and GitHub Integration
 
