@@ -36,7 +36,7 @@ storage_providers:
     bucket: "cosmo"
     access_key: "key"
     secret_key: "secret"
-    region: "use-east-1"
+    region: "us-east-1"
     secure: false
 ```
 {% endcode %}
@@ -44,6 +44,21 @@ storage_providers:
 {% hint style="info" %}
 **secure** has to be set to `true` when you point to an S3 that uses **https://**
 {% endhint %}
+
+If you are using EC2 or EKS on AWS and have configured [`node IAM roles`](https://docs.aws.amazon.com/eks/latest/userguide/create-node-role.html) you don't need to provide an `access_key` or `secret_key` and the S3 client will handle this on your behalf.
+
+{% code title="config.yaml" %}
+```yaml
+version: 1
+storage_providers:
+  s3:
+  - id: "s3"
+    endpoint: "s3.amazonaws.com"
+    bucket: "cosmo"
+    region: "us-east-1"
+    secure: true
+```
+{% endcode %}
 
 ## Execution config
 
