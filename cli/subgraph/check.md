@@ -106,9 +106,9 @@ If you want to associate custom information with the checks being performed, you
 * `COSMO_VCS_BRANCH`: The branch name where the commit resides (e.g: `main`).
 
 ```
-COSMO_VCS_AUTHOR=foo@bar.com
-COSMO_VCS_COMMIT=de233ddwqedqwe
-COSMO_VCS_BRANCH=main
+export COSMO_VCS_AUTHOR=foo@bar.com
+export COSMO_VCS_COMMIT=de233ddwqedqwe
+export COSMO_VCS_BRANCH=main
 ```
 
 ## Usage in CI and GitHub Integration
