@@ -1,5 +1,6 @@
 ---
 description: The easiest way to migrate away from Apollo GraphOS
+icon: newspaper
 ---
 
 # Using Apollo Router / Gateway with Cosmo OSS Schema Registry

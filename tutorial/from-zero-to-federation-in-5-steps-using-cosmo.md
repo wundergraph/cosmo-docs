@@ -2,6 +2,7 @@
 description: >-
   This guide brings you from zero to Federation in 5 Steps. Deploy and compose
   your Subgraphs and set up powerful CI Workflows for collaboration.
+icon: newspaper
 ---
 
 # From Zero to Federation in 5 Steps using Cosmo

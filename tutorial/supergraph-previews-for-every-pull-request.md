@@ -1,5 +1,6 @@
 ---
 description: Setup github actions for supergraph previews.
+icon: newspaper
 ---
 
 # Supergraph Previews for every Pull Request
