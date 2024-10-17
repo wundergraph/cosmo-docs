@@ -30,3 +30,5 @@ Cosmo supports monolithic GraphQL APIs as well as Federation v1 and v2, includin
 * [Router](broken-reference): The Router is the component that understands the GraphQL Federation protocol. It is responsible for routing requests to the correct subgraphs and for aggregating the responses. While it maintains a connection with the Control Plane, its operation is independent and does not depend on the Control Plane's functionality for maximum availability.
 * [Studio](broken-reference): The Studio serves as the web interface for the Cosmo platform, providing a user-friendly medium for platform management and collaboration on GraphQL Federation. It maintains a connection with the Control Plane through the admin API, enabling efficient platform management.
 
+.
+
