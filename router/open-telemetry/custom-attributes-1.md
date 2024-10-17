@@ -15,7 +15,7 @@ description: >-
 Please note that each attribute increases cardinality. Furthermore, attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider. You should only attach headers that have been sanitized by your infrastructure.
 {% endhint %}
 
-There are scenarios where you may want to add additional attributes to your metrics. One common use case is to add&#x20;
+In certain scenarios, it may be necessary to add additional attributes to your metrics. A common example is including details from a request header or adding context information, such as the services involved in a GraphQL request. This can be easily accomplished by modifying a few lines of configuration.
 
 ### Prometheus
 
@@ -31,7 +31,7 @@ telemetry:
         default: "router"
 ```
 
-This configuration will add the resource attribute `env=prod` to every metric and span export. Additionally, the attribute `service=static` is also added. Resource attributes identify the entity producing the traces and metrics. Since Prometheus metrics rely on OpenTelemetry metrics, the resource attributes are also added to the Prometheus `target_info` series.
+This configuration will add the attribute `myAttribute=router` to every metric export.
 
 ## Dynamic Attribute Value
 
