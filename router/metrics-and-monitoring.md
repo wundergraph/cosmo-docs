@@ -38,7 +38,7 @@ We collect the following metrics to get useful insights in the HTTP traffic:
 
 #### GraphQL specific metrics
 
-**`router.graphql.operation.planning_time`**: Number of in-flight requests. Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
+**`router.graphql.operation.planning_time`**: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
 
 ### List of asynchronous instruments
 
