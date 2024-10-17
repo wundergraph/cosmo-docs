@@ -123,7 +123,7 @@ Please use meaningful names in the Studio to ensure clarity. The instance ID is 
 
 ## Custom Attributes
 
-You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](open-telemetry/custom-attributes.md) section.
+You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](open-telemetry/global-custom-attributes.md) section.
 
 ## Subgraph errors
 
