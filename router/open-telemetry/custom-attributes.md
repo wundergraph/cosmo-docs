@@ -5,10 +5,14 @@ description: >-
   dynamic values based on headers.
 ---
 
-# Custom Attributes
+# Global Custom Attributes
+
+{% hint style="info" %}
+**Available since Router version 0.92.0**.&#x20;
+{% endhint %}
 
 {% hint style="warning" %}
-**Available since Router version 0.92.0**. Please note that each attribute increases cardinality. Furthermore, attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider.
+Please note that each attribute increases cardinality. Furthermore, attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider. You should only attach headers that have been sanitized by your infrastructure.
 {% endhint %}
 
 There are scenarios where you may want to add additional attributes to your metrics and spans. One common use case is to add environment information, such as `env=prod`. We provide an easy way to achieve this by adding a few lines of configuration.&#x20;
@@ -49,3 +53,5 @@ telemetry:
 ```
 
 This will add the attribute `service=static` unless the client has provided a request header `x-service`, in which case the value of this header will be used instead of the default value. Remember to add the header to the allowlist in the CORS configuration; otherwise, CORS issues will occur on the frontend.
+
+For a complete list of available options, please refer to the relevant documentation [section](../configuration.md#telemetry).
