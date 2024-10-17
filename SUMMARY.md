@@ -2,23 +2,23 @@
 
 * [Overview](README.md)
 * [Architecture](architecture.md)
-* [Release Management](release-management.md)
 * [Enterprise](enterprise.md)
 * [Self Hosted](self-hosted.md)
+* [Tutorial](tutorial/README.md)
+  * [Mastering Local Development for GraphQL Federation](tutorial/mastering-local-development-for-graphql-federation.md)
+  * [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)
+  * [Composing graphs](tutorial/composing-graphs.md)
+  * [PR based workflow for Federation](tutorial/pr-based-workflow-for-federation.md)
+  * [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
+  * [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
+  * [Using Apollo Router / Gateway with Cosmo OSS Schema Registry](tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry.md)
+  * [Supergraph Previews for every Pull Request](tutorial/supergraph-previews-for-every-pull-request.md)
+  * [Gradual and experimental feature rollout with Feature Flags](tutorial/gradual-and-experimental-feature-rollout-with-feature-flags.md)
 
-## Tutorial
+## Getting Started
 
-* [Gradual and experimental feature rollout with Feature Flags](tutorial/gradual-and-experimental-feature-rollout-with-feature-flags.md)
-* [Mastering Local Development for GraphQL Federation](tutorial/mastering-local-development-for-graphql-federation.md)
-* [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)
-* [Switch from Apollo to Cosmo](tutorial/switch-from-apollo-to-cosmo.md)
-* [Cosmo Cloud Onboarding](tutorial/cosmo-cloud-onboarding.md)
-* [Composing graphs](tutorial/composing-graphs.md)
-* [PR based workflow for Federation](tutorial/pr-based-workflow-for-federation.md)
-* [OTEL Instrumentation on Subgraphs](tutorial/otel-instrumentation-on-subgraphs.md)
-* [Using Persisted Operations with Federated GraphQL](tutorial/using-persisted-operations.md)
-* [Using Apollo Router / Gateway with Cosmo OSS Schema Registry](tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry.md)
-* [Supergraph Previews for every Pull Request](tutorial/supergraph-previews-for-every-pull-request.md)
+* [Switch from Apollo to Cosmo](getting-started/switch-from-apollo-to-cosmo.md)
+* [Cosmo Cloud Onboarding](getting-started/cosmo-cloud-onboarding.md)
 
 ## Concepts
 
@@ -218,4 +218,5 @@
 * [Terraform](deployments-and-hosting/terraform/README.md)
   * [AWS Fargate](deployments-and-hosting/terraform/aws-fargate.md)
 * [Docker](deployments-and-hosting/docker.md)
+* [Release Management](deployments-and-hosting/release-management.md)
 * [Cosmo Cloud](deployments-and-hosting/cosmo-cloud.md)
