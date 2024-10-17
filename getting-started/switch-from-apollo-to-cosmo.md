@@ -1,5 +1,5 @@
 ---
-icon: newspaper
+icon: repeat
 ---
 
 # Switch from Apollo to Cosmo

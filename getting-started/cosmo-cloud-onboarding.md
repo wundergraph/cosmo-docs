@@ -1,8 +1,8 @@
 ---
+icon: clouds-sun
 description: >-
   Learn how to deploy your first federated graph and integrate it with your
   Cosmo Router.
-icon: newspaper
 ---
 
 # Cosmo Cloud Onboarding
