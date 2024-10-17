@@ -1,3 +1,7 @@
+---
+icon: projector
+---
+
 # Metrics & Monitoring
 
 The router offers built-in support for [OTEL](https://opentelemetry.io/) and [Prometheus](https://prometheus.io/). OTEL data is exported through exporters. For reference please take a look at the [OpenTelemetry](metrics-and-monitoring.md#open-telemetry) section.
