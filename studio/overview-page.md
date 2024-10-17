@@ -2,6 +2,7 @@
 description: >-
   This page provides top level information about your federated graph at a
   glance.
+icon: map
 ---
 
 # Overview Page

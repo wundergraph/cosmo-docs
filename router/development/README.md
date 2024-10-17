@@ -1,3 +1,7 @@
+---
+icon: flask-round-potion
+---
+
 # Development
 
 The Cosmo router contains functionality intended to be used to assist the development of the router and/or subgraphs that are connected through the router. Most of these features should not be enabled for production, since they could impact performance in negative ways.

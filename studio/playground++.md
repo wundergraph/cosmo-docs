@@ -2,6 +2,7 @@
 description: >-
   Enhanced GraphiQL with Advanced Request Tracing to test and optimize your
   queries
+icon: rectangle-code
 ---
 
 # Playground++

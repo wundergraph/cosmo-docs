@@ -2,6 +2,7 @@
 description: >-
   Role-based access control allows you to limit access to resources based on a
   user's role.
+icon: user-tie
 ---
 
 # RBAC

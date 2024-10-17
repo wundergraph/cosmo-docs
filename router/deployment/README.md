@@ -1,5 +1,6 @@
 ---
 description: Learn how to deploy and start the Router in Production.
+icon: truck-ramp-couch
 ---
 
 # Deployment

@@ -1,5 +1,6 @@
 ---
 description: Enable Real-time capabilities for your client applications.
+icon: webhook
 ---
 
 # Subscriptions

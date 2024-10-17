@@ -1,5 +1,6 @@
 ---
 description: Configuring Access Logs for Enhanced Traffic Monitoring.
+icon: camera-cctv
 ---
 
 # Access logs

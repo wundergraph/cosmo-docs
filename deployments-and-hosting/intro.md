@@ -1,3 +1,7 @@
+---
+icon: door-open
+---
+
 # Intro
 
 One of the key distinctions between WunderGraph Cosmo and other platforms, such as Apollo GraphOS, is the capability to manage and deploy the entire platform as a self-hosted version. In this scenario, you are responsible for maintaining the stack, and you gain full data sovereignty.

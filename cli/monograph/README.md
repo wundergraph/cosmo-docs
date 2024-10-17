@@ -2,6 +2,7 @@
 description: >-
   A monograph refers to a graph with GraphQL Federation disabled and is limited
   to a single subgraph.
+icon: share-nodes
 ---
 
 # Monograph

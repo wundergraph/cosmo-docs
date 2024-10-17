@@ -1,5 +1,6 @@
 ---
 description: Here you can see all available environment variables of the Control Plane.
+icon: sliders-up
 ---
 
 # Configuration

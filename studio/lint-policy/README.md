@@ -1,5 +1,6 @@
 ---
 description: Enforce conventions and best practices through the lint policy.
+icon: user-police-tie
 ---
 
 # Lint Policy

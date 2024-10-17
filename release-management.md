@@ -1,5 +1,6 @@
 ---
 description: How to get the latest release and stay up-to-date.
+icon: memo-circle-check
 ---
 
 # Release Management

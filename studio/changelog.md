@@ -2,6 +2,7 @@
 description: >-
   This page provides you with a detailed history of all schema changes made to
   your federated graph, including both additions and deletions.
+icon: file-plus-minus
 ---
 
 # Changelog

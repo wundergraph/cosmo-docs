@@ -2,6 +2,7 @@
 description: >-
   Understand the activities conducted by users throughout your entire
   organization, whether performed directly or via API keys.
+icon: people-roof
 ---
 
 # Audit log

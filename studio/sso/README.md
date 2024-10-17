@@ -3,6 +3,7 @@ description: >-
   Connect your organization's Identity Provider, such as Okta, Auth0, or
   Keycloak, with Cosmo to seamlessly inherit user authentication and access
   control, ensuring a secure and unified experience.
+icon: building-lock
 ---
 
 # SSO

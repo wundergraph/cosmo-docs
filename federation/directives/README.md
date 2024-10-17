@@ -1,5 +1,6 @@
 ---
 description: Documentation for Open Federation Directives.
+icon: signs-post
 ---
 
 # Directives

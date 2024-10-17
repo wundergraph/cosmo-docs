@@ -2,6 +2,7 @@
 description: >-
   Learn more on how you can configure propagating errors from Subgraphs to the
   client.
+icon: bug
 ---
 
 # Subgraph Error Propagation

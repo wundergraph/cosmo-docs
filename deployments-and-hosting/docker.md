@@ -1,5 +1,6 @@
 ---
 description: You can easily run the Cosmo stack using docker-compose.
+icon: docker
 ---
 
 # Docker

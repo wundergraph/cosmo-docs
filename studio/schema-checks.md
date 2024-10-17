@@ -2,6 +2,7 @@
 description: >-
   Validate schema changes before deploying them to production. Ship breaking
   changes safely through operation checks.
+icon: list-check
 ---
 
 # Schema Checks

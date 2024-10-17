@@ -2,6 +2,7 @@
 description: >-
   Router Cluster Management allows you to monitor and track your active routers
   via automated metrics instrumentation.
+icon: layer-group
 ---
 
 # Cluster Management

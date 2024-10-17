@@ -3,6 +3,7 @@ description: >-
   A collaborative workflow to evolve your schema with your team and
   organization. You can create discussions across any number of graphs and
   schema versions.
+icon: users-medical
 ---
 
 # Discussions

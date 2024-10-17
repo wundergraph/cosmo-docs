@@ -2,6 +2,7 @@
 description: >-
   The router allows you to request the query plan and you can view the same in
   the playground
+icon: file-contract
 ---
 
 # Query Plan

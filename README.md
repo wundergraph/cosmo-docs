@@ -3,6 +3,7 @@ description: >-
   WunderGraph Cosmo is the Full Lifecycle GraphQL API Management Solution to
   manage Federated Graphs at scale. Composition checks, routing, analytics, and
   distributed tracing all in one platform.
+icon: note
 ---
 
 # Overview

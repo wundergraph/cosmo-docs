@@ -1,3 +1,7 @@
+---
+icon: door-open
+---
+
 # Intro
 
 The router is the component that understands the GraphQL Federation protocol. It is responsible for routing requests to the correct service and for aggregating the responses. While it maintains a connection with the Control Plane, its operation is independent and does not hinge on the Control Plane's functionality.

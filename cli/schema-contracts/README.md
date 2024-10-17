@@ -2,6 +2,7 @@
 description: >-
   Schema contracts helps you provide filtered out versions of your composed
   graph to different customers.
+icon: file-signature
 ---
 
 # Schema Contracts

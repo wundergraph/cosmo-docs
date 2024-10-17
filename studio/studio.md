@@ -2,6 +2,7 @@
 description: >-
   Upload a markdown file to your federated- and sub-graphs to share on-boarding
   or common information with your organization.
+icon: readme
 ---
 
 # Graph Documentation

@@ -2,6 +2,7 @@
 description: >-
   An overview of feature subgraphs, feature flags, and implementing your first
   feature flag.
+icon: flag
 ---
 
 # Feature Flags

@@ -2,6 +2,7 @@
 description: >-
   Get an overview about what data the router collects and its purposes. Learn to
   adjust configurations to ensure stringent data privacy management.
+icon: cloud-binary
 ---
 
 # Compliance and Data Management

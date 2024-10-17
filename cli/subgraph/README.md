@@ -3,6 +3,7 @@ description: >-
   Subgraphs are the building blocks of a federated graph. Each subgraph in a
   Federated GrapQL Architecture is responsible for defining its own part of the
   schema and handling the corresponding queries.
+icon: share-nodes
 ---
 
 # Subgraph

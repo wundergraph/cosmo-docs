@@ -2,6 +2,7 @@
 description: >-
   Provision and manage users in your workspace with the System for Cross-domain
   Identity Management (SCIM) standard.
+icon: file-user
 ---
 
 # SCIM

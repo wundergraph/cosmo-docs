@@ -1,5 +1,6 @@
 ---
 description: Cosmo AI is currently in Open Beta.
+icon: brain-circuit
 ---
 
 # Cosmo AI

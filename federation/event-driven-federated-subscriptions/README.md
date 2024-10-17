@@ -1,5 +1,6 @@
 ---
 description: Defining an Event-Driven Graph with Event-Driven Federated Subscriptions.
+icon: conveyor-belt-boxes
 ---
 
 # Event-Driven Federated Subscriptions

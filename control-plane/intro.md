@@ -1,3 +1,7 @@
+---
+icon: door-open
+---
+
 # Intro
 
 The Control Plane forms the heart of the Cosmo platform and comprises two core elements: the Platform API and the Node API. The Platform API is utilized by the Cosmo CLI tool and Studio for platform management. On the other hand, the Node API facilitates fleet-specific operations, carried out by the Router nodes.

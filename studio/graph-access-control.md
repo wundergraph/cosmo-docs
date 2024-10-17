@@ -3,6 +3,7 @@ description: >-
   Utilizing resource-based access control enables (RBAC) for graphs ensuring
   that machines or users can access and manipulate only specific federated- and
   sub-graphs.
+icon: user-secret
 ---
 
 # Graph Access Control

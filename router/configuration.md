@@ -1,5 +1,6 @@
 ---
 description: Learn how to configure your router.
+icon: sliders-up
 ---
 
 # Configuration

@@ -1,3 +1,7 @@
+---
+icon: object-ungroup
+---
+
 # Namespaces
 
 Namespaces allow you to group and/or isolate different instances of the same federated graph. This is useful for managing multi-stage deployment pipelines with separate deployment environments, such as `development`, `staging`, and `production`. Every federated graph has a `default` namespace to which all graph instances are published unless otherwise specified. To specify a namespace other than the `default`, supply the `--namespace` or `-n` parameter when executing WunderGraph Cosmo CLI (`wgc`) commands.

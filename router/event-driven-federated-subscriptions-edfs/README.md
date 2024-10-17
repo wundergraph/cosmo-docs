@@ -3,6 +3,7 @@ description: >-
   EDFS combines the power of GraphQL Federation and Event-Driven Architecture
   (Kafka, NATS, SQS) to update a user GraphQL Subscription after an event occurs
   in your system.
+icon: calendar-users
 ---
 
 # Event-Driven Federated Subscriptions (EDFS)

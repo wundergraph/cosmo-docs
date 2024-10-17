@@ -1,5 +1,6 @@
 ---
 description: Upload files through the router using GraphQL multipart request.
+icon: upload
 ---
 
 # File Upload

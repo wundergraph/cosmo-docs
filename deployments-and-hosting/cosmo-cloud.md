@@ -3,6 +3,7 @@ description: >-
   Cosmo Cloud is a fully managed service designed to operate all critical
   components of the Cosmo Platform in the most efficient manner, leaving you
   only responsible for running your routers.
+icon: cloud
 ---
 
 # Cosmo Cloud

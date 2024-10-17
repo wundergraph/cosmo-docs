@@ -3,6 +3,7 @@ description: >-
   Schema Contracts enable you to build a multi-purpose, multi-audience graph,
   which can be split into subsets for different use cases. This simplifies
   development and keeps your graph maintainable.
+icon: file-contract
 ---
 
 # Schema Contracts

@@ -1,5 +1,6 @@
 ---
 description: Use OpenTelemetry with traces and metrics
+icon: binary-circle-check
 ---
 
 # Open Telemetry

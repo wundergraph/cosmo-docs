@@ -1,5 +1,6 @@
 ---
 description: Migrate from Apollo GraphOS to WunderGraph Cosmo with a single click
+icon: swap-arrows
 ---
 
 # Migrate from Apollo

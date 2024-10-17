@@ -2,6 +2,7 @@
 description: >-
   Persisted operations, also known as trusted documents, allow you to register
   trusted operations in the router
+icon: passport
 ---
 
 # Persisted Operations

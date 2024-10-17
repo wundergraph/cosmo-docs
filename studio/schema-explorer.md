@@ -2,6 +2,7 @@
 description: >-
   An interactive explorer to navigate though your federated graph schema. It has
   built in search and usage tracking for every type in your schema
+icon: file-lines
 ---
 
 # Schema Explorer

@@ -1,5 +1,6 @@
 ---
 description: Learn how to download and install the router
+icon: sign-posts-wrench
 ---
 
 # Download & Install

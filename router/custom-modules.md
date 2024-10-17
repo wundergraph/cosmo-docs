@@ -3,6 +3,7 @@ description: >-
   Customize your router by writing just a few lines of Go code and compiling it
   with a single command. Eliminate the complexities associated with writing
   scripts and use the existing Go ecosystem.
+icon: cubes
 ---
 
 # Custom Modules

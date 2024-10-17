@@ -1,3 +1,7 @@
+---
+icon: envelopes-bulk
+---
+
 # Invitations
 
 Organization admins can invite members to their organizations. Once you have been invited, all your invitations can be viewed on the invitations page on Cosmo.

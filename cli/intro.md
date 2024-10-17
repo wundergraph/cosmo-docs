@@ -3,6 +3,7 @@ description: >-
   The cosmo CLI tool: wgc. Used to manage the cosmo platform e.g. pushing
   schema, checking schemas, creating new projects, managing users, etc. It
   interacts with the control plane.
+icon: hand-wave
 ---
 
 # Intro

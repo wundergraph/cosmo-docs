@@ -3,6 +3,7 @@ description: >-
   To maintain control over your data and ensure high performance, utilize
   different storage providers to store router artifacts on Amazon S3, while
   still using our Cosmo Managed offering.
+icon: cabinet-filing
 ---
 
 # Storage Providers

@@ -1,3 +1,7 @@
+---
+icon: broom-wide
+---
+
 # Graph Pruning
 
 **Graph Pruning Linter** helps manage the cleanliness and efficiency of your GraphQL schema by running various checks on the schema. When enabled, the lint check will be performed on every [check](https://cosmo-docs.wundergraph.com/cli/subgraph/check) operation of that namespace.

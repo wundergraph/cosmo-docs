@@ -1,5 +1,6 @@
 ---
 description: High-level architecture of the Cosmo Platform
+icon: archway
 ---
 
 # Architecture

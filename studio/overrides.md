@@ -3,6 +3,7 @@ description: >-
   Override the result of breaking changes in schema checks for individual
   operations which you deem are safe. Overrides are active across all graphs in
   a namespace.
+icon: overline
 ---
 
 # Overrides
