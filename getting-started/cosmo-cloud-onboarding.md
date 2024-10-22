@@ -103,16 +103,16 @@ curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo
 1. Create the subgraph:
 
 ```bash
-wgc subgraph create products \
+wgc subgraph create employees \
     --namespace development \
-    --routing-url https://product-api.fly.dev/graphql
+    --routing-url https://employees-api.fly.dev/graphql
 ```
 
 2. Download the schema and publish it:
 
 ```bash
-curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/products/subgraph/schema.graphqls \
-&& wgc subgraph publish products \
+curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/employees/subgraph/schema.graphqls \
+&& wgc subgraph publish employees \
     --namespace development \
     --schema ./schema.graphqls
 ```
