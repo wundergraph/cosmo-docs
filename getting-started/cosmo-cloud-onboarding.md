@@ -65,7 +65,7 @@ wgc namespace create development
 
 ### Create a Federated Graph
 
-The next step is to create a federated graph that represents your unified, federated GraphQL schema. A federated graph is assigned a URL and can be logically mapped to a single router instance. In a production environment, you would need to specify here the URL of your deployed router.
+The next step is to create a federated graph that represents your unified, federated GraphQL schema. A federated graph is assigned a URL and can be logically mapped to a single router instance. For this demo, we will point to our demo router. It is not important for the demo to point to a valid URL but in a production environment, you would need to specify here the URL of your deployed router.
 
 ```bash
 wgc federated-graph create demo \
