@@ -303,8 +303,18 @@ wgc subgraph publish employees \
     --namespace development \
     --schema ./schema.graphqls
 ```
+
+
 {% endstep %}
 {% endstepper %}
+
+## Clean up
+
+You can delete all resources by deleting the namespace with the following command:
+
+```
+wgc namespace delete -f development
+```
 
 ## Summary
 
