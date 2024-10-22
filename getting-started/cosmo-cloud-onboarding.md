@@ -267,7 +267,7 @@ wgc subgraph check employees \
 {% step %}
 ### Breaking change detected with client usage
 
-You should see a similar output as follows. We have identified the change as a breaking change, and since the `departments` field was queried in the example query, it was correctly identified as being in use as well.
+You should see a similar output as follows. We have identified the change as a breaking change, and since the `departments` field was queried in the [example query](cosmo-cloud-onboarding.md#example-query-that-involves-all-subgraphs), it was correctly identified as being in use as well.
 
 ```
 ❯ wgc subgraph check employees \
