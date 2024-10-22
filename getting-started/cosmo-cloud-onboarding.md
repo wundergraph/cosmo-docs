@@ -290,7 +290,7 @@ See https://cosmo-docs.wundergraph.com/studio/schema-checks for more information
 Open in studio: https://cosmo.wundergraph.com/.....
 ```
 
-**Click on the link below to see the check in Cosmo Studio!**
+**Click on** the link next to `Open in studio` to see the check in Cosmo Studio!
 {% endstep %}
 
 {% step %}
