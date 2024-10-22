@@ -17,8 +17,8 @@
 
 ## Getting Started
 
-* [Switch from Apollo to Cosmo](getting-started/switch-from-apollo-to-cosmo.md)
 * [Cosmo Cloud Onboarding](getting-started/cosmo-cloud-onboarding.md)
+* [Switch from Apollo to Cosmo](getting-started/switch-from-apollo-to-cosmo.md)
 
 ## Concepts
 
