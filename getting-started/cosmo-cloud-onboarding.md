@@ -7,13 +7,9 @@ description: >-
 
 # Cosmo Cloud Onboarding
 
-## Get your Trial
-
-Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your are on the Developer Plan with 10 million requests for free.
-
 ## Getting Started
 
-When onboarding a team, it is more efficient for the organization's administrator to invite individuals on the "Members" page rather than having everyone sign up manually.
+Head over to [cosmo.wundergraph.com](https://cosmo.wundergraph.com) and create an account. Once you are in, your are on the Developer Plan with 10 million requests for free.
 
 {% stepper %}
 {% step %}
