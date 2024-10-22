@@ -84,16 +84,16 @@ A federated graph without any subgraph is not functional. Let's create a few sub
 1. Create the subgraph:
 
 ```bash
-wgc subgraph create employees \
+wgc subgraph create products \
     --namespace development \
-    --routing-url https://employees-api.fly.dev/graphql
+    --routing-url https://product-api.fly.dev/graphql
 ```
 
 2. Download the schema and publish it:
 
 ```bash
-curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/employees/subgraph/schema.graphqls \
-&& wgc subgraph publish employees \
+curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/products/subgraph/schema.graphqls \
+&& wgc subgraph publish products \
     --namespace development \
     --schema ./schema.graphqls
 ```
@@ -200,7 +200,7 @@ docker run \
 
 ### Open the Playground
 
-Open [http://localhost:3002/graphql](http://localhost:3001/graphql) and run your first GraphQL operation with WunderGraph Cosmo! [🚀](https://apps.timwhitlock.info/emoji/tables/unicode#emoji-modal) The same playground is also available on Cosmo Cloud.
+Open [http://localhost:3002/graphql](http://localhost:3002/graphql) and run your first GraphQL operation with WunderGraph Cosmo! [🚀](https://apps.timwhitlock.info/emoji/tables/unicode#emoji-modal) The same playground is also available on Cosmo Cloud.
 
 ### Example Query that involves all subgraphs
 
