@@ -1,14 +1,26 @@
 ---
-description: Creates a contract from a federated graph or monograph
+description: Creates a contract from a federated graph or monograph.
 ---
 
 # Create
 
 ## Usage
 
+#### Exclude (the items that have the tag(s) specified will be removed from the federated graph)
+
+{% code fullWidth="true" %}
 ```bash
 npx wgc contract create <name> --source <federated-graph-name> --exclude internal -r <routing-url> 
 ```
+{% endcode %}
+
+#### Include (the items that do _not_ have the tag(s) specified will be removed from the federated graph)
+
+{% code fullWidth="true" %}
+```bash
+npx wgc contract create <name> --source <federated-graph-name> --include public -r <routing-url> 
+```
+{% endcode %}
 
 ## Description
 
@@ -26,17 +38,31 @@ The `npx wgc contract create` command allows you to create a contract from a fed
 
 ## Options
 
+{% hint style="warning" %}
+The --exclude and --include options are currently _mutually exclusive_. An error will be returned if more than one are defined.
+{% endhint %}
+
 * `-n, --namespace` : The namespace of the contract graph and source graph (Default: "default").
 * `--exclude` : The list of tags that need to be excluded from the source graph schema.
+* `--include` : The list of tags that need to be included from the source graph schema.
 * `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the contract graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 * `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
 * `--readme` : The markdown file which describes the contract graph.
 
 ## Examples
 
+{% code fullWidth="true" %}
 ```bash
 npx wgc contract create production-external --source production --exlude internal,experimental -r http://router.example.com/graphql
 ```
+{% endcode %}
 
-Create a contract graph named `production-external` from the source graph schema of `production` that excluds all schema elements tagged with internal or experimental.&#x20;
+Create a contract graph named `production-external` from the source graph schema of `production` that excludes all schema elements tagged with `internal` or `experimental`.&#x20;
 
+{% code fullWidth="true" %}
+```bash
+npx wgc contract create production-external --source production --include public,api -r http://router.example.com/graphql
+```
+{% endcode %}
+
+Create a contract graph named `production-external` from the source graph schema of `production` that excludes all schema elements tagged with `public` or `api`.&#x20;
