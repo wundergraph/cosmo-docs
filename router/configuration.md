@@ -1,6 +1,6 @@
 ---
-description: Learn how to configure your router.
 icon: sliders-up
+description: Learn how to configure your router.
 ---
 
 # Configuration
@@ -1107,7 +1107,18 @@ Truncate floats like 1.0 to 1, 2.0 to 2, etc.. Values like 1.1 or 2.2 will not b
 
 Suppresses fetch errors. When enabled, only the ‘data’ object is returned, suppressing errors. If disabled, fetch errors are included in the ‘errors’ array.
 
-<table data-full-width="true"><thead><tr><th width="321">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td><p></p><p>APOLLO_COMPATIBILITY_ENABLE_ALL</p></td><td>enable_all</td><td>false</td><td>Enables all the options of Apollo Compatibility.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED</td><td>enabled</td><td>false</td><td>Enables value completion.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED</td><td>enabled</td><td>false</td><td>Enables truncate floats.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED</td><td>enabled</td><td>false</td><td>Enables suppress fetch errors.</td><td>false</td></tr></tbody></table>
+#### Apollo Compatibility Replace Undefined Op Field Errors
+
+Produces the same error message as Apollo when invalid operation field is included in an operation selection set.\
+Extension code: "GRAPHQL\_VALIDATION\_FAILED"\
+Status code: 400
+
+#### Apollo Compatibility Replace Invalid Var Errors
+
+Produces the same error message as Apollo when an invalid variable is supplied.\
+Extension code: "BAD\_USER\_INPUT"
+
+<table data-full-width="true"><thead><tr><th width="321">Environment Variable</th><th width="297">YAML</th><th width="102" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td><p></p><p>APOLLO_COMPATIBILITY_ENABLE_ALL</p></td><td>apollo_compatibility_flags:<br> enable_all: &#x3C;bool></td><td>false</td><td>Enables all the options of Apollo Compatibility.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED</td><td>value_completion:<br> enabled: &#x3C;bool></td><td>false</td><td>Enables value completion.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED</td><td>truncate_floats:<br> enabled: &#x3C;bool></td><td>false</td><td>Enables truncate floats.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED</td><td>suppress_fetch_errors:<br> enabled: &#x3C;bool></td><td>false</td><td>Enables suppress fetch errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED</td><td>replace_undefined_op_field_errors:<br> enabled: &#x3C;bool></td><td>false</td><td>Replaces undefined operation field errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED</td><td>replace_invalid_var_errors:<br> enabled: &#x3C;bool></td><td>false</td><td>Replaces invalid variable errors.</td><td>false</td></tr></tbody></table>
 
 #### Example YAML Configuration
 
@@ -1122,5 +1133,8 @@ apollo_compatibility_flags:
         enabled: false
     suppress_fetch_errors:
         enabled: true
- 
+    replace_undefined_op_field_errors:
+        enabled: true
+    replace_invalid_var_errors:
+        enabled: true 
 ```
