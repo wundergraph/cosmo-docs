@@ -1109,7 +1109,7 @@ Suppresses fetch errors. When enabled, only the ‘data’ object is returned, s
 
 #### Apollo Compatibility Replace Undefined Op Field Errors
 
-Produces the same error message as Apollo when invalid operation field is included in an operation selection set.\
+Produces the same error message as Apollo when an invalid operation field is included in an operation selection set.\
 Extension code: "GRAPHQL\_VALIDATION\_FAILED"\
 Status code: 400
 
