@@ -8,7 +8,7 @@ description: Creates a contract from a federated graph or monograph.
 
 #### Exclude (the items that have the tag(s) specified will be removed from the federated graph)
 
-{% code fullWidth="true" %}
+{% code fullWidth="false" %}
 ```bash
 npx wgc contract create <name> --source <federated-graph-name> --exclude internal -r <routing-url> 
 ```
@@ -16,7 +16,7 @@ npx wgc contract create <name> --source <federated-graph-name> --exclude interna
 
 #### Include (the items that do _not_ have the tag(s) specified will be removed from the federated graph)
 
-{% code fullWidth="true" %}
+{% code fullWidth="false" %}
 ```bash
 npx wgc contract create <name> --source <federated-graph-name> --include public -r <routing-url> 
 ```
