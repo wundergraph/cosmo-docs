@@ -4,7 +4,7 @@ description: Setting up SSO with Microsoft Entra
 
 # Microsoft Entra
 
-Steps to set Entra as an OIDC identity provider:-
+### Steps to set Entra as an OIDC identity provider:-
 
 * Log in to Microsoft Entra and navigate to the **Identity/Applications/Enterprise applications** view within Microsoft Entra.
 

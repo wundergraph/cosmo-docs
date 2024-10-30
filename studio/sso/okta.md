@@ -4,7 +4,7 @@ description: Setting up SSO with Okta
 
 # Okta
 
-Steps to set Okta as an OIDC identity provider
+### Steps to set Okta as an OIDC identity provider
 
 * Navigate to the Applications view within your Okta Administrator Dashboard.
 * Click on **Create App Integration**.&#x20;
