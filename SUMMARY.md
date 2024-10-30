@@ -98,6 +98,7 @@
 * [Schema Contracts](cli/schema-contracts/README.md)
   * [Create](cli/schema-contracts/create.md)
   * [Update](cli/schema-contracts/update.md)
+  * [Delete, List, Fetch and more](cli/schema-contracts/delete-list-fetch-and-more.md)
 * [Feature Subgraph](cli/feature-subgraph/README.md)
   * [Create Feature Subgraph](cli/feature-subgraph/create-feature-subgraph.md)
   * [Publish Feature Subgraph](cli/feature-subgraph/publish-feature-subgraph.md)
