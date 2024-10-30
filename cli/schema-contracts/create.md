@@ -51,7 +51,7 @@ The --exclude and --include options are currently _mutually exclusive_. An error
 
 ## Examples
 
-{% code fullWidth="true" %}
+{% code fullWidth="false" %}
 ```bash
 npx wgc contract create production-external --source production --exlude internal,experimental -r http://router.example.com/graphql
 ```
@@ -59,7 +59,7 @@ npx wgc contract create production-external --source production --exlude interna
 
 Create a contract graph named `production-external` from the source graph schema of `production` that excludes all schema elements tagged with `internal` or `experimental`.&#x20;
 
-{% code fullWidth="true" %}
+{% code fullWidth="false" %}
 ```bash
 npx wgc contract create production-external --source production --include public,api -r http://router.example.com/graphql
 ```
