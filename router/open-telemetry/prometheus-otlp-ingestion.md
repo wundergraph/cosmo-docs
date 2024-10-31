@@ -23,6 +23,7 @@ telemetry:
 
 ## Docker Compose Example
 
+{% code title="docker-compose.yml" %}
 ```yaml
   prometheus:
     image: prom/prometheus:v3.0.0-beta.1
@@ -36,3 +37,4 @@ telemetry:
     ports:
       - '9090:9090'
 ```
+{% endcode %}
