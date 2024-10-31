@@ -4,7 +4,7 @@ description: OTLP ingestion in Prometheus
 
 # Prometheus OTLP Ingestion
 
-Prometheus 3.0 introduces support for OTLP (OpenTelemetry Protocol) metrics ingestion, enabling direct push of OpenTelemetry metrics to Prometheus without requiring metrics exposure via HTTP. This simplifies configuration and helps consolidate your monitoring setup. Additionally, since high cardinality has traditionally impacted the performance of scraping large server fleets, moving from a pull (scrape) to a push model reduces the impact of cardinality on performance. However, depending on your Prometheus storage backend, cardinality remains an important metric to monitor and manage over time.
+Prometheus 3.0 introduces [support](https://www.prometheus.io/docs/guides/opentelemetry/) for OTLP (OpenTelemetry Protocol) metrics ingestion, enabling direct push of OpenTelemetry metrics to Prometheus without requiring metrics exposure via HTTP. This simplifies configuration and helps consolidate your monitoring setup. Additionally, since high cardinality has traditionally impacted the performance of scraping large server fleets, moving from a pull (scrape) to a push model reduces the impact of cardinality on performance. However, depending on your Prometheus storage backend, cardinality remains an important metric to monitor and manage over time.
 
 Below is an example configuration for pushing all metrics to Prometheus:
 
