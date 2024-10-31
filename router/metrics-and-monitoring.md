@@ -149,13 +149,13 @@ telemetry:
     # Expose OpenTelemetry metrics as Prometheus metrics
     prometheus:
       exclude_metrics:
-        - "^router_http_requests_in_flight.*$" # Exclude the full histogram
+        - "^router_http_request_duration_milliseconds$" # Exclude the full histogram
       exclude_metric_labels:
         - "^wg_client_version$"
 ```
 {% endcode %}
 
-This excludes `router_http_requests_in_flight` histogram and the label `wg_client_version` from all metrics.
+This excludes `router_http_request_duration_milliseconds` histogram and the label `wg_client_version` from all metrics.
 
 {% hint style="info" %}
 Default process and Go metrics can't be excluded. If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.
