@@ -2,6 +2,7 @@
 description: >-
   Kubernetes is an open-source container orchestration platform designed to
   automate the deployment, scaling, and management of application containers.
+icon: layer-group
 ---
 
 # Kubernetes

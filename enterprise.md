@@ -2,6 +2,7 @@
 description: >-
   Learn more about why Cosmo is the ideal GraphQL Federation solution for
   Enterprise
+icon: building-memo
 ---
 
 # Enterprise

@@ -17,5 +17,7 @@ The `npx wgc federated-graph list` command allows you to list all the federated 
 ## Options
 
 * `-n, --namespace` : Filter to get graphs in this namespace only.
-* `-r, --raw` : Prints to the console in json format instead of table
-* `-o, --out` : Destination file for the json output. Has precedence over `raw`
+* `-r, --raw` : Prints to the console in json format instead of table (Deprecated).
+* `-j, --json` : Prints to the console in json format instead of table.
+* `-o, --out` : Destination file for the json output. Has precedence over both `raw` and `json`
+* `--only-contracts` : Filter to list only contracts

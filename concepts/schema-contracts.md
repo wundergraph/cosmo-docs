@@ -1,3 +1,7 @@
+---
+icon: file-signature
+---
+
 # Schema Contracts
 
 ## Introduction

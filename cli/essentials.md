@@ -2,6 +2,7 @@
 description: >-
   Please read through this to have a better understanding of the nuances that
   take place when executing commands which we will cover in the upcoming pages.
+icon: cubes
 ---
 
 # Essentials

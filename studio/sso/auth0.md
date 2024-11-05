@@ -4,7 +4,7 @@ description: Setting up SSO with Auth0
 
 # Auth0
 
-Steps to set Auth0 as an OIDC identity provider
+### Steps to set Auth0 as an OIDC identity provider
 
 * Navigate to the Applications view within your Auth0 account.
 * Either use the default application or create a new application by clicking on the **Create Application** button.

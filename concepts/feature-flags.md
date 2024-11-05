@@ -1,4 +1,5 @@
 ---
+icon: flag
 description: >-
   An overview of feature subgraphs, feature flags, and implementing your first
   feature flag.
@@ -6,7 +7,7 @@ description: >-
 
 # Feature Flags
 
-<figure><img src="../.gitbook/assets/image (123).png" alt=""><figcaption><p>Feature Flag and Feature Subgraphs</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (140).png" alt=""><figcaption><p>Feature Flag and Feature Subgraphs</p></figcaption></figure>
 
 ## What is a Feature Flag?
 
@@ -22,7 +23,7 @@ What problems can feature flags and their constituent feature subgraphs solve?
 
 ### Incremental Feature Rollout
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption><p>Traffic splitting</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption><p>Traffic splitting</p></figcaption></figure>
 
 Feature flags allow you to roll out new features gradually. You can enable a feature for a small percentage of users and monitor its performance. If everything goes well, you can increase the percentage of users who see the feature. If the feature requires further iteration, you can disable the feature without deploying a new version of the API.
 

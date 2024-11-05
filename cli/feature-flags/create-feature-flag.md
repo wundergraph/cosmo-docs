@@ -46,6 +46,7 @@ If either the base composition (the Federated Graph with the original Subgraphs)
 * `-n, --namespace` : The namespace of the feature flag (defaults to "default"). Returns an error if the feature flag does not exist in that namespace.
 * `-e --enabled`: Activates the feature flag immediately upon creation. A new feature flag is disabled by default to prevent accidental compositions.
 * `--label [labels...]:`The labels to apply to the feature flag. The labels are passed in the format `key=value`, and multiple values are space delimited.
+* `-j, --json` : Outputs the information in JSON format.
 
 ## Example
 

@@ -39,6 +39,7 @@ If either the base composition (the federated graph with the original subgraphs)
 * `-n, --namespace` : The namespace of the feature flag (defaults to "default"). Returns an error if the feature flag does not exist in that namespace.
 * `--label [labels...]:`The labels to apply to the feature flag. The labels are passed in the format `key=value`, and multiple values are space delimited. Including this option will overwrite the existing list.
 * `--unsetlabels:` Removes all existing labels. If the `--label` parameter is also provided, it will be ignored.
+* `-j, --json` : Output the information in JSON format.
 
 ## Example
 

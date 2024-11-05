@@ -4,7 +4,7 @@ description: NATS event provider support for EDFS
 
 # NATS
 
-<figure><img src="../../../.gitbook/assets/image (114).png" alt="" width="375"><figcaption><p>NATS with EDFS</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (131).png" alt="" width="375"><figcaption><p>NATS with EDFS</p></figcaption></figure>
 
 ## Minimum requirements
 
@@ -59,15 +59,13 @@ type Employee @key(fields: "id", resolvable: false) {
 }
 ```
 
-You can create the abstract subgraph with the following [wgc](../../../cli/intro.md) command:
+You can create the Event-Driven Graph (EDG—an abstract subgraph) with the following [wgc](../../../cli/intro.md) command:
 
 ```bash
-wgc subgraph publish employee --namespace default --schema edfs-graph.graphqls --routing-url http://localhost:4004/graphql
+wgc subgraph publish edg --namespace default --schema edg.graphqls
 ```
 
-The routing url is still mandatory due a limitation. You can specify anything to make it pass.
-
-## Router config
+## Router configuration
 
 Based on the example above, you will need a compatible router configuration.
 
@@ -88,14 +86,18 @@ events:
 
 ## Example Query
 
-This query assumes that your implemented employee subgraph can resolve the fields.
+In the example query below, one or more subgraphs have been implemented alongside the Event-Driven Graph to resolve any other fields defined on `Employee`, e.g., `tag` and `details.surname`.
+
+{% hint style="warning" %}
+Event-Driven Graphs (EDGs) do not define resolvers, and can only define fields that compose an entity's primary key(s).
+{% endhint %}
 
 ```graphql
 subscription {
   employeeUpdated(employeeID: 1) {
-    id
-    tag
-    details {
+    id # resolved by the Event-Driven Graph (through the event)
+    tag # resolved by another subgraph
+    details { # resolved by another subgraph
       surname
     }
   }
@@ -104,4 +106,4 @@ subscription {
 
 ## System diagram
 
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>

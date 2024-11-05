@@ -49,6 +49,7 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
 * `--delete`: Check for breaking changes and composition errors in case the subgraph will be deleted.
+* `--skip-traffic-check` : This will skip checking against client traffic and any breaking change will fail the run.
 
 {% hint style="info" %}
 The check command requires either the `--schema or --delete parameter.`
@@ -96,8 +97,19 @@ Composition Errors
 
 <table><thead><tr><th width="263">FEDERATED_GRAPH_NAME</th><th>ERROR_MESSAGE</th></tr></thead><tbody><tr><td>inventory</td><td>The subgraph "products" could not be federated for the following reason:<br>The object type "Employee" defines the directive "@override(from: "employees)" on the following field: "notes".<br>The required "from" argument of type "String!" must be provided with an existing subgraph name.<br>However, a subgraph by the name of "employees" does not exist.</td></tr></tbody></table>
 
-\
+## VCS Context
 
+If you want to associate custom information with the checks being performed, you can do so by setting the following environment variables:
+
+* `COSMO_VCS_AUTHOR`: The author's email address associated with the commit (e.g: `foo@bar.com`).
+* `COSMO_VCS_COMMIT`: The specific commit hash for the changes you are testing (e.g: `de233ddwqedqwe`).
+* `COSMO_VCS_BRANCH`: The branch name where the commit resides (e.g: `main`).
+
+```
+export COSMO_VCS_AUTHOR=foo@bar.com
+export COSMO_VCS_COMMIT=de233ddwqedqwe
+export COSMO_VCS_BRANCH=main
+```
 
 ## Usage in CI and GitHub Integration
 

@@ -4,7 +4,7 @@ description: Setting up SSO with Keycloak
 
 # Keycloak
 
-### Steps to set Okta as an OIDC identity provider
+### Steps to set Keyclaok as an OIDC identity provider
 
 * Navigate to the **Clients** view within your Keyclaok Dashboard.
 * Click on **Create Client**.&#x20;

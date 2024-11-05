@@ -1,5 +1,6 @@
 ---
 description: Commands to manage namespaces within the organization
+icon: object-ungroup
 ---
 
 # Namespace

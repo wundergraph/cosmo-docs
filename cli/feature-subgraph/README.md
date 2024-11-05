@@ -1,5 +1,6 @@
 ---
 description: An overview of feature-subgraph (alias "fs") commands.
+icon: feather
 ---
 
 # Feature Subgraph

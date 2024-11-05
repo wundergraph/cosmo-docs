@@ -1,7 +1,8 @@
 ---
 description: >-
-  How to compose a federated graph with WunderGraph Schema Composition, a TypeScript composition
-  library.
+  How to compose a federated graph with WunderGraph Schema Composition, a
+  TypeScript composition library.
+icon: newspaper
 ---
 
 # Composing graphs
@@ -24,9 +25,9 @@ export type Subgraph = {
 A `DocumentNode` can be created using the graphql libary `parse` function. A simple example subgraph is provided below :
 
 <pre class="language-typescript"><code class="lang-typescript"><strong>import { DocumentNode } from 'graphql';
-import { federateSubgraphs, Subgraph } from '@wundergraph/composition';
-</strong><strong>
-</strong><strong>const subgraphA = {
+</strong><strong>import { federateSubgraphs, Subgraph } from '@wundergraph/composition';
+</strong>
+<strong>const subgraphA = {
 </strong>  name: 'subgraph-a',
   url: 'http://localhost:4001',
   definitions: parse(`
@@ -54,8 +55,8 @@ export function federateSubgraphs(subgraphs: Subgraph[]): FederationResult;
 The `federateSubgraphs` function returns a `FederationResult`, which has the following form:
 
 <pre class="language-typescript"><code class="lang-typescript"><strong>import { DocumentNode, GraphQLSchema } from 'graphql';
-</strong><strong>
-</strong><strong>export type FederationResult = {
+</strong>
+<strong>export type FederationResult = {
 </strong>  errors?: Error[];
   federatedGraphAST?: DocumentNode;
   federatedGraphSchema?: GraphQLSchema;
@@ -66,8 +67,8 @@ The `federateSubgraphs` function returns a `FederationResult`, which has the fol
 #### Properties
 
 **errors**: An optional array of all errors encountered during normalization and validation of the subgraph, or composition and validation of the federated graph. If there are any errors during normalization, federation will not be attempted. If federation was successful, the array will be undefined.\
-**federatedGraphAST**:  An optional graphql `DocumentNode` representation of the federated graph. If federation was unsuccessful, this property will be undefined.\
-**federatedGraphSchema**:  An optional graphql `GraphQLSchema` representation of the federated graph. If federation was unsuccessful, this property will be undefined.
+**federatedGraphAST**: An optional graphql `DocumentNode` representation of the federated graph. If federation was unsuccessful, this property will be undefined.\
+**federatedGraphSchema**: An optional graphql `GraphQLSchema` representation of the federated graph. If federation was unsuccessful, this property will be undefined.
 
 #### Printing the federated schema
 

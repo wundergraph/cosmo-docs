@@ -1,5 +1,6 @@
 ---
 description: Set up authentication and authorization for incoming requests
+icon: camera-cctv
 ---
 
 # Authentication & Authorization

@@ -1,5 +1,6 @@
 ---
 description: Enable Real-time capabilities for your client applications.
+icon: webhook
 ---
 
 # Subscriptions
@@ -10,10 +11,11 @@ GraphQL subscriptions are a feature of the GraphQL query language that allows cl
 
 Subscriptions work by establishing a long-lived connection between the client and server, enabling the server to push data to the client as soon as it becomes available, making them a more efficient and scalable way to handle real-time data synchronization in applications.
 
-The Cosmo Router comes with subscription support out of the box without any limitations. We support two different protocols to enable the most versatile and efficient real-time data synchronization for your applications: WebSockets, Server-Sent Events.
+The Cosmo Router comes with subscription support out of the box without any limitations. We support multiple different protocols to enable the most versatile and efficient real-time data synchronization for your applications: WebSockets, Server-Sent Events, and Multipart HTTP Protocol, among others.
 
 * [graphql-ws](https://github.com/enisdenjo/graphql-ws): **(default)** Coherent, zero-dependency, lazy, simple, GraphQL over WebSocket Protocol compliant server and client.
 * [Server-Sent Events (SSE)](https://en.wikipedia.org/wiki/Server-sent\_events): One-Way Messaging. Both with `GET` and `POST` requests. Recommended for unidirectional updates. More resource efficient than WebSockets.
+* Multipart HTTP: Multi-part GraphQL subscriptions allow data to be delivered in chunks over time, enabling efficient streaming of large or frequently updated data in real-time applications.
 * [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws): Legacy transport to WebSocket-based GraphQL subscriptions. Please use `graphql-ws` or `SSE` if you have the choice.
 * [absinthe](https://github.com/absinthe-graphql/absinthe\_phoenix): Legacy transport for Clients that still use the Absinthe (Phoenix) protocol.
 

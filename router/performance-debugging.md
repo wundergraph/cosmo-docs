@@ -3,6 +3,7 @@ description: >-
   Use tracing with Cosmo Studio to analyze the performance of your GraphQL
   request and to pinpoint bottlenecks during the query planning or execution
   phase.
+icon: gauge-high
 ---
 
 # Performance Debugging

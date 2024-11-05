@@ -2,6 +2,7 @@
 description: >-
   This page enables the management of API tokens for automation purposes, such
   as CI/CD or local CLI usage.
+icon: key
 ---
 
 # API Keys

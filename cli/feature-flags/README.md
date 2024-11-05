@@ -1,5 +1,6 @@
 ---
 description: An overview of feature-flag (alias "ff") commands.
+icon: flask-vial
 ---
 
 # Feature Flags

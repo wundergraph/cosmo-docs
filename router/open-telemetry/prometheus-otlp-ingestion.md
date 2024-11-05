@@ -1,0 +1,40 @@
+---
+description: OTLP ingestion in Prometheus
+---
+
+# Prometheus OTLP Ingestion
+
+Prometheus 3.0 introduces [support](https://www.prometheus.io/docs/guides/opentelemetry/) for OTLP (OpenTelemetry Protocol) metrics ingestion, enabling direct push of OpenTelemetry metrics to Prometheus without requiring metrics exposure via HTTP. This simplifies configuration and helps consolidate your monitoring setup. Additionally, since high cardinality has traditionally impacted the performance of scraping large server fleets, moving from a pull (scrape) to a push model reduces the impact of cardinality on performance. However, depending on your Prometheus storage backend, cardinality remains an important metric to monitor and manage over time.
+
+Below is an example configuration for pushing all metrics to Prometheus:
+
+{% code title="config.yaml" %}
+```yaml
+telemetry:
+  metrics:
+    otlp:
+      exporters:
+        - endpoint: "localhost:9090"
+          exporter: http
+          path: /api/v1/otlp/v1/metrics
+          temporality: cumulative # Important
+```
+{% endcode %}
+
+## Docker Compose Example
+
+{% code title="docker-compose.yml" %}
+```yaml
+  prometheus:
+    image: prom/prometheus:v3.0.0-beta.1
+    command:
+      - --web.enable-otlp-receiver
+    networks:
+      - primary
+    extra_hosts:
+      # https://medium.com/@TimvanBaarsen/how-to-connect-to-the-docker-host-from-inside-a-docker-container-112b4c71bc66
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '9090:9090'
+```
+{% endcode %}

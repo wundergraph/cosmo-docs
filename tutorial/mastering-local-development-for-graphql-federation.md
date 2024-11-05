@@ -2,6 +2,7 @@
 description: >-
   A Step-by-Step Guide to Running and Enhancing Your Federated Graph for Rapid
   Development.
+icon: newspaper
 ---
 
 # Mastering Local Development for GraphQL Federation

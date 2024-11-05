@@ -2,6 +2,7 @@
 description: >-
   Persisted operations, also known as trusted documents, allow you to register
   trusted operations in the router
+icon: passport
 ---
 
 # Persisted Operations
@@ -12,7 +13,7 @@ This not only saves bandwidth but can also help reduce the attack surface by all
 
 ### Architecture
 
-<figure><img src="../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (102).png" alt=""><figcaption></figcaption></figure>
 
 Persisted operations are usually registered within Cosmo during your release pipeline, pushing them to the control plane. This allows you to use GraphQL queries without previously registering them in development while allowing only trusted operations in production.&#x20;
 

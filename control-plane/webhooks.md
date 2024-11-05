@@ -2,6 +2,7 @@
 description: >-
   Configure webhooks for events that occur in the platform. This page covers
   platform events
+icon: webhook
 ---
 
 # Webhooks

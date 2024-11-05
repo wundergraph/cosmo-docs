@@ -31,7 +31,7 @@ The `npx wgc federated-graph fetch` command allows you to download the latest va
 
 This mode will help smooth migration from the Apollo router to the WunderGraph Cosmo router. Initially, the users can use the schema registry from Cosmo and use this mode to update their routers/gateways. Later they can move from Apollo Router/Gateway to WunderGraph Router.
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption><p>Apollo Compatibility mode</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5) (1).png" alt=""><figcaption><p>Apollo Compatibility mode</p></figcaption></figure>
 
 ## Output
 

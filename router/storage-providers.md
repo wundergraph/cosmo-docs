@@ -3,6 +3,7 @@ description: >-
   To maintain control over your data and ensure high performance, utilize
   different storage providers to store router artifacts on Amazon S3, while
   still using our Cosmo Managed offering.
+icon: cabinet-filing
 ---
 
 # Storage Providers
@@ -70,6 +71,24 @@ aws s3 cp router.json s3://cosmo/
 </code></pre>
 
 First, we publish our schema changes to Cosmo. After that, we will download the latest execution config and upload it your own S3 provider. The router will check for updates every 10 seconds (default) and hot-reload the router accordingly without impacting current user traffic.
+
+### Fallback storage
+
+You can configure a fallback storage for fetching the execution config in the event the router cannopt reach the primary storage. If enabled, it will default to using the Cosmo CDN but you can specify the provider as well. You cannot use the same provider for both primary and fallback storage.
+
+{% code title="config.yaml" %}
+```yaml
+version: 1
+execution_config:
+  storage:
+    provider_id: s3
+    object_path: "router.json"
+  fallback_storage:
+    enabled: true
+    provider_id: minio
+    object_path: "router.json"
+```
+{% endcode %}
 
 ### Best Practices
 

@@ -1,5 +1,6 @@
 ---
 description: How to setup OTEL instrumentation on subgraphs.
+icon: newspaper
 ---
 
 # OTEL Instrumentation on Subgraphs

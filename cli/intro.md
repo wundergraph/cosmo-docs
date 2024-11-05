@@ -3,6 +3,7 @@ description: >-
   The cosmo CLI tool: wgc. Used to manage the cosmo platform e.g. pushing
   schema, checking schemas, creating new projects, managing users, etc. It
   interacts with the control plane.
+icon: hand-wave
 ---
 
 # Intro
@@ -33,3 +34,7 @@ The CLI uses the following environment variables to authenticate with the contro
 
 * `COSMO_API_KEY` - API key for the control plane (For Cosmo Cloud you get this token after account provisioning)
 * `COSMO_API_URL` - URL of the control plane (Points to Cosmo Cloud by default but can be changed for self-hosted)
+
+## Proxy Usage
+
+Starting with version 0.63.0, the CLI can be used behind a company proxy. To enable this, set either the `HTTPS_PROXY` or `HTTP_PROXY` environment variable to your company’s proxy (e.g., `https://username:password@proxy.com`).\

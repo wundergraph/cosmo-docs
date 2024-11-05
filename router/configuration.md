@@ -1,4 +1,5 @@
 ---
+icon: sliders-up
 description: Learn how to configure your router.
 ---
 
@@ -95,7 +96,7 @@ Intervals, timeouts, and delays are specified in Go [duration](https://pkg.go.de
 Sizes can be specified in 2MB, 1mib.
 {% endhint %}
 
-<table data-full-width="true"><thead><tr><th width="261">Environment Variable</th><th>YAML</th><th data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The server listener address.</td><td>localhost:3002</td></tr><tr><td>CONTROLPLANE_URL</td><td>controlplane_url</td><td>true</td><td>The controlplane url. Not required when a static execution config is provided.</td><td><a href="https://cosmo-cp.wundergraph.com">https://cosmo-cp.wundergraph.com</a></td></tr><tr><td>PLAYGROUND_ENABLED</td><td>playground_enabled</td><td>false</td><td>Enables the GraphQL playground on (<code>$LISTEN_ADDR/</code>)</td><td>true</td></tr><tr><td>PLAYGROUND_PATH</td><td>playground_path</td><td>false</td><td>The path where the playground is served</td><td>"/"</td></tr><tr><td>INTROSPECTION_ENABLED</td><td>introspection_enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>LOG_LEVEL</td><td>log_level</td><td>false</td><td>debug / info / warning / error / fatal / panic</td><td>info</td></tr><tr><td>JSON_LOG</td><td>json_log</td><td>false</td><td>Render the log output in JSON format (true) or human readable (false)</td><td>true</td></tr><tr><td>SHUTDOWN_DELAY</td><td>shutdown_delay</td><td>false</td><td>Maximum time in seconds the server has to shutdown gracefully. Should be higher than <code>GRACE_PERIOD</code></td><td>60s</td></tr><tr><td>GRACE_PERIOD</td><td>grace_period</td><td>false</td><td>Maximum time in seconds the server has between schema updates to gracefully clean up all resources. Should be smaller than <code>SHUTDOWN_DELAY</code></td><td>30s</td></tr><tr><td>POLL_INTERVAL</td><td>poll_interval</td><td>false</td><td>The interval of how often the router should check for new schema updates</td><td>10s</td></tr><tr><td>HEALTH_CHECK_PATH</td><td>health_check_path</td><td>false</td><td>Health check path. Returns <code>200</code> when the router is alive</td><td>/health</td></tr><tr><td>READINESS_CHECK_PATH</td><td>readiness_check_path</td><td>false</td><td>Readiness check path. Return <code>200</code> when the router is ready to accept traffic, otherwise <code>503</code></td><td>/health/ready</td></tr><tr><td>LIVENESS_CHECK_PATH</td><td>liveness_check_path</td><td>false</td><td>Liveness check path. Return 200 when the router is alive</td><td>/health/live</td></tr><tr><td>GRAPHQL_PATH</td><td>graphql_path</td><td>false</td><td>The path where the GraphQL Handler is served</td><td>/graphql</td></tr><tr><td>PLAYGROUND_PATH</td><td>playground_path</td><td>false</td><td>The path where the playground is served</td><td>/</td></tr><tr><td>LOCALHOST_FALLBACK_INSIDE_DOCKER</td><td>localhost_fallback_inside_docker</td><td>false</td><td>Enable fallback for requests that fail to connect to localhost while running in Docker</td><td>true</td></tr><tr><td>DEV_MODE</td><td>dev_mode</td><td>false</td><td>Enables pretty log output and allows to use <a data-mention href="advanced-request-tracing-art.md">advanced-request-tracing-art.md</a> without further security protection.</td><td>false</td></tr><tr><td>INSTANCE_ID</td><td></td><td>false</td><td>If not specified, a new ID will be generated with each router start. A stable ID ensures that metrics with the same ID are grouped together and the same server can be identified on the platform.</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="261">Environment Variable</th><th>YAML</th><th data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The server listener address.</td><td>localhost:3002</td></tr><tr><td>CONTROLPLANE_URL</td><td>controlplane_url</td><td>true</td><td>The controlplane url. Not required when a static execution config is provided.</td><td><a href="https://cosmo-cp.wundergraph.com">https://cosmo-cp.wundergraph.com</a></td></tr><tr><td>PLAYGROUND_ENABLED</td><td>playground_enabled</td><td>false</td><td>Enables the GraphQL playground on (<code>$LISTEN_ADDR/</code>)</td><td>true</td></tr><tr><td>PLAYGROUND_PATH</td><td>playground_path</td><td>false</td><td>The path where the playground is served</td><td>"/"</td></tr><tr><td>INTROSPECTION_ENABLED</td><td>introspection_enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>QUERY_PLANS_ENABLED</td><td>query_plans_enabled</td><td>false</td><td>The Router can return Query plans as part of the response, which might be useful to understand the execution.</td><td>true</td></tr><tr><td>LOG_LEVEL</td><td>log_level</td><td>false</td><td>debug / info / warning / error / fatal / panic</td><td>info</td></tr><tr><td>JSON_LOG</td><td>json_log</td><td>false</td><td>Render the log output in JSON format (true) or human readable (false)</td><td>true</td></tr><tr><td>SHUTDOWN_DELAY</td><td>shutdown_delay</td><td>false</td><td>Maximum time in seconds the server has to shutdown gracefully. Should be higher than <code>GRACE_PERIOD</code></td><td>60s</td></tr><tr><td>GRACE_PERIOD</td><td>grace_period</td><td>false</td><td>Maximum time in seconds the server has between schema updates to gracefully clean up all resources. Should be smaller than <code>SHUTDOWN_DELAY</code></td><td>30s</td></tr><tr><td>POLL_INTERVAL</td><td>poll_interval</td><td>false</td><td>The interval of how often the router should check for new schema updates</td><td>10s</td></tr><tr><td>HEALTH_CHECK_PATH</td><td>health_check_path</td><td>false</td><td>Health check path. Returns <code>200</code> when the router is alive</td><td>/health</td></tr><tr><td>READINESS_CHECK_PATH</td><td>readiness_check_path</td><td>false</td><td>Readiness check path. Return <code>200</code> when the router is ready to accept traffic, otherwise <code>503</code></td><td>/health/ready</td></tr><tr><td>LIVENESS_CHECK_PATH</td><td>liveness_check_path</td><td>false</td><td>Liveness check path. Return 200 when the router is alive</td><td>/health/live</td></tr><tr><td>GRAPHQL_PATH</td><td>graphql_path</td><td>false</td><td>The path where the GraphQL Handler is served</td><td>/graphql</td></tr><tr><td>PLAYGROUND_PATH</td><td>playground_path</td><td>false</td><td>The path where the playground is served</td><td>/</td></tr><tr><td>LOCALHOST_FALLBACK_INSIDE_DOCKER</td><td>localhost_fallback_inside_docker</td><td>false</td><td>Enable fallback for requests that fail to connect to localhost while running in Docker</td><td>true</td></tr><tr><td>DEV_MODE</td><td>dev_mode</td><td>false</td><td>Enables pretty log output and allows to use <a data-mention href="advanced-request-tracing-art.md">advanced-request-tracing-art.md</a> without further security protection.</td><td>false</td></tr><tr><td>INSTANCE_ID</td><td></td><td>false</td><td>If not specified, a new ID will be generated with each router start. A stable ID ensures that metrics with the same ID are grouped together and the same server can be identified on the platform.</td><td></td></tr></tbody></table>
 
 #### Example configuration:
 
@@ -119,6 +120,40 @@ liveness_check_path: "/health/live"
 router_config_path: ""
 ```
 {% endcode %}
+
+### Access Logs
+
+For a detailed example, please refer to the [Access Logs](access-logs.md) section.
+
+<table data-full-width="true"><thead><tr><th width="334">Environment Variable</th><th width="331">YAML</th><th width="112" data-type="checkbox">Required</th><th width="320">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>access_logs</td><td>false</td><td>Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.</td><td></td></tr><tr><td>ACCESS_LOGS_ENABLED</td><td>access_logs.enabled</td><td>false</td><td>Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.</td><td>true</td></tr><tr><td></td><td>access_logs.buffer</td><td>false</td><td>The buffer is used to buffer the logs before writing them to the output.</td><td></td></tr><tr><td>ACCESS_LOGS_BUFFER_ENABLED</td><td>access_logs.buffer.enabled</td><td>false</td><td>Enable the buffer.</td><td>false</td></tr><tr><td>ACCESS_LOGS_BUFFER_SIZE</td><td>access_logs.buffer.size</td><td>false</td><td>The size of the buffer. The default value is 256KB.</td><td></td></tr><tr><td>ACCESS_LOGS_FLUSH_INTERVAL</td><td>access_logs.buffer.flush_interval</td><td>false</td><td>The interval at which the buffer is flushed. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.</td><td></td></tr><tr><td></td><td>access_logs.output</td><td>false</td><td>The log destination. The supported destinations are stdout and file. Only one option can be enabled. The default destination is stdout.</td><td></td></tr><tr><td>ACCESS_LOGS_OUTPUT_STDOUT_ENABLED</td><td>access_logs.output.stdout.enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>ACCESS_LOGS_OUTPUT_FILE_ENABLED</td><td>access_logs.output.file.enabled</td><td>false</td><td></td><td>false</td></tr><tr><td>ACCESS_LOGS_FILE_OUTPUT_PATH</td><td>access_logs.output.file.path</td><td>false</td><td>The path to the log file. The path is used to specify the path to the log file.</td><td></td></tr><tr><td></td><td>access_logs.fields</td><td>false</td><td>The fields to add to the logs. The fields are added to the logs as key-value pairs.</td><td>[]</td></tr><tr><td></td><td>access_logs.fields.key</td><td>false</td><td>The key of the field to add to the logs.</td><td></td></tr><tr><td></td><td>access_logs.fields.default</td><td>false</td><td>The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.</td><td></td></tr><tr><td></td><td>access_logs.value_from</td><td>false</td><td>Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>access_logs.fields.value_from.request_header</td><td>false</td><td>The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.</td><td></td></tr><tr><td></td><td>access_logs.fields.value_from.context_field</td><td>false</td><td>The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used.<br><br><strong>One of:</strong><br>[ "operation_name", "operation_type", "operation_service_names", "operation_hash", "persisted_operation_sha256", "operation_sha256", "response_error_message", "graphql_error_codes", "graphql_error_service_names", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ]</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+access_logs:
+  enabled: true
+  buffer:
+    enabled: false
+    size: 256KB
+    flush_interval: 10s
+  output:
+    file:
+      enabled: true
+      path: "access.log"
+  fields:
+    - key: "service"
+      value_from:
+        request_header: "x-service"
+    - key: "operationName"
+      value_from:
+        context_field: operation_name
+```
+{% endcode %}
+
+### Telemetry
 
 ### Graph
 
@@ -203,7 +238,7 @@ compliance:
 
 ### Cluster
 
-<table data-full-width="true"><thead><tr><th width="231">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CLUSTER_NAME</td><td>name</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="194">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CLUSTER_NAME</td><td>name</td><td>false</td><td>The logical name of the router cluster. The name is used for analytic purpose.</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -219,7 +254,7 @@ cluster:
 
 ### Telemetry
 
-<table data-full-width="true"><thead><tr><th width="295">Environment Variable</th><th width="330">YAML</th><th width="112" data-type="checkbox">Required</th><th width="240">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TELEMETRY_SERVICE_NAME</td><td>service_name</td><td>true</td><td></td><td>cosmo-router</td></tr><tr><td></td><td>resource_attributes</td><td>false</td><td>The resource attributes to add to OTEL metrics and traces. The resource attributes identify the entity producing the traces and metrics.</td><td></td></tr><tr><td></td><td>resource_attributes.key</td><td>true</td><td>The key of the attribute.</td><td></td></tr><tr><td></td><td>resource_attributes.value</td><td>true</td><td>The value of the attribute.</td><td></td></tr><tr><td></td><td>attributes</td><td>false</td><td>The attributes to add to OTEL metrics and traces. Because Prometheus metrics rely on the OpenTelemetry metrics, the attributes are also added to the Prometheus metrics.</td><td></td></tr><tr><td></td><td>attributes.key</td><td>false</td><td>The key of the attribute.</td><td></td></tr><tr><td></td><td>attributes.default</td><td>false</td><td>The value of the attribute.</td><td></td></tr><tr><td></td><td>attributes.value_from</td><td>false</td><td>Defines a source for the attribute value e.g. from a request header. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>attributes.value_from.request_header</td><td>false</td><td>The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used. Don't forget to add the header to your CORS settings.</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="295">Environment Variable</th><th width="330">YAML</th><th width="112" data-type="checkbox">Required</th><th width="240">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>TELEMETRY_SERVICE_NAME</td><td>service_name</td><td>true</td><td></td><td>cosmo-router</td></tr><tr><td></td><td>resource_attributes</td><td>false</td><td>The resource attributes to add to OTEL metrics and traces. The resource attributes identify the entity producing the traces and metrics.</td><td></td></tr><tr><td></td><td>resource_attributes.key</td><td>true</td><td>The key of the attribute.</td><td></td></tr><tr><td></td><td>resource_attributes.value</td><td>true</td><td>The value of the attribute.</td><td></td></tr><tr><td></td><td>attributes</td><td>false</td><td>The attributes to add to OTEL metrics and traces. Because Prometheus metrics rely on the OpenTelemetry metrics, the attributes are also added to the Prometheus metrics.</td><td>[]</td></tr><tr><td></td><td>attributes.key</td><td>false</td><td>The key of the attribute.</td><td></td></tr><tr><td></td><td>attributes.default</td><td>false</td><td>The value of the attribute.</td><td></td></tr><tr><td></td><td>attributes.value_from</td><td>false</td><td>Defines a source for the attribute value e.g. from a request header. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>attributes.value_from.request_header</td><td>false</td><td>The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used. Don't forget to add the header to your CORS settings.</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -328,21 +363,35 @@ telemetry:
 
 #### OLTP
 
-<table data-full-width="true"><thead><tr><th width="285">Environment Variable</th><th width="168">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>METRICS_OTLP_ENABLED</td><td>enabled</td><td>true</td><td>Enables OTEL metrics instrumentation</td><td>true</td></tr><tr><td>METRICS_OTLP_ROUTER_RUNTIME</td><td>router_runtime</td><td>false</td><td></td><td>true</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="285">Environment Variable</th><th width="318">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>METRICS_OTLP_ENABLED</td><td>enabled</td><td>true</td><td>Enables OTEL metrics instrumentation</td><td>true</td></tr><tr><td>METRICS_OTLP_ROUTER_RUNTIME</td><td>router_runtime</td><td>false</td><td></td><td>true</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
+
+Prometheus
+
+<table data-full-width="true"><thead><tr><th width="285">Environment Variable</th><th width="318">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>PROMETHEUS_ENABLED</td><td>enabled</td><td>false</td><td>The configuration for the Prometheus metrics. The Prometheus metrics are used to collect and export the metrics.</td><td>true</td></tr><tr><td>PROMETHEUS_HTTP_PATH</td><td>path</td><td>false</td><td>The path to which the metrics are served.</td><td>"/metrics"</td></tr><tr><td>PROMETHEUS_LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The address on which the metrics are served.</td><td>"localhost:8088"</td></tr><tr><td>PROMETHEUS_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td>The metrics to exclude from the Prometheus metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.</td><td>[]</td></tr><tr><td>PROMETHEUS_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td>The metric labels to exclude from the Prometheus metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.</td><td>[]</td></tr></tbody></table>
+
+Attributes
+
+<table data-full-width="true"><thead><tr><th width="285">Environment Variable</th><th width="318">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>attributes</td><td>false</td><td>The attributes to add to OTLP Metrics and Prometheus.</td><td>[]</td></tr><tr><td></td><td>attributes.key</td><td>false</td><td>The key of the field.</td><td></td></tr><tr><td></td><td>attributes.default</td><td>false</td><td>The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.</td><td></td></tr><tr><td></td><td>attributes.value_from</td><td>false</td><td>Defines a source for the field value e.g. from a request header or request context. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>attributes.value_from</td><td>false</td><td>Defines a source for the field value e.g. from a request header or request context. If both default and value_from are set, value_from has precedence.</td><td></td></tr><tr><td></td><td>attributes.value_from.request_header</td><td>false</td><td>The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.</td><td></td></tr><tr><td></td><td>attributes.value_from.context_field</td><td>false</td><td>The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used.</td><td><strong>One of:</strong><br>["operation_service_names", "graphql_error_codes", "graphql_error_service_names", "operation_sha256"]</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
 {% code title="config.yaml" %}
 ```yaml
-version: "1"
-
 # See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
 telemetry:
-  # OpenTelemetry Metrics
   metrics:
     otlp:
       enabled: true
       router_runtime: true
+    attributes:
+      - key: "x-new-attribute"
+        default: "foo" 
+        value_from:
+          request_header: "X-Request-ID"
+
+      - key: "error_codes"
+        value_from:
+          context_field: graphql_error_codes
 ```
 {% endcode %}
 
@@ -357,7 +406,8 @@ telemetry:
 version: "1"
 
 # See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
-telemetry:          
+telemetry:
+  metrics:
     # Expose OpenTelemetry metrics for scraping
     prometheus:
       enabled: true
@@ -370,7 +420,7 @@ telemetry:
 
 #### Exporter
 
-<table data-full-width="true"><thead><tr><th width="223">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="206">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td></td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td>The path to which the metrics are exported. This is ignored when using 'grpc' as exporter and can be omitted.</td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="223">Environment Variable</th><th>YAML</th><th width="112" data-type="checkbox">Required</th><th width="206">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>disabled</td><td>false</td><td></td><td></td></tr><tr><td></td><td>exporter</td><td>false</td><td>one of: http,grpc</td><td></td></tr><tr><td></td><td>endpoint</td><td>false</td><td></td><td></td></tr><tr><td></td><td>path</td><td>false</td><td>The path to which the metrics are exported. This is ignored when using 'grpc' as exporter and can be omitted.</td><td></td></tr><tr><td></td><td>headers</td><td>false</td><td></td><td></td></tr><tr><td></td><td>temporality</td><td>false</td><td>Temporality defines the window that an aggregation is calculated over.<br><br>one of: delta, cumulative</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -393,6 +443,7 @@ telemetry:
         - exporter: http # or grpc
           disabled: false
           endpoint: https://my-otel-collector.example.com
+          temporality: delta # or cumulative
           # headers: {Authorization: Bearer <my-token>}
           
     # Expose OpenTelemetry metrics for scraping
@@ -446,6 +497,29 @@ cors:
 ```
 {% endcode %}
 
+### Cache Control Policy
+
+Configure your cache control policy. More information on this feature can be found here: [#cache-control-policy](proxy-capabilities/#cache-control-policy "mention")
+
+<table data-full-width="true"><thead><tr><th width="295">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>CACHE_CONTROL_POLICY_ENABLED</td><td>enabled</td><td>false</td><td>Set this to enable/disable the strict cache control policy. It is false by default</td><td>false</td></tr><tr><td>CACHE_CONTROL_POLICY_VALUE</td><td>value</td><td>false</td><td>The default value for the cache control policy. It will be applied to all requests, unless a subgraph has a more strict one</td><td></td></tr></tbody></table>
+
+#### Example YAML Config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+cache_control_policy:
+  enabled: true
+  value: "max-age=180, public"
+  subgraphs:
+    - name: "products"
+      value: "max-age=60, public"
+    - name: "pricing"
+      value: "no-cache"
+```
+{% endcode %}
+
 ### Custom Modules
 
 Configure your custom Modules. More information on this feature can be found here: [custom-modules.md](custom-modules.md "mention")
@@ -469,9 +543,9 @@ Configure Header propagation rules for all Subgraphs or individual Subgraphs by 
 
 #### Global Header Rules
 
-Apply to requests to "all" Subgraphs
+Apply to requests/responses to/from "all" Subgraphs. These will be applied globally in the graph
 
-<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request</td><td>false</td><td><a data-mention href="configuration.md#request-header-rule">#request-header-rule</a></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request</td><td>false</td><td>List of Request Header Rules</td><td></td></tr><tr><td></td><td>response</td><td>false</td><td>List of Response Header Rules</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -488,6 +562,13 @@ headers:
         named: X-Test-Header
       - op: "propagate"
         matching: (?i)^x-deprecated-.*
+      - op: "set"
+        name: "X-API-Key"
+        value: "my-secret-value"
+    response:
+      - op: "propagate"
+        algorithm: "append"
+        named: "X-Custom-Header"
 ```
 {% endcode %}
 
@@ -495,7 +576,7 @@ headers:
 
 Apply to requests to specific Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>false</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>true</td><td>oneof=propagate, set</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>rename</td><td>false</td><td>renames the header's key to the provided value</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr><tr><td></td><td>name</td><td>false</td><td>If <code>op</code> is <code>set</code>, <code>name</code> is the name of the desired header to set</td><td></td></tr><tr><td></td><td>value</td><td>false</td><td>If <code>op</code> is <code>set</code>, <code>value</code> is the value of the desired header to set</td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -511,6 +592,39 @@ headers:
       request:
         - op: "propagate"
           named: X-Test-Header
+        - op: "set"
+          name: "X-API-Key"
+          value: "my-secret-value"
+```
+{% endcode %}
+
+#### Response Header Rule
+
+These rules can be applied to all responses, as well as just to specific subgraphs, and used to manipulate and propagate response headers from subgraphs to the client. By configuring the rule, users can define how headers should be handled when multiple subgraphs provide conflicting values for a specific header.
+
+<table data-full-width="true"><thead><tr><th width="217">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>op</td><td>true</td><td>oneof=propagate</td><td></td></tr><tr><td></td><td>algorithm</td><td>true</td><td>oneof=first_write, last_write, append</td><td></td></tr><tr><td></td><td>matching</td><td>false</td><td>matching is the regex to match the header name against. This</td><td></td></tr><tr><td></td><td>named</td><td>false</td><td>named is the exact header name to match</td><td></td></tr><tr><td></td><td>default</td><td>false</td><td>default is the default value to set if the header is not present</td><td></td></tr><tr><td></td><td>rename</td><td>false</td><td>renames the header's key to the provided value</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+# Header manipulation
+# See "https://cosmo-docs.wundergraph.com/router/proxy-capabilities" for more information
+headers:
+  subgraphs:
+    product: # Header rules for the "product" Subgraph
+      response:
+        - op: "propagate"
+          algorithm: "append"
+          named: "X-Test-Header"
+        - op: "propagate"
+          algorithm: "last_write"
+          named: "X-Test2-Header"
+        - op: "set"
+          name: "X-User-Key"
+          value: "my-user-value"
 ```
 {% endcode %}
 
@@ -545,8 +659,6 @@ These rules apply to requests being made from the Router to all Subgraphs.
 
 <table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr></tbody></table>
 
-
-
 ### Persisted Operations
 
 The configuration for the persisted operations allows you to maintain a fixed set of GraphQL operations that can be queried against the router without exposing your entire graph to the public. This approach enhances security and performance.
@@ -572,8 +684,6 @@ These rules apply to requests being made from the Router to all Subgraphs.
 
 <table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>persisted_operations</td><td>false</td><td>The configuration for the persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.cache</td><td>false</td><td>LRU cache for persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_CACHE_SIZE</td><td>persisted_operations.cache.size</td><td>false</td><td>The size of the cache in SI unit.</td><td>"100MB"</td></tr><tr><td></td><td>persisted_operations.storage</td><td>false</td><td>The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_PROVIDER_ID</td><td>persisted_operations.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_OBJECT_PREFIX</td><td>persisted_operations.storage.object_prefix</td><td>true</td><td>The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256.json</td><td></td></tr></tbody></table>
 
-
-
 ### Execution Config
 
 The configuration for the execution setup contains instructions for the router to plan and execute your GraphQL operations. You can specify the storage provider from which the configuration should be fetched.
@@ -595,7 +705,7 @@ execution_config:
 
 These rules apply to requests being made from the Router to all Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>execution_config</td><td>false</td><td>The configuration for the execution config.</td><td></td></tr><tr><td></td><td>file</td><td>false</td><td>The configuration for the execution config file. The config file is used to load the execution config from the local file system. The file has precedence over the storage provider.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FILE_PATH</td><td>file.path</td><td>false</td><td>The path to the execution config file. The path is used to load the execution config from the local file system.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FILE_WATCH</td><td>file.watch</td><td>false</td><td>Enable the watch mode. The watch mode is used to watch the execution config file for changes. If the file changes, the router will reload the execution config without downtime.</td><td>"true"</td></tr><tr><td></td><td>execution_config.storage</td><td>false</td><td>The storage provider for the execution config. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the execution config.</td><td></td></tr><tr><td>EXECUTION_CONFIG_STORAGE_PROVIDER_ID</td><td>execution_config.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>EXECUTION_CONFIG_STORAGE_OBJECT_PATH</td><td>execution_config.storage.object_path</td><td>true</td><td>The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket.</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="238">Environment Variable</th><th width="384">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>execution_config</td><td>false</td><td>The configuration for the execution config.</td><td></td></tr><tr><td></td><td>file</td><td>false</td><td>The configuration for the execution config file. The config file is used to load the execution config from the local file system. The file has precedence over the storage provider.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FILE_PATH</td><td>file.path</td><td>false</td><td>The path to the execution config file. The path is used to load the execution config from the local file system.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FILE_WATCH</td><td>file.watch</td><td>false</td><td>Enable the watch mode. The watch mode is used to watch the execution config file for changes. If the file changes, the router will reload the execution config without downtime.</td><td>"true"</td></tr><tr><td></td><td>execution_config.storage</td><td>false</td><td>The storage provider for the execution config. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the execution config.</td><td></td></tr><tr><td>EXECUTION_CONFIG_STORAGE_PROVIDER_ID</td><td>execution_config.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>EXECUTION_CONFIG_STORAGE_OBJECT_PATH</td><td>execution_config.storage.object_path</td><td>true</td><td>The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FALLBACK_STORAGE_ENABLED</td><td>execution_config.fallback_storage.enabled</td><td>false</td><td>Enable a fallback storage to fetch the execution config in case the above primary source fails.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FALLBACK_STORAGE_PROVIDER_ID</td><td>execution_config.fallback_storage.provider_id</td><td>false</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>EXECUTION_CONFIG_FALLBACK_STORAGE_OBJECT_PATH</td><td>execution_config.fallback_storage.object_path</td><td>false</td><td>The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket.</td><td></td></tr></tbody></table>
 
 ### Traffic Shaping
 
@@ -663,6 +773,12 @@ Legacy WebSocket clients that use the Absinthe protocol might not be able to sen
 
 <table data-full-width="false"><thead><tr><th width="394">Environment Variable</th><th width="196">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>WEBSOCKETS_ABSINTHE_ENABLED</td><td>enabled</td><td>false</td><td></td><td>true</td></tr><tr><td>WEBSOCKETS_ABSINTHE_HANDLER_PATH</td><td>handler_path</td><td>false</td><td>The path to mount the Absinthe handler on</td><td>/absinthe/socket</td></tr></tbody></table>
 
+#### WebSocket Authentication
+
+It's possible that Authentication for a WebSocket connection is not possible at the HTTP layer. In such a case, you can enable Authentication "from\_initial\_payload". This will extract a value from the "initial\_payload" field in the first WebSocket message which is responsible for negotiating the protocol between client and server.
+
+In addition, it's possible to export the extracted value into a Request Header, which allows the Router to propagate it using [Header Propagation Rules](configuration.md#global-header-rules) in subsequent Subgraph Requests.
+
 #### Example WebSocket YAML config:
 
 {% code title="config.yaml" %}
@@ -683,6 +799,16 @@ websocket:
     enabled: true
     allow_list:
       - "Authorization"
+  authentication:
+    # enable authentication from the initial payload
+    from_initial_payload:
+      enabled: false
+      # which key to use one the initial payload to "extract" the Authorization value
+      key: "authorization"
+      export_token:
+        export_token: false
+        # to enable Subgraph authentication, we can export the value into a Header
+        header_key: "Authorization"
 ```
 {% endcode %}
 
@@ -799,7 +925,7 @@ events:
 
 Configure the GraphQL Execution Engine of the Router.
 
-<table data-full-width="true"><thead><tr><th width="269">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>ENGINE_ENABLE_SINGLE_FLIGHT</td><td>enable_single_flight</td><td>false</td><td>Deduplicate exactly the same in-flight origin request</td><td>true</td></tr><tr><td>ENGINE_ENABLE_REQUEST_TRACING</td><td>enable_request_tracing</td><td>false</td><td>Enable <a data-mention href="advanced-request-tracing-art.md">advanced-request-tracing-art.md</a>This config is not correlated to OTEL tracing.</td><td>true</td></tr><tr><td>ENGINE_ENABLE_EXECUTION_PLAN_CACHE_RESPONSE_HEADER</td><td>enable_execution_plan_cache_response_header</td><td>false</td><td>Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS"</td><td>false</td></tr><tr><td>ENGINE_MAX_CONCURRENT_RESOLVERS</td><td>max_concurrent_resolvers</td><td>false</td><td>Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router.</td><td>32</td></tr><tr><td>ENGINE_ENABLE_WEBSOCKET_EPOLL_KQUEUE</td><td>enable_websocket_epoll_kqueue</td><td>false</td><td>Use Epoll/Kqueue to handle WebSocket connections efficiently.</td><td>true</td></tr><tr><td>ENGINE_EPOLL_KQUEUE_POLL_TIMEOUT</td><td>epoll_kqueue_poll_timeout</td><td>false</td><td>Define the polling timeout for Epoll / Kqueue.</td><td>1s</td></tr><tr><td>ENGINE_EPOLL_KQUEUE_CONN_BUFFER_SIZE</td><td>epoll_kqueue_conn_buffer_size</td><td>false</td><td>Epoll / Kqueue polling uses a buffer. This number should match the number of potential client messages per polling interval.</td><td>128</td></tr><tr><td>ENGINE_WEBSOCKET_READ_TIMEOUT</td><td>websocket_read_timeout</td><td>false</td><td></td><td>5s</td></tr><tr><td>ENGINE_EXECUTION_PLAN_CACHE_SIZE</td><td>execution_plan_cache_size</td><td>false</td><td>Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency.</td><td>1024</td></tr><tr><td>ENGINE_MINIFY_SUBGRAPH_OPERATIONS</td><td>minify_subgraph_operations</td><td>false</td><td>Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times.</td><td>false</td></tr><tr><td>ENGINE_ENABLE_PERSISTED_OPERATIONS_CACHE</td><td>enable_persisted_operations_cache</td><td>false</td><td>Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance.</td><td>true</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="269">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>ENGINE_ENABLE_SINGLE_FLIGHT</td><td>enable_single_flight</td><td>false</td><td>Deduplicate exactly the same in-flight origin request</td><td>true</td></tr><tr><td>ENGINE_ENABLE_REQUEST_TRACING</td><td>enable_request_tracing</td><td>false</td><td>Enable <a data-mention href="advanced-request-tracing-art.md">advanced-request-tracing-art.md</a>This config is not correlated to OTEL tracing.</td><td>true</td></tr><tr><td>ENGINE_ENABLE_EXECUTION_PLAN_CACHE_RESPONSE_HEADER</td><td>enable_execution_plan_cache_response_header</td><td>false</td><td>Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS"</td><td>false</td></tr><tr><td>ENGINE_MAX_CONCURRENT_RESOLVERS</td><td>max_concurrent_resolvers</td><td>false</td><td>Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router.</td><td>32</td></tr><tr><td>ENGINE_ENABLE_WEBSOCKET_EPOLL_KQUEUE</td><td>enable_websocket_epoll_kqueue</td><td>false</td><td>Use Epoll/Kqueue to handle WebSocket connections efficiently.</td><td>true</td></tr><tr><td>ENGINE_EPOLL_KQUEUE_POLL_TIMEOUT</td><td>epoll_kqueue_poll_timeout</td><td>false</td><td>Define the polling timeout for Epoll / Kqueue.</td><td>1s</td></tr><tr><td>ENGINE_EPOLL_KQUEUE_CONN_BUFFER_SIZE</td><td>epoll_kqueue_conn_buffer_size</td><td>false</td><td>Epoll / Kqueue polling uses a buffer. This number should match the number of potential client messages per polling interval.</td><td>128</td></tr><tr><td>ENGINE_WEBSOCKET_READ_TIMEOUT</td><td>websocket_read_timeout</td><td>false</td><td></td><td>5s</td></tr><tr><td>ENGINE_EXECUTION_PLAN_CACHE_SIZE</td><td>execution_plan_cache_size</td><td>false</td><td>Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency.</td><td>1024</td></tr><tr><td>ENGINE_MINIFY_SUBGRAPH_OPERATIONS</td><td>minify_subgraph_operations</td><td>false</td><td>Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times.</td><td>false</td></tr><tr><td>ENGINE_ENABLE_PERSISTED_OPERATIONS_CACHE</td><td>enable_persisted_operations_cache</td><td>false</td><td>Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance.</td><td>true</td></tr><tr><td>ENGINE_ENABLE_NORMALIZATION_CACHE</td><td>enable_normalization_cache</td><td>false</td><td>Enable the normalization cache. The normalization cache is used to cache normalized operations to improve performance.</td><td>true</td></tr><tr><td>ENGINE_NORMALIZATION_CACHE_SIZE</td><td>normalization_cache_size</td><td>false</td><td>The size of the normalization cache.</td><td>1024</td></tr><tr><td>ENGINE_PARSEKIT_POOL_SIZE</td><td>parsekit_pool_size</td><td>false</td><td>The size of the ParseKit pool. The ParseKit pool provides re-usable Resources for parsing, normalizing, validating and planning GraphQL Operations. Setting the pool size to a value much higher than the number of CPU Threads available will not improve performance, but only increase memory usage.</td><td>8</td></tr><tr><td>ENGINE_RESOLVER_MAX_RECYCLABLE_PARSER_SIZE</td><td>resolver_max_recyclable_parser_size</td><td>false</td><td>Limits the size of the Parser that can be recycled back into the Pool. If set to 0, no limit is applied. This helps keep the Heap size more maintainable if you regularly perform large queries.</td><td>32768</td></tr><tr><td>ENGINE_ENABLE_VALIDATION_CACHE</td><td>enable_validation_cache</td><td>false</td><td>Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations.</td><td>true</td></tr><tr><td>ENGINE_VALIDATION_CACHE_SIZE</td><td>validation_cache_size</td><td>false</td><td>The size of the validation cache.</td><td>1024</td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -819,12 +945,17 @@ engine:
   execution_plan_cache_size: 10000
   minify_subgraph_operations: true
   enable_persisted_operations_cache: true
+  enable_normalization_cache: true
+  normalization_cache_size: 1024
+  parsekit_pool_size: 8
+  enable_validation_cache: true
+  validation_cache_size: 1024
 ```
 {% endcode %}
 
 #### Debug Configuration
 
-<table data-full-width="true"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>ENGINE_DEBUG_PRINT_OPERATION_TRANSFORMATIONS</td><td>print_operation_transformations</td><td>false</td><td>Print the operation transformations.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_OPERATION_ENABLE_AST_REFS</td><td>print_operation_enable_ast_refs</td><td>false</td><td>Print the operation enable AST refs.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_PLANNING_PATHS</td><td>print_planning_paths</td><td>false</td><td>Print the planning paths.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_QUERY_PLANS</td><td>print_query_plans</td><td>false</td><td>Print the query plans.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_NODE_SUGGESTIONS</td><td>print_node_suggestions</td><td>false</td><td>Print the node suggestions.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_CONFIGURATION_VISITOR</td><td>configuration_visitor</td><td>false</td><td>Print the configuration visitor.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PLANNING_VISITOR</td><td>planning_visitor</td><td>false</td><td>Print the planning visitor.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_DATASOURCE_VISITOR</td><td>datasource_visitor</td><td>false</td><td>Print the datasource visitor.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_REPORT_WEBSOCKET_CONNECTIONS</td><td>report_websocket_connections</td><td>false</td><td>Print the websocket connections.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_REPORT_MEMORY_USAGE</td><td>report_memory_usage</td><td>false</td><td>Print the memory usage.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ENABLE_RESOLVER_DEBUGGING</td><td>enable_resolver_debugging</td><td>false</td><td>Enable verbose debug logging for the Resolver.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ENABLE_PERSISTED_OPERATIONS_CACHE_RESPONSE_HEADER</td><td>enable_persisted_operations_cache_response_header</td><td>false</td><td>Enable the persisted operations cache response header. The persisted operations cache response header is used to cache the persisted operations in the client.</td><td>false</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>ENGINE_DEBUG_PRINT_OPERATION_TRANSFORMATIONS</td><td>print_operation_transformations</td><td>false</td><td>Print the operation transformations.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_OPERATION_ENABLE_AST_REFS</td><td>print_operation_enable_ast_refs</td><td>false</td><td>Print the operation enable AST refs.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_PLANNING_PATHS</td><td>print_planning_paths</td><td>false</td><td>Print the planning paths.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_QUERY_PLANS</td><td>print_query_plans</td><td>false</td><td>Print the query plans.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PRINT_NODE_SUGGESTIONS</td><td>print_node_suggestions</td><td>false</td><td>Print the node suggestions.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_CONFIGURATION_VISITOR</td><td>configuration_visitor</td><td>false</td><td>Print the configuration visitor.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_PLANNING_VISITOR</td><td>planning_visitor</td><td>false</td><td>Print the planning visitor.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_DATASOURCE_VISITOR</td><td>datasource_visitor</td><td>false</td><td>Print the datasource visitor.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_REPORT_WEBSOCKET_CONNECTIONS</td><td>report_websocket_connections</td><td>false</td><td>Print the websocket connections.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_REPORT_MEMORY_USAGE</td><td>report_memory_usage</td><td>false</td><td>Print the memory usage.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ENABLE_RESOLVER_DEBUGGING</td><td>enable_resolver_debugging</td><td>false</td><td>Enable verbose debug logging for the Resolver.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ENABLE_PERSISTED_OPERATIONS_CACHE_RESPONSE_HEADER</td><td>enable_persisted_operations_cache_response_header</td><td>false</td><td>Enable the persisted operations cache response header. The persisted operations cache response header is used to cache the persisted operations in the client.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ENABLE_NORMALIZATION_CACHE_RESPONSE_HEADER</td><td>enable_normalization_cache_response_header</td><td>false</td><td>Enable the normalization cache response header. The normalization cache response header is used to cache the normalized operations in the client.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ALWAYS_INCLUDE_QUERY_PLAN</td><td>always_include_query_plan</td><td>false</td><td>Always include the query plan in the response.</td><td>false</td></tr><tr><td>ENGINE_DEBUG_ALWAYS_SKIP_LOADER</td><td>always_skip_loader</td><td>false</td><td>Always skip the loader. This will return no data but only render response extensions, e.g. to expose the query plan.</td><td>false</td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -846,6 +977,9 @@ engine:
     report_memory_usage: false
     enable_resolver_debugging: false
     enable_persisted_operations_cache_response_header: false
+    enable_normalization_cache_response_header: false
+    always_include_query_plan: false
+    always_skip_loader: false
 ```
 {% endcode %}
 
@@ -873,7 +1007,7 @@ The rate limiter requires Redis version 3.2 or newer since it relies on [replica
 
 The configuration for the subgraph error propagation. Errors can be exposed to the client in a "wrapped" form to hide Subgraph internals, or it's possible to "pass-through" Subgraph errors directly to the client.
 
-<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="158">YAML</th><th width="100" data-type="checkbox">Required</th><th width="419">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SUBGRAPH_ERROR_PROPAGATION_ENABLED</td><td>enabled</td><td>false</td><td>Enable error propagation. If the value is true (default: false), Subgraph errors will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_MODE</td><td>mode</td><td>false</td><td>The mode of error propagation. The supported modes are 'wrapped' (default) and 'pass-through'. The 'wrapped' mode wraps the error in a custom error object to hide internals. The 'pass-through' mode returns the error as is from the Subgraph.</td><td>wrapped</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_REWRITE_PATHS</td><td>rewrite_paths</td><td>false</td><td>Rewrite the paths of the Subgraph errors. If the value is true (default), the paths of the Subgraph errors will be rewritten to match the Schema of the Federated Graph.</td><td>true</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_OMIT_LOCATIONS</td><td>omit_locations</td><td>false</td><td>Omit the location field of Subgraph errors. If the value is true (default), the location field of Subgraph errors will be omitted. This is useful because the locations of a Subgraph error is internal to the Subgraph and not relevant to the client.</td><td>true</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_OMIT_EXTENSIONS</td><td>omit_extensions</td><td>false</td><td>Omit the extensions field of Subgraph errors. If the value is true (default: false), the extensions field of Subgraph errors will be omitted. This is useful in case you want to avoid leaking internal information to the client. Some users of GraphQL leverage the errors.extensions.code field to implement error handling logic in the client, in which case you might want to set this to false.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_STATUS_CODES</td><td>propagate_status_codes</td><td>false</td><td>Propagate Subgraph status codes. If the value is true (default: false), Subgraph Response status codes will be propagated to the client in the errors.extensions.code field.</td><td>false</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="158">YAML</th><th width="100" data-type="checkbox">Required</th><th width="419">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SUBGRAPH_ERROR_PROPAGATION_ENABLED</td><td>enabled</td><td>false</td><td>Enable error propagation. If the value is true (default: false), Subgraph errors will be propagated to the client.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_MODE</td><td>mode</td><td>false</td><td>The mode of error propagation. The supported modes are 'wrapped' (default) and 'pass-through'. The 'wrapped' mode wraps the error in a custom error object to hide internals. The 'pass-through' mode returns the error as is from the Subgraph.</td><td>wrapped</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_REWRITE_PATHS</td><td>rewrite_paths</td><td>false</td><td>Rewrite the paths of the Subgraph errors. If the value is true (default), the paths of the Subgraph errors will be rewritten to match the Schema of the Federated Graph.</td><td>true</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_OMIT_LOCATIONS</td><td>omit_locations</td><td>false</td><td>Omit the location field of Subgraph errors. If the value is true, the location field of Subgraph errors will be omitted. This is useful because the locations of a Subgraph error is internal to the Subgraph and not relevant to the client.</td><td>true</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_OMIT_EXTENSIONS</td><td>omit_extensions</td><td>false</td><td>Omit the extensions field of Subgraph errors. If the value is true, the extensions field of Subgraph errors will be omitted. This is useful in case you want to avoid leaking internal information to the client. Some users of GraphQL leverage the errors.extensions.code field to implement error handling logic in the client, in which case you might want to set this to false.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_STATUS_CODES</td><td>propagate_status_codes</td><td>false</td><td>Propagate Subgraph status codes. If the value is true, Subgraph Response status codes will be propagated to the client in the errors.extensions.code field.</td><td>false</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_ALLOWED_FIELDS</td><td>allowed_fields</td><td>false</td><td>In passthrough mode, by default only message and path is propagated. You can specify additional fields here.</td><td></td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_DEFAULT_EXTENSION_CODE</td><td>default_extension_code</td><td>false</td><td>The default extension code. The default extension code is used to specify the default code for the Subgraph errors when the code is not present.</td><td>DOWNSTREAM_SERVICE_ERROR</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_ATTACH_SERVICE_NAME</td><td>attach_service_name</td><td>false</td><td>Attach the service name to each Subgraph error. If the value is true, the service name will be attached to the Subgraph errors.</td><td>true</td></tr><tr><td>SUBGRAPH_ERROR_PROPAGATION_ALLOWED_EXTENSION_FIELDS</td><td>allowed_extension_fields</td><td>false</td><td>The allowed extension fields. The allowed extension fields are used to specify which fields of the Subgraph errors are allowed to be propagated to the client.</td><td>["code"]</td></tr></tbody></table>
 
 #### Example YAML configuration:
 
@@ -887,6 +1021,10 @@ subgraph_error_propagation:
     rewrite_paths: true
     omit_locations: true
     omit_extensions: false
+    default_extension_code: DOWNSTREAM_SERVICE_ERROR
+    attach_service_name: true
+    allowed_extension_fields:
+      - "code"
 ```
 
 ### Security
@@ -901,10 +1039,21 @@ The configuration for the security. The security is used to configure the securi
 version: "1"
 
 security:
-    block_mutations: true
-    block_subscriptions: true
-    block_non_persisted_operations: true
+    block_mutations: false
+    block_subscriptions: false
+    block_non_persisted_operations: false
+    depth_limit:
+        enabled: false
+        limit: 7
+        ignore_persisted_operations: true
+        cache_size: 1024
 ```
+
+#### Query Depth
+
+The configuration for adding a query depth limit for query (how many nested levels you can have in a query). This limit prevents infinite querying, and also limits the size of the data returned. If the limit is 0, this limit isn't applied
+
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_QUERY_DEPTH_ENABLED</td><td>enabled</td><td>false</td><td>Enable query depth limits. If the value is true (default: false), and a valid limit value is set, a query depth will be calculated for your requests, and a limit applied to the queries</td><td>false</td></tr><tr><td>SECURITY_QUERY_DEPTH_LIMIT</td><td>limit</td><td>false</td><td>The depth limit for query. If the limit is 0, this limit isn't applied</td><td>0</td></tr><tr><td>SECURITY_QUERY_DEPTH_CACHE_SIZE</td><td>cache_size</td><td>false</td><td>The size of the cache for query depth. If users set a query depth limit, we cache the decision per query</td><td>1024</td></tr><tr><td>SECURITY_QUERY_DEPTH_IGNORE_PERSISTED_OPERATIONS</td><td>ignore_persisted_operations</td><td>false</td><td>Disable the max query depth limit for persisted operations. Since persisted operations are stored intentionally, users may want to disable the limit to consciously allow nested persisted operations</td><td>false</td></tr></tbody></table>
 
 ### File Upload
 
@@ -921,4 +1070,72 @@ file_upload:
     enabled: true
     max_file_size: 1GB
     max_files: 2
+```
+
+### Client Header
+
+The configuration for custom names for client name and client version headers.
+
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>name</td><td>false</td><td>The custom name of the client name header.</td><td></td></tr><tr><td></td><td>version</td><td>false</td><td>The custom name of the client version header.</td><td></td></tr></tbody></table>
+
+#### Example YAML Configuration
+
+```yaml
+version: "1"
+
+client_header:
+  name: "Client-Name"
+  version: "Client-Version"
+```
+
+By default, we support `Graphql-Client-Name` , `Graphql-Client-Version`, `Apollo-Graphql-Client-Name`, `Apollo-Graphql-Client-Version`.
+
+The custom names are given more precedence.
+
+### Apollo Compatibility Flags
+
+This configuration is used to enable full compatibility with Apollo Federation, Apollo Gateway and Apollo Router, you can enable certain compatibility flags, allowing you to use Cosmo Router as a drop-in replacement for Apollo.
+
+#### Apollo Compatibility Value Completion
+
+Invalid \_\_typename values will be returned in extensions.valueCompletion instead of errors.
+
+#### Apollo Compatibility Truncate Floats
+
+Truncate floats like 1.0 to 1, 2.0 to 2, etc.. Values like 1.1 or 2.2 will not be truncated.
+
+#### Apollo Compatibility Suppress Fetch Errors
+
+Suppresses fetch errors. When enabled, only the ‘data’ object is returned, suppressing errors. If disabled, fetch errors are included in the ‘errors’ array.
+
+#### Apollo Compatibility Replace Undefined Op Field Errors
+
+Produces the same error message as Apollo when an invalid operation field is included in an operation selection set.\
+Extension code: "GRAPHQL\_VALIDATION\_FAILED"\
+Status code: 400
+
+#### Apollo Compatibility Replace Invalid Var Errors
+
+Produces the same error message as Apollo when an invalid variable is supplied.\
+Extension code: "BAD\_USER\_INPUT"
+
+<table data-full-width="true"><thead><tr><th width="321">Environment Variable</th><th width="297">YAML</th><th width="102" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td><p></p><p>APOLLO_COMPATIBILITY_ENABLE_ALL</p></td><td>apollo_compatibility_flags:<br> enable_all: &#x3C;bool></td><td>false</td><td>Enables all the options of Apollo Compatibility.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED</td><td>value_completion:<br> enabled: &#x3C;bool></td><td>false</td><td>Enables value completion.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED</td><td>truncate_floats:<br> enabled: &#x3C;bool></td><td>false</td><td>Enables truncate floats.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED</td><td>suppress_fetch_errors:<br> enabled: &#x3C;bool></td><td>false</td><td>Enables suppress fetch errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED</td><td>replace_undefined_op_field_errors:<br> enabled: &#x3C;bool></td><td>false</td><td>Replaces undefined operation field errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED</td><td>replace_invalid_var_errors:<br> enabled: &#x3C;bool></td><td>false</td><td>Replaces invalid variable errors.</td><td>false</td></tr></tbody></table>
+
+#### Example YAML Configuration
+
+```yaml
+version: "1"
+
+apollo_compatibility_flags:
+    enable_all: false
+    value_completion:
+        enabled: true
+    truncate_floats:
+        enabled: false
+    suppress_fetch_errors:
+        enabled: true
+    replace_undefined_op_field_errors:
+        enabled: true
+    replace_invalid_var_errors:
+        enabled: true 
 ```

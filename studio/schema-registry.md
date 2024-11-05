@@ -2,6 +2,7 @@
 description: >-
   This page presents the current state of your federated graph's schema and the
   schema of all its subgraphs.
+icon: atom
 ---
 
 # Schema Registry

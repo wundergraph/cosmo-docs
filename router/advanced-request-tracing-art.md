@@ -3,6 +3,7 @@ description: >-
   This section is about Advanced Request Tracing (ART) and how you can leverage
   it to debug execution plans and understand exactly how the Router resolves a
   request.
+icon: stars
 ---
 
 # Advanced Request Tracing (ART)

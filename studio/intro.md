@@ -2,6 +2,7 @@
 description: >-
   Studio is your copilot to execute and maintain GraphQL Federated
   Architectures.
+icon: door-open
 ---
 
 # Intro

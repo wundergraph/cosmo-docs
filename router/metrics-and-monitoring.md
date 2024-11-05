@@ -1,3 +1,7 @@
+---
+icon: projector
+---
+
 # Metrics & Monitoring
 
 The router offers built-in support for [OTEL](https://opentelemetry.io/) and [Prometheus](https://prometheus.io/). OTEL data is exported through exporters. For reference please take a look at the [OpenTelemetry](metrics-and-monitoring.md#open-telemetry) section.
@@ -21,7 +25,7 @@ Asynchronous instruments, on the other hand, provide a measurement at an interva
 
 By default, the routers exports OTEL data **every** 15 seconds.
 
-#### List of synchronous instruments
+### List of synchronous instruments
 
 We collect the following metrics to get useful insights in the HTTP traffic:
 
@@ -32,11 +36,15 @@ We collect the following metrics to get useful insights in the HTTP traffic:
 * **`router.http.requests.in_flight`**: Number of in-flight requests. (Only static and subgraph dimensions are attached)
 * **`router.http.requests.error`**: Total number of failed requests.
 
-{% hint style="info" %}
-All synchronous metrics are tracked from the router start. If polling is enabled, the router will serve different metric series when the server has swapped.
-{% endhint %}
+#### GraphQL specific metrics
 
-#### List of asynchronous instruments
+**`router.graphql.operation.planning_time`**: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
+
+### List of asynchronous instruments
+
+{% hint style="info" %}
+All asynchronous metrics are tracked from the router start. If polling is enabled, the router will serve different metric series when the server has swapped.
+{% endhint %}
 
 We collect the following metrics to gain useful insights into the router's runtime behavior. Asynchronous metrics are not exposed on the Prometheus endpoint.
 
@@ -53,10 +61,6 @@ We collect the following metrics to gain useful insights into the router's runti
 * **`process.runtime.go.gc.count`**: Number of completed garbage collection cycles
 * **`process.runtime.go.goroutines.count`**: Number of goroutines that currently exist
 * **`process.runtime.go.info`**: Information about the Go runtime environment e.g. Go version
-
-{% hint style="info" %}
-All asynchronous metrics are tracked from the router start. If polling is enabled, the router will serve different metric series when the server has swapped.
-{% endhint %}
 
 If you don't need runtime metrics, you can disable them in the config:
 
@@ -123,7 +127,7 @@ Please use meaningful names in the Studio to ensure clarity. The instance ID is 
 
 ## Custom Attributes
 
-You can also add custom attributes to all metrics exporte over OTEL and Prometheus. Please refer to the [Custom Attributes](open-telemetry/custom-attributes.md) section.
+You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](open-telemetry/global-custom-attributes.md) section.
 
 ## Subgraph errors
 
@@ -145,13 +149,13 @@ telemetry:
     # Expose OpenTelemetry metrics as Prometheus metrics
     prometheus:
       exclude_metrics:
-        - "^router_http_requests_in_flight.*$" # Exclude the full histogram
+        - "^router_http_request_duration_milliseconds$" # Exclude the full histogram
       exclude_metric_labels:
         - "^wg_client_version$"
 ```
 {% endcode %}
 
-This excludes `router_http_requests_in_flight` histogram and the label `wg_client_version` from all metrics.
+This excludes `router_http_request_duration_milliseconds` histogram and the label `wg_client_version` from all metrics.
 
 {% hint style="info" %}
 Default process and Go metrics can't be excluded. If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.

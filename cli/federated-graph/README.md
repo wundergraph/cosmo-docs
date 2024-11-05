@@ -2,6 +2,7 @@
 description: >-
   A federated graph refers to a single, unified data graph that is composed of
   multiple subgraphs.
+icon: vector-circle
 ---
 
 # Federated Graph

@@ -1,5 +1,6 @@
 ---
 description: Comprehensive records detailing every instance of a subgraph publication.
+icon: books
 ---
 
 # Compositions

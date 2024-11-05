@@ -1,4 +1,5 @@
 ---
+icon: note
 description: >-
   Learn more about how to self-host Cosmo on your own Infra using Docker,
   Kubernetes, VMs, or Bare Metal.
@@ -22,7 +23,7 @@ There are a few different ways to self-host Cosmo, depending on your needs and t
 
 Docker with Docker Compose is the easiest way to get started with Cosmo on your local machine. It's a great way for developers to take Cosmo for a spin and see how it works without committing to any agreements or having to create an account.
 
-To get started with Cosmo using Docker, you need to clone the [Cosmo repository](https://github.com/wundergraph/cosmo) and follow the instructions in the [README](https://github.com/wundergraph/cosmo#demo-cosmo-on-your-machine-in-3-minutes).
+To get started with Cosmo using Docker, you need to clone the [Cosmo repository](https://github.com/wundergraph/cosmo), navigate to [examples/full-cosmo-docker](https://github.com/wundergraph/cosmo/tree/main/examples/full-cosmo-docker) in the cli and follow the instructions in the [README](https://github.com/wundergraph/cosmo/blob/main/examples/full-cosmo-docker/README.md).
 
 #### Kubernetes
 

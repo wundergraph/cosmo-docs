@@ -13,3 +13,7 @@ npx wgc auth whoami
 ## Description
 
 The `npx wgc auth whoami` command allows you to figure out who is currently authenticated with the controlplane. It displays the organization and controlplane URL.
+
+### Options
+
+* `-j, --json` : Output the information in JSON format.

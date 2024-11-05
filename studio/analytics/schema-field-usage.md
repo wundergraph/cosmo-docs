@@ -6,7 +6,9 @@ description: >-
 
 # Schema Field Usage
 
-<figure><img src="../../.gitbook/assets/fiedl-usage.png" alt=""><figcaption><p>Field Usage</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 12.37.42.png" alt="A screenshot highlighting the Schema &#x22;View usage&#x22; button for the &#x22;Query.employees&#x22; field"><figcaption><p>Viewing the usage of a specific field</p></figcaption></figure>
+
+<figure><img src="../../.gitbook/assets/Screenshot 2024-08-20 at 13.47.09.png" alt="A screenshot displaying an overview of the Schema: Field Usage page" width="375"><figcaption><p>Schema Field Usage overview</p></figcaption></figure>
 
 This usage tracking is accessible from the schema explorer and the schema check page. It is available for all GraphQL types. You get a breakdown of every client that uses it and which operations in each one of those clients as well along with the number of requests made by them.
 

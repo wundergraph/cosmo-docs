@@ -2,6 +2,7 @@
 description: >-
   The following list gives you an Overview of the compatibility between Cosmo
   and other Federation Implementations.
+icon: child-combatant
 ---
 
 # Federation Compatibility Matrix
