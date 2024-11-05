@@ -1,8 +1,8 @@
 ---
+icon: bug
 description: >-
   Learn more on how you can configure propagating errors from Subgraphs to the
   client.
-icon: bug
 ---
 
 # Subgraph Error Propagation
@@ -134,7 +134,7 @@ You can also fine tune which fields are propagated with `allowed_fields`. The fo
 * `message`
 * `path`
 
-If `omit_extensions` or `omit_locations` is set to false, `extensions` and `location` is automatically propagated.
+If `omit_extensions` or `omit_locations` is set to false, `extensions` and `location` is not propagated.
 
 **Configuration**
 
