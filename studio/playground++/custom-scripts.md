@@ -40,6 +40,8 @@ To configure scripts for your operations, follow these steps:
 5. **Enable the Script**: Once the modal closes, ensure that the checkbox next to the script is ticked to enable it.
 6. **Run Your Operation**: With the script configured and enabled, proceed to run your operation.
 
+{% embed url="https://www.youtube.com/watch?v=RmJDTkAfrKo" %}
+
 ## API Reference
 
 | API                                                                                                            | Description                                                                                                                        |
