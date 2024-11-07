@@ -29,7 +29,7 @@ By default, the routers exports OTEL data **every** 15 seconds.
 
 We collect the following metrics to get useful insights in the HTTP traffic:
 
-* **`router.http.requests`**: Total count of incoming requests
+* **`router.http.requests`**: Total count of incoming requests.
 * **`router.http.response.content_length`**: Total bytes of incoming requests
 * **`router.http.request.content_length`**: Total bytes of outgoing responses
 * **`router.http.request.duration_milliseconds`**: End-to-end duration of incoming requests in (histogram)
@@ -74,30 +74,35 @@ telemetry:
 
 ### Dimensions
 
-All metrics are tracked along the following dimensions:
+All metrics are tracked along different dimensions. A dimension is an attribute in Open Telemetry or a label in Prometheus.
 
-#### Static (Known at Router start):
+#### Common and known environment dimensions across all metrics
 
 * **`wg.federated_graph.id`**: The ID of the running graph
 * **`wg.router.version`**: The current router binary version
 * **`wg.router.config.version`**: The current router config version
 
-#### Request/Response based:
+#### Common GraphQL dimensions across all metrics
 
 * **`wg.operation.protocol`**: The used protocol `http` , `ws`
 * **`wg.operation.name`**: The name of the operation
 * **`wg.operation.type`**: The type of the operation e.g. `query`
-* **`http.status_code`**: The status code of the request
 * **`wg.client.name`**: The client name
 * **`wg.client.version`**: The client version
-* **`wg.request_error`**: Identify if an error occurred. This applies to a request that didn't result in a successful response. Only set when it is `true`. Be aware that a Status-Code `200` can still be an error in GraphQL.
 
-#### Subgraph Request/ Response:
+**Error identification**
+
+You can use the **`router.http.requests.error`** metric to track errors across router and subgraph requests. In addition to that, you can also use the **`router.http.requests`** metric to identify errors. We attach the following fields:
+
+* **`wg.request.error`**: Identify if an error occurred. This applies to a request that didn't result in a successful HTTP or GraphQL response. Only set when it is `true`. Be aware that a Status-Code `200` can still be an error in GraphQL.
+* **`http.status_code`**: The status code of the response.
+
+You have two ways to query for errors. Both metrics can be quite useful depending on the query scenario. In general, we recommend to use the **`router.http.requests.error`** metric.
+
+#### Subgraph specific
 
 * **`wg.subgraph.name`**: The name of the subgraph
 * **`wg.subgraph.id`**: The ID of the subgraph
-* **`wg.subgraph.error.extended_code`**: The GraphQL extension code from the downstream service. Only set for the `Engine - Fetch` span and **`router.http.requests.error`** metric.
-* **`wg.subgraph.error.message`**: The GraphQL error message from the downstream service. Only set for the `Engine - Fetch` span and **`router.http.requests.error`** metric.
 
 ### Resource attributes
 
@@ -177,24 +182,64 @@ telemetry:
 Alternatively, you can use the environment variable.
 
 ```
-PROMETHEUS_LISTEN_ADDR: 0.0.0.0:8088
+PROMETHEUS_LISTEN_ADDR=0.0.0.0:8088
 ```
 
 ### Example Prometheus Queries
 
 Here you can see a few example queries to query useful information about your client traffic:
 
-### Get Router Request Rate (over 5min interval) by Operation
+{% tabs %}
+{% tab title="Router" %}
+The router is the API Gateway. Every client request counts as an individual request.
+
+#### Get request rate by operation name
 
 ```promql
-sum by (wg_operation_name) (rate(router_http_requests_total{app="cosmo-router",wg_subgraph_name="",wg_operation_name!=""}[5m]))
+sum by (wg_operation_name) (rate(router_http_requests_total{wg_subgraph_name="",wg_operation_name!=""}[5m]))
 ```
 
-### Get Subgraph's Request Rate (over 5min interval) by Operation
+#### Get error rate by operation name
 
 ```promql
-sum by (wg_subgraph_name) (rate(router_http_requests_total{app="cosmo-router",wg_subgraph_name!=""}[5m]))
+sum by (wg_operation_name) (rate(router_http_requests_error_total{wg_subgraph_name="",wg_operation_name!=""}[5m]))
 ```
+
+#### 95th percentile latency by operation name
+
+```promql
+histogram_quantile(0.95, sum by (wg_operation_name, le) (rate(router_http_request_duration_milliseconds_bucket{wg_subgraph_id=""}[5m])))
+```
+{% endtab %}
+
+{% tab title="Subgraph" %}
+A GraphQL query can result in multiple requests to your subgraphs. Every request is annotated with the subgraph name and id.
+
+#### Get request rate by operation name
+
+```promql
+sum by (wg_operation_name) (rate(router_http_requests_total{wg_subgraph_name!="",wg_operation_name!=""}[5m]))
+```
+
+#### Get error rate by operation name
+
+```promql
+sum by (wg_operation_name) (rate(router_http_requests_error_total{wg_subgraph_name!="",wg_operation_name!=""}[5m]))
+```
+
+#### 95th percentile latency by operation name
+
+```promql
+histogram_quantile(0.95, sum by (wg_operation_name, le) (rate(router_http_request_duration_milliseconds_bucket{wg_subgraph_id!=""}[5m])))
+```
+
+#### Get error rate by subgraph name
+
+```promql
+sum by (wg_subgraph_name, le) (rate(router_http_requests_error_total[5m]))
+```
+{% endtab %}
+{% endtabs %}
 
 ## Summary
 
