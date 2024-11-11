@@ -650,14 +650,17 @@ storage_providers:
       secret_key: "secret"
       region: us-east-1
       secure: false
+  redis:
+    - id: "my-redis"
+      url: "redis://localhost:6379"
 ```
 {% endcode %}
 
-#### Subgraph Request Rules
+#### Storage Provider Yaml Options
 
 These rules apply to requests being made from the Router to all Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="136">Environment Variable</th><th width="237">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the provider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>redis</td><td>false</td><td>Redis storage provider</td><td></td></tr><tr><td></td><td>redis.id</td><td>true</td><td>Unique ID of the provider. It is used as a reference in the <code>automatic_persisted_queries</code> section</td><td></td></tr><tr><td></td><td>redis.url</td><td>true</td><td>Redis url, containing port and auth information if necessary</td><td></td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
 
 ### Persisted Operations
 
@@ -678,11 +681,40 @@ persisted_operations:
 ```
 {% endcode %}
 
-#### Subgraph Request Rules
+#### Persisted Operations Configuration Options
 
 These rules apply to requests being made from the Router to all Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="269">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>persisted_operations</td><td>false</td><td>The configuration for the persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.cache</td><td>false</td><td>LRU cache for persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_CACHE_SIZE</td><td>persisted_operations.cache.size</td><td>false</td><td>The size of the cache in SI unit.</td><td>"100MB"</td></tr><tr><td></td><td>persisted_operations.storage</td><td>false</td><td>The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_PROVIDER_ID</td><td>persisted_operations.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_OBJECT_PREFIX</td><td>persisted_operations.storage.object_prefix</td><td>true</td><td>The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256.json</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="307">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>persisted_operations</td><td>false</td><td>The configuration for the persisted operations.</td><td></td></tr><tr><td></td><td>persisted_operations.cache</td><td>false</td><td>LRU cache for persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_CACHE_SIZE</td><td>persisted_operations.cache.size</td><td>false</td><td>The size of the cache in SI unit.</td><td>"100MB"</td></tr><tr><td></td><td>persisted_operations.storage</td><td>false</td><td>The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_PROVIDER_ID</td><td>persisted_operations.storage.provider_id</td><td>true</td><td>The ID of the storage provider. The ID must match the ID of the storage provider in the <code>storage_providers</code> section.</td><td></td></tr><tr><td>PERSISTED_OPERATIONS_STORAGE_OBJECT_PREFIX</td><td>persisted_operations.storage.object_prefix</td><td>true</td><td>The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256.json</td><td></td></tr></tbody></table>
+
+### Automatic Persisted Queries
+
+The configuration for automatic persisted queries allows you to enable automated caching of select GraphQL operations that can be queried against the router, using both POST and GET requests. This approach enhances performance.&#x20;
+
+It defaults to using a local cache (with the size defined in `cache.size`), but users can optionally use a Redis storage
+
+#### Example YAML config:
+
+{% code title="" %}
+```yaml
+version: "1"
+
+automatic_persisted_queries:
+  enabled: true
+  cache:
+    size: 10MB # This is only relevant for an in-memory cache that we maintain
+    ttl: 900 # in seconds, set both for a local and a remote KV
+  storage:
+    provider_id: "my_redis"
+    object_prefix: cosmo_apq    
+```
+{% endcode %}
+
+#### Configuration Options
+
+These rules apply to requests being made from the Router to all Subgraphs.
+
+<table data-full-width="true"><thead><tr><th width="130">Environment Variable</th><th width="364">YAML</th><th width="113" data-type="checkbox">Required</th><th width="307">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>automatic_persisted_queries</td><td>false</td><td>The configuration for the persisted operations.</td><td></td></tr><tr><td></td><td>automatic_persisted_queries.enabled</td><td>false</td><td>Whether or not automatic persisted queries is enabled</td><td>True</td></tr><tr><td></td><td>automatic_persisted_queries.cache</td><td>false</td><td>LRU cache for persisted operations.</td><td></td></tr><tr><td></td><td>automatic_persisted_queries.cache.size</td><td>false</td><td>The size of the cache in SI unit.</td><td>"100MB"</td></tr><tr><td></td><td>automatic_persisted_queries.cache.ttl</td><td>false</td><td>The TTL of the cache, in seconds. Set to 0 to set no TTL</td><td></td></tr><tr><td></td><td>automatic_persisted_queries.storage</td><td>false</td><td>The external storage provider (redis) for automatic persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to using a local in-memory cache (configured in the <code>automatic_persisted_queries.cache</code> options)</td><td></td></tr><tr><td></td><td>automatic_persisted_queries.storage.provider_id</td><td>true</td><td>The ID of the Redis storage provider. The ID must match the ID of the storage provider in the <code>storage_providers.redis</code> section.</td><td></td></tr><tr><td></td><td>automatic_persisted_queries.storage.object_prefix</td><td>true</td><td>The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256</td><td></td></tr></tbody></table>
 
 ### Execution Config
 
