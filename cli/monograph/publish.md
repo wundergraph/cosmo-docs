@@ -25,6 +25,7 @@ The `npx wgc monograph publish` command enables you to publish a specific monogr
   * Example: `--schema ../production.graphql`
 * `--fail-on-admission-webhook-error` : If set, the command will fail if the admission webhook fails
 * `--fail-on-composition-error` : If set, the command will fail if the composition of the monograph fails.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## **Example**
 

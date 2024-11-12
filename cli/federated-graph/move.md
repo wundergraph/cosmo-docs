@@ -22,6 +22,7 @@ The `npx wgc federated-graph move` command allows you to move a federated-graph 
 
 * `-n, --namespace` : The namespace of the federated-graph.
 * `-t, --to`: The new namespace of the federated-graph.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 

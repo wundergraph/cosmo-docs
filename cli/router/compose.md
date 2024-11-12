@@ -24,6 +24,7 @@ The `npx wgc router compose` command allows you to compose subgraphs and build a
 
 * `-i, --input`: The path to the input config file that contains information about your subgraphs.
 * `-o, --out` : Destination file for the router config. Prints to standard output if not provided.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Input file structure
 

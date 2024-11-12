@@ -48,6 +48,7 @@ The --exclude and --include options are currently _mutually exclusive_. An error
 * `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the contract graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 * `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
 * `--readme` : The markdown file which describes the contract graph.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 

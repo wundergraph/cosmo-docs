@@ -42,6 +42,7 @@ The --exclude and --include options are currently _mutually exclusive_. An error
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--exclude` : The list of tags that should be excluded from the source graph schema.
 * `--include` : The list of tags that should be included from the source graph schema.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 

@@ -26,6 +26,7 @@ The `npx wgc subgraph move` command allows you to move a subgraph into a differe
 
 * `-n, --namespace` : The namespace of the subgraph.
 * `-t, --to`: The new namespace of the subgraph.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 

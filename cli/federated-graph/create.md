@@ -34,6 +34,7 @@ The `npx wgc federated-graph create` command allows you to create a new federate
 * `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
 * `--label-matcher [labels...]` : The label matcher is used to select the subgraphs to federate. The labels are passed in the format = =. They are separated by spaces and grouped using comma. Example: --label-matcher team=A,team=B env=prod
 * `--readme` : The markdown file which describes the federated graph.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 

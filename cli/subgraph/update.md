@@ -41,6 +41,7 @@ If the subgraph was created as an [Event-Driven Graph (EDG)](../../federation/ev
   * `sse_post`: Use Server-Sent events with a POST request.
 * `--readme <path-to-readme>:` The path to the markdown file which describes the subgraph.
 * `--websocket-subprotocol:` The subprotocol to use when subscribing to the subgraph. Will produce an error if the subgraph is an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/). The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 

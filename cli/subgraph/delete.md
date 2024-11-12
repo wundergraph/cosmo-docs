@@ -28,6 +28,7 @@ The `npx wgc subgraph delete` command allows you to delete a subgraph on the Cos
 
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `-f, --force`: An optional flag that allows you to force delete the subgraph without being prompted for confirmation. Use this option if you want to delete the subgraph without additional prompts.
+* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 
