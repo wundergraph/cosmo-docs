@@ -38,15 +38,19 @@ Excluding certain metrics and labels can significantly reduce the cardinality of
 
 We support a Go Regex strings. You can test your Regex at [https://regex101.com/](https://regex101.com/).
 
+{% hint style="info" %}
+To handle OTLP metrics, which are separated by dots, you need to escape the `.` character in the regular expression.
+{% endhint %}
+
 {% code title="config.yaml" %}
 ```yaml
 telemetry:
   metrics:
     otlp:
       exclude_metrics:
-        - "^router_http_request_duration_milliseconds$" # Exclude the full histogram
+        - "router\.http\.request\.duration_milliseconds" # Exclude the full histogram
       exclude_metric_labels:
-        - "^wg_client_version$"
+        - "wg\.client\.version"
 
 ```
 {% endcode %}
