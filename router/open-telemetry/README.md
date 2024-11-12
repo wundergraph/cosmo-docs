@@ -1,6 +1,6 @@
 ---
-description: Use OpenTelemetry with traces and metrics
 icon: binary-circle-check
+description: Use OpenTelemetry with traces and metrics
 ---
 
 # Open Telemetry
@@ -31,6 +31,25 @@ If no exporters are configured, the default one is used instead (set by the `DEF
 {% endhint %}
 
 The router can also expose Prometheus metrics. It works with the same OTEL metrics we export over OTEL. See [metrics-and-monitoring.md](../metrics-and-monitoring.md "mention")
+
+### Exclude certain metrics and labels
+
+Excluding certain metrics and labels can significantly reduce the cardinality of the collected telemetry data, allowing for a tailored setup that aligns with your specific monitoring needs and minimizes unnecessary data collection. These exclusion options can be easily configured within the `otlp` section of the router config.
+
+We support a Go Regex strings. You can test your Regex at [https://regex101.com/](https://regex101.com/).
+
+{% code title="config.yaml" %}
+```yaml
+telemetry:
+  metrics:
+    otlp:
+      exclude_metrics:
+        - "^router_http_request_duration_milliseconds$" # Exclude the full histogram
+      exclude_metric_labels:
+        - "^wg_client_version$"
+
+```
+{% endcode %}
 
 ## Tracing
 
