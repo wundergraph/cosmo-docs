@@ -108,5 +108,5 @@ This will return the same data as executing the operation by returning its conte
 
 ### Further information
 
-* Check the router documentation for [persisted-operations.md](../router/persisted-queries/persisted-operations.md "mention").
+* Check the router documentation for [persisted-operations.md](../router/persisted-operations.md "mention").
 * Check the documentation for [push.md](../cli/operations/push.md "mention") command.

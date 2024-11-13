@@ -170,7 +170,7 @@
   * [Websocket Subprotocols](router/subscriptions/websocket-subprotocols.md)
   * [Router Configuration for Subscriptions](router/subscriptions/router-configuration-for-subscriptions.md)
 * [Persisted Queries](router/persisted-queries/README.md)
-  * [Persisted Operations](router/persisted-queries/persisted-operations.md)
+  * [Persisted Operations](router/persisted-operations.md)
   * [Automatic Persisted Queries (APQ)](router/persisted-queries/automatic-persisted-queries-apq.md)
 * [Open Telemetry](router/open-telemetry/README.md)
   * [Global Custom Attributes](router/open-telemetry/global-custom-attributes.md)

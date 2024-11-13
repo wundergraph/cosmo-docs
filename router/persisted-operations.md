@@ -1,8 +1,8 @@
 ---
-icon: passport
 description: >-
   Persisted operations, also known as trusted documents, allow you to register
   trusted operations in the router
+icon: passport
 ---
 
 # Persisted Operations
@@ -13,7 +13,7 @@ This not only saves bandwidth but can also help reduce the attack surface by all
 
 ### Architecture
 
-<figure><img src="../../.gitbook/assets/image (102).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (102).png" alt=""><figcaption></figcaption></figure>
 
 Persisted operations are usually registered within Cosmo during your release pipeline, which pushes them to the control plane. This allows you to use GraphQL queries without previously registering them in development while allowing only trusted operations in production.&#x20;
 
@@ -46,12 +46,12 @@ wgc operations push mygraph -n default -c my-client -f persisted-query-manifest.
 
 Finally, you should enable persisted operations in your GraphQL client library.
 
-To see all available options for  `wgc operations push, see` [push.md](../../cli/operations/push.md "mention").
+To see all available options for  `wgc operations push, see` [push.md](../cli/operations/push.md "mention").
 
-Additionally, check the [Using Persisted Operation with Federated GraphQL](../../tutorial/using-persisted-operations.md) tutorial for a step by step guide.
+Additionally, check the [Using Persisted Operation with Federated GraphQL](../tutorial/using-persisted-operations.md) tutorial for a step by step guide.
 
 ### Disallowing non-persisted Operations
 
 If you're going all in on Security, you'd want to only allow Persisted Operations in your Production Environment.
 
-By default, non-persisted (dynamic) GraphQL Operations are allowed, which you can disable using the [Security Configuration](../configuration.md#security) of the Router.
+By default, non-persisted (dynamic) GraphQL Operations are allowed, which you can disable using the [Security Configuration](configuration.md#security) of the Router.

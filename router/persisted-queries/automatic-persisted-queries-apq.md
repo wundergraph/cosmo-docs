@@ -14,7 +14,7 @@ To enable APQ, ensure that the `automatic_persisted_queries` configuration secti
 
 The local cache allows the APQ feature to store queries directly within the router's in-memory cache. This approach is simple and fast, although it does not support persistence across router restarts. The local cache is recommended for smaller applications or testing environments where query persistence across server sessions is not critical.
 
-<pre class="language-yaml"><code class="lang-yaml"># Example Configuration
+<pre class="language-yaml" data-title="config.yaml"><code class="lang-yaml"># Example Configuration
 <strong>automatic_persisted_queries:
 </strong>  enabled: true
   cache:
@@ -26,7 +26,8 @@ The local cache allows the APQ feature to store queries directly within the rout
 
 For persistent query storage across server restarts, you can configure Redis as the storage provider. Redis allows queries to be stored with the specified TTL, and they remain available even if the router restarts, making this setup ideal for production environments.
 
-```
+{% code title="config.yaml" %}
+```yaml
 # Example Configuration
 automatic_persisted_queries:
   enabled: true
@@ -42,6 +43,7 @@ storage_providers:
     - id: "my_redis"
       url: "redis://localhost:6379"
 ```
+{% endcode %}
 
 ## Testing APQ
 
