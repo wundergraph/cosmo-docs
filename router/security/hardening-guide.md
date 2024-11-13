@@ -86,6 +86,7 @@ cors:
     - "GET"
   allow_origins:
     - "mydomain.com"
+    - "*.mydomain.com:*/api"    
   allow_headers:
     - "Authorization"
   max_age: 5m
