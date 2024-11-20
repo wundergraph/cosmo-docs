@@ -15,7 +15,7 @@ description: Setting up SSO with Microsoft Entra
 
 <figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.13.08 AM.png" alt=""><figcaption></figcaption></figure>
 
-* Provide a name to the application and select "**Register an application to integrate with Azure AD (App you're developing)**"  for the application purpose, then click on the **Create** button.
+* Provide a name to the application and select "**Register an application to integrate with Microsoft Entra ID (App you're developing)**"  for the application purpose, then click on the **Create** button.
 * Select who can use the application from the given options according to your needs and then click on **Register.**
 * Now navigate to **Identity/Applications/App registrations.**
 * In the **All applications tab,** select the application which we created.
