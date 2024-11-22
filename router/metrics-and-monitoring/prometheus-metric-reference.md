@@ -1,17 +1,17 @@
 ---
+icon: arrow-trend-up
 description: >-
   Overview of Prometheus metrics with explanations, queries, use cases, and
   error detection details
-icon: arrow-trend-up
 ---
 
-# Prometheus metric reference
+# Prometheus Metric Reference
 
 ## Recommended Metrics for Production
 
 In a production environment, prioritize monitoring the following metrics to ensure system reliability and performance:
 
-## Router Metrics
+### Router Metrics
 
 These metrics ensure efficient request handling, operation planning, and system responsiveness:
 
@@ -28,7 +28,7 @@ These metrics ensure efficient request handling, operation planning, and system 
   * **Scalability Challenges:** Excessive operation planning durations can lead to resource contention under heavy workloads, limiting scalability.
   * **Operation Design:** Complex queries can also lead to increased planning time as those are parsed and validated.
 
-## Go Runtime Metrics
+### Go Runtime Metrics
 
 These metrics help monitor application memory usage, concurrency, and garbage collection efficiency:
 
@@ -59,7 +59,7 @@ Below is the extended documentation for common Prometheus metrics. Each section 
 
 For more information and handy tips on writing PromQL queries, take a look at this [PromQL Cheat Sheet](https://promlabs.com/promql-cheat-sheet/).
 
-### `router_graphql_operation_planning_time`
+## `router_graphql_operation_planning_time`
 
 **Description:**
 
@@ -112,7 +112,7 @@ Utilizing quantiles can help in understanding the worst-case scenarios and pinpo
 
 ***
 
-### `router_http_request_duration_milliseconds_{sum,count}`
+## `router_http_request_duration_milliseconds_{sum,count}`
 
 **Description:**\
 The request duration in milliseconds.
@@ -136,7 +136,7 @@ This metric provides the average request duration, grouped by operation name, he
 
 ***
 
-### `router_http_requests_in_flight`
+## `router_http_requests_in_flight`
 
 **Description:**\
 The number of requests currently in flight.
@@ -157,7 +157,7 @@ Tracking in-flight requests ensures that the application can handle concurrent r
 
 ***
 
-### `router_http_requests_total`
+## `router_http_requests_total`
 
 **Description:**\
 The total number of HTTP requests.
@@ -178,7 +178,7 @@ This metric provides the rate of HTTP requests over a 5-minute interval, helping
 
 ***
 
-### `go_memstats_alloc_bytes`
+## `go_memstats_alloc_bytes`
 
 **Description:**\
 The number of bytes allocated and still in use.
@@ -199,7 +199,7 @@ This metric provides an average of the memory currently reserved by the applicat
 
 ***
 
-### `go_memstats_sys_bytes`
+## `go_memstats_sys_bytes`
 
 **Description:**\
 The number of bytes obtained from the system.
@@ -220,7 +220,7 @@ This metric reflects the total memory reserved across all process instances of a
 
 ***
 
-### `go_memstats_alloc_bytes_total`
+## `go_memstats_alloc_bytes_total`
 
 **Description:**\
 The total number of bytes allocated, even if freed.
@@ -241,7 +241,7 @@ Tracking the rate of memory allocations over a 5-minute interval helps identify 
 
 ***
 
-### `go_memstats_heap_objects`
+## `go_memstats_heap_objects`
 
 **Description:**\
 The number of allocated objects in the heap.
@@ -262,7 +262,7 @@ Monitoring the heap object count provides insights into the total number of obje
 
 ***
 
-### `go_memstats_heap_alloc_bytes`
+## `go_memstats_heap_alloc_bytes`
 
 **Description:**\
 The number of heap bytes allocated and still in use.
@@ -283,7 +283,7 @@ This metric tracks heap memory usage. Monitoring its trend can reveal abnormal m
 
 ***
 
-### `go_memstats_heap_inuse_bytes`
+## `go_memstats_heap_inuse_bytes`
 
 **Description:**\
 The number of heap bytes currently in use.
@@ -304,7 +304,7 @@ This metric provides visibility into the active usage of heap memory, helping to
 
 ***
 
-### `go_memstats_heap_idle_bytes`
+## `go_memstats_heap_idle_bytes`
 
 **Description:**\
 The number of heap bytes waiting to be used.
@@ -325,7 +325,7 @@ This metric shows idle heap memory, indicating memory availability and potential
 
 ***
 
-### `go_memstats_next_gc_bytes`
+## `go_memstats_next_gc_bytes`
 
 **Description:**\
 The number of heap bytes at which the next garbage collection will take place.
@@ -346,7 +346,7 @@ Understanding when garbage collection is triggered can help optimize memory mana
 
 ***
 
-### `go_memstats_mallocs_total`
+## `go_memstats_mallocs_total`
 
 **Description:**\
 The total number of `malloc` calls.
@@ -367,7 +367,7 @@ This metric provides insights into memory allocation rates over time. It is part
 
 ***
 
-### `go_gc_duration_seconds`
+## `go_gc_duration_seconds`
 
 **Description:**\
 The `go_gc_duration_seconds` metric is a histogram that captures the distribution of garbage collection pause times. It helps to analyze how frequently pauses of different durations occur.
@@ -404,7 +404,7 @@ Understanding the 95th percentile of garbage collection duration provides insigh
 
 ***
 
-### `go_goroutines`
+## `go_goroutines`
 
 **Description:**\
 The number of goroutines that currently exist.

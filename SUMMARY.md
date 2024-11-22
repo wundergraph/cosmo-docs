@@ -177,7 +177,7 @@
   * [Custom Metric Attributes](router/open-telemetry/custom-metric-attributes.md)
   * [Prometheus OTLP Ingestion](router/open-telemetry/prometheus-otlp-ingestion.md)
 * [Metrics & Monitoring](router/metrics-and-monitoring/README.md)
-  * [Prometheus metric reference](router/metrics-and-monitoring/prometheus-metric-reference.md)
+  * [Prometheus Metric Reference](router/metrics-and-monitoring/prometheus-metric-reference.md)
 * [Proxy capabilities](router/proxy-capabilities/README.md)
   * [Request Headers Operations](router/proxy-capabilities/request-headers-operations.md)
   * [Response Header Operations](router/proxy-capabilities/response-header-operations.md)
