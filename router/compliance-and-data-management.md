@@ -1,8 +1,8 @@
 ---
+icon: cloud-binary
 description: >-
   Get an overview about what data the router collects and its purposes. Learn to
   adjust configurations to ensure stringent data privacy management.
-icon: cloud-binary
 ---
 
 # Compliance and Data Management
@@ -55,7 +55,7 @@ We export [OTEL](https://opentelemetry.io/) metric information by default to pro
 * Latency of router requests
 * Runtime behavior
 
-All metrics are tracked across different dimensions, such as Operation Name and Subgraph Name. Please refer to the [metrics](metrics-and-monitoring.md#dimensions) page for more details.
+All metrics are tracked across different dimensions, such as Operation Name and Subgraph Name. Please refer to the [metrics](metrics-and-monitoring/#dimensions) page for more details.
 
 ## Schema Usage Metrics
 

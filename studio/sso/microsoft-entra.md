@@ -51,7 +51,7 @@ description: Setting up SSO with Microsoft Entra
 <figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 * Navigate back to the **App registrations** page, in the **All applications** tab select the app which we created.
-* Click on **Add a redirect URI, and** now click on **Add a platform,** select **Web** and then paste the Sign-in and Sign-out redirect URIs in the **Redirect URIs** and **Front-channel logout URL** respectively**.**
+* Click on **Add a redirect URI, and** now click on **Add a platform,** select **Web** and then paste the Sign-in and Sign-out redirect URIs in the **Redirect URIs** and **Front-channel logout URL** respectivel&#x79;**.**
 
 <figure><img src="../../.gitbook/assets/Screenshot 2024-03-14 at 3.21.45 AM.png" alt=""><figcaption></figcaption></figure>
 

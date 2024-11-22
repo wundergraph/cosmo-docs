@@ -37,11 +37,11 @@ description: Setting up SSO with Auth0
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FCADiuTqdwDfWyII73h6I%2FScreenshot%202023-11-06%20at%201.44.43%20PM.png" alt=""><figcaption></figcaption></figure>
 
-* Now navigate to **Actions** -> **Library,** and then click on **the Build Custom** button**.**
+* Now navigate to **Actions** -> **Library,** and then click on **the Build Custom** butto&#x6E;**.**
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FGKwOyWmxUrrDxrlOSmAh%2Fimage.png" alt=""><figcaption></figcaption></figure>
 
-* Give the action a name, select **Login/Post Login** as the **Trigger** and **Node 18** as the **Runtime** and then click the **Create** button**.**
+* Give the action a name, select **Login/Post Login** as the **Trigger** and **Node 18** as the **Runtime** and then click the **Create** butto&#x6E;**.**
 * Copy the below code and paste it into the editor shown, then click the **Deploy** button.
 
 ```typescript
@@ -52,7 +52,7 @@ exports.onExecutePostLogin = async (event, api) => {
 };
 ```
 
-* Now navigate to **Actions** -> **Flows,** and then click on the **Login** flow**.**
+* Now navigate to **Actions** -> **Flows,** and then click on the **Login** flo&#x77;**.**
 * Navigate to the **Custom** tab on the right side of the page. Now drag the action and place it between Start and Complete as shown below, and then click on **Apply**.
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Ff8cptqVbEDinipg0r6Lq%2Fimage.png" alt=""><figcaption></figcaption></figure>

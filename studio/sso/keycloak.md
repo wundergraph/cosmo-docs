@@ -12,7 +12,7 @@ description: Setting up SSO with Keycloak
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FLDX5AqUvVgvI2w7rx7tS%2Fimage.png" alt=""><figcaption></figcaption></figure>
 
-* Enable **Client authentication,** then click on **Next** and then click on **Save** on the next page**.**
+* Enable **Client authentication,** then click on **Next** and then click on **Save** on the next pag&#x65;**.**
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F6cXC58aHld1mbvclAPyj%2Fimage.png" alt=""><figcaption></figcaption></figure>
 
@@ -53,5 +53,5 @@ description: Setting up SSO with Keycloak
 
 <figure><img src="../../.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FepUipoVv2tiJ5Vua6GaJ%2FScreenshot%202023-11-06%20at%202.49.53%20PM.png" alt=""><figcaption></figcaption></figure>
 
-* Give the mapper a name, then populate the **Token Claim Name** with **"**ssoGroups**"** and then click on **Save.**
+* Give the mapper a name, then populate the **Token Claim Name** with **"**&#x73;soGroup&#x73;**"** and then click on **Save.**
 * Now you can assign users/groups to the application, and those users will be able to log into Cosmo using the URL provided on setting up the provider.

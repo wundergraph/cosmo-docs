@@ -6,7 +6,7 @@ description: Configure SCIM with Okta.
 
 Steps to set up SCIM with Okta
 
-* Set up the password policy (password should contain at least one number and one symbol), if using the **Classic Engine on Okta** follow the below steps**,** or if using the **OIE engine,** follow the steps as mentioned in this [**Okta guide**](https://help.okta.com/oie/en-us/content/topics/identity-engine/authenticators/configure-password.htm)**.**&#x20;
+* Set up the password policy (password should contain at least one number and one symbol), if using the **Classic Engine on Okta** follow the below step&#x73;**,** or if using the **OIE engine,** follow the steps as mentioned in this [**Okta guide**](https://help.okta.com/oie/en-us/content/topics/identity-engine/authenticators/configure-password.htm)**.**&#x20;
   * Navigate to Security -> Authentication on your Okta Administrator Dashboard.
   * Click Edit and update the password policy by enabling Number and Symbol, then click on Update Policy.
 
@@ -36,7 +36,7 @@ Steps to set up SCIM with Okta
 
 <figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 12.52.33 AM.png" alt=""><figcaption></figcaption></figure>
 
-* Once SCIM is enabled, you will be provided with a **SCIM Server URL,** copy it**.**
+* Once SCIM is enabled, you will be provided with a **SCIM Server URL,** copy i&#x74;**.**
 * Navigate to the API Keys page on WunderGraph Cosmo and click on New API Key.
 * Provide the key with a name, select **Never** for **Expires,** then select **SCIM** under **Permissions, t**hen click on **Generate API key.**
 
@@ -60,7 +60,7 @@ Steps to set up SCIM with Okta
 <figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 1.09.56 AM.png" alt=""><figcaption></figcaption></figure>
 
 * Click on **Save.**
-* Navigate to the "**to App"** tab**, and** click on **Edit.**
+* Navigate to the "**to App"** ta&#x62;**, and** click on **Edit.**
 
 <figure><img src="../../.gitbook/assets/Screenshot 2024-04-17 at 1.15.15 AM (1).png" alt=""><figcaption></figcaption></figure>
 

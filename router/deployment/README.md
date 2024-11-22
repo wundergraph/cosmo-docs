@@ -1,6 +1,6 @@
 ---
-description: Learn how to deploy and start the Router in Production.
 icon: truck-ramp-couch
+description: Learn how to deploy and start the Router in Production.
 ---
 
 # Deployment
@@ -76,7 +76,7 @@ Structured logging, also known as JSON logging, is enabled by default and can be
 
 ## Observability & Operations
 
-The router exposes useful metrics about the process and memory. All metrics can be scraped from the Prometheus metrics endpoint. For more information please visit the dedicated [Metrics](../metrics-and-monitoring.md) section.
+The router exposes useful metrics about the process and memory. All metrics can be scraped from the Prometheus metrics endpoint. For more information please visit the dedicated [Metrics](../metrics-and-monitoring/) section.
 
 ### Tracing Sampling Rate
 

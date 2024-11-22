@@ -4,7 +4,7 @@ icon: projector
 
 # Metrics & Monitoring
 
-The router offers built-in support for [OTEL](https://opentelemetry.io/) and [Prometheus](https://prometheus.io/). OTEL data is exported through exporters. For reference please take a look at the [OpenTelemetry](metrics-and-monitoring.md#open-telemetry) section.
+The router offers built-in support for [OTEL](https://opentelemetry.io/) and [Prometheus](https://prometheus.io/). OTEL data is exported through exporters. For reference please take a look at the [OpenTelemetry](./#open-telemetry) section.
 
 In both configurations, we export [(R.E.D)](https://thenewstack.io/monitoring-microservices-red-method/) metrics related to incoming GraphQL traffic.
 
@@ -12,7 +12,7 @@ In both configurations, we export [(R.E.D)](https://thenewstack.io/monitoring-mi
 
 OTEL metrics are the foundation for both the OTEL and Prometheus metric storage models. Internally, we track metrics using the OTEL instrumentation library and export them via a Prometheus exporter. This process converts the metrics to be compatible with both formats. As a result, we aim to expose the same metrics consistently across both models, with a few exceptions:
 
-* We do not expose [asynchronous instruments](metrics-and-monitoring.md#asynchronous-instruments) through Prometheus. This decision is pending further feedback collection.
+* We do not expose [asynchronous instruments](./#asynchronous-instruments) through Prometheus. This decision is pending further feedback collection.
 * In Prometheus, metrics are formatted in snake\_case and conclude with specific suffixes.
 
 ## Metrics
@@ -132,7 +132,7 @@ Please use meaningful names in the Studio to ensure clarity. The instance ID is 
 
 ## Custom Attributes
 
-You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](open-telemetry/global-custom-attributes.md) section.
+You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](../open-telemetry/global-custom-attributes.md) section.
 
 ## Subgraph errors
 

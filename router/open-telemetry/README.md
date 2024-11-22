@@ -30,7 +30,7 @@ Cosmo router supports exporting tracing and metrics via OpenTelemetry. By defaul
 If no exporters are configured, the default one is used instead (set by the `DEFAULT_TELEMETRY_EXPORTER` environment variable)
 {% endhint %}
 
-The router can also expose Prometheus metrics. It works with the same OTEL metrics we export over OTEL. See [metrics-and-monitoring.md](../metrics-and-monitoring.md "mention")
+The router can also expose Prometheus metrics. It works with the same OTEL metrics we export over OTEL. See [metrics-and-monitoring](../metrics-and-monitoring/ "mention")
 
 ### Exclude certain metrics and labels
 
