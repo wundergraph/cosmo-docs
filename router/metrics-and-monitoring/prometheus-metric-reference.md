@@ -363,7 +363,7 @@ This metric provides insights into memory allocation rates over time. It is part
 ## `go_gc_duration_seconds`
 
 **Description:**\
-The `go_gc_duration_seconds` metric is a histogram that captures the distribution of garbage collection pause times. It helps to analyze how frequently pauses of different durations occur.
+The `go_gc_duration_seconds` metric is a summary that captures the distribution of garbage collection pause times. It helps to analyze how frequently pauses of different durations occur.
 
 **Example PromQL Query:**
 
@@ -379,21 +379,17 @@ Monitoring garbage collection duration helps ensure it does not negatively impac
 * Prolonged garbage collection pauses.
 * Performance bottlenecks during peak usage.
 
-#### Monitoring 95th Percentile of Garbage Collection Duration
+#### Using Percentiles for `go_gc_duration_seconds` Summary
 
 **Example PromQL Query:**
 
 ```promql
-histogram_quantile(0.95, sum(rate(go_gc_duration_seconds_bucket[5m])) by (le))
+avg by (job) (go_gc_duration_seconds{quantile="1.0"})
 ```
 
-**Reason for Monitoring:**\
-Understanding the 95th percentile of garbage collection duration provides insights into worst-case performance scenarios, ensuring that the application remains responsive even when experiencing longer GC pauses.
+Using a quantile of "1.0" for the `go_gc_duration_seconds` metric provides the maximum observed value of garbage collection duration. This is useful for identifying the worst-case performance scenario, allowing you to address any outliers or exceptionally long garbage collection pauses which could impact the application's responsiveness and performance.
 
-**Error Cases Addressed:**
-
-* Occasional long garbage collection events.
-* Ensuring consistent response times under varying load levels.
+Adjust the quantile to your needs.
 
 ***
 
