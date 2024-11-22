@@ -32,21 +32,16 @@ These metrics ensure efficient request handling, operation planning, and system 
 
 These metrics help monitor application memory usage, concurrency, and garbage collection efficiency:
 
-* [**`go_memstats_alloc_bytes`**](prometheus-metric-reference.md#go_memstats_alloc_bytes): Tracks allocated memory to detect potential leaks or spikes.
-  * **Memory Leak Detection:** A continuously growing allocation value can indicate a memory leak, reducing available system memory over time.
-  * **Resource Constraints:** High memory allocation may lead to increased pressure on system resources, impacting overall application performance.
+
+
 * [**`go_memstats_sys_bytes`**](prometheus-metric-reference.md#go_memstats_sys_bytes): Monitors memory obtained from the system across all instances.
   * **Excessive Memory Usage:** High values suggest that the application is consuming more system memory than expected, which can impact other processes.
   * **Inefficient Allocation:** A mismatch between allocated and used memory may indicate suboptimal memory usage patterns.
 * [**`go_memstats_heap_alloc_bytes`**](prometheus-metric-reference.md#go_memstats_heap_alloc_bytes): Focuses on heap memory usage for efficient memory management.
   * **Heap Saturation Risk:** High heap memory usage can lead to increased garbage collection frequency and performance degradation.
-  * **Potential Overprovisioning:** Low usage relative to allocation may point to inefficient heap utilization.
 * [**`go_gc_duration_seconds`**](prometheus-metric-reference.md#go_gc_duration_seconds): Tracks garbage collection duration to identify performance bottlenecks.
   * **Performance Bottlenecks:** Long garbage collection pauses can cause application slowdowns, especially under high load.
   * **Request Latency:** Increased GC durations may directly impact request processing times, degrading user experience.
-* [**`go_memstats_next_gc_bytes`**](prometheus-metric-reference.md#go_memstats_next_gc_bytes): Anticipates when the next garbage collection will occur.
-  * **Frequent Garbage Collection:** A small threshold for the next GC can indicate frequent GC cycles, consuming CPU resources unnecessarily.
-  * **Delayed Cleanup:** A high threshold may delay necessary memory cleanup, risking memory exhaustion during heavy usage.
 * [**`go_goroutines`**](prometheus-metric-reference.md#go_goroutines): Monitors active goroutines to prevent resource exhaustion.
   * **Resource Leaks:** An unexpected increase in goroutines can signal a leak, leading to excessive memory and CPU usage.
   * **Concurrency Bottlenecks:** High goroutine counts may indicate insufficient handling of concurrency or blocking operations
