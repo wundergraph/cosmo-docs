@@ -32,12 +32,10 @@ These metrics ensure efficient request handling, operation planning, and system 
 
 These metrics help monitor application memory usage, concurrency, and garbage collection efficiency:
 
-
-
 * [**`go_memstats_sys_bytes`**](prometheus-metric-reference.md#go_memstats_sys_bytes): Monitors memory obtained from the system across all instances.
   * **Excessive Memory Usage:** High values suggest that the application is consuming more system memory than expected, which can impact other processes.
   * **Inefficient Allocation:** A mismatch between allocated and used memory may indicate suboptimal memory usage patterns.
-* [**`go_memstats_heap_alloc_bytes`**](prometheus-metric-reference.md#go_memstats_heap_alloc_bytes): Focuses on heap memory usage for efficient memory management.
+* [**`go_memstats_heap_alloc_bytes`**](prometheus-metric-reference.md#go_memstats_heap_alloc_bytes): Number of heap bytes allocated and still in use across all instances. Focuses on heap memory usage for efficient memory management. The value is same as [**go\_memstats\_alloc\_bytes**](prometheus-metric-reference.md#go_memstats_alloc_bytes).
   * **Heap Saturation Risk:** High heap memory usage can lead to increased garbage collection frequency and performance degradation.
 * [**`go_gc_duration_seconds`**](prometheus-metric-reference.md#go_gc_duration_seconds): Tracks garbage collection duration to identify performance bottlenecks.
   * **Performance Bottlenecks:** Long garbage collection pauses can cause application slowdowns, especially under high load.
