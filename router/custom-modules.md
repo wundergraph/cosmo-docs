@@ -1,9 +1,9 @@
 ---
+icon: cubes
 description: >-
   Customize your router by writing just a few lines of Go code and compiling it
   with a single command. Eliminate the complexities associated with writing
   scripts and use the existing Go ecosystem.
-icon: cubes
 ---
 
 # Custom Modules
@@ -156,27 +156,46 @@ A more complex example including tests is accessible at \
 
 Authentication information, including claims and the provider that authenticated the request, can be accessed through `core.RequestContext.Authentication()`
 
-```go
-func (m *JWTModule) OnOriginRequest(request *http.Request, ctx core.RequestContext) (*http.Request, *http.Response) {
-	// Check if the incoming request is authenticated. In that case, we
-	// generate a new JWT with the shared secret key and add it to the
-	// outgoing request.
-	auth := ctx.Authentication()
-	if auth != nil {
-		claims := auth.Claims()
-		m.Logger.Info("subject", zap.String("sub", claims["sub"]))
-		// Modify request using claims
-		// ...
-	
-	}
-	return request, nil
-}
-```
+{% include "../.gitbook/includes/func-m-jwtmodule-onorigi....md" %}
 
 {% hint style="info" %}
 For a full example, please check out\
 [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
 {% endhint %}
+
+## Change Authentication Information
+
+Above, we showed how to access Authentication information. There can be cases where your authentication could depend partly on another system, and you want to set elements for use with other directives, such as [requiresscopes.md](../federation/directives/requiresscopes.md "mention"). In order to do that, you can use `auth.SetScopes()` to manually change the authentication's scopes.&#x20;
+
+```go
+func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	auth := ctx.Authentication()
+	if auth != nil {
+		// You can set the scopes for a request, based on an 
+		// external system, and then utilize that for the @requiresScope
+		// directive
+		auth.SetScopes([]string{"read:employee"})
+	}
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+`.SetScopes()` overwrites the existing scopes. If you'd like to append/preserve the built-in scopes, you can first use `auth.Claims()` to get the existing scopes, and incorporate that into the updates scopes.
+
+```go
+func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	auth := ctx.Authentication()
+	if auth != nil {
+		claims := auth.Claims()
+		existingScopes := claims["scopes"].(string)
+		scopesSlice := strings.Split(existingScopes, " ")
+		updatedScopes := append(scopesSlice, m.Scopes...)
+		auth.SetScopes(updatedScopes)
+	}
+
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
 
 ## Return GraphQL conform errors
 

@@ -335,7 +335,7 @@ telemetry:
 
 #### Propagation
 
-<table data-full-width="true"><thead><tr><th>Environment Variable</th><th width="186">YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>trace_context</td><td>false</td><td></td><td>true</td></tr><tr><td></td><td>jaeger</td><td>false</td><td></td><td></td></tr><tr><td></td><td>b3</td><td>false</td><td></td><td></td></tr><tr><td></td><td>baggage</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th>Environment Variable</th><th width="186">YAML</th><th width="112" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>trace_context</td><td>false</td><td></td><td>true</td></tr><tr><td></td><td>jaeger</td><td>false</td><td></td><td></td></tr><tr><td></td><td>b3</td><td>false</td><td></td><td></td></tr><tr><td></td><td>baggage</td><td>false</td><td></td><td></td></tr><tr><td></td><td>datadog</td><td>false</td><td>Enable Datadog trace propagation</td><td>false</td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -356,6 +356,8 @@ telemetry:
       jaeger: false
       # https://github.com/openzipkin/b3-propagation (zipkin)
       b3: false
+      # https://docs.datadoghq.com/tracing/trace_collection/trace_context_propagation/?tab=java#datadog-format
+      datadog: false      
 ```
 {% endcode %}
 
