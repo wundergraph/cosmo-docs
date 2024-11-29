@@ -66,3 +66,91 @@ In the playground's **Headers** tab, you can reference an environment variable b
 
 &#x20;
 
+## Examples
+
+### Accessing Environment Variables
+
+Retrieve environment variables that can be defined in the script window or set using the `set` command.
+
+```javascript
+const apiKey = playground.env.get("apiKey");
+```
+
+### Setting Environment Variables
+
+This example illustrates how to assign a value as an environment variable, making it accessible to other scripts or headers. In this case, the authentication token is stored for later use.
+
+```javascript
+const clientSecret = playground.env.get("clientSecret");
+const clientId = playground.env.get("clientId");
+
+const response = await fetch('https://api.example.com/auth/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        clientId,
+        clientSecret,
+    })
+});
+
+const data = await response.json();
+playground.env.set('token', data.token);
+```
+
+### Logging Request Metadata
+
+Log the metadata of a request, including the request body, operation name, and query, for debugging purposes.
+
+```javascript
+console.log(playground.request.body.variables)
+console.log(playground.request.body.operationName)
+console.log(playground.request.body.query)
+```
+
+### Validating the Response
+
+Use this post-operation script to validate the response of an operation and ensure it meets expectations.
+
+```javascript
+const responseBody = playground.response.body
+
+if (responseBody.data.user) {
+    console.warn('User not found in response');
+} else {
+    console.log('Operation completed successfully');
+}
+```
+
+### Transform and log Response
+
+This example demonstrates how to access, modify, and log the operation response. The transformation includes anonymizing sensitive data, such as obfuscating a user's email address.
+
+```javascript
+const responseBody = playground.response.body;
+
+if (responseBody.data && responseBody.data.user) {
+    // Obfuscate the user's email by replacing the domain
+    responseBody.data.user.email = `***`;
+    console.log('Transformed response:', responseBody);
+} else {
+    console.warn('User not found in response');
+}
+```
+
+### Using Cryptography functions
+
+Scripts support the use of CryptoJS, which provides convenient cryptographic methods to enhance your scripts securely.
+
+```javascript
+const encryptedToken = playground.env.get('refreshToken'); // Encoded refresh token
+const secretKey = playground.env.get('encryptionKey');
+
+// Decode the token
+const decryptedBytes = playground.CryptoJS.AES.decrypt(encryptedToken, secretKey);
+const decodedToken = decryptedBytes.toString(CryptoJS.enc.Utf8);
+const tokenData = JSON.parse(decodedToken);
+
+const tokenExpiry = tokenData.exp * 1000; 
+console.log(tokenExpiry)
+```
+
