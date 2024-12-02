@@ -42,6 +42,10 @@ The --exclude and --include options are currently _mutually exclusive_. An error
 * `-n, --namespace` : The namespace of the federated graph (Default: "default").
 * `--exclude` : The list of tags that should be excluded from the source graph schema.
 * `--include` : The list of tags that should be included from the source graph schema.
+* `-r , --routing-url`: The routing URL of your router. This URL defines the endpoint where the router will be accessible. The contract graph will be accessible through this router.
+* `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the contract graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
+* `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
+* `--readme` : The markdown file which describes the contract graph.
 * `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
