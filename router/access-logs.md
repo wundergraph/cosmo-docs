@@ -230,7 +230,7 @@ In development, log lines are formatted for readability using pretty printing. I
 ### Subgraph Access Logs
 
 {% hint style="info" %}
-Available since Router [0.146.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.118.0)
+Available since Router [0.146.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.146.0)
 {% endhint %}
 
 In addition to router logs, users can enable `subgraph` access logs as well, to get detailed logging of requests made to subgraphs. These logs are useful for tracing and debugging interactions between the router and its connected subgraphs. The configuration allows for custom fields to be included in the logs, providing additional context about requests and responses.
