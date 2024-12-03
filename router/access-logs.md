@@ -1,6 +1,6 @@
 ---
-description: Configuring Access Logs for Enhanced Traffic Monitoring.
 icon: camera-cctv
+description: Configuring Access Logs for Enhanced Traffic Monitoring.
 ---
 
 # Access logs
@@ -91,62 +91,63 @@ access_logs:
     file:
       enabled: true
       path: "access.log"
-  fields:
-    - key: "service"
-      value_from:
-        request_header: "x-service"
-        
-    - key: "operationName"
-      value_from:
-        context_field: operation_name
-        
-    - key: "operationSha256"
-      value_from:
-        context_field: operation_sha256
-        
-    - key: "responseErrorMessage"
-      value_from:
-        context_field: response_error_message
-        
-    - key: "serviceNames"
-      value_from:
-        context_field: operation_service_names
-        
-    - key: "operationHash"
-      value_from:
-        context_field: operation_hash
-        
-    - key: "errorCodes"
-      value_from:
-        context_field: graphql_error_codes
-        
-    - key: "operationType"
-      value_from:
-        context_field: operation_type
-        
-    - key: "persistentOperationSha256"
-      value_from:
-        context_field: persisted_operation_sha256
-        
-    - key: "errorServiceNames"
-      value_from:
-        context_field: graphql_error_service_names
-        
-    - key: "operationParsingTime"
-      value_from:
-        context_field: operation_parsing_time
-        
-    - key: "operationPlanningTime"
-      value_from:
-        context_field: operation_planning_time
-        
-    - key: "operationNormalizationTime"
-      value_from:
-        context_field: operation_normalization_time
-        
-    - key: "operationValidationTime"
-      value_from:
-        context_field: operation_validation_time
+  router:
+    fields:
+      - key: "service"
+        value_from:
+          request_header: "x-service"
+          
+      - key: "operationName"
+        value_from:
+          context_field: operation_name
+          
+      - key: "operationSha256"
+        value_from:
+          context_field: operation_sha256
+          
+      - key: "responseErrorMessage"
+        value_from:
+          context_field: response_error_message
+          
+      - key: "serviceNames"
+        value_from:
+          context_field: operation_service_names
+          
+      - key: "operationHash"
+        value_from:
+          context_field: operation_hash
+          
+      - key: "errorCodes"
+        value_from:
+          context_field: graphql_error_codes
+          
+      - key: "operationType"
+        value_from:
+          context_field: operation_type
+          
+      - key: "persistentOperationSha256"
+        value_from:
+          context_field: persisted_operation_sha256
+          
+      - key: "errorServiceNames"
+        value_from:
+          context_field: graphql_error_service_names
+          
+      - key: "operationParsingTime"
+        value_from:
+          context_field: operation_parsing_time
+          
+      - key: "operationPlanningTime"
+        value_from:
+          context_field: operation_planning_time
+          
+      - key: "operationNormalizationTime"
+        value_from:
+          context_field: operation_normalization_time
+          
+      - key: "operationValidationTime"
+        value_from:
+          context_field: operation_validation_time
 ```
 
 Here’s an explanation of each field’s meaning:
@@ -186,11 +187,12 @@ When extracting values from a header, it can be beneficial to ensure a default v
 ```yaml
 access_logs:
   enabled: true
-  fields:
-    - key: "service"
-      default: "gateway" # Here
-      value_from:
-        request_header: "x-service"
+  router: 
+    fields:
+      - key: "service"
+        default: "gateway" # Here
+        value_from:
+          request_header: "x-service"
 ```
 
 #### Example Log Entry
@@ -224,6 +226,154 @@ access_logs:
 ### Structured log output
 
 In development, log lines are formatted for readability using pretty printing. In production mode, all logs are output as newline-separated JSON values.
+
+### Subgraph Access Logs
+
+{% hint style="info" %}
+Available since Router [0.146.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.118.0)
+{% endhint %}
+
+In addition to router logs, users can enable `subgraph` access logs as well, to get detailed logging of requests made to subgraphs. These logs are useful for tracing and debugging interactions between the router and its connected subgraphs. The configuration allows for custom fields to be included in the logs, providing additional context about requests and responses.
+
+#### **Configuration**
+
+To enable Subgraph Access Logs, use the following configuration structure:
+
+```yaml
+access_logs:
+  subgraphs:
+    enabled: true
+    fields:
+      - key: "my-header"
+        value_from:
+          context_field: operation_name
+      - key: "my-response-header"
+        value_from:
+          response_header: "x-foo"
+      - key: "my-request-header"
+        value_from:
+          request_header: "x-service"
+
+```
+
+{% hint style="info" %}
+Currently the log output will go to the same place as the router access logs. In the future, we may enable configuration of the subgraph access logs to a different log sink. If you need that feature, please discuss it with us.&#x20;
+{% endhint %}
+
+#### **Log Format**
+
+Subgraph Access Logs are structured in JSON format. An example log entry is shown below:
+
+```json
+{
+  "level": "info",
+  "time": 1733228244528,
+  "msg": "/graphql",
+  "hostname": "my-host",
+  "pid": 9788,
+  "log_type": "client/subgraph",
+  "method": "POST",
+  "path": "/graphql",
+  "query": "",
+  "ip": "[REDACTED]",
+  "user_agent": "",
+  "config_version": "cca7eda6-e68a-431c-ba59-27718074493e",
+  "trace_id": "0863b9d74e2e4d520448e5c7f49e7f8f",
+  "request_id": "test.local/hlUxBfcMgk-000002",
+  "subgraph_name": "employees",
+  "subgraph_id": "0",
+  "status": 200,
+  "latency": 0.001272029
+}
+
+```
+
+The subgraph access logs contain the same [#default-log-fields](access-logs.md#default-log-fields "mention") as the normal router access logs, and as above( [#custom-fields](access-logs.md#custom-fields "mention")), you can extend the log with custom fields. These can include values extracted from request headers or additional information generated after the GraphQL operation has been processed.
+
+Let's take the following example:
+
+```yaml
+log_level: info
+dev_mode: true
+access_logs:
+  enabled: true
+  output:
+    file:
+      enabled: true
+      path: "access.log"
+  subgraphs:
+    fields:
+      - key: "service"
+        value_from:
+          request_header: "x-service"
+
+      - key: "my_response_header"
+        value_from:
+          response_header: "x-my-response"
+
+      - key: "operationName"
+        value_from:
+          context_field: operation_name
+          
+      - key: "operationSha256"
+        value_from:
+          context_field: operation_sha256
+          
+      - key: "serviceNames"
+        value_from:
+          context_field: operation_service_names
+          
+      - key: "operationHash"
+        value_from:
+          context_field: operation_hash
+          
+      - key: "operationType"
+        value_from:
+          context_field: operation_type
+          
+      - key: "persistentOperationSha256"
+        value_from:
+          context_field: persisted_operation_sha256
+          
+      - key: "operationParsingTime"
+        value_from:
+          context_field: operation_parsing_time
+          
+      - key: "operationPlanningTime"
+        value_from:
+          context_field: operation_planning_time
+          
+      - key: "operationNormalizationTime"
+        value_from:
+          context_field: operation_normalization_time
+          
+      - key: "operationValidationTime"
+        value_from:
+          context_field: operation_validation_time
+```
+
+Here’s an explanation of each field’s meaning:
+
+* **service**: This field logs the name of the service making the request, extracted from the request header "x-service". It helps identify which specific service is making the API call.
+* **my\_response\_header**: This field logs a header from the subgraph response, extracted from the response header "x-my-response".
+* **operationName**: This field logs the name of the GraphQL operation being performed. It is extracted from the context of the request and indicates which query or mutation is being executed.
+* **operationSha256**: This field logs the SHA-256 hash of the original GraphQL operation, serving as a unique identifier for the operation's structure. It helps to identify operations in a secure and consistent way.
+* **serviceNames**: This field logs the names of all services involved in processing the operation. It can be useful for tracking dependencies or microservices that are part of the request's execution.
+* **operationHash**: This field logs a unique hash generated for the normalized operation. It serves as an identifier for the specific instance of the operation being executed, useful for tracing or debugging.
+* **operationType**: This field logs the type of GraphQL operation being executed, such as a query, mutation, or subscription. It helps classify the request.
+* **persistentOperationSha256**: This field logs the SHA-256 hash of the persisted GraphQL operation. Persisted operations are pre-saved on the server for efficiency, and this hash allows tracking them.
+* **operationParsingTime**: This field logs the amount of time (float seconds) spent parsing the GraphQL operation. It measures how long it took to interpret the operation’s syntax.
+* **operationPlanningTime**: This field logs the time (float seconds) taken for planning the execution of the GraphQL operation, including resolving dependencies or building execution strategies.
+* **operationNormalizationTime**: This field logs the time (float seconds) spent normalizing the GraphQL operation, which involves standardizing the operation to ensure consistency in processing.
+* **operationValidationTime**: This field logs the time (float seconds) spent validating the GraphQL operation, ensuring that the operation is correct and adheres to the GraphQL schema and rules before execution.
+
+#### **Limitations**
+
+Currently, the following context fields available in router access logs are **not available** in Subgraph Access Logs:
+
+* `response_error_message`
+* `graphql_error_codes`
+* `graphql_error_service_names`
 
 ### Conclusion
 
