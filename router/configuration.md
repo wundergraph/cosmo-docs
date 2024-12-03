@@ -377,7 +377,7 @@ telemetry:
 
 #### OTLP
 
-<table data-full-width="true"><thead><tr><th width="274">Environment Variable</th><th width="198">YAML</th><th width="101" data-type="checkbox">Required</th><th width="253">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>METRICS_OTLP_ENABLED</td><td>enabled</td><td>true</td><td>Enables OTEL metrics instrumentation</td><td>true</td></tr><tr><td>METRICS_OTLP_ROUTER_RUNTIME</td><td>router_runtime</td><td>false</td><td></td><td>true</td></tr><tr><td>METRICS_OTLP_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td>The metrics to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.</td><td>[]</td></tr><tr><td>METRICS_OTLP_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td>The metric labels to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.</td><td>[]</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="274">Environment Variable</th><th width="198">YAML</th><th width="101" data-type="checkbox">Required</th><th width="253">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>METRICS_OTLP_ENABLED</td><td>enabled</td><td>true</td><td>Enables OTEL metrics instrumentation</td><td>true</td></tr><tr><td>METRICS_OTLP_ROUTER_RUNTIME</td><td>router_runtime</td><td>false</td><td>Enable the collection of metrics for the router runtime.</td><td>true</td></tr><tr><td>METRICS_OTLP_GRAPHQL_CACHE</td><td>graphql_cache</td><td>false</td><td>Enable the collection of metrics for the GraphQL operation router caches.</td><td>false</td></tr><tr><td>METRICS_OTLP_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td>The metrics to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.</td><td>[]</td></tr><tr><td>METRICS_OTLP_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td>The metric labels to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.</td><td>[]</td></tr></tbody></table>
 
 Attributes
 
@@ -393,6 +393,7 @@ telemetry:
     otlp:
       enabled: true
       router_runtime: true
+      graphql_cache: true
       exclude_metrics: []
       exclude_metric_labels: []
     attributes:
@@ -409,7 +410,7 @@ telemetry:
 
 #### Prometheus
 
-<table data-full-width="true"><thead><tr><th width="387">Environment Variable</th><th width="207">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>PROMETHEUS_ENABLED</td><td>enabled</td><td>true</td><td>Enables prometheus metrics support</td><td>true</td></tr><tr><td>PROMETHEUS_HTTP_PATH</td><td>path</td><td>false</td><td>The HTTP path where metrics are exposed.</td><td>"/metrics"</td></tr><tr><td>PROMETHEUS_LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The prometheus listener address</td><td>"127.0.0.1:8088"</td></tr><tr><td>PROMETHEUS_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td></td><td></td></tr><tr><td>PROMETHEUS_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="387">Environment Variable</th><th width="207">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>PROMETHEUS_ENABLED</td><td>enabled</td><td>true</td><td>Enables prometheus metrics support</td><td>true</td></tr><tr><td>PROMETHEUS_HTTP_PATH</td><td>path</td><td>false</td><td>The HTTP path where metrics are exposed.</td><td>"/metrics"</td></tr><tr><td>PROMETHEUS_LISTEN_ADDR</td><td>listen_addr</td><td>false</td><td>The prometheus listener address</td><td>"127.0.0.1:8088"</td></tr><tr><td>PROMETHEUS_GRAPHQL_CACHE</td><td>graphql_cache</td><td>false</td><td>Enable the collection of metrics for the GraphQL operation router caches.</td><td>false</td></tr><tr><td>PROMETHEUS_EXCLUDE_METRICS</td><td>exclude_metrics</td><td>false</td><td></td><td></td></tr><tr><td>PROMETHEUS_EXCLUDE_METRIC_LABELS</td><td>exclude_metric_labels</td><td>false</td><td></td><td></td></tr></tbody></table>
 
 #### Example YAML config:
 
@@ -425,6 +426,7 @@ telemetry:
       enabled: true
       path: "/metrics"
       listen_addr: "127.0.0.1:8088"
+      graphql_cache: true
       exclude_metrics: []
       exclude_metric_labels: []
 ```

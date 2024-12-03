@@ -28,6 +28,23 @@ These metrics ensure efficient request handling, operation planning, and system 
   * **Scalability Challenges:** Excessive operation planning durations can lead to resource contention under heavy workloads, limiting scalability.
   * **Operation Design:** Complex queries can also lead to increased planning time as those are parsed and validated.
 
+### GraphQL Operation Cache Metrics
+
+These metrics provide insights into the efficiency and effectiveness of caching GraphQL operations:
+
+* [**`router_graphql_cache_cost_max`**](prometheus-metric-reference.md#router_graphql_cache_cost_max): Measures the maximum cost of cached operations to optimize cache usage.
+  * **Cache Optimization:** High values may indicate excessive caching costs, necessitating analysis to improve cache strategy.
+  * **Cost Management:** Helps in understanding and managing potential high-cost queries effectively.
+* [**`router_graphql_cache_cost_stats_total`**](prometheus-metric-reference.md#router_graphql_cache_cost_stats_total): Tracks total cost statistics of cached operations to ensure balanced resource allocation.
+  * **Resource Allocation:** Ensures cached operations do not consume disproportionate resources, affecting performance.
+  * **Contention Risks:** Identifies potential cases where caching may not be as beneficial as expected.
+* [**`router_graphql_cache_keys_stats_total`**](prometheus-metric-reference.md#router_graphql_cache_keys_stats_total): Counts the total number of unique cache keys to monitor cache utilization.
+  * **Cache Utilization:** Aids in determining if the cache is effectively utilized or if there are opportunities for improvement.
+  * **Key Bloat:** Helps detect issues with excessive unique keys that might lead to cache inefficiencies.
+* [**`router_graphql_cache_request_stats_total`**](prometheus-metric-reference.md#router_graphql_cache_request_stats_total): Monitors the total number of requests served from the cache to assess cache hit rates.
+  * **Cache Hit Rate:** High values indicate effective cache performance, reducing backend load.
+  * **Improvement Areas:** Low cache request stats highlight the need for potential optimization or caching strategy updates.
+
 ### Go Runtime Metrics
 
 These metrics help monitor application memory usage, concurrency, and garbage collection efficiency:
@@ -168,6 +185,101 @@ This metric provides the rate of HTTP requests over a 5-minute interval, helping
 
 * Sudden traffic surges.
 * Unexpected drops in request rates.
+
+***
+
+## `router_graphql_cache_cost_max`
+
+**Description:**
+
+Tracks the maximum configured cost for a cache. Useful to investigate differences between the number of keys and the current cost of items in a cache.
+
+Cost defines how many items can be inserted into the cache. Upon insertion a cost for an item is provided and calcuated against the remaining cost. If the insertion would exceed the cost, the cache wil start evicting items.
+
+**Example PromQL Query:**
+
+```promql
+router_graphql_cache_cost_max{cache_type="execution"}
+```
+
+**Reason for Monitoring:**
+
+Monitoring the maximum configured cost for a cache is crucial for ensuring optimal performance and resource utilization. By tracking this metric, you can:
+
+1. **Optimize Resource Allocation:** Ensure that the cache is not underutilized or overrun, which can lead to inefficient use of resources.
+2. **Improve Cache Efficiency:** Identify misconfigurations or anomalies in cost distribution that could affect cache efficiency.
+3. **Prevent Cache Evictions:** Monitor the cost to prevent excessive evictions that could degrade application performance.
+4. **Adjust Cache Strategies:** Inform decisions on adjusting cache strategies and configurations to align with changing demand patterns.
+
+## `router_graphql_cache_cost_stats_total`
+
+**Description**:
+
+This metric tracks the total cache cost statistics, encompassing various operations such as adding and evicting cache entries. By aggregating these costs, it provides a holistic view of the cache system's dynamics and helps stakeholders identify inefficiencies or areas for improvement in cache operations.
+
+**Example PromQL Query:**
+
+```promql
+sum(router_graphql_cache_cost_stats_total{cache_type="execution",operation="added"}) 
+-
+sum(router_graphql_cache_cost_stats_total{cache_type="execution",operation="evicted"})
+```
+
+**Reason for Monitoring:**
+
+Monitoring the total cache cost statistics is essential for comprehensive performance analysis and optimization. By tracking this metric, you can:
+
+1. **Assess Overall Cache Utilization:** Gain insights into the total cost incurred by cache operations, helping in understanding the cache load.
+2. **Identify Trends:** Spot trends or patterns in cache usage over time, which can inform future scaling and resource allocation plans.
+3. **Diagnose Issues:** Detect and troubleshoot issues related to high cache costs that might impact system performance.
+4. **Guide Optimization Efforts:** Use insights from total cost statistics to optimize cache configuration and improve application efficiency.
+
+## `router_graphql_cache_keys_stats_total`
+
+**Description:**
+
+This metric is crucial for understanding the dynamics of cache key operations within the system. Monitoring the total number of cache keys can help identify potential issues and optimize caching strategies.
+
+**Example PromQL Query:**
+
+```promql
+sum(router_graphql_cache_keys_stats_total{cache_type="execution",operation="added"}) -
+sum(router_graphql_cache_keys_stats_total{cache_type="execution",operation="evicted"})
+```
+
+**Reason for Monitoring:**
+
+1. **Optimizing Cache Efficiency:** By evaluating the total number of cache keys added and evicted, you can optimize the cache configuration to enhance application performance.
+2. **Trend Analysis:** Keep track of cache key trends over time to anticipate changes in usage patterns and adjust resources as necessary.
+3. **Performance Troubleshooting:** Identifying anomalies or spikes in cache key operations can lead to quicker diagnosis and resolution of performance bottlenecks.
+
+**Addressed Error Cases:**
+
+* **Unexpected Evictions:** A high number of evicted keys could indicate insufficient cache space or inefficient caching strategies.
+* **Unbounded Growth:** A consistent increase in the total number of added keys without corresponding evictions might signal potential memory issues.
+
+## `router_graphql_cache_request_stats_total`
+
+**Description:**&#x20;
+
+This metric tracks the total number of GraphQL cache requests, storing hits and misses. This metric is crucial for understanding cache performance and optimizing caching strategies.
+
+**Example PromQL Query:**
+
+```
+sum(rate(router_graphql_cache_requests_stats_total{cache_type="execution", type="hits"}[2h])) /
+sum(rate(router_graphql_cache_requests_stats_total{cache_type="execution"}[2h]))
+```
+
+**Reason for Monitoring:**
+
+1. **Cache Hit Rate Analysis:** Monitoring the ratio of cache hits to total requests helps in evaluating the effectiveness of caching mechanisms and can guide improvements in cache configuration.
+2. **Resource Allocation:** By analyzing cache usage patterns, you can allocate resources more effectively and ensure that cache capacity aligns with demand.
+
+**Addressed Error Cases:**
+
+* **Low Cache Hit Rate:** A decreased hit rate may indicate misconfigured cache settings or suboptimal data retrieval strategies, necessitating immediate attention to improve performance.
+* **Unpredictable Request Patterns:** Anomalous or erratic request patterns can signal potential application or user behavior issues, requiring prompt investigation to maintain system reliability.
 
 ***
 
@@ -413,5 +525,7 @@ This metric tracks the number of active goroutines, ensuring that no goroutine l
 * Unexpected growth in active goroutines.
 
 ***
+
+
 
 **Note:** When crafting PromQL queries using range vectors, ensure that you adjust the time range according to your specific monitoring needs and system performance characteristics for accurate observability.
