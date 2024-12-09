@@ -34,7 +34,7 @@ The `npx wgc subgraph create` command allows you to create a new subgraph within
   * Example: `--label team=A`
 * `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint where the subgraph will fetch data from. Will produce an error if the `-edg` flag is set.&#x20;
   * Example: `--routing-url http://localhost:4001/graphql`
-* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions. Will produce an error if the `-edg` flag is set.&#x20;
+* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the above routing URL is used for subscriptions. Will produce an error if the `-edg` flag is set.&#x20;
 * `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. Will produce an error if the `-edg` flag is set. The available options are:
   * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
   * `sse`: Use Server-Sent Events with a GET request.
