@@ -104,7 +104,11 @@ access_logs:
       - key: "operationSha256"
         value_from:
           context_field: operation_sha256
-          
+
+      - key: "requestError"
+        value_from:
+          context_field: request_error
+
       - key: "responseErrorMessage"
         value_from:
           context_field: response_error_message
@@ -155,6 +159,7 @@ Here’s an explanation of each field’s meaning:
 * **service**: This field logs the name of the service making the request, extracted from the request header "x-service". It helps identify which specific service is making the API call.
 * **operationName**: This field logs the name of the GraphQL operation being performed. It is extracted from the context of the request and indicates which query or mutation is being executed.
 * **operationSha256**: This field logs the SHA-256 hash of the original GraphQL operation, serving as a unique identifier for the operation's structure. It helps to identify operations in a secure and consistent way.
+* **requestError:** This field is only present when an error has been encountered with the request, and will be `true`if so.&#x20;
 * **responseErrorMessage**: This field logs any error message returned in the response. It captures detailed information about what went wrong during the execution of the operation.
 * **serviceNames**: This field logs the names of all services involved in processing the operation. It can be useful for tracking dependencies or microservices that are part of the request's execution.
 * **operationHash**: This field logs a unique hash generated for the normalized operation. It serves as an identifier for the specific instance of the operation being executed, useful for tracing or debugging.
@@ -179,6 +184,8 @@ Here are the fields that are specifically added in error cases:
   Provides error codes associated with the GraphQL operation. These codes may correspond to specific validation, execution, or schema-related errors that occurred during processing.
 * **response\_error\_message**:\
   Contains the actual error message returned in the response. This message can be used to better understand what went wrong and why the request failed.
+* **requestError:** \
+  This field is only present when an error has been encountered with the request, and will be `true`if so. This can better help clients filter their logs (if`requestError: true)`to find error cases.
 
 #### Default value
 
@@ -282,6 +289,7 @@ Subgraph Access Logs are structured in JSON format. An example log entry is show
   "request_id": "test.local/hlUxBfcMgk-000002",
   "subgraph_name": "employees",
   "subgraph_id": "0",
+  "url": "https://localhost:1234/graphql",
   "status": 200,
   "latency": 0.001272029
 }
@@ -289,6 +297,16 @@ Subgraph Access Logs are structured in JSON format. An example log entry is show
 ```
 
 The subgraph access logs contain the same [#default-log-fields](access-logs.md#default-log-fields "mention") as the normal router access logs, and as above( [#custom-fields](access-logs.md#custom-fields "mention")), you can extend the log with custom fields. These can include values extracted from request headers or additional information generated after the GraphQL operation has been processed.
+
+#### Subgraph Specific Log Fields
+
+There are certain log fields that are only added for subgraph access logs. Those include:
+
+* **subgraph\_name**: The name of the subgraph
+* **subgraph\_id:** The subgraph ID, as configured with the router
+* **url**: The URL of the subgraph
+
+#### Configuration
 
 Let's take the following example:
 
@@ -350,6 +368,14 @@ access_logs:
       - key: "operationValidationTime"
         value_from:
           context_field: operation_validation_time
+          
+      - key: "requestError"
+        value_from:
+          context_field: request_error
+
+      - key: "responseErrorMessage"
+        value_from:
+          context_field: response_error_message
 ```
 
 Here’s an explanation of each field’s meaning:
@@ -366,12 +392,13 @@ Here’s an explanation of each field’s meaning:
 * **operationPlanningTime**: This field logs the time (float seconds) taken for planning the execution of the GraphQL operation, including resolving dependencies or building execution strategies.
 * **operationNormalizationTime**: This field logs the time (float seconds) spent normalizing the GraphQL operation, which involves standardizing the operation to ensure consistency in processing.
 * **operationValidationTime**: This field logs the time (float seconds) spent validating the GraphQL operation, ensuring that the operation is correct and adheres to the GraphQL schema and rules before execution.
+* **requestError:** This field is only present when an error has been encountered with the request to the subgraph, and will be `true`if so.&#x20;
+* **responseErrorMessage**: This field logs any error message returned in the response from the subgraph. It captures detailed information about what went wrong during the execution of the operation.
 
 #### **Limitations**
 
 Currently, the following context fields available in router access logs are **not available** in Subgraph Access Logs:
 
-* `response_error_message`
 * `graphql_error_codes`
 * `graphql_error_service_names`
 
