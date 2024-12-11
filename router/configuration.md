@@ -507,7 +507,7 @@ cors:
     - Content-Length
     - Content-Type
   allow_credentials: true
-  max_age_minutes: 5m
+  max_age: 5m
 ```
 {% endcode %}
 
