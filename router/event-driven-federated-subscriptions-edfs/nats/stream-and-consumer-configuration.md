@@ -17,7 +17,7 @@ The `@edfs__natsSubscribe` directive defines an optional `streamConfiguration` a
 
 Note that if the `streamConfiguration` argument is undefined, the connection will be interpreted not to use a stream/consumer. If defined, all input object fields are required:
 
-<table><thead><tr><th>Input name</th><th width="256">Type</th><th>Value</th></tr></thead><tbody><tr><td>consumerName</td><td>String!</td><td>The name of the consumer</td></tr><tr><td>streamName</td><td>String!</td><td>The name of the stream</td></tr></tbody></table>
+<table><thead><tr><th>Input name</th><th width="256">Type</th><th>Value</th></tr></thead><tbody><tr><td>consumerInactiveThreshold</td><td>Int!</td><td>The inactive threshold of the consumer in seconds</td></tr><tr><td>consumerName</td><td>String!</td><td>The name of the consumer</td></tr><tr><td>streamName</td><td>String!</td><td>The name of the stream</td></tr></tbody></table>
 
 ## NATS configuration
 
@@ -36,7 +36,11 @@ nats str add stream-name
 
 ### Consumer
 
-As long as the stream exists, when a subscription is started, the router will first attempt to fetch a consumer of the same name supplied to the `consumerName` input. If a consumer is not found, the router will create a new durable consumer of the same name. Durable consumers will persist and not timeout.&#x20;
+As long as the stream exists, when a subscription is started, the router will first attempt to fetch a consumer with the same name, which will be the `consumerName` input with a suffix composed of the subject names, the host name, and the listen address of the router.
+
+If a consumer is not found, the router will create a new durable consumer with the same name.
+
+Durable consumers will automatically delete after 30 seconds of inactivity by default. You can change this value by specifying the `consumerInactiveThreshold` in the stream configuration. If you set the `consumerInactiveThreshold` to `0`, the consumer will never be deleted.
 
 If you wish for your consumer to have a timeout threshold, please configure accordingly using the following documentation:\
 [https://docs.nats.io/nats-concepts/jetstream/consumers](https://docs.nats.io/nats-concepts/jetstream/consumers)\
