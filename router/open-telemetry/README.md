@@ -55,6 +55,18 @@ telemetry:
 ```
 {% endcode %}
 
+### Limits
+
+High metric cardinality can lead to performance issues by consuming excessive resources and slowing down data processing. When too many distinct metric labels are generated, the system might struggle to manage the data efficiently. To mitigate this, we have set a default hard cardinality limit of 2000. This limit helps to ensure that the metrics remain manageable and that the performance of our system is not adversely affected.
+
+**Once the limit is reached, all further datapoints to a metric will be stored without attributes.**
+
+{% hint style="info" %}
+The default OpenTelemetry Collector ingests requests up to 4 MB by default via gRPC. If you are experiencing high cardinality in your metrics, it's necessary to adjust the collector's gRPC limits to accommodate larger requests.
+
+We recommend at least 12 MB
+{% endhint %}
+
 ## Tracing
 
 ### Multiple exporters
