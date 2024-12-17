@@ -17,7 +17,7 @@ The `@edfs__natsSubscribe` directive defines an optional `streamConfiguration` a
 
 Note that if the `streamConfiguration` argument is undefined, the connection will be interpreted not to use a stream/consumer. If defined, all input object fields are required:
 
-<table><thead><tr><th>Input name</th><th width="256">Type</th><th>Value</th></tr></thead><tbody><tr><td>consumerName</td><td>String!</td><td>The name of the consumer</td></tr><tr><td>streamName</td><td>String!</td><td>The name of the stream</td></tr></tbody></table>
+<table><thead><tr><th>Input name</th><th width="256">Type</th><th>Value</th></tr></thead><tbody><tr><td>consumerInactiveThreshold</td><td>Int!</td><td>The inactive threshold of the consumer in seconds. The default value is 30 seconds.</td></tr><tr><td>consumerName</td><td>String!</td><td>The name of the consumer</td></tr><tr><td>streamName</td><td>String!</td><td>The name of the stream</td></tr></tbody></table>
 
 ## NATS configuration
 
@@ -28,7 +28,7 @@ The stream name that is supplied to the `streamName` input must already be confi
 Please consult the following documentation on creating a stream (and ensure your NATS server has been configured to allow jetstreams):\
 [https://docs.nats.io/nats-concepts/jetstream/streams](https://docs.nats.io/nats-concepts/jetstream/streams)
 
-Typically, this can be achieved using the [NATS cli](https://docs.nats.io/using-nats/nats-tools/nats\_cli) and following the prompts:
+Typically, this can be achieved using the [NATS cli](https://docs.nats.io/using-nats/nats-tools/nats_cli) and following the prompts:
 
 ```bash
 nats str add stream-name
@@ -36,13 +36,19 @@ nats str add stream-name
 
 ### Consumer
 
-As long as the stream exists, when a subscription is started, the router will first attempt to fetch a consumer of the same name supplied to the `consumerName` input. If a consumer is not found, the router will create a new durable consumer of the same name. Durable consumers will persist and not timeout.&#x20;
+As long as the stream exists, when a subscription is started, the router will attempt to identify an existing consumer. This identification is the name (supplied by the `consumerName` input), followed by a hash of the subjects, and the host name and listen address of the router.
+
+
+
+If a consumer is not found, the router will create a new durable consumer with the same name.
+
+By default, consumers will automatically be deleted after 30 seconds of inactivity. Inactivity is classed as the lack of a running subscription. You can change this value by specifying the value for the `consumerInactiveThreshold` input in the stream configuration. If you set the `consumerInactiveThreshold` to `0` (or any negative value), the consumer will never be deleted.
 
 If you wish for your consumer to have a timeout threshold, please configure accordingly using the following documentation:\
 [https://docs.nats.io/nats-concepts/jetstream/consumers](https://docs.nats.io/nats-concepts/jetstream/consumers)\
-[https://docs.nats.io/nats-concepts/jetstream/consumers/example\_configuration](https://docs.nats.io/nats-concepts/jetstream/consumers/example\_configuration)
+[https://docs.nats.io/nats-concepts/jetstream/consumers/example\_configuration](https://docs.nats.io/nats-concepts/jetstream/consumers/example_configuration)
 
-Typically, this can be achieved using the [NATS cli](https://docs.nats.io/using-nats/nats-tools/nats\_cli) and following the prompts:
+Typically, this can be achieved using the [NATS cli](https://docs.nats.io/using-nats/nats-tools/nats_cli) and following the prompts:
 
 ```bash
 nats consumer add stream-name consumer-name
@@ -57,6 +63,7 @@ In the example below, the NATS provider `my-nats` has also defined a stream conf
 directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
 
 input edfs__NatsStreamConfiguration {
+    consumerInactiveThreshold: Int! = 30
     consumerName: String!
     streamName: String!
 }

@@ -26,6 +26,7 @@ type edfs__PublishResult {
 }
 
 input edfs__NatsStreamConfiguration {
+    consumerInactiveThreshold: Int! = 30
     consumerName: String!
     streamName: String!
 }

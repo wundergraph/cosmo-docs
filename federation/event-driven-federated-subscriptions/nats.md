@@ -37,6 +37,7 @@ directive @edfs__natsRequest(subject: String!, providerId: String! = "default") 
 directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
 
 input edfs__NatsStreamConfiguration {
+    consumerInactiveThreshold: Int! = 30
     consumerName: String!
     streamName: String!
 }

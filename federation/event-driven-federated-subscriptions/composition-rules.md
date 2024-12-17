@@ -18,6 +18,7 @@ Note that the `edfs__NatsStreamConfiguration` input object must _always_ be defi
 
 ```graphql
 input edfs__NatsStreamConfigurationfiguration {
+    consumerInactiveThreshold: Int! = 30
     consumerName: String!
     streamName: String!
 }

@@ -1,9 +1,9 @@
 ---
+icon: calendar-users
 description: >-
   EDFS combines the power of GraphQL Federation and Event-Driven Architecture
   (Kafka, NATS, SQS) to update a user GraphQL Subscription after an event occurs
   in your system.
-icon: calendar-users
 ---
 
 # Event-Driven Federated Subscriptions (EDFS)
@@ -108,6 +108,7 @@ directive @edfs__natsPublish(subject: String!, providerId: String! = "default") 
 directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
 
 input edfs__NatsStreamConfiguration {
+    consumerInactiveThreshold: Int! = 30
     consumerName: String!
     streamName: String!
 }
