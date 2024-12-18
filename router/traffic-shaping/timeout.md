@@ -22,14 +22,13 @@ traffic_shaping:
     expect_continue_timeout: 0s
   subgraphs: # allows you to create subgraph specific traffic shaping rules
     products: # Will only affect this subgraph and override the default settings
-      request_timeout: 120s
-      request_timeout: 20s
-      dial_timeout: 10s
+      request_timeout: 60s
+      dial_timeout: 30s
+      keep_alive_idle_timeout: 0s
+      keep_alive_probe_interval: 
       tls_handshake_timeout: 10s
-      response_header_timeout: 10s
-      expect_continue_timeout: 10s
-      keep_alive_idle_timeout: 10s
-      keep_alive_probe_interval: 20s
+      response_header_timeout: 0s
+      expect_continue_timeout: 0s
 ```
 
 * `request_timeout`: The maximum amount of time a request can take. The timeout includes connection time, any redirects, and reading the response body.
