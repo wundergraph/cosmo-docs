@@ -770,6 +770,7 @@ traffic_shaping:
   router:
     # Is the maximum size of the request body in MB, mib
     max_request_body_size: 5MB
+    max_header_bytes: 1MiB
   all: # Rules are applied to all subgraph requests.
     # Subgraphs transport options
     request_timeout: 60s
@@ -818,7 +819,9 @@ In addition to the general traffic shaping rules, we also allow users to set sub
 
 These rules apply to requests being made from clients to the Router.
 
-<table data-full-width="false"><thead><tr><th width="247">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>max_request_body_size</td><td>false</td><td></td><td>5mb</td></tr></tbody></table>
+
+
+<table data-full-width="true"><thead><tr><th width="221">Environment Variable</th><th width="216">YAML</th><th width="111" data-type="checkbox">Required</th><th width="348">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>max_request_body_size</td><td>false</td><td></td><td>5mb</td></tr><tr><td>MAX_HEADER_BYTES</td><td>max_header_bytes</td><td>false</td><td><p>Minimum Router version:  <a href="https://github.com/wundergraph/cosmo/compare/router@0.155.0...router@0.156.0">0.156.0</a></p><p></p><p></p><p>The maximum size of the request headers. Setting this to 0 uses the default value from the http standard lib, which is 1MiB.</p></td><td>1mib</td></tr></tbody></table>
 
 ### WebSocket
 
