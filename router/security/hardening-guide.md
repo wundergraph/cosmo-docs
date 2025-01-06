@@ -54,7 +54,7 @@ graph:
 
 ## Enable Rate Limiting
 
-The router can protect your subgraphs from overloading by implementing a [GCRA](https://en.wikipedia.org/wiki/Generic\_cell\_rate\_algorithm) (leaky bucket) rate limiter based on Redis. We encourage everyone to use it unless you already have protection in place. Before applying it to production, please test it thoroughly. We recommend setting higher limits initially to avoid any interruptions.
+The router can protect your subgraphs from overloading by implementing a [GCRA](https://en.wikipedia.org/wiki/Generic_cell_rate_algorithm) (leaky bucket) rate limiter based on Redis. We encourage everyone to use it unless you already have protection in place. Before applying it to production, please test it thoroughly. We recommend setting higher limits initially to avoid any interruptions.
 
 By default rate limiting is disabled. The following configuration should be applied:
 
@@ -117,7 +117,8 @@ By default, both persistent queries and regular queries are allowed. To allow on
 {% code title="router.yaml" %}
 ```yaml
 security:
-  block_non_persisted_operations: true
+  block_non_persisted_operations:
+    enabled: true
 ```
 {% endcode %}
 
@@ -128,8 +129,10 @@ Ideally, you should never expose more than necessary. Sometimes this is unavoida
 {% code title="router.yaml" %}
 ```yaml
 security:
-  block_subscriptions: true
-  block_mutations: true
+  block_subscriptions:
+    enabled: true
+  block_mutations:
+    enabled: true
 ```
 {% endcode %}
 
