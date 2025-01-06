@@ -38,7 +38,7 @@ The name of the federated graph that the token should be created for.
 npx wgc router token create graphToken -g production
 ```
 
-Create a new token named "graphToken" for the federated graph named "production". The token is displayed once in the CLI. Pass the token as an environment variable to the router [configuration](../../../router/configuration.md).
+Create a new token named "graphToken" for the federated graph named "production". The token is displayed once in the CLI. Pass the token as an environment variable to the router [configuration](../../../router/configuration/).
 
 ## Notes
 

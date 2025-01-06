@@ -64,7 +64,7 @@ Please note that the `hosted_zone_name` must match the name configured in Route5
 
 In the previous usage example you might noticed that we pass the path to the Cosmo Router config to the module. The module will read that file and mount it into the container.
 
-Please make sure to create the file before performing a `terraform apply`. The configuration options for the router are described in [our docs](../../router/configuration.md) as well.
+Please make sure to create the file before performing a `terraform apply`. The configuration options for the router are described in [our docs](../../router/configuration/) as well.
 
 {% hint style="info" %}
 **Important:** As described before, the actual `GRAPH_API_TOKEN` value needs to be defined in the secret. This value gets injected when the container of the Cosmo Router starts. Please make sure that you add the following lines to your `config.yaml`. Otherwise, the Router wouldn't be able to communicate with the Cosmo Control Plane.

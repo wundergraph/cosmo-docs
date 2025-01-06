@@ -54,4 +54,4 @@ telemetry:
 
 This will add the attribute `service=static` unless the client has provided a request header `x-service`, in which case the value of this header will be used instead of the default value. Remember to add the header to the allowlist in the CORS configuration; otherwise, CORS issues will occur on the frontend.
 
-For a complete list of available options, please refer to the relevant documentation [section](../configuration.md#telemetry).
+For a complete list of available options, please refer to the relevant documentation [section](../configuration/#telemetry).

@@ -1,8 +1,8 @@
 ---
+icon: passport
 description: >-
   Persisted operations, also known as trusted documents, allow you to register
   trusted operations in the router
-icon: passport
 ---
 
 # Persisted Operations
@@ -54,4 +54,4 @@ Additionally, check the [Using Persisted Operation with Federated GraphQL](../tu
 
 If you're going all in on Security, you'd want to only allow Persisted Operations in your Production Environment.
 
-By default, non-persisted (dynamic) GraphQL Operations are allowed, which you can disable using the [Security Configuration](configuration.md#security) of the Router.
+By default, non-persisted (dynamic) GraphQL Operations are allowed, which you can disable using the [Security Configuration](configuration/#security) of the Router.

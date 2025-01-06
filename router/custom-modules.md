@@ -156,8 +156,6 @@ A more complex example including tests is accessible at \
 
 Authentication information, including claims and the provider that authenticated the request, can be accessed through `core.RequestContext.Authentication()`
 
-{% include "../.gitbook/includes/func-m-jwtmodule-onorigi....md" %}
-
 {% hint style="info" %}
 For a full example, please check out\
 [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)

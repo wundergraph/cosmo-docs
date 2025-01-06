@@ -16,7 +16,7 @@ There are a few configuration flags that impact this procedure:
 * **SHUTDOWN\_DELAY**: Defines the maximum time the router waits before canceling all server resources, such as active client connections, to shut down the process. This setting applies when a shutdown signal (e.g., `SIGTERM`, `SIGINT`, `SIGHUP`) is sent to the process. The default value is 60 seconds.
 
 {% hint style="info" %}
-Timeouts can be [configured](../configuration.md) as environment variables and in the config.yaml file.
+Timeouts can be [configured](../configuration/) as environment variables and in the config.yaml file.
 {% endhint %}
 
 ### Subscriptions

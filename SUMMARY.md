@@ -161,7 +161,8 @@
 
 * [Intro](router/intro.md)
 * [Download & Install](router/download-and-install.md)
-* [Configuration](router/configuration.md)
+* [Configuration](router/configuration/README.md)
+  * [Template Expressions](router/configuration/template-expressions.md)
 * [Custom Modules](router/custom-modules.md)
 * [Authentication & Authorization](router/authentication-and-authorization.md)
 * [Subscriptions](router/subscriptions/README.md)

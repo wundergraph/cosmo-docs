@@ -17,7 +17,7 @@ In HTTP, the `Cache-Control` header is used to define the caching behavior of re
 
 Additionally, **`Expires`** is an older header used to specify an exact expiration time for cached content. If both `Cache-Control` and `Expires` are present, `Cache-Control` takes precedence.Cache Control Policy
 
-To enable a restrictive cache control policy, insert the following snippet into your [config.yaml](../configuration.md#config-file) file and adjust it according to your needs.
+To enable a restrictive cache control policy, insert the following snippet into your [config.yaml](../configuration/#config-file) file and adjust it according to your needs.
 
 ```yaml
 # config.yaml

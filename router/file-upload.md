@@ -1,6 +1,6 @@
 ---
-description: Upload files through the router using GraphQL multipart request.
 icon: upload
+description: Upload files through the router using GraphQL multipart request.
 ---
 
 # File Upload
@@ -9,7 +9,7 @@ icon: upload
 
 This feature is implemented according to the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec), utilizing the `multipart/form-data` content type. Cosmo supports both single and multiple file uploads, but batch uploads are not supported.
 
-The router can be configured for file uploads with [these options](configuration.md#file-upload).
+The router can be configured for file uploads with [these options](configuration/#file-upload).
 
 ## Multipart Request Structure
 

@@ -61,4 +61,4 @@ This will add the attribute `myAttribute=myValue` unless the client provides the
 
 Additionally, the unique list of subgraph error codes will be appended to all emitted metric values. This enables correlation between error cases and corresponding metrics.
 
-For a complete list of available options, please refer to the relevant documentation [section](../configuration.md#telemetry).
+For a complete list of available options, please refer to the relevant documentation [section](../configuration/#telemetry).

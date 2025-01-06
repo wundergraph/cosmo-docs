@@ -24,7 +24,7 @@ We strongly recommend only using one algorithm per header across your graphs. Ha
 
 ### Enabling Header Propagation
 
-By default, no response headers are forwarded for security reasons. To enable response header propagation, insert the following snippet into your [config.yaml](../configuration.md#config-file) file and adjust it according to your needs.
+By default, no response headers are forwarded for security reasons. To enable response header propagation, insert the following snippet into your [config.yaml](../configuration/#config-file) file and adjust it according to your needs.
 
 ```yaml
 # config.yaml
@@ -74,7 +74,7 @@ Currently, we support the following header rules:
 * **propagate** - Forwards all matching response headers from the subgraphs. You can choose between the following options:
   * **algorithm -** This defines the algorithm, selecting between `first_write`, `last_write`, and `append`
   * **named** - It exactly matches on the header name.
-  * **matching -** Regex matches on the header name. You can use[ regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router _never_ propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop\_headers) (such as `Connection`) when propagating by regex.
+  * **matching -** Regex matches on the header name. You can use[ regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router _never_ propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers) (such as `Connection`) when propagating by regex.
   * **rename**: Replaces the identified header based on its name or matching criteria and transfers the value to the newly specified header.
   * **default**: Fallback to this value when the `named`, `matching` or `rename` header could not be found.
 * `set` - Sets a header on the request forward to the subgraph. You must set the following values:

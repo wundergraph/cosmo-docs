@@ -6,7 +6,7 @@ description: The router allows users to operate on the request headers.
 
 ## Forward HTTP headers to subgraphs
 
-Forwarding specific client headers (request headers) to your subgraphs is a straightforward process. By default, no headers are forwarded for security reasons. To enable header forwarding, insert the following snippet into your [config.yaml](../configuration.md#config-file) file and adjust it according to your needs.
+Forwarding specific client headers (request headers) to your subgraphs is a straightforward process. By default, no headers are forwarded for security reasons. To enable header forwarding, insert the following snippet into your [config.yaml](../configuration/#config-file) file and adjust it according to your needs.
 
 <pre class="language-yaml"><code class="lang-yaml"><strong># config.yaml
 </strong>
@@ -54,7 +54,7 @@ Currently, we support the following header rules:
 
 * **propagate** - Forwards all matching client request headers to the subgraphs. You can choose between one of the following matchers:
   * **`named`** - It exactly matches on the header name.
-  * **`matching` -** Regex matches on the header name. You can use[ regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router _never_ propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop\_headers) (such as `Connection`) when propagating by regex.
+  * **`matching` -** Regex matches on the header name. You can use[ regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router _never_ propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers) (such as `Connection`) when propagating by regex.
   * **`rename`**: Replaces the identified header based on its name or matching criteria and transfers the value to the newly specified header.
   * **`default`**: Fallback to this value when the `named`, `matching` or `rename` header could not be found.
 * **set** - Sets a header on the request forward to the subgraph. You must set the following values:

@@ -7,7 +7,7 @@ description: >-
 
 # Subgraph Error Propagation
 
-In the [**Router Configuration**](configuration.md) section, you can configure [**Subgraph Error Propagation**](configuration.md#subgraph-error-propagation), which allows errors from subgraphs to be forwarded to the client.
+In the [**Router Configuration**](configuration/) section, you can configure [**Subgraph Error Propagation**](configuration/#subgraph-error-propagation), which allows errors from subgraphs to be forwarded to the client.
 
 {% hint style="info" %}
 In **development mode**, the Router is configured to be as verbose as possible, providing extensive information to help with debugging and troubleshooting. This mode exposes additional details about subgraph errors, making it easier to identify the root causes of issues.

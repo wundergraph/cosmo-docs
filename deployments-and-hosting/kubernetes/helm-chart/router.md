@@ -37,7 +37,7 @@ After that you can install the chart with the release name `router`. You can use
 
 ### Use a custom Router config
 
-Managing environment variables can be tedious. We also support providing a custom [router configuration](../../../router/configuration.md#config-file). To do so, you only need to create one and specify its name in the chart values. The config must exist in the same namespace as the router.
+Managing environment variables can be tedious. We also support providing a custom [router configuration](../../../router/configuration/#config-file). To do so, you only need to create one and specify its name in the chart values. The config must exist in the same namespace as the router.
 
 {% code title="router-config.yaml" %}
 ```yaml
