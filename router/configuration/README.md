@@ -1096,7 +1096,7 @@ subgraph_error_propagation:
 
 The configuration for the security. The security is used to configure the security settings for the Router.
 
-<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_BLOCK_MUTATIONS</td><td>block_mutations</td><td>false</td><td>Block mutation Operations. If the value is true, the mutations are blocked.</td><td>false</td></tr><tr><td>SECURITY_BLOCK_SUBSCRIPTIONS</td><td>block_subscriptions</td><td>false</td><td>Block subscription Operations. If the value is true, the subscriptions are blocked.</td><td>false</td></tr><tr><td>SECURITY_BLOCK_NON_PERSISTED_OPERATIONS</td><td>block_non_persisted_operations</td><td>false</td><td>Block non-persisted Operations. If the value is true, the non-persisted operations are blocked.</td><td>false</td></tr><tr><td></td><td>complexity_calculation_cache</td><td>false</td><td>Complexity Cache configuration</td><td></td></tr><tr><td></td><td>complexity_limits</td><td>false</td><td>Complexity limits configuration</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>SECURITY_BLOCK_MUTATIONS</td><td>block_mutations</td><td>false</td><td>Block mutation Operations.</td><td></td></tr><tr><td>SECURITY_BLOCK_MUTATIONS_ENABLED</td><td>block_mutations.enabled</td><td>false</td><td>If the value is true, the mutations are blocked.</td><td>false</td></tr><tr><td>SECURITY_BLOCK_MUTATIONS_CONDITION</td><td>block_mutations.condition</td><td>false</td><td>The <a href="template-expressions.md#authentication-object">expression</a> to evaluate if the operation should be blocked.</td><td></td></tr><tr><td>SECURITY_BLOCK_SUBSCRIPTIONS</td><td>block_subscriptions</td><td>false</td><td>Block subscription Operations. </td><td></td></tr><tr><td></td><td>block_subscriptions.enabled</td><td>false</td><td>If the value is true, the subscriptions are blocked.</td><td>false</td></tr><tr><td></td><td>block_subscriptions.condition</td><td>false</td><td>The <a href="template-expressions.md">expression</a> to evaluate if the operation should be blocked.</td><td></td></tr><tr><td>SECURITY_BLOCK_NON_PERSISTED_OPERATIONS</td><td>block_non_persisted_operations</td><td>false</td><td>Block non-persisted Operations. </td><td></td></tr><tr><td>SECURITY_BLOCK_NON_PERSISTED_OPERATIONS_ENABLED</td><td>block_non_persisted_operations.enabled</td><td>false</td><td>If the value is true, the non-persisted operations are blocked.</td><td>false</td></tr><tr><td>SECURITY_BLOCK_NON_PERSISTED_OPERATIONS_CONDITION</td><td>block_non_persisted_operations.condition</td><td>false</td><td>The <a href="template-expressions.md">expression</a> to evaluate if the operation should be blocked.</td><td></td></tr><tr><td></td><td>complexity_calculation_cache</td><td>false</td><td>Complexity Cache configuration</td><td></td></tr><tr><td></td><td>complexity_limits</td><td>false</td><td>Complexity limits configuration</td><td></td></tr></tbody></table>
 
 #### Example YAML Configuration
 
@@ -1104,9 +1104,13 @@ The configuration for the security. The security is used to configure the securi
 version: "1"
 
 security:
-    block_mutations: false
-    block_subscriptions: false
-    block_non_persisted_operations: false
+    block_mutations:
+      enabled: false
+      condition: "request.header.Get('x-block-mutation') == 'yes'"
+    block_subscriptions:
+      enabled: false
+    block_non_persisted_operations:
+      enabled: false
     complexity_calculation_cache: # This is for a local in-memory cache, to persist the calculation results
       enabled: true
       size: 1024
