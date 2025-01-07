@@ -1066,6 +1066,8 @@ Using a key suffix expression, you're able to dynamically choose a rate limiting
 request.auth.claims.sub ?? request.header.Get('X-Forwarded-For')
 ```
 
+For mor information on how to use the expression language, please refer to the [template-expressions.md](template-expressions.md "mention")section.
+
 #### General Rate Limiting Configuration
 
 <table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>The rate limit strategy</td><td>simple</td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td>The configuration for the simple strategy</td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td>Redis connection settings.</td><td></td></tr><tr><td>RATE_LIMIT_KEY_SUFFIX_EXPRESSION</td><td>key_suffix_expression</td><td>false</td><td>The expression to define a key suffix for the rate limit, e.g. by using request headers, claims, or a combination of both with a fallback strategy. The expression is specified as a string and needs to evaluate to a string. Please see https://expr-lang.org/ for more information.</td><td></td></tr></tbody></table>
