@@ -1,6 +1,6 @@
 ---
-description: Using Template Expressions for Request and Configuration Control
 icon: brackets-curly
+description: Using Template Expressions for Request and Configuration Control
 ---
 
 # Template Expressions
@@ -34,6 +34,7 @@ To modify configurations or manipulate requests and responses, implementing a [c
 
 * **Fields**: Use camelCase (e.g., `request.auth.claims`).
 * **Methods**: Use PascalCase (e.g., `request.header.Get("Content-Type")`).
+* **Utility Functions**: camelCase (e.g. trim) for the full list see [here](https://expr-lang.org/docs/language-definition).
 
 ## Expression Context
 
