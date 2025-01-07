@@ -1056,9 +1056,19 @@ Configures a rate limiter on the outgoing subgraphs requests. When enabled, a ra
 The rate limiter requires Redis version 3.2 or newer since it relies on [replicate\_commands](https://redis.io/commands/eval#replicating-commands-instead-of-scripts) feature. ElastiCache for Redis only works in non-clustered mode. You can enable a failover instance to achieve high availability.
 {% endhint %}
 
+#### Key Suffix Expression
+
+As you can see in the config table below, you can define an expression to generate the a rate limiting key suffix. The evaluation of the expression must return a string, which will be appended to the key prefix.
+
+Using a key suffix expression, you're able to dynamically choose a rate limiting key, e.g. based on the user authentication, a header, or a combination. Here's an example expression that uses the `sub` claim if available, and a Header as the fallback.
+
+```javascript
+request.auth.claims.sub ?? request.header.Get('X-Forwarded-For')
+```
+
 #### General Rate Limiting Configuration
 
-<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>The rate limit strategy</td><td>simple</td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td>The configuration for the simple strategy</td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td>Redis connection settings.</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>The rate limit strategy</td><td>simple</td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td>The configuration for the simple strategy</td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td>Redis connection settings.</td><td></td></tr><tr><td>RATE_LIMIT_KEY_SUFFIX_EXPRESSION</td><td>key_suffix_expression</td><td>false</td><td>The expression to define a key suffix for the rate limit, e.g. by using request headers, claims, or a combination of both with a fallback strategy. The expression is specified as a string and needs to evaluate to a string. Please see https://expr-lang.org/ for more information.</td><td></td></tr></tbody></table>
 
 #### Storage
 
