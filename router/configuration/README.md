@@ -1070,15 +1070,42 @@ For mor information on how to use the expression language, please refer to the [
 
 #### General Rate Limiting Configuration
 
-<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>The rate limit strategy</td><td>simple</td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td>The configuration for the simple strategy</td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td>Redis connection settings.</td><td></td></tr><tr><td>RATE_LIMIT_KEY_SUFFIX_EXPRESSION</td><td>key_suffix_expression</td><td>false</td><td>The expression to define a key suffix for the rate limit, e.g. by using request headers, claims, or a combination of both with a fallback strategy. The expression is specified as a string and needs to evaluate to a string. Please see https://expr-lang.org/ for more information.</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ENABLED</td><td>enabled</td><td>false</td><td>Enable / Disable rate limiting globally</td><td>false</td></tr><tr><td>RATE_LIMIT_STRATEGY</td><td>strategy</td><td>true</td><td>The rate limit strategy</td><td>simple</td></tr><tr><td></td><td>simple_strategy</td><td>false</td><td><a data-mention href="./#rate-limiting-simple-strategy">#rate-limiting-simple-strategy</a></td><td></td></tr><tr><td></td><td>storage</td><td>false</td><td><a data-mention href="./#rate-limiting-redis-storage">#rate-limiting-redis-storage</a></td><td></td></tr><tr><td>RATE_LIMIT_KEY_SUFFIX_EXPRESSION</td><td>key_suffix_expression</td><td>false</td><td>The expression to define a key suffix for the rate limit, e.g. by using request headers, claims, or a combination of both with a fallback strategy. The expression is specified as a string and needs to evaluate to a string. Please see https://expr-lang.org/ for more information.</td><td></td></tr><tr><td></td><td>error_extension_code</td><td>false</td><td><a data-mention href="./#rate-limit-error-extension-code">#rate-limit-error-extension-code</a></td><td></td></tr></tbody></table>
 
-#### Storage
+#### Rate Limiting Redis Storage
 
-<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_REDIS_URL</td><td>addr</td><td>true</td><td>The connection URL.</td><td>redis://localhost:6379</td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_REDIS_URL</td><td>url</td><td>true</td><td>The connection URL.</td><td>redis://localhost:6379</td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
 
-#### Simple Strategy
+#### Rate Limiting Simple Strategy
 
 <table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_SIMPLE_RATE</td><td>rate</td><td>true</td><td>Allowed request rate (number)</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_BURST</td><td>burst</td><td>true</td><td>Allowed burst rate (number) - max rate per one request</td><td>10</td></tr><tr><td>RATE_LIMIT_SIMPLE_PERIOD</td><td>period</td><td>true</td><td>The rate limiting period, e.g. "10s", "1m", etc...</td><td>1s</td></tr><tr><td>RATE_LIMIT_SIMPLE_REJECT_EXCEEDING_REQUESTS</td><td>reject_exceeding_requests</td><td>false</td><td>Reject the complete request if a sub-request exceeds the rate limit. If set to false, partial responses are possible.</td><td>false</td></tr></tbody></table>
+
+#### Rate Limit Error Extension Code
+
+<table data-full-width="true"><thead><tr><th width="286">Environment Variable</th><th width="104">YAML</th><th width="112" data-type="checkbox">Required</th><th width="330">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_ERROR_EXTENSION_CODE_ENABLED</td><td>enabled</td><td>false</td><td>If enabled, a code will be added to the extensions.code field of error objects related to rate limiting. This allows clients to easily identify if an error happened due to rate limiting.</td><td>true</td></tr><tr><td>RATE_LIMIT_ERROR_EXTENSION_CODE</td><td>code</td><td>false</td><td>The error extension code for the rate limit.</td><td>RATE_LIMIT_EXCEEDED</td></tr></tbody></table>
+
+#### Rate Limiting Example YAML configuration
+
+```yaml
+rate_limiting:
+    enabled: true
+    strategy: "simple"
+    simple_strategy:
+        rate: 10
+        burst: 10
+        period: 1s
+        reject_exceeding_requests: false
+        reject_status_code: 200
+        hide_stats_from_response_extension: false
+    storage:
+        url: "redis://localhost:6379"
+        key_prefix: "cosmo_rate_limit"
+    debug: false
+    key_suffix_expression: ""
+    error_extension_code:
+        enabled: true
+        code: "RATE_LIMIT_EXCEEDED"
+```
 
 ### Subgraph Error Propagation
 
