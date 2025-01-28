@@ -33,7 +33,7 @@ A previously created [Event-Driven Graph (EDG) ](../../federation/event-driven-f
 {% hint style="warning" %}
 If the subgraph has already been created previously, the `routing-url`, `label`, `subscription-url`,`subscription-protocol`, and `websocket-subprotocol parameters`will be ignored. Use [subgraph update](update.md) to update these values.\
 \
-If creating an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/) with publish, providing any of the four aforementioned parameters will produce an error.
+If creating an [Event-Driven Graph](../../federation/event-driven-federated-subscriptions/) with `subgraph publish`, providing _any_ of `routing-url`, `subscription-url`,`subscription-protocol`, or `websocket-subprotocol` will produce an error.
 {% endhint %}
 
 * `--routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint from where the subgraph will fetch data.
