@@ -177,6 +177,7 @@
   * [Global Custom Attributes](router/open-telemetry/global-custom-attributes.md)
   * [Custom Metric Attributes](router/open-telemetry/custom-metric-attributes.md)
   * [Prometheus OTLP Ingestion](router/open-telemetry/prometheus-otlp-ingestion.md)
+  * [Setup OpenTelemetry Collector](router/open-telemetry/setup-opentelemetry-collector.md)
 * [Metrics & Monitoring](router/metrics-and-monitoring/README.md)
   * [Prometheus Metric Reference](router/metrics-and-monitoring/prometheus-metric-reference.md)
 * [Proxy capabilities](router/proxy-capabilities/README.md)
