@@ -11,7 +11,7 @@ description: >-
 {% hint style="warning" %}
 NOTE FOR SDK DOCUMENTATION\
 \
-The docs for the typescript SDK has been moved to [https://bff-docs.wundergraph.com](https://bff-docs.wundergraph.com). This domain is now reserved for documentation regarding Cosmo.
+The docs for the typescript SDK has been moved to [https://bff-docs.wundergraph.com](https://bff-docs.wundergraph.com). The domain docs.wundergraph.com is now reserved for documentation regarding Cosmo.
 {% endhint %}
 
 
