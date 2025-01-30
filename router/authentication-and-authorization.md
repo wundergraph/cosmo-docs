@@ -20,15 +20,13 @@ In router version 0.169.0 and above, the configuration and behavior of authentic
 
 ### New configuration
 
-```yaml
-# config.yaml
-
-authentication:
-  jwt:
+<pre class="language-yaml" data-title="config.yaml"><code class="lang-yaml"><strong>authentication:
+</strong>  jwt:
     jwks:
       - url: https://example.com/.well-known/jwks.json
         refresh_interval: 1m
         # Leaving algorithms empty will allow all supported algorithms from the config docs
+        algorithms: []
       - url: https://example2.com/.well-known/jwks.json
         refresh_interval: 2m
         # optional list of allowed algorithms per JWKS
@@ -41,15 +39,14 @@ authentication:
         value_prefixes: [Token, MyToken]
       - type: header
         name: X-Authorization
-```
+</code></pre>
 
 The new router configuration facilitates the setup of multiple JWKS (JSON Web Key Set) endpoints, each customizable with distinct retrieval settings. It allows specification of supported JWT (JSON Web Token) algorithms per endpoint. Centralizing header rules application across all keys from every JWKS endpoint simplifies management. This setup grants centralized control while offering flexibility in the retrieval and processing of keys.
 
 ## Old Router configuration (< 0.169.0)&#x20;
 
+{% code title="config.yaml" %}
 ```yaml
-# config.yaml
-
 authentication:
   providers:
     - name: My Auth Provider # Optional, used for error messages and diagnostics
@@ -60,6 +57,7 @@ authentication:
         refresh_interval: 1m # Optional, How often the JWK is refreshed
        
 ```
+{% endcode %}
 
 
 
@@ -69,12 +67,12 @@ Using multiple authentication providers is also supported. If authentication wit
 
 By default, requests without authentication information are allowed. Only requests with invalid authentication information (e.g. an incorrectly signed token) produce a `403 Forbidden` response. To disable anonymous requests, use the Authorization configuration:
 
+{% code title="config.yaml" %}
 ```yaml
-# config.yaml
-
 authorization:
   require_authentication: true
 ```
+{% endcode %}
 
 This causes requests without authorization information to produce a `401 Unauthorized`
 
