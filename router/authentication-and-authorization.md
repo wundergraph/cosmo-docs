@@ -14,7 +14,7 @@ Cosmo router supports authenticating incoming requests using [JWKS](https://auth
 
 To enable an authentication provider, add it to your configuration
 
-## Configuration in Router Version >= 0.169.0
+## Configuration in Router Version >= 0.168.1
 
 In router version 0.169.0 and above, the configuration and behavior of authentication have been redesigned. Instead of specifying a configuration per JWKS endpoint, you can now list multiple endpoints where all header rules apply to. Each JWKS endpoint can optionally specify a whitelist of supported JWT algorithms.
 
@@ -43,7 +43,7 @@ In router version 0.169.0 and above, the configuration and behavior of authentic
 
 The new router configuration facilitates the setup of multiple JWKS (JSON Web Key Set) endpoints, each customizable with distinct retrieval settings. It allows specification of supported JWT (JSON Web Token) algorithms per endpoint. Centralizing header rules application across all keys from every JWKS endpoint simplifies management. This setup grants centralized control while offering flexibility in the retrieval and processing of keys.
 
-## Old Router configuration (< 0.169.0)&#x20;
+## Old Router configuration (< 0.168.1)&#x20;
 
 {% code title="config.yaml" %}
 ```yaml
