@@ -63,7 +63,9 @@ By default rate limiting is disabled. The following configuration should be appl
 rate_limit:
   enabled: true
   storage:
-    url: redis://localhost:6379
+    cluster_enabled: false # set to true to use a Redis Cluster
+    url: 
+     - redis://localhost:6379
     key_prefix: cosmo_rate_limit
   simple_strategy:
     rate: 100
@@ -71,6 +73,17 @@ rate_limit:
     period: 1s
 ```
 {% endcode %}
+
+{% hint style="warning" %}
+Prior to [router@0.169.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.168.1), the redis configuration looks like:
+
+```
+rate_limit:
+   storage:
+    url: redis://localhost:6379
+    key_prefix: cosmo_rate_limit
+```
+{% endhint %}
 
 ## Configure CORS
 

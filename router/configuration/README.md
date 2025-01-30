@@ -666,15 +666,27 @@ storage_providers:
       secure: false
   redis:
     - id: "my-redis"
-      url: "redis://localhost:6379"
+      cluster_enabled: false
+      urls: 
+        - "redis://localhost:6379"
 ```
 {% endcode %}
+
+{% hint style="warning" %}
+Prior to [router@v0.169.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.168.1), the redis configuration looks like:
+
+```
+  redis:
+    - id: "my_redis"
+      url: "redis://localhost:6379"
+```
+{% endhint %}
 
 #### Storage Provider Yaml Options
 
 These rules apply to requests being made from the Router to all Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="136">Environment Variable</th><th width="237">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the provider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>redis</td><td>false</td><td>Redis storage provider</td><td></td></tr><tr><td></td><td>redis.id</td><td>true</td><td>Unique ID of the provider. It is used as a reference in the <code>automatic_persisted_queries</code> section</td><td></td></tr><tr><td></td><td>redis.url</td><td>true</td><td>Redis url, containing port and auth information if necessary</td><td></td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="355">Environment Variable</th><th width="237">YAML</th><th width="88" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>cdn</td><td>false</td><td>CDN storage provider.</td><td></td></tr><tr><td></td><td>cdn.id</td><td>true</td><td>Unique ID of the provider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>cdn.url</td><td>false</td><td></td><td>"https://cosmo-cdn.wundergraph.com"</td></tr><tr><td></td><td>redis</td><td>false</td><td>Redis storage provider</td><td></td></tr><tr><td>STORAGE_PROVIDER_REDIS_ID</td><td>redis.id</td><td>true</td><td>Unique ID of the provider. It is used as a reference in the <code>automatic_persisted_queries</code> section</td><td></td></tr><tr><td>STORAGE_PROVIDER_REDIS_CLUSTER_ENABLED</td><td>redis.cluster_enabled</td><td>false</td><td>If the Redis instance is a Redis cluster</td><td></td></tr><tr><td>STORAGE_PROVIDER_REDIS_URLS</td><td>redis.urls</td><td>true</td><td>List of Redis urls, containing port and auth information if necessary. Must contain at least one element</td><td></td></tr><tr><td></td><td>s3</td><td>false</td><td>S3 storage provider</td><td></td></tr><tr><td></td><td>s3.id</td><td>true</td><td>Unique ID of the privider. It is used as reference in <code>persisted_operations</code> and <code>execution_config</code> sections.</td><td></td></tr><tr><td></td><td>s3.endpoint</td><td>false</td><td>The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.bucket</td><td>false</td><td>The name of the S3 bucket. The S3 bucket is used to store the execution config.</td><td></td></tr><tr><td></td><td>s3.access_key</td><td>false</td><td>The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.secret_key</td><td>false</td><td>The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.</td><td></td></tr><tr><td></td><td>s3.region</td><td>false</td><td>The region of the S3 bucket. The region is used to specify the region of the S3 bucket</td><td></td></tr><tr><td></td><td>s3.secure</td><td>false</td><td>Enables https in the provided endpoint. Must be set to <code>false</code> when accessing http endpoints</td><td>true</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
 
 ### Persisted Operations
 
@@ -1115,7 +1127,7 @@ For mor information on how to use the expression language, please refer to the [
 
 #### Rate Limiting Redis Storage
 
-<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_REDIS_URL</td><td>url</td><td>true</td><td>The connection URL.</td><td>redis://localhost:6379</td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_REDIS_URL</td><td>urls</td><td>true</td><td>List of the connection URL(s).</td><td>[redis://localhost:6379]</td></tr><tr><td>RATE_LIMIT_REDIS_CLUSTER_ENABLED</td><td>cluster_enabled</td><td>false</td><td>If the Redis instance is a Redis cluster</td><td>false</td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
 
 #### Rate Limiting Simple Strategy
 
@@ -1139,7 +1151,9 @@ rate_limiting:
         reject_status_code: 200
         hide_stats_from_response_extension: false
     storage:
-        url: "redis://localhost:6379"
+        cluster_enabled: false
+        urls: 
+         - "redis://localhost:6379"
         key_prefix: "cosmo_rate_limit"
     debug: false
     key_suffix_expression: ""

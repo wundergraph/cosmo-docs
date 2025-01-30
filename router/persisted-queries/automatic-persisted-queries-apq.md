@@ -41,9 +41,25 @@ automatic_persisted_queries:
 storage_providers:
   redis:
     - id: "my_redis"
-      url: "redis://localhost:6379"
+      cluster_enabled: false # Set to true to use a Redis Cluster
+      urls: 
+       - "redis://localhost:6379"
 ```
 {% endcode %}
+
+{% hint style="warning" %}
+Prior to [router@v0.169.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.168.1), the redis configuration looks like:
+
+```
+  redis:
+    - id: "my_redis"
+      url: "redis://localhost:6379"
+```
+{% endhint %}
+
+
+
+
 
 ## Testing APQ
 
