@@ -880,6 +880,45 @@ websocket:
 
 Configure different authentication providers.
 
+#### New Authentication Config (Router Version ≥ 0.169.0)
+
+#### JWKS
+
+<table data-full-width="true"><thead><tr><th width="165">YAML</th><th width="128" data-type="checkbox">Required</th><th width="594">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>url</td><td>true</td><td>The URL of the JWKs. The JWKs are used to verify the JWT (JSON Web Token). The URL is specified as a string with the format 'scheme://host:port'.</td><td></td></tr><tr><td>refresh_interval</td><td>false</td><td>The interval at which the JWKs are refreshed. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.</td><td>1m</td></tr><tr><td>algorithms</td><td>false</td><td>The allowed algorithms for the keys that are retrieved from the JWKs. An empty list means that all algorithms are allowed.<br><br>The following algorithms are supported<br>"HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"</td><td>[] (all allowed)</td></tr></tbody></table>
+
+#### JWT
+
+<table data-full-width="true"><thead><tr><th width="194">YAML</th><th width="101" data-type="checkbox">Required</th><th width="594">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>header_name</td><td>false</td><td>The name of the header. The header is used to extract the token from the request. The default value is 'Authorization'.</td><td>Authorization</td></tr><tr><td>header_value_prefix</td><td>false</td><td>The prefix of the header value. The prefix is used to extract the token from the header value. The default value is 'Bearer'.</td><td>Bearer</td></tr></tbody></table>
+
+Header Sources
+
+<table data-full-width="true"><thead><tr><th width="165">YAML</th><th width="128" data-type="checkbox">Required</th><th width="594">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>type</td><td>true</td><td>The type of the source. The only currently supported type is 'header'.</td><td></td></tr><tr><td>name</td><td>true</td><td>The name of the header. The header is used to extract the token from the request.</td><td></td></tr><tr><td>value_prefixes</td><td>false</td><td>The prefixes of the header value. The prefixes are used to extract the token from the header value.</td><td></td></tr></tbody></table>
+
+#### Example YAML config V2:
+
+```yaml
+authentication:
+  jwt:
+    jwks:
+      - url: "https://example.com/.well-known/jwks.json"
+        refresh_interval: 1m
+        # Leaving algorithms empty will allow all supported algorithms from the config docs
+      - url: "https://example2.com/.well-known/jwks.json"
+        refresh_interval: 2m
+        # optional list of allowed algorithms per JWKS
+        algorithms: ["RS256", "EdDSA", "HS512"]
+    header_name: Authorization # This is the default value
+    header_value_prefix: Bearer # This is the default value
+    header_sources:
+      - type: header 
+        name: X-Auth-Token
+        value_prefixes: [Token, MyToken]
+      - type: header
+        name: X-Authorization
+```
+
+#### Old Authentication Config (Router Version < 0.XXX.X)
+
 #### Provider
 
 <table data-full-width="true"><thead><tr><th width="215">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>name</td><td>false</td><td>Name of the provider</td><td></td></tr><tr><td></td><td>jwks</td><td>false</td><td>JWK Provider</td><td></td></tr></tbody></table>
@@ -887,6 +926,8 @@ Configure different authentication providers.
 #### JWK Provider
 
 <table data-full-width="true"><thead><tr><th width="208">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>url</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_names</td><td>false</td><td></td><td></td></tr><tr><td></td><td>header_value_prefixes</td><td>false</td><td></td><td></td></tr><tr><td></td><td>refresh_interval</td><td>true</td><td></td><td>1m</td></tr></tbody></table>
+
+
 
 #### Example YAML config:
 
