@@ -64,7 +64,7 @@ rate_limit:
   enabled: true
   storage:
     cluster_enabled: false # set to true to use a Redis Cluster
-    url: 
+    urls: 
      - redis://localhost:6379
     key_prefix: cosmo_rate_limit
   simple_strategy:
