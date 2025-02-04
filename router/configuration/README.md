@@ -1140,7 +1140,7 @@ For mor information on how to use the expression language, please refer to the [
 #### Rate Limiting Example YAML configuration
 
 ```yaml
-rate_limiting:
+rate_limit:
     enabled: true
     strategy: "simple"
     simple_strategy:
