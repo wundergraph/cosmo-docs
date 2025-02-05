@@ -147,7 +147,7 @@ type Query {
 
 <pre class="language-graphql"><code class="lang-graphql"># subgraph A
 <strong>extend type Query @openfed__configureDescription(
-</strong><strong>federatedGraphDescriptionOverride: "A.Query extension description"
+</strong><strong>  federatedGraphDescriptionOverride: "A.Query extension description"
 </strong><strong>) {
 </strong>  one: String!
 }
@@ -181,8 +181,8 @@ type Query {
 A.Query internal description
 """
 <strong>type Query @openfed__configureDescription(
-</strong><strong>federatedGraphDescriptionOverride: "A.Query external description"
-</strong><strong>) {
+</strong>  federatedGraphDescriptionOverride: "A.Query external description"
+<strong>) {
 </strong>  one: String!
 }
 </code></pre>
