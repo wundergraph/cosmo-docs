@@ -9,7 +9,7 @@ description: >-
 ## Definition
 
 {% code fullWidth="false" %}
-```
+```graphql
 directive @openfed__configureDescription(
     federatedGraphDescriptionOverride: String,
     propagateToFederatedGraph: Boolean! = true
