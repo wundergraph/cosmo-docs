@@ -11,8 +11,8 @@ description: >-
 {% code fullWidth="false" %}
 ```graphql
 directive @openfed__configureDescription(
-    federatedGraphDescriptionOverride: String,
-    propagateToFederatedGraph: Boolean! = true
+    descriptionOverride: String,
+    propagate: Boolean! = true
 ) on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | 
 INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | SCHEMA | UNION
 ```
@@ -29,23 +29,23 @@ The `@openfed__configureDescription`directive serves four main functions:
 
 ## Propagate a description to the federated graph
 
-If the `propagateToFederatedGraph` argument is set to `true` (the default value), the description corresponding to the coordinates of the directive in the defining subgraph will be the description that appears for those coordinates in the federated graph.
+If the `propagate` argument is set to `true` (the default value), the description corresponding to the coordinates of the directive in the defining subgraph will be the description that appears for those coordinates in the federated graph.
 
 ## Hide a description from the federated graph
 
-If the `propagateToGederatedGraph` argument is set to `false`, the description corresponding to the coordinates of the directive in the defining subgraph will not be considered for description that appears for those coordinates in the federated graph.
+If the `propagate` argument is set to `false`, the description corresponding to the coordinates of the directive in the defining subgraph will not be considered for description that appears for those coordinates in the federated graph.
 
 ## Override a description
 
-If the `propagateToFederatedGraph`argument is set to `true` (the default value), and the `federatedGraphDescriptionOverride`argument is set to a non-empty string, that string will be the description that appears for those coordinates in the federated graph.
+If the `propagate` argument is set to `true` (the default value), and the `descriptionOverride` argument is set to a non-empty string, that string will be the description that appears for those coordinates in the federated graph.
 
-If the `propagateToFederatedGraph`argument is set to `false`, the `federatedGraphDescriptionOverride` argument will be ignored.
+If the `propagate`  argument is set to `false`, the `descriptionOverride` argument will be ignored.
 
 ## Composition rules
 
-1. The coordinates that define the directive must define a description or provide a non-empty value to the `federatedGraphDescriptionOverride` argument.
-2. Only one instance of coordinates may define the `propagateFederatedGraph` with `true`. Multiple such definitions will produce a composition error.
-3. Any number of instances of coordinates may provide the `propagateFederatedGraph` argument with `false`.
+1. The coordinates that define the directive must define a description or provide a non-empty value to the `descriptionOverride` argument.
+2. Only one instance of coordinates may define the `propagate` with `true`. Multiple such definitions will produce a composition error.
+3. Any number of instances of coordinates may provide the `propagate` argument with `false`.
 
 ## Examples
 
@@ -87,7 +87,7 @@ type Query {
 """
 <strong>A.Query description
 </strong>"""
-type Query @openfed__configureDescription(propagateToFederatedGraph: false) {
+type Query @openfed__configureDescription(propagate: false) {
   one: String!
 }
 </code></pre>
@@ -119,7 +119,7 @@ type Query {
 """
 <strong>A.Query description
 </strong>"""
-type Query @openfed__configureDescription(propagateToFederatedGraph: false) {
+type Query @openfed__configureDescription(propagate: false) {
   one: String!
   two: String!
 }
@@ -130,7 +130,7 @@ type Query @openfed__configureDescription(propagateToFederatedGraph: false) {
 """
 B.Query description 1234
 """
-type Query @openfed__configureDescription(propagateToFederatedGraph: false) {
+type Query @openfed__configureDescription(propagate: false) {
   two: String!
 }
 ```
@@ -147,7 +147,7 @@ type Query {
 
 <pre class="language-graphql"><code class="lang-graphql"># subgraph A
 <strong>extend type Query @openfed__configureDescription(
-</strong><strong>  federatedGraphDescriptionOverride: "A.Query extension description"
+</strong><strong>  descriptionOverride: "A.Query extension description"
 </strong><strong>) {
 </strong>  one: String!
 }
@@ -181,7 +181,7 @@ type Query {
 A.Query internal description
 """
 <strong>type Query @openfed__configureDescription(
-</strong>  federatedGraphDescriptionOverride: "A.Query external description"
+</strong>  descriptionOverride: "A.Query external description"
 <strong>) {
 </strong>  one: String!
 }
