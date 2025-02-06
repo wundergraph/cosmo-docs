@@ -47,6 +47,16 @@ storage_providers:
 ```
 {% endcode %}
 
+{% hint style="info" %}
+Users can supply a list of URLs for their redis storage provider.&#x20;
+
+* If `cluster_enabled: false` , then we will use the first URL for the connection URL.&#x20;
+* If `cluster_enabled: true` , then we will use all of the URLs for the [Redis Cluster](https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/) connection.&#x20;
+
+URLs can be supplied with redis configuration options embedded, such as: \
+`redis://myUser:myPass@localhost:6379?ssl=true&db=1@connectTimeout=2`&#x20;
+{% endhint %}
+
 {% hint style="warning" %}
 Prior to [router@v0.169.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.168.1), the redis configuration looks like:
 
@@ -56,10 +66,6 @@ Prior to [router@v0.169.0](https://github.com/wundergraph/cosmo/releases/tag/rou
       url: "redis://localhost:6379"
 ```
 {% endhint %}
-
-
-
-
 
 ## Testing APQ
 
