@@ -779,6 +779,10 @@ These rules apply to requests being made from the Router to all Subgraphs.
 
 Configure rules for traffic shaping like maximum request body size, timeouts, retry behavior, etc. For more info, check this section in the docs: [traffic-shaping](../traffic-shaping/ "mention")
 
+{% hint style="warning" %}
+When overriding traffic shaping rules for a subgraph, you must specify all options, as they do not fallback to global or default values. This will be fixed in a future release.
+{% endhint %}
+
 #### Example YAML config:
 
 {% code title="" %}
@@ -803,6 +807,9 @@ traffic_shaping:
     expect_continue_timeout: 0s
     keep_alive_idle_timeout: 0s
     keep_alive_probe_interval: 30s
+    max_idle_conns: 1024
+    max_conns_per_host: 100
+    max_idle_conns_per_host: 20
     # Retry
     retry: # Rule is only applied to GraphQL operations of type "query"
       enabled: true
@@ -819,6 +826,9 @@ traffic_shaping:
       tls_handshake_timeout: 10s
       response_header_timeout: 0s
       expect_continue_timeout: 0s
+      max_idle_conns: 1024
+      max_conns_per_host: 100
+      max_idle_conns_per_host: 20
 ```
 {% endcode %}
 
@@ -826,13 +836,13 @@ traffic_shaping:
 
 These rules apply to requests being made from the Router to all Subgraphs.
 
-<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>retry</td><td>false</td><td><a data-mention href="./#traffic-shaping-jitter-retry">#traffic-shaping-jitter-retry</a></td><td></td></tr><tr><td></td><td>request_timeout</td><td>true</td><td></td><td>60s</td></tr><tr><td></td><td>dial_timeout</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>response_header_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>expect_continue_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>tls_handshake_timeout</td><td>false</td><td></td><td>10s</td></tr><tr><td></td><td>keep_alive_idle_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>keep_alive_probe_interval</td><td>false</td><td></td><td>30s</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="112" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>retry</td><td>false</td><td><a data-mention href="./#traffic-shaping-jitter-retry">#traffic-shaping-jitter-retry</a></td><td></td></tr><tr><td></td><td>request_timeout</td><td>true</td><td></td><td>60s</td></tr><tr><td></td><td>dial_timeout</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>response_header_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>expect_continue_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>tls_handshake_timeout</td><td>false</td><td></td><td>10s</td></tr><tr><td></td><td>keep_alive_idle_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>keep_alive_probe_interval</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>max_idle_conns</td><td>false</td><td></td><td>1024</td></tr><tr><td></td><td>max_conns_per_host</td><td>false</td><td></td><td>100</td></tr><tr><td></td><td>max_idle_conns_per_host</td><td>false</td><td></td><td>20</td></tr></tbody></table>
 
 #### Subgraph specific request rules
 
 In addition to the general traffic shaping rules, we also allow users to set subgraph specific timeout options, overriding the default traffic rules defined in `all`(if present)
 
-<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="133" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request_timeout</td><td>false</td><td></td><td>60s</td></tr><tr><td></td><td>dial_timeout</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>response_header_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>expect_continue_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>tls_handshake_timeout</td><td>false</td><td></td><td>10s</td></tr><tr><td></td><td>keep_alive_idle_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>keep_alive_probe_interval</td><td>false</td><td></td><td>30s</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="209">Environment Variable</th><th width="270">YAML</th><th width="133" data-type="checkbox">Required</th><th width="183">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>request_timeout</td><td>false</td><td></td><td>60s</td></tr><tr><td></td><td>dial_timeout</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>response_header_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>expect_continue_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>tls_handshake_timeout</td><td>false</td><td></td><td>10s</td></tr><tr><td></td><td>keep_alive_idle_timeout</td><td>false</td><td></td><td>0s</td></tr><tr><td></td><td>keep_alive_probe_interval</td><td>false</td><td></td><td>30s</td></tr><tr><td></td><td>max_idle_conns</td><td>false</td><td></td><td>1024</td></tr><tr><td></td><td>max_conns_per_host</td><td>false</td><td></td><td>100</td></tr><tr><td></td><td>max_idle_conns_per_host</td><td>false</td><td></td><td>20</td></tr></tbody></table>
 
 #### Jitter Retry
 
