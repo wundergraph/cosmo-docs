@@ -25,6 +25,7 @@
 * [Feature Flags](concepts/feature-flags.md)
 * [Namespaces](concepts/namespaces.md)
 * [Schema Contracts](concepts/schema-contracts.md)
+* [Cache Warmer](concepts/cache-warmer.md)
 
 ## Federation
 
@@ -83,6 +84,8 @@
   * [Changelog](cli/monograph/changelog.md)
   * [Migrate](cli/monograph/migrate.md)
 * [Router](cli/router/README.md)
+  * [Cache](cli/router/cache/README.md)
+    * [Push](cli/router/cache/push.md)
   * [Token](cli/router/token/README.md)
     * [Create](cli/router/token/create.md)
     * [List](cli/router/token/list.md)

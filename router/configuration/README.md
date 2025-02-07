@@ -1355,3 +1355,43 @@ apollo_compatibility_flags:
     replace_invalid_var_errors:
         enabled: true 
 ```
+
+### Cache warmer
+
+<table data-full-width="true"><thead><tr><th>Environment Variable</th><th>YAML</th><th width="100" data-type="checkbox">Required</th><th>Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>enabled</td><td>false</td><td>Set to true to enable the cache warmer.</td><td>false</td></tr><tr><td></td><td>workers</td><td>false</td><td>The number of workers for the cache warmup to run in parallel. Higher numbers decrease the time to warm up the cache but increase the load on the system.</td><td>8</td></tr><tr><td></td><td>items_per_second</td><td>false</td><td>The number of cache warmup items to process per second. Higher numbers decrease the time to warm up the cache but increase the load on the system.</td><td>50</td></tr><tr><td></td><td>timeout</td><td>false</td><td>The timeout for warming up the cache. This can be used to limit the amount of time cache warming will block deploying a new config. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.</td><td>30s</td></tr><tr><td></td><td>source</td><td>false</td><td>The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+cache_warmup:
+  enabled: true
+  workers: 8
+  items_per_second: 50
+  timeout: 30s
+```
+{% endcode %}
+
+#### Source
+
+The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.
+
+<table data-full-width="true"><thead><tr><th width="291">Environment Variable</th><th width="275">YAML</th><th width="112" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td></td><td>path</td><td>false</td><td>The path to the directory containing the cache warmup items.</td><td></td></tr></tbody></table>
+
+#### Example YAML config:
+
+{% code title="config.yaml" %}
+```yaml
+version: "1"
+
+cache_warmup:
+  enabled: true
+  workers: 8
+  items_per_second: 50
+  timeout: 30s
+  source:
+    path: "./cache-warmer/operations"
+```
+{% endcode %}
