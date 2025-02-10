@@ -3,7 +3,7 @@
 * [Overview](README.md)
 * [Architecture](architecture.md)
 * [Enterprise](enterprise.md)
-* [Self Hosted](self-hosted.md)
+* [Self Hosting](self-hosted.md)
 * [Tutorial](tutorial/README.md)
   * [Mastering Local Development for GraphQL Federation](tutorial/mastering-local-development-for-graphql-federation.md)
   * [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)

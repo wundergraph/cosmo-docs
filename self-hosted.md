@@ -5,9 +5,23 @@ description: >-
   Kubernetes, VMs, or Bare Metal.
 ---
 
-# Self Hosted
+# Self Hosting
 
-### Introduction
+### Self Hosting Cosmo Router
+
+The Cosmo Router is the main entry point for all requests to your APIs. It's responsible for routing requests to the appropriate service and handling authentication and authorization.
+
+The Router can be self-hosted in a variety of environments, like [Docker](deployments-and-hosting/docker.md), and [Kubernetes](deployments-and-hosting/kubernetes/), but also AWS Lambda.
+
+The Router is available in two different versions, the Containerized Version (default) and the AWS Lambda Version.
+
+The Containerized Version is a Docker/OCI compatible container image that is ideal for Kubernetes and other container orchestration platforms, like AWS Fargate, AWS ECS, Azure Container Instances, or Google Cloud Run.
+
+The AWS Lambda Version is a modified version of the Router that is optimized for running on AWS Lambda. For AWS Lambda, the Router is optimized for cold starts and manages Metrics and Tracing differently to account for shutdowns and reboots of the Lambda environment. The Cosmo Router for AWS Lambda is ideal for companies that are looking for a self-hosted solution with minimal operational overhead.
+
+To make deployments on Kubernetes as easy as possible, we provide out of the box [Helm Charts](deployments-and-hosting/kubernetes/helm-chart/).
+
+### Self Hosting the entire Cosmo Stack
 
 Self-hosting WunderGraph Cosmo is a great way to get started with the solution locally. It gives you the ability to take an in-depth look at the platform and understand how it works.
 
@@ -15,7 +29,7 @@ Beyond that, self-hosting allows you to deploy Cosmo in their own infrastructure
 
 We've architected Cosmo to be as flexible as possible, so you can run it in a variety of environments. The platform is designed to be cloud-native, so it can run in a variety of cloud environments, including AWS, Azure, and GCP. In addition, we've chosen components that are open source and available on a variety of platforms and from different vendors, giving you the flexibility to host Cosmo in the environment that best suits your needs.
 
-### Self Hosting Options
+#### Self Hosting Options
 
 There are a few different ways to self-host Cosmo, depending on your needs and the environment you want to run it in.
 
@@ -42,18 +56,6 @@ If you want to get the benefits of self-hosting without the hassle of managing t
 Let's take a look at the architecture of Cosmo and how it can be self-hosted. Cosmo is composed of several different components, each of which can be self-hosted.
 
 <figure><img src=".gitbook/assets/cosmo-architecture-final (4).png" alt=""><figcaption></figcaption></figure>
-
-#### Cosmo Router
-
-The Cosmo Router is the main entry point for all requests to your APIs. It's responsible for routing requests to the appropriate service and handling authentication and authorization.
-
-The Router can be self-hosted in a variety of environments, like Docker, and Kubernetes, but also AWS Lambda.
-
-The Router is available in two different versions, the Containerized Version (default) and the AWS Lambda Version.
-
-The Containerized Version is a Docker/OCI compatible container image that is ideal for Kubernetes and other container orchestration platforms, like AWS Fargate, AWS ECS, Azure Container Instances, or Google Cloud Run.
-
-The AWS Lambda Version is a modified version of the Router that is optimized for running on AWS Lambda. For AWS Lambda, the Router is optimized for cold starts and manages Metrics and Tracing differently to account for shutdowns and reboots of the Lambda environment. The Cosmo Router for AWS Lambda is ideal for companies that are looking for a self-hosted solution with minimal operational overhead.
 
 #### Cosmo CDN Server
 
