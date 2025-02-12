@@ -779,10 +779,6 @@ These rules apply to requests being made from the Router to all Subgraphs.
 
 Configure rules for traffic shaping like maximum request body size, timeouts, retry behavior, etc. For more info, check this section in the docs: [traffic-shaping](../traffic-shaping/ "mention")
 
-{% hint style="warning" %}
-When overriding traffic shaping rules for a subgraph, you must specify all options, as they do not fallback to global or default values. This will be fixed in a future release.
-{% endhint %}
-
 #### Example YAML config:
 
 {% code title="" %}
