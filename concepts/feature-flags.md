@@ -43,7 +43,7 @@ The router is not responsible for traffic splitting. Modern cloud providers / lo
 
 Feature flags allow you to publish Subgraph Schema Changes without breaking existing clients. You can add new fields or types to your feature subgraph schemas and expose them through a feature flag. &#x20;
 
-The same is true for the renaming existing fields. For example, your codebase could maintain two versions of the schema: one with the old field name and one with the new field name. These two separate schema versions can be exposed through different paths, e.g., `/v1/graphql` and `/v2/graphql`. This way, existing clients can continue to use the old schema until they are ready to switch to the new schema, and the contract is never broken. Moreover, new clients could automatically use the latest version of the schema, including all feature flags.
+The same is true for renaming existing fields. For example, your codebase could maintain two versions of the schema: one with the old field name and one with the new field name. These two separate schema versions can be exposed through different paths, e.g., `/v1/graphql` and `/v2/graphql`. This way, existing clients can continue to use the old schema until they are ready to switch to the new schema, and the contract is never broken. Moreover, new clients could automatically use the latest version of the schema, including all feature flags.
 
 ### Dynamic Configuration
 
