@@ -1,8 +1,8 @@
 ---
+icon: newspaper
 description: >-
   An example of how feature flags could be used to release an experimental
   feature to a subset of a federated graph's consumers.
-icon: newspaper
 ---
 
 # Gradual and experimental feature rollout with Feature Flags
@@ -79,7 +79,7 @@ The feature that we want to release is related to the `products` service. We wan
 First, we must create a feature subgraph that will eventually compose our feature flag. This is done with [`wgc feature-subgraph create`](../cli/feature-subgraph/create-feature-subgraph.md).  Every feature subgraph is linked to the "base" or "original" subgraph that it intends to replace. In this case, the feature we wish to gradually introduce to our customers is within the `products` service, so we pass `products` (the name of the service) to the `--subgraphs` parameter.
 
 ```bash
-wgc fs products-feature \
+wgc fs create products-feature \
  --namespace staging \
  --routing-url https://staging.products-feature.wundergraph.com \
  --subgraph products
