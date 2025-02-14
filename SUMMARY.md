@@ -184,6 +184,7 @@
   * [Setup OpenTelemetry Collector](router/open-telemetry/setup-opentelemetry-collector.md)
 * [Metrics & Monitoring](router/metrics-and-monitoring/README.md)
   * [Prometheus Metric Reference](router/metrics-and-monitoring/prometheus-metric-reference.md)
+  * [Grafana](router/metrics-and-monitoring/grafana.md)
 * [Proxy capabilities](router/proxy-capabilities/README.md)
   * [Request Headers Operations](router/proxy-capabilities/request-headers-operations.md)
   * [Response Header Operations](router/proxy-capabilities/response-header-operations.md)

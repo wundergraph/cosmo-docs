@@ -19,7 +19,7 @@ Create one or more scripts to handle various stages of the request lifecycle for
 
 Below depicts the execution lifecycle with operation and scripts configured
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption><p>Pre-flight > Pre-Operation > Execute Operation > Post-Operation</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption><p>Pre-flight > Pre-Operation > Execute Operation > Post-Operation</p></figcaption></figure>
 
 
 
