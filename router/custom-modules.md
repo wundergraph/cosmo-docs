@@ -8,6 +8,8 @@ description: >-
 
 # Custom Modules
 
+
+
 {% hint style="info" %}
 In order to complete this section you need to have Golang 1.20 (or higher) and docker installed.
 {% endhint %}
@@ -194,6 +196,24 @@ func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler)
 	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
 }
 ```
+
+If you have to set the authentication scopes, but the authentication could be not set, you can call the method `ctx.SetAuthenticationScopes(scopes []string)` that, if the Authentication is not set, it will initialize it with an empty object and set the scopes. If the authentication is already set, it will just override the scopes.
+
+If you need to set authentication scopes but authentication is not yet initialized, you can call the method `ctx.SetAuthenticationScopes([]string)`. If authentication is not set, this method will initialize it with an empty object and apply the scopes. If authentication is already set, it will simply override the existing scopes.
+
+```go
+func (m *SetScopesModule) Middleware(core.RequestContext, next http.Handler) {
+	// Initialize the scopes
+	customScopes := []string{"scope1", "scope2"}
+
+	// Set the authentication scopes
+	ctx.SetAuthenticationScopes(customScopes)
+
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+The scopes will be available to subsequent custom modules, just like when using `SetScopes()`.
 
 ## Return GraphQL conform errors
 
