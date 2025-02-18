@@ -1372,7 +1372,7 @@ Produces the same error messages as Apollo Router when an invalid variable is su
 
 Extension code: "VALIDATION\_INVALID\_TYPE\_VARIABLE"
 
-<table data-full-width="true"><thead><tr><th>Environment Variable</th><th width="252">YAML</th><th width="98" data-type="checkbox">Required</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td>APOLLO_ROUTER_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED</td><td>replace_invalid_var_errors</td><td>false</td><td>Replaces invalid variable errors.</td><td>false</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th>Environment Variable</th><th width="252">YAML</th><th width="98" data-type="checkbox">Required</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td>APOLLO_ROUTER_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED</td><td>replace_invalid_var_errors.enabled</td><td>false</td><td>Replaces invalid variable errors.</td><td>false</td></tr><tr><td>APOLLO_ROUTER_COMPATIBILITY_SUBREQUEST_HTTP_ERROR_ENABLED</td><td>subrequest_http_error.enabled</td><td>false</td><td>Prepends an additional error when subgraph HTTP response code is non-2XX, similar to Apollo Router.</td><td>false</td></tr><tr><td></td><td></td><td>false</td><td></td><td></td></tr></tbody></table>
 
 #### Example YAML Configuration
 
@@ -1381,6 +1381,8 @@ version: "1"
 
 apollo_router_compatibility_flags:
     replace_invalid_var_errors:
+        enabled: true
+    subrequest_http_error:
         enabled: true
 ```
 
