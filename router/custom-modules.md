@@ -197,8 +197,6 @@ func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler)
 }
 ```
 
-If you have to set the authentication scopes, but the authentication could be not set, you can call the method `ctx.SetAuthenticationScopes(scopes []string)` that, if the Authentication is not set, it will initialize it with an empty object and set the scopes. If the authentication is already set, it will just override the scopes.
-
 If you need to set authentication scopes but authentication is not yet initialized, you can call the method `ctx.SetAuthenticationScopes([]string)`. If authentication is not set, this method will initialize it with an empty object and apply the scopes. If authentication is already set, it will simply override the existing scopes.
 
 ```go
