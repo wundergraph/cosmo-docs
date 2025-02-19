@@ -555,6 +555,29 @@ modules:
 
 Configure Header propagation rules for all Subgraphs or individual Subgraphs by name.
 
+#### Cookie Whitelist
+
+When `Cookie`is a propagated header, you may want to filter the keys that are forwarded to the subgraph from the client, you can do this via the `cookie_whitelist`option, which is a list of string cookie keys that will not be discarded. An empty value means allow all. If you'd like to block all cookies, disable the header propagation entirely.
+
+**Example YAML config:**
+
+```yaml
+version: "1"
+
+# Header manipulation
+# See "https://cosmo-docs.wundergraph.com/router/proxy-capabilities" for more info
+headers:
+  cookie_whitelist:
+   - "authorization"
+   - "my-cookie-key"
+  all:
+    request:
+      - op: "propagate"
+        named: Cookie
+```
+
+
+
 #### Global Header Rules
 
 Apply to requests/responses to/from "all" Subgraphs. These will be applied globally in the graph
@@ -568,7 +591,7 @@ Apply to requests/responses to/from "all" Subgraphs. These will be applied globa
 version: "1"
 
 # Header manipulation
-# See "https://cosmo-docs.wundergraph.com/router/proxy-capabilities" for more information
+# See "https://cosmo-docs.wundergraph.com/router/proxy-capabilities" for more info
 headers:
   all: # Header rules for all origin requests.
     request:
@@ -1337,7 +1360,7 @@ Produces the same error status as Apollo when validation fails.\
 **Error status**: 400 Bad Request\
 **Minimum router version**: [0.175.0](https://github.com/wundergraph/cosmo/compare/router@0.174.3...router@0.175.0)
 
-<table data-full-width="true"><thead><tr><th width="321">Environment Variable</th><th width="297">YAML</th><th width="102" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>APOLLO_COMPATIBILITY_ENABLE_ALL</td><td>apollo_compatibility_flags:<br>    enable_all: &#x3C;bool></td><td>false</td><td>Enables all the options of Apollo Compatibility.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED</td><td>value_completion:<br>    enabled: &#x3C;bool></td><td>false</td><td>Enables value completion.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED</td><td>truncate_floats:<br>    enabled: &#x3C;bool></td><td>false</td><td>Enables truncate floats.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED</td><td>suppress_fetch_errors:<br>    enabled: &#x3C;bool></td><td>false</td><td>Enables suppress fetch errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED</td><td>replace_undefined_op_field_errors:<br>    enabled: &#x3C;bool></td><td>false</td><td>Replaces undefined operation field errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED</td><td>replace_invalid_var_errors:<br>    enabled: &#x3C;bool></td><td>false</td><td>Replaces invalid variable errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_VALIDATION_ERROR_STATUS_ENABLED</td><td>replace_validation_error_status_enabled: &#x3C;bool></td><td>false</td><td>Replaces validation error status with 400.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUBSCRIPTION_MULTIPART_PRINT_BOUNDARY_ENABLED</td><td>subscription_multipart_print_boundary:<br>    enabled: &#x3C;bool></td><td>false</td><td>Prints the multipart boundary right after the message in multipart subscriptions. Without this flag, the Apollo client wouldn’t parse a message until the next one is pushed.</td><td></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="321">Environment Variable</th><th width="297">YAML</th><th width="102" data-type="checkbox">Required</th><th width="232">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>APOLLO_COMPATIBILITY_ENABLE_ALL</td><td>apollo_compatibility_flags:<br>    enable_all: &#x3C;bool></td><td>false</td><td>Enables all the options of Apollo Compatibility.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED</td><td>value_completion:<br>    enabled: &#x3C;bool></td><td>false</td><td>Enables value completion.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED</td><td>truncate_floats:<br>    enabled: &#x3C;bool></td><td>false</td><td>Enables truncate floats.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED</td><td>suppress_fetch_errors:<br>    enabled: &#x3C;bool></td><td>false</td><td>Enables suppress fetch errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED</td><td>replace_undefined_op_field_errors:<br>    enabled: &#x3C;bool></td><td>false</td><td>Replaces undefined operation field errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED</td><td>replace_invalid_var_errors:<br>    enabled: &#x3C;bool></td><td>false</td><td>Replaces invalid variable errors.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_REPLACE_VALIDATION_ERROR_STATUS_ENABLED</td><td>replace_validation_error_status_enabled: &#x3C;bool></td><td>false</td><td>Replaces validation error status with 400.</td><td>false</td></tr><tr><td>APOLLO_COMPATIBILITY_SUBSCRIPTION_MULTIPART_PRINT_BOUNDARY_ENABLED</td><td>subscription_multipart_print_boundary:<br>    enabled: &#x3C;bool></td><td>false</td><td>Prints the multipart boundary right after the message in multipart subscriptions. Without this flag, the Apollo client wouldn’t parse a message until the next one is pushed.</td><td>false</td></tr></tbody></table>
 
 #### Example YAML Configuration
 
