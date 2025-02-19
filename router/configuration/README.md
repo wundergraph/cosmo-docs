@@ -559,6 +559,10 @@ Configure Header propagation rules for all Subgraphs or individual Subgraphs by 
 
 When `Cookie`is a propagated header, you may want to filter the keys that are forwarded to the subgraph from the client, you can do this via the `cookie_whitelist`option, which is a list of string cookie keys that will not be discarded. An empty value means allow all. If you'd like to block all cookies, disable the header propagation entirely.
 
+{% hint style="info" %}
+The cookie whitelist can also affect custom modules that read request cookies, even if propagation is disabled for the `Cookie` header. This is because the whitelisting happens very early in the request lifecycle, before it reaches subgraphs or custom modules.
+{% endhint %}
+
 **Example YAML config:**
 
 ```yaml
