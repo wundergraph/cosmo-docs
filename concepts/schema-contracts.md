@@ -169,7 +169,7 @@ In this example, the `getDriverById` query is tagged as "public", meaning it cou
 Once we've finished annotating our subgraph schemas with `@tags`, we can publish the updated schemas to WunderGraph. First, let's run a Schema Check to ensure that our new schema is valid:
 
 ```bash
-wgc subgraph publish drivers --schema ./schema.graphql
+wgc subgraph check drivers --schema ./schema.graphql
 ```
 
 If all goes well, we'll see a `✔ Schema check passed.` message in the terminal. If not, the CLI will provide a detailed error message to help us identify and resolve any issues. Once we're confident that our new subgraph schema is ready to go, we can publish it to WunderGraph Cosmo.
