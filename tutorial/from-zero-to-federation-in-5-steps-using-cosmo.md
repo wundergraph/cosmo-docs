@@ -1,15 +1,15 @@
 ---
+icon: newspaper
 description: >-
   This guide brings you from zero to Federation in 5 Steps. Deploy and compose
   your Subgraphs and set up powerful CI Workflows for collaboration.
-icon: newspaper
 ---
 
 # From Zero to Federation in 5 Steps using Cosmo
 
 ## Overview
 
-Cosmo enables teams to build, manage, and observe federated GraphQL APIs. It enables collaboration across teams through powerful CI workflows with breaking change detection and schema change notifications.
+Cosmo enables teams to build, manage, and monitor federated GraphQL APIs. It facilitates collaboration across teams with robust CI workflows, breaking change detection, and schema change notifications.
 
 Follow the five steps below to get from zero to managed Federation.
 
@@ -22,15 +22,14 @@ Follow the five steps below to get from zero to managed Federation.
 ### Prerequisites
 
 * Node >= 18
-* Docker
-* Cosmo `wgc` CLI &#x20;
-* Account on [Cosmo Cloud](https://cosmo.wundergraph.com) (Free Trial). This makes it easier to follow the steps. (skip if you are self-hosting the whole of Cosmo)
-
-
+* [Docker](https://www.docker.com/)
+* Account on [Cosmo Cloud](https://cosmo.wundergraph.com) (Free Trial). This makes it easier to follow the steps. Skip if you are self-hosting the whole of Cosmo.
 
 ## Project setup
 
-You can clone the example project which has all the reference code that you need. It consists of 2 subgraphs namely posts and users, a Router, and the CI/CD configuration with GitHub actions. You can find it here: [https://github.com/wundergraph/cosmo-demo](https://github.com/wundergraph/cosmo-demo)
+You can clone the example project, which includes all the reference code you need. It features two subgraphs (Posts and Users), a Router, and a CI/CD setup with GitHub Actions.&#x20;
+
+You can find it here: [https://github.com/wundergraph/cosmo-demo](https://github.com/wundergraph/cosmo-demo)
 
 ### Install the Cosmo CLI tool
 
@@ -40,7 +39,7 @@ Run the following command to install the latest version of the Cosmo CLI.
 npm i -g wgc@latest
 ```
 
-Alternatively, you can use yarn.
+If you prefer Yarn over npm, use the following command instead:
 
 ```
 yarn global add wgc@latest
@@ -48,35 +47,65 @@ yarn global add wgc@latest
 
 ### Authenticate with the CLI
 
-We need to make sure that the CLI can talk with the Cosmo Control Plane to be able to publish the Subgraphs and compose them.
+We need to ensure that the CLI can communicate with the Cosmo Control Plane so that we can publish and compose the subgraphs.
 
-Run the following command and select your organization after logging in.
+Run the following command in your terminal.
 
 ```
 wgc auth login
 ```
 
-Alternatively, you can log into the [Cosmo Dashboard](https://cosmo.wundergraph.com), click on API Keys, and export the generated API key using the following cmd.
+After logging in, you can use the arrow keys to select your organization in your terminal.
+
+Alternatively, you can log into the [Cosmo Dashboard](https://cosmo.wundergraph.com), click on API Keys, and export the generated API key using the following command.
 
 ```bash
 export COSMO_API_KEY=<your_api_key>
 ```
 
-We're done with the prerequisites, let's now start with the real work!
-
-
+Now that you're done with the prerequisites let's start with the real work!
 
 ## Build and Deploy Subgraphs
 
-The first step is for each team to build and deploy their Subgraphs. You can deploy the Subgraphs on any infra you want. It's not required to publicly expose the Subgraphs. You can make them accessible on the public internet, or keep them private in your own VPC or on-premises. In a later step, you will deploy the Cosmo Router to the same infra, so the only requirement is that the Router is able to communicate with the Subgraphs over the network.
+The first step is for each team to build and deploy their Subgraphs. You can deploy the Subgraphs on any infra you want. It's not required to expose the Subgraphs to the public. You can make them accessible on the public internet or keep them private in your own VPC or on-premises. In a later step, you will deploy the Cosmo Router to the same infra, so the only requirement is that the Router can communicate with the Subgraphs over the network.
 
-For the sake of simplicity of this guide, we assume that you make the "Posts" Subgraph accessible on the URL \`https://posts.domain.com\` and the Users Subgraph on the \`https://users.domain.com\` URL.
+For the sake of this guide's simplicity, we assume that you make the "Posts" Subgraph accessible at the URL \`https://posts.domain.com\` and the "Users" Subgraph accessible at the URL \`https://users.domain.com\`.
 
 <figure><img src="../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
 
-To get you through this tutorial as easily as possible, we've prepared two Subgraphs for you in the [Demo Project](https://github.com/wundergraph/cosmo-demo). You can use these two and follow all steps closely, or you can use your own Subgraphs and mimic the rest of the steps.
+To help you get started quickly, we have prepared two compatible subgraphs in the Demo Project. You can either use these and follow along step by step or create your own subgraphs while mimicking the rest of the setup.
 
-In the demo project, we have two simple Subgraphs that are compatible, meaning that they will compose into a federated Graph without errors. You can run the subgraphs locally using `npm run dev` in each directory. There is also a Dockerfile for each to deploy them to the platform of your choice. Here are the schemas for the subgraphs.
+In the demo project, we have two simple Subgraphs that are compatible, meaning that they will compose into a federated Graph without errors. You can run them locally, but you’ll need **two terminal windows**—one for each subgraph.
+
+First, open two terminal windows.&#x20;
+
+You will navigate to a different subgraph in each terminal and ensure the dependencies are installed.
+
+* In **Terminal 1**, navigate to the **Posts** subgraph and install dependencies:
+
+```sh
+cd subgraph-posts && npm i
+```
+
+* In **Terminal 2**, navigate to the **Users** subgraph and install dependencies:
+
+```shell
+cd subgraph-users && npm i
+```
+
+You will only need to install the dependencies once. Once they are installed, you’re ready to start the subgraphs.
+
+Use the same two terminals to start the subgraphs. In each terminal, navigate to the corresponding subgraph and run:
+
+```sh
+npm run dev
+```
+
+This command allows you to run the subgraphs locally in each directory.&#x20;
+
+Additionally, each subgraph includes a Dockerfile for quick deployment to a platform of your choice.
+
+Here are the schemas for the subgraphs:
 
 | Posts                                                                                                                                                                                                        | Users                                                                                                                                                                                                                                                                                                         |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -112,13 +141,13 @@ type Query {
 
 ## Create and Publish Subgraphs
 
-Once your teams have deployed their subgraphs, we now have to register them on Cosmo and publish their GraphQL Schemas to the Registry. It is as simple as running 2 commands `create` and `publish`.&#x20;
+Once you have deployed the subgraphs, the next step is to register them on Cosmo and publish their GraphQL schemas to the Registry. This process is as simple as running two commands: `create` and `publish`.
 
-Note that we have the concept of labels. Each subgraph is given one or more labels which are then used by a federated graph to select the right subgraphs for composition. This gives ultimate flexibility for several teams to compose any desired graphs.
+Cosmo also uses [labels](https://cosmo-docs.wundergraph.com/cli/essentials#labels), which allows you to assign each subgraph with one or more labels. The labels help federated graphs dynamically select the appropriate subgraphs for composition, offering teams greater flexibility in structuring their graphs.
 
 <figure><img src="../.gitbook/assets/image (85).png" alt=""><figcaption></figcaption></figure>
 
-Here is an example using the demo project. Commands are run at the root of the project.
+Here is an example using the demo project. These commands need to be run in the project's **root directory**.
 
 ```sh
 # Team A
@@ -132,13 +161,20 @@ wgc subgraph create users --label team=B --routing-url https://users.domain.com
 wgc subgraph publish users --schema ./subgraph-users/schema.graphql
 ```
 
-We have now registered both Subgraphs on Cosmo and published their GraphQL Schemas. We're ready to compose them into a federated Graph.
+After you run this command, you should see a confirmation message in the terminal
 
+```
+Subgraph was created successfully.
+Subgraph published successfully.
+```
 
+If you’d like to confirm that your subgraphs have been successfully created and published, go to the Cosmo Dashboard and select Subgraphs from the men&#x75;**.** You should see a list of all registered subgraphs, their routing URLs, labels, and the last published time.&#x20;
+
+Now that both subgraphs have been registered on Cosmo and their GraphQL schemas have been published, we’re ready to compose them into a federated graph.
 
 ## Create Federated Graph
 
-Now it is time to compose the above subgraphs. We create a federated Graph by defining label-matchers. The matchers are being used to select the Subgraphs we'd like to add to our federated Graph.
+Now, it is time to compose the above subgraphs. We create a federated Graph by defining label-matchers, which we use to select the Subgraphs we'd like to add to our federated Graph.
 
 <figure><img src="../.gitbook/assets/image (78).png" alt=""><figcaption></figcaption></figure>
 
@@ -147,6 +183,14 @@ Below is the command to create a federated graph. We need to specify the labels 
 ```bash
 wgc federated-graph create production --label-matcher team=A,team=B --routing-url https://graph.domain.com/graphql
 ```
+
+After you run this command, you will see a confirmation message in the terminal.
+
+```
+Federated Graph was created successfully.
+```
+
+To verify that your federated graph was successfully created, navigate to the Studio Overview in the Cosmo Dashboard. This page displays key details such as the number of subgraphs, composition status, schema validation, and the router URL. If everything is set up correctly, you should see a  successful schema check and a router URL ready to fetch data from the subgraphs.
 
 Our federated Graph is now composed. Let's deploy a Router to wire it all together.
 
