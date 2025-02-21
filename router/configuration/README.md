@@ -1172,7 +1172,7 @@ For mor information on how to use the expression language, please refer to the [
 
 #### Rate Limiting Redis Storage
 
-<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_REDIS_URL</td><td>urls</td><td>true</td><td>List of the connection URL(s).</td><td>[redis://localhost:6379]</td></tr><tr><td>RATE_LIMIT_REDIS_CLUSTER_ENABLED</td><td>cluster_enabled</td><td>false</td><td>If the Redis instance is a Redis cluster</td><td>false</td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="249">Environment Variable</th><th width="150">YAML</th><th width="112" data-type="checkbox">Required</th><th width="153">Description</th><th>Default Value</th></tr></thead><tbody><tr><td>RATE_LIMIT_REDIS_URLS</td><td>urls</td><td>true</td><td>List of the connection URL(s).</td><td>[redis://localhost:6379]</td></tr><tr><td>RATE_LIMIT_REDIS_CLUSTER_ENABLED</td><td>cluster_enabled</td><td>false</td><td>If the Redis instance is a Redis cluster</td><td>false</td></tr><tr><td>RATE_LIMIT_REDIS_KEY_PREFIX</td><td>key_prefix</td><td>false</td><td>This prefix is used to namespace the ratelimit keys</td><td>cosmo_rate_limit</td></tr></tbody></table>
 
 #### Rate Limiting Simple Strategy
 
