@@ -19,7 +19,7 @@ Persisted operations are usually registered within Cosmo during your release pip
 
 The control plane replicates these operations in the Cosmo CDN, where the routers can fetch them. All operations in the CDN are protected and only readable by routers running the federated graph to which the operations were registered.
 
-### Using persisted operations
+## Using persisted operations
 
 Persisted operations require some tooling on the client side. Consult the documentation for your GraphQL client library to find out how to generate a query manifest or query map.
 
@@ -50,8 +50,74 @@ To see all available options for  `wgc operations push, see` [push.md](../cli/op
 
 Additionally, check the [Using Persisted Operation with Federated GraphQL](../tutorial/using-persisted-operations.md) tutorial for a step by step guide.
 
-### Disallowing non-persisted Operations
+## Disallowing non-persisted Operations
 
 If you're going all in on Security, you'd want to only allow Persisted Operations in your Production Environment.
 
 By default, non-persisted (dynamic) GraphQL Operations are allowed, which you can disable using the [Security Configuration](configuration/#security) of the Router.
+
+We expose 4 different types of persisted operation blocking in the configuration:
+
+1. **Allow all operations** (Default) — Both persisted and dynamic operations are permitted.
+2. **Log unknown operations** — Any operation that has not been persisted will be logged, but not blocked.
+3. **Safelist** — Operations that have been explicitly persisted will be allowed, based on matching the query body against persisted queries.
+4. **Block non-persisted operations** — Fully enforced blocking of non-persisted operations, clients are required to send a pre-computed SHA-256 hash instead of a query body.
+
+### Migration path to enforcing persisted operations
+
+To migrate from allowing all operations to a more restrictive option incrementally, we recommend following these steps:
+
+{% stepper %}
+{% step %}
+### Enable `log_unknown`
+
+This will log when clients use operations that have not been persisted, helping you identify which operations to persist.
+
+{% code title="config.yaml" %}
+```yaml
+persisted_operations:
+  log_unknown:
+    enabled: true
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+### Enable `safelist`
+
+This will allow users to send operations with any query body, but only execute if they match a persisted operation.
+
+{% code title="config.yaml" %}
+```yaml
+persisted_operations:
+  log_unknown: true
+  safelist:
+    enabled: true
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+### Fully enforced persisted operations
+
+Once you've persisted all of your operations, you can enable `block_non_persisted_operations`to ensure only SHA-256 operations are accepted.
+
+{% code title="config.yaml" %}
+```yaml
+security:
+  block_non_persisted_operations:
+    enabled: true
+```
+{% endcode %}
+{% endstep %}
+{% endstepper %}
+
+{% hint style="info" %}
+#### Important Considerations
+
+* **Whitespace sensitivity**\
+  Differences in whitespace can alter an operations hash, which will cause it to be rejected as an unknown operation. We recommend using `log_unknown_operations` before enabling full blocking.
+* **Compatibility with Automatic Persisted Queries (APQ)**\
+  The `safelist` option cannot be used alongside APQ, as their functions are opposite.
+{% endhint %}
+

@@ -123,7 +123,7 @@ override_routing_url:
 
 ## Leverage persistent operations
 
-Persistent operations are a great way to save bandwidth but also to reduce the attack vectors because only known queries can be executed from the clients.&#x20;
+[Persistent operations](../persisted-operations.md) are a great way to save bandwidth but also to reduce the attack vectors by only allowing known queries to be executed.
 
 By default, both persistent queries and regular queries are allowed. To allow only persistent queries, the following configuration should be applied:
 
@@ -134,6 +134,8 @@ security:
     enabled: true
 ```
 {% endcode %}
+
+We recommend reviewing the [persisted-operations.md](../persisted-operations.md "mention") page to learn more about the different levels of security you can enforce.
 
 ## Disable Subscriptions / Mutation if not used
 
