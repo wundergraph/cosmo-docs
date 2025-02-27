@@ -187,6 +187,33 @@ Here are the fields that are specifically added in error cases:
 * **requestError:** \
   This field is only present when an error has been encountered with the request, and will be `true`if so. This can better help clients filter their logs (if`requestError: true)`to find error cases.
 
+#### Expression Fields
+
+{% hint style="info" %}
+Available since Router [0.186.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.186.0)
+{% endhint %}
+
+Sometimes the provided custom fields are not enough, and you would like more control over what is logged. In these cases you can use template expression fields. The value retruned from the expression will be logged.
+
+```yaml
+access_logs:
+  enabled: true
+  router:
+    fields:
+    - key: "errorOrHeader"
+      value_from:
+        expression: "request.error ?? request.header.Get('x-header')" 
+```
+
+In the above example, if `request.error`is present, the expression will return the error to the access logger to be printed. However if the `request.error`is nil, the expression will instead will return the value of the header `x-header` .
+
+The response type of the expression is validated upon startup. You should ensure that the expression returns a value. Additionally the following are illegal return types
+
+* Channels
+* Functions
+
+You can find more information about expressions and the fields accessible for expressions [here](configuration/template-expressions.md).
+
 #### Default value
 
 When extracting values from a header, it can be beneficial to ensure a default value is set. This can be achieved by defining the value as follows:
@@ -397,7 +424,9 @@ Here’s an explanation of each field’s meaning:
 
 #### **Limitations**
 
-Currently, the following context fields available in router access logs are **not available** in Subgraph Access Logs:
+Access log expressions are not supported in the subgraph at this moment.
+
+Additionally, currently the following context fields available in router access logs are **not available** in Subgraph Access Logs:
 
 * `graphql_error_codes`
 * `graphql_error_service_names`

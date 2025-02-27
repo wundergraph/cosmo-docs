@@ -48,6 +48,7 @@ The `request` object is a read-only entity that provides details about the incom
 * `request.url.host`
 * `request.url.path`
 * `request.url.port`
+* `request.error`
 
 #### **Header Access**:
 
