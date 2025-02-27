@@ -13,5 +13,5 @@ Include the header `X-WG-Include-Query-Plan` to receive the query plan in the ex
 
 `X-WG-Disable-Tracing` : This will ensure that requests for query plan are not traced in the router
 
-<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 

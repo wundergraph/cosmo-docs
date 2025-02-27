@@ -225,7 +225,7 @@ query myEmployees {
 
 After executing the [Example Query](cosmo-cloud-onboarding.md#example-query-that-involves-all-subgraphs), use the dropdown on the right to review how the query was executed on the router and examine the generated query plan. This provides you with the necessary tools to investigate issues of any kind, both during development and, more importantly, in production.
 
-If you want to learn more about it, please take a look at [ART](../router/advanced-request-tracing-art.md) and [Query Plans](../router/query-plan.md).
+If you want to learn more about it, please take a look at [ART](../router/advanced-request-tracing-art.md) and [Query Plans](../router/query-plan/).
 
 <figure><img src="../.gitbook/assets/CleanShot 2024-10-22 at 13.03.19@2x.png" alt="" width="563"><figcaption></figcaption></figure>
 
