@@ -4,6 +4,10 @@ description: You can generate query plans using the ./router query-plan command
 
 # Batch generate Query Plans
 
+{% hint style="info" %}
+Available since Router 0.185.0
+{% endhint %}
+
 ## Prerequisites
 
 To generate query plans, you will need the following:
@@ -53,7 +57,7 @@ plans/query2.graphql
 
 ### Report generation
 
-You can use the -print-report option to generate a report in addition to the individual query plan files.\
+You can use the `-print-report` option to generate a report in addition to the individual query plan files.\
 The report will be saved in the plans folder as `report.json` and will follow this structure:
 
 ```
