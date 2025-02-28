@@ -23,7 +23,7 @@ You can get the execution config using `wgc`:
 wgc router fetch $graphname -o execution-config.json
 ```
 
-If you need to generate query plans in a local environment or test modifications to subgraphs before deployment, you can create the execution configuration using the `wgc router compose` command. Follow the first two steps outlined here: [mastering-local-development-for-graphql-federation.md](../../tutorial/mastering-local-development-for-graphql-federation.md "mention")
+If you need to generate query plans in a local environment or test modifications to subgraphs before deployment, you can create the execution configuration using the `wgc router compose` command. Follow the first two steps outlined here: [mastering-local-development-for-graphql-federation.md](../../tutorial/mastering-local-development-for-graphql-federation.md "mention").
 
 ## Generating query plans
 
