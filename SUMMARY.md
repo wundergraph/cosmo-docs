@@ -215,6 +215,7 @@
 * [Subgraph Error Propagation](router/subgraph-error-propagation.md)
 * [File Upload](router/file-upload.md)
 * [Access logs](router/access-logs.md)
+* [Profiling](router/profiling.md)
 
 ## Control Plane
 

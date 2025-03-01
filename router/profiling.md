@@ -1,0 +1,142 @@
+---
+description: >-
+  Optimize Go applications using the built-in pprof package for CPU, memory, and
+  goroutine profiling to identify bottlenecks and improve performance.
+icon: binoculars
+---
+
+# Profiling
+
+Profiling is an essential aspect of optimizing Go applications, as it helps identify bottlenecks, deadlocks, and inefficient code paths. Since the router is a Go application, you can leverage Go's built-in [`pprof`](https://go.dev/blog/pprof) package for memory and CPU profiling. This section provides guidance on setting up and retrieving profiles using `pprof`. These profiles are valuable for troubleshooting issues and can sometimes be the only way to gain meaningful context.
+
+## Enable Profiling
+
+To enable the `pprof` endpoints, start the router with the following environment variable:
+
+```bash
+PPROF_ADDR=:6060
+```
+
+This makes the following endpoints available:
+
+* `/debug/pprof/heap` — Memory profile.
+* `/debug/pprof/profile` — CPU profile.
+* `/debug/pprof/goroutine` — Goroutine profile.
+* `/debug/pprof/threadcreate` — Thread creation profile.
+* `/debug/pprof/block` — Block profile.
+
+## Downloading the Appropriate Profiles
+
+To troubleshoot issues effectively, categorize them into the following three types:
+
+1. **CPU Utilization**
+2. **Memory Utilization**
+3. **Stop-the-World Issues (Deadlocks)**
+
+Depending on the issue, you can download individual profiles or [generate a ZIP](profiling.md#best-practices-for-capturing-and-sharing-performance-profiles) archive containing a set of basic profiles. This is useful when you can't categorize the issue yourself.
+
+***
+
+### **1. CPU Utilization**
+
+To investigate CPU-related issues, you can fetch the CPU profile by running:
+
+```bash
+curl http://localhost:6060/debug/pprof/profile\?seconds\=30 > profile.out  # Download
+go tool pprof -http 127.0.0.1:8079 profile.out # Visualize
+```
+
+This command captures a 30-second CPU profile by default helping you identify functions consuming excessive CPU time.
+
+***
+
+### **2. Memory Utilization**
+
+To diagnose memory-related issues, you can download the heap profile:
+
+```bash
+curl http://localhost:6060/debug/pprof/heap > heap.out # Download
+go tool pprof -http 127.0.0.1:8079 heap.out # Visualize
+```
+
+This command captures a snapshot of memory allocations, allowing you to identify memory leaks or excessive memory usage.
+
+***
+
+### **3. Stop-the-World Issues (Deadlocks)**
+
+To identify deadlocks or goroutine-related issues, you can fetch the goroutine profile:
+
+```
+curl http://localhost:6060/debug/pprof/goroutine?debug=2 > goroutine.txt
+```
+
+This command provides a detailed stack trace of all active goroutines, which is helpful for detecting deadlocks or excessive blocking.
+
+**Additional profiles for diagnosing blocking and synchronization issues:**
+
+*   **Block Profile:** Captures blocking events caused by synchronization primitives.
+
+    ```
+    go tool pprof http://localhost:6060/debug/pprof/block
+    ```
+*   **Thread Creation Profile:** Identifies issues related to excessive thread creation.
+
+    ```
+    go tool pprof http://localhost:6060/debug/pprof/threadcreate
+    ```
+
+***
+
+By using these profiles effectively, you can pinpoint performance bottlenecks and improve the efficiency of your Go application. For further analysis, consider using the `go tool pprof` interactive commands such as `top`, `list`, `peek`, and `web`.
+
+## **Best Practices for Capturing and Sharing Performance Profiles**
+
+By attaching these profiles, you provide invaluable information for diagnosing performance bottlenecks and crashes efficiently! 🚀
+
+### **Considerations Before Exporting:**
+
+* **Run with a real workload:** Capture profiles during actual usage scenarios to ensure meaningful data.
+* **Use an adequate duration:** For CPU profiles, longer capture times (10–30 seconds) yield more useful information.
+* **Avoid noise:** Terminate other background processes to minimize interference in the profiles.
+
+### **Automation Script for Linux and macOS**
+
+Use the following script to automate the steps described above, and then attach the archive to an issue or send it to us via Slack.
+
+```bash
+#!/bin/bash
+
+# Set variables for profile files
+CPU_PROFILE="cpu.prof"
+MEM_PROFILE="mem.prof"
+GOROUTINE_PROFILE="goroutine.prof"
+ZIP_FILE="profiles_$(date +%Y%m%d_%H%M%S).zip"
+
+# Create a temporary directory to store profiles
+TEMP_DIR=$(mktemp -d)
+echo "Creating temporary directory: $TEMP_DIR"
+
+# Download profiles if the application has a pprof HTTP server running
+echo "Downloading profiles..."
+curl -o "$TEMP_DIR/$MEM_PROFILE" "http://localhost:6060/debug/pprof/heap"
+curl -o "$TEMP_DIR/$GOROUTINE_PROFILE" "http://localhost:6060/debug/pprof/goroutine"
+curl -o "$TEMP_DIR/$CPU_PROFILE" "http://localhost:6060/debug/pprof/profile?seconds=10"
+
+# Check if the profiles were downloaded successfully
+if [[ -f "$TEMP_DIR/$CPU_PROFILE" && -f "$TEMP_DIR/$MEM_PROFILE" && -f "$TEMP_DIR/$GOROUTINE_PROFILE" ]]; then
+    echo "Profiles downloaded successfully!"
+else
+    echo "Failed to download some profiles. Please check if the pprof HTTP server is running on port 6060."
+    exit 1
+fi
+
+# Create a zip file with all profiles
+echo "Creating zip archive: $ZIP_FILE"
+zip -j "$ZIP_FILE" "$TEMP_DIR/$CPU_PROFILE" "$TEMP_DIR/$MEM_PROFILE" "$TEMP_DIR/$GOROUTINE_PROFILE"
+
+# Clean up temporary files
+rm -rf "$TEMP_DIR"
+
+echo "Profiles collected and zipped successfully: $ZIP_FILE"
+```
