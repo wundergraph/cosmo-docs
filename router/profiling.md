@@ -1,8 +1,8 @@
 ---
+icon: binoculars
 description: >-
   Optimize Go applications using the built-in pprof package for CPU, memory, and
   goroutine profiling to identify bottlenecks and improve performance.
-icon: binoculars
 ---
 
 # Profiling
@@ -31,7 +31,7 @@ To troubleshoot issues effectively, categorize them into the following three typ
 
 1. **CPU Utilization**
 2. **Memory Utilization**
-3. **Stop-the-World Issues (Deadlocks)**
+3. **Blocking and synchronization**
 
 Depending on the issue, you can download individual profiles or [generate a ZIP](profiling.md#best-practices-for-capturing-and-sharing-performance-profiles) archive containing a set of basic profiles. This is useful when you can't categorize the issue yourself.
 
@@ -63,7 +63,7 @@ This command captures a snapshot of memory allocations, allowing you to identify
 
 ***
 
-### **3. Stop-the-World Issues (Deadlocks)**
+### **3. Blocking and Synchronization**
 
 To identify deadlocks or goroutine-related issues, you can fetch the goroutine profile:
 
@@ -102,7 +102,7 @@ By attaching these profiles, you provide invaluable information for diagnosing p
 
 ### **Automation Script for Linux and macOS**
 
-Use the following script to automate the steps described above, and then attach the archive to an issue or send it to us via Slack.
+Use the following script to automate the steps described above, and then attach the archive to an issue or send it to us via Slack.&#x20;
 
 ```bash
 #!/bin/bash
@@ -121,6 +121,7 @@ echo "Creating temporary directory: $TEMP_DIR"
 echo "Downloading profiles..."
 curl -o "$TEMP_DIR/$MEM_PROFILE" "http://localhost:6060/debug/pprof/heap"
 curl -o "$TEMP_DIR/$GOROUTINE_PROFILE" "http://localhost:6060/debug/pprof/goroutine"
+echo "Capturing CPU profile for 10 seconds..."
 curl -o "$TEMP_DIR/$CPU_PROFILE" "http://localhost:6060/debug/pprof/profile?seconds=10"
 
 # Check if the profiles were downloaded successfully
@@ -139,4 +140,13 @@ zip -j "$ZIP_FILE" "$TEMP_DIR/$CPU_PROFILE" "$TEMP_DIR/$MEM_PROFILE" "$TEMP_DIR/
 rm -rf "$TEMP_DIR"
 
 echo "Profiles collected and zipped successfully: $ZIP_FILE"
+```
+
+The resulting ZIP file will have the following flat structure:
+
+```
+profiles_YYYYMMDD_HHMMSS.zip
+├── cpu.prof
+├── mem.prof
+├── goroutine.prof
 ```
