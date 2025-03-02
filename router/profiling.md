@@ -17,6 +17,10 @@ To enable the `pprof` endpoints, start the router with the following environment
 PPROF_ADDR=:6060
 ```
 
+{% hint style="info" %}
+The `pprof` HTTP server will be accessible at `http://localhost:6060`. **Exposing this endpoint to production environments is highly discouraged** due to security risks.
+{% endhint %}
+
 This makes the following endpoints available:
 
 * `/debug/pprof/heap` — Memory profile.
