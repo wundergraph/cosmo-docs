@@ -166,6 +166,21 @@ This excludes `router_http_request_duration_milliseconds` histogram and the labe
 Default process and Go metrics can't be excluded. If you haven't run a query against the router yet, you'll see no `router_*` metrics because no metrics have been generated.
 {% endhint %}
 
+### Exclude scope info
+
+You can exclude OpenTelemetry scope info from Prometheus labels as well, which can be useful in some cases where you want to reduce metrics cardinality.
+
+{% code title="config.yaml" %}
+```yaml
+telemetry:
+  # OpenTelemetry Metrics
+  metrics:
+    # Expose OpenTelemetry metrics as Prometheus metrics
+    prometheus:
+      exclude_scope_info: true
+```
+{% endcode %}
+
 ### Make metrics accessible on all networks
 
 In container environments, it is necessary to expose your server on `0.0.0.0` to make the port accessible from outside.You can enable it by setting the following configuration.
