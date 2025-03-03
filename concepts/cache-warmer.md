@@ -23,7 +23,10 @@ Cache warming operates by:
 * The feature is available to **enterprise customers** via the Cosmo interface.
 * Organizations can **activate it at the namespace level** to target specific workloads.
 
-<figure><img src="../.gitbook/assets/Screenshot 2025-02-07 at 9.48.30 PM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Screenshot 2025-02-28 at 2.15.32 PM.png" alt=""><figcaption></figcaption></figure>
+
+* Users can configure the maximum number of operations for cache warming.&#x20;
+* Operations are managed using a LIFO (Last-In, First-Out) policy, ensuring the latest operation is added while the oldest is removed once the limit is reached.
 
 ### Router Configuration
 
