@@ -43,7 +43,7 @@
 
 ## CLI
 
-* [Intro](cli/intro.md)
+* [Cosmo CLI (wgc) Docs](cli/intro.md)
 * [Essentials](cli/essentials.md)
 * [API Keys](cli/api-keys.md)
 * [Namespace](cli/namespace/README.md)
@@ -117,7 +117,7 @@
 
 ## Studio
 
-* [Intro](studio/intro.md)
+* [Cosmo Studio Docs](studio/intro.md)
 * [Overview Page](studio/overview-page.md)
 * [Schema Explorer](studio/schema-explorer.md)
 * [Schema Registry](studio/schema-registry.md)
@@ -163,7 +163,7 @@
 
 ## Router
 
-* [Cosmo Router](router/intro.md)
+* [Cosmo Router Docs](router/intro.md)
 * [Download & Install](router/download-and-install.md)
 * [Configuration](router/configuration/README.md)
   * [Template Expressions](router/configuration/template-expressions.md)
@@ -219,13 +219,13 @@
 
 ## Control Plane
 
-* [Cosmo Control Plane](control-plane/intro.md)
+* [Cosmo Control Plane Docs](control-plane/intro.md)
 * [Configuration](control-plane/configuration.md)
 * [Webhooks](control-plane/webhooks.md)
 
 ## Deployments and hosting
 
-* [Intro](deployments-and-hosting/intro.md)
+* [Deployments & Hosting of Cosmo](deployments-and-hosting/intro.md)
 * [Kubernetes](deployments-and-hosting/kubernetes/README.md)
   * [Helm Chart](deployments-and-hosting/kubernetes/helm-chart/README.md)
     * [Cosmo Platform](deployments-and-hosting/kubernetes/helm-chart/cosmo-platform.md)
