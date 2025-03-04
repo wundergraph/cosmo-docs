@@ -16,8 +16,8 @@ In order to complete this section you need to have Golang 1.20 (or higher) and d
 
 The Cosmo Router can be easily extended by providing custom modules. Modules are pure Go code and can implement one or multiple interfaces. The following interfaces are provided:
 
-* **`core.RouterMiddlewareHandler`** Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
 * **`core.RouterOnRequestHandler`** Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
+* **`core.RouterMiddlewareHandler`** Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
 * **`core.EnginePreOriginHandler`** Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
 * **`core.EnginePostOriginHandler`** Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 * **`core.Provisioner`** Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
