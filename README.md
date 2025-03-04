@@ -6,7 +6,7 @@ description: >-
   distributed tracing all in one platform.
 ---
 
-# Overview
+# WunderGraph Cosmo Docs
 
 {% hint style="warning" %}
 NOTE FOR SDK DOCUMENTATION\
@@ -17,7 +17,7 @@ The documentation for the TypeScript SDK has been relocated to [https://bff-docs
 
 <figure><img src=".gitbook/assets/logo.png" alt=""><figcaption></figcaption></figure>
 
-### Built for Scalers
+### Built for any scale
 
 Cosmo enables teams and organizations to manage and scale (federated) GraphQL architectures with ease. Quickly iterate without breaking anything through composition checks.
 

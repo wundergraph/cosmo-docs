@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Overview](README.md)
+* [WunderGraph Cosmo Docs](README.md)
 * [Architecture](architecture.md)
 * [Enterprise](enterprise.md)
 * [Self Hosting](self-hosted.md)
