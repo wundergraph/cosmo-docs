@@ -220,7 +220,7 @@ func (m *SetScopesModule) Middleware(core.RequestContext, next http.Handler) {
 
 The scopes will be available to subsequent custom modules, just like when using `SetScopes()`.
 
-### Change Authentication Information Before Authentication
+### Do Changes Before Authentication Occurs
 
 In the previous section, the `Middleware` runs after the authentication of the request. However, sometimes you might want to run authentication related logic before the authentication actually happens. For example, let's say that your client sends the `Authorization` header without the `Bearer` part in the header and you want to add `Bearer` to the header, for this you can use the `RouterOnRequestHandler` hook.
 
