@@ -163,7 +163,7 @@
 
 ## Router
 
-* [Intro](router/intro.md)
+* [Cosmo Router](router/intro.md)
 * [Download & Install](router/download-and-install.md)
 * [Configuration](router/configuration/README.md)
   * [Template Expressions](router/configuration/template-expressions.md)
@@ -219,7 +219,7 @@
 
 ## Control Plane
 
-* [Intro](control-plane/intro.md)
+* [Cosmo Control Plane](control-plane/intro.md)
 * [Configuration](control-plane/configuration.md)
 * [Webhooks](control-plane/webhooks.md)
 
