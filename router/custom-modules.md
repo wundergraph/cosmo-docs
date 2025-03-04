@@ -17,6 +17,7 @@ In order to complete this section you need to have Golang 1.20 (or higher) and d
 The Cosmo Router can be easily extended by providing custom modules. Modules are pure Go code and can implement one or multiple interfaces. The following interfaces are provided:
 
 * **`core.RouterMiddlewareHandler`** Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
+* **`core.RouterOnRequestHandler`** Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
 * **`core.EnginePreOriginHandler`** Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
 * **`core.EnginePostOriginHandler`** Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 * **`core.Provisioner`** Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
@@ -24,6 +25,10 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 
 {% hint style="info" %}
 `*OriginHandler` handlers are called concurrently when your GraphQL operation results in multiple subgraph requests. Due to that circumstance, you should handle the initial router request/response objects `ctx.Request()` and `ctx.ResponseWriter()` as read-only objects. Any modification without protecting them from concurrent writes, e.g., by a mutex, results in a race condition.
+{% endhint %}
+
+{% hint style="info" %}
+**`RouterOnRequestHander`** is only available since Router [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 {% endhint %}
 
 ## Example
@@ -215,6 +220,22 @@ func (m *SetScopesModule) Middleware(core.RequestContext, next http.Handler) {
 
 The scopes will be available to subsequent custom modules, just like when using `SetScopes()`.
 
+### Change Authentication Information Before Authentication
+
+In the previous section, the `Middleware` runs after the authentication of the request. However, sometimes you might want to run authentication related logic before the authentication actually happens. For example, let's say that your client sends the `Authorization` header without the `Bearer` part in the header and you want to add `Bearer` to the header, for this you can use the `RouterOnRequestHandler` hook.
+
+```go
+func (m *SetScopesModule) RouterOnRequest(ctx core.RequestContext, next http.Handler) {
+    authHeader := ctx.Request().Header.Get("Authorization")
+
+    if authHeader != "" && !strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
+       ctx.Request().Header.Set("Authorization", "Bearer "+authHeader)
+    }
+
+    next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
 ## Return GraphQL conform errors
 
 Please always use `core.WriteResponseError` to return an error. It ensures that the request is properly tracked for tracing and metrics.
@@ -234,6 +255,8 @@ The current module handler allow to intercept and modify request / response subg
 
 ```
 Incoming client request
+    │
+    └─▶ core.RouterOnRequestHandler (Early return, Custom Authentication Logic)
     │
     └─▶ core.RouterMiddlewareHandler (Early return, Validation)
        │
