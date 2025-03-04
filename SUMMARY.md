@@ -203,6 +203,7 @@
   * [Hardening Guide](router/security/hardening-guide.md)
 * [Development](router/development/README.md)
   * [Debugging](router/development/debugging.md)
+  * [Development Mode](router/development/development-mode.md)
 * [Performance Debugging](router/performance-debugging.md)
 * [Advanced Request Tracing (ART)](router/advanced-request-tracing-art.md)
 * [Query Plan](router/query-plan/README.md)
