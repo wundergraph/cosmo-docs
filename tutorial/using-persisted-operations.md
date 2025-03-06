@@ -13,7 +13,7 @@ Persisted Operations, also known as Trusted Documents or Persisted Queries, allo
 
 ### Prerequisites
 
-* Follow the [from-zero-to-federation-in-5-steps-using-cosmo.md](from-zero-to-federation-in-5-steps-using-cosmo.md "mention") tutorial to set up your demo subgraphs, install the required tools, and create a Cosmo account.
+* Follow the [Broken link](broken-reference "mention") tutorial to set up your demo subgraphs, install the required tools, and create a Cosmo account.
 * [curl](https://curl.se)
 
 ### Write an Operation
@@ -78,7 +78,7 @@ wgc operations push production -c curl -f employees.graphql
 
 There are a few things to note from this command:
 
-* The first argument is the federated graph name to push the operations to. This is the federated graph we created while following [from-zero-to-federation-in-5-steps-using-cosmo.md](from-zero-to-federation-in-5-steps-using-cosmo.md "mention"), named `federation`.
+* The first argument is the federated graph name to push the operations to. This is the federated graph we created while following [Broken link](broken-reference "mention"), named `federation`.
 * After the federated subgraph name, we must also indicate a client name. Persisted operations in Cosmo are always associated with a given client. If needed, Cosmo will automatically register the given client name the first time it sees it. During operation execution, the client name is obtained from the `graphql-client-name` HTTP header.
 * Finally, we specify one or more files that contain GraphQL operations. Here we're using a plain `.graphql` file, but other formats are also supported, including:
   * [Apollo Persited Queries manifest](https://www.apollographql.com/docs/kotlin/advanced/persisted-queries/)

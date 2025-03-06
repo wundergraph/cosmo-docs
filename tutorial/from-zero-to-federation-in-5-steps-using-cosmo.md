@@ -1,214 +1,236 @@
 ---
-icon: newspaper
 description: >-
-  This guide brings you from zero to Federation in 5 Steps. Deploy and compose
-  your Subgraphs and set up powerful CI Workflows for collaboration.
+  This guide offers a hands-on introduction to Cosmo using a sample demo
+  repository. You'll set up the demo subgraphs and Cosmo Router locally,
+  allowing you to start querying right away.
 ---
 
 # From Zero to Federation in 5 Steps using Cosmo
 
-## Overview
-
-Cosmo enables teams to build, manage, and monitor federated GraphQL APIs. It facilitates collaboration across teams with robust CI workflows, breaking change detection, and schema change notifications.
-
-Follow the five steps below to get from zero to managed Federation.
-
-* [Step 1: Build and deploy Subgraphs](from-zero-to-federation-in-5-steps-using-cosmo.md#build-and-deploy-subgraphs)
-* [Step 2: Create and publish Subgraphs on Cosmo](from-zero-to-federation-in-5-steps-using-cosmo.md#create-and-publish-subgraphs)
-* [Step 3: Compose a Federated Graph on Cosmo](from-zero-to-federation-in-5-steps-using-cosmo.md#create-federated-graph)
-* [Step 4: Configure and deploy Cosmo Router](from-zero-to-federation-in-5-steps-using-cosmo.md#configure-and-deploy-your-router)
-* [Step 5: Setup CI/CD with Schema Checks for Breaking Change detection](from-zero-to-federation-in-5-steps-using-cosmo.md#setup-ci-cd-with-schema-checks)
-
 ### Prerequisites
 
-* Node >= 18
+* Node.js (>= 20 LTS)
 * [Docker](https://www.docker.com/)
-* Account on [Cosmo Cloud](https://cosmo.wundergraph.com) (Free Trial). This makes it easier to follow the steps. Skip if you are self-hosting the whole of Cosmo.
 
 ## Project setup
 
-You can clone the example project, which includes all the reference code you need. It features two subgraphs (Posts and Users), a Router, and a CI/CD setup with GitHub Actions.&#x20;
+Clone the example project, which includes two subgraphs (`Posts` and `Users`) as well as a Router.
 
-You can find it here: [https://github.com/wundergraph/cosmo-demo](https://github.com/wundergraph/cosmo-demo)
+The example project is available here: [https://github.com/wundergraph/cosmo-demo](https://github.com/wundergraph/cosmo-demo), or you can clone it with the following command:
 
-### Install the Cosmo CLI tool
+```
+git clone https://github.com/wundergraph/cosmo-demo.git
+cd cosmo-demo
+```
 
-Run the following command to install the latest version of the Cosmo CLI.
+### Step 1: Install the Cosmo CLI tool
+
+Install the latest version of the Cosmo CLI.
 
 ```
 npm i -g wgc@latest
 ```
 
-If you prefer Yarn over npm, use the following command instead:
+### Step 2: Set Up and Run the Subgraphs
+
+The cloned project contains preconfigured subgraphs and a script to run them.&#x20;
+
+#### **Ensure the script is executable**&#x20;
+
+In the project's **root directory**, run this to ensure the `start-subgraphs.sh` script is executable:
 
 ```
-yarn global add wgc@latest
+chmod +x start-subgraphs.sh
 ```
 
-### Authenticate with the CLI
+#### **Start the subgraphs**
 
-We need to ensure that the CLI can communicate with the Cosmo Control Plane so that we can publish and compose the subgraphs.
-
-Run the following command in your terminal.
+Run the following command to install dependencies and start the subgraphs in the background:
 
 ```
-wgc auth login
+./start-subgraphs.sh
 ```
 
-After logging in, you can use the arrow keys to select your organization in your terminal.
+#### **Verify the subgraphs are running**
 
-Alternatively, you can log into the [Cosmo Dashboard](https://cosmo.wundergraph.com), click on API Keys, and export the generated API key using the following command.
+Once the script finishes, check the subgraphs are running by visiting:
 
-```bash
-export COSMO_API_KEY=<your_api_key>
+* [http://localhost:4001/graphql](http://localhost:4001/graphql) (for `subgraph-posts`)
+* [http://localhost:4002/graphql](http://localhost:4002/graphql) (for `subgraph-users`)
+
+If both load correctly, the servers are running.
+
+#### **Test Queries**
+
+You can run the following queries to confirm the subgraphs are functioning correctly.
+
+#### **Posts Subgraph (localhost:4001)**
+
+**To retrieve all posts, run the following query:**
+
+```graphql
+query {
+  posts {
+    id
+    content
+    authorId
+  }
+}
+
 ```
 
-Now that you're done with the prerequisites let's start with the real work!
+**Expected Output:**
 
-## Build and Deploy Subgraphs
+```json
+{
+  "data": {
+    "posts": [
+      {
+        "id": "1",
+        "content": "Sample content",
+        "authorId": "user-1"
+      },
+      {
+        "id": "2",
+        "content": "Some more sample content",
+        "authorId": "user-1"
+      },
+      {
+        "id": "3",
+        "content": "Quality content",
+        "authorId": "user-2"
+      }
+    ]
+  }
+}
+```
 
-The first step is for each team to build and deploy their Subgraphs. You can deploy the Subgraphs on any infra you want. It's not required to expose the Subgraphs to the public. You can make them accessible on the public internet or keep them private in your own VPC or on-premises. In a later step, you will deploy the Cosmo Router to the same infra, so the only requirement is that the Router can communicate with the Subgraphs over the network.
+**To retrieve a single post using its** `id`**, run the following query:**
 
-For the sake of this guide's simplicity, we assume that you make the "Posts" Subgraph accessible at the URL \`https://posts.domain.com\` and the "Users" Subgraph accessible at the URL \`https://users.domain.com\`.
+```graphql
+query {
+  post(id: "1") {
+    id
+    content
+    authorId
+  }
+}
 
-<figure><img src="../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
+```
 
-To help you get started quickly, we have prepared two compatible subgraphs in the Demo Project. You can either use these and follow along step by step or create your own subgraphs while mimicking the rest of the setup.
+**Expected Output:**
 
-In the demo project, we have two simple Subgraphs that are compatible, meaning that they will compose into a federated Graph without errors. You can run them locally, but you’ll need **two terminal windows**—one for each subgraph.
+```json
+{
+  "data": {
+    "post": {
+      "id": "1",
+      "content": "Sample content",
+      "authorId": "user-1"
+    }
+  }
+}
+```
 
-First, open two terminal windows.&#x20;
+#### **Users Subgraph (localhost:4002)**
 
-You will navigate to a different subgraph in each terminal and ensure the dependencies are installed.
+**To retrieve all users, run the following query:**
 
-* In **Terminal 1**, navigate to the **Posts** subgraph and install dependencies:
+```graphql
+query {
+  users {
+    id
+    name
+  }
+}
+
+```
+
+**Expected Output:**
+
+```json
+{
+  "data": {
+    "users": [
+      {
+        "id": "user-1",
+        "name": "Jane Doe"
+      },
+      {
+        "id": "user-2",
+        "name": "John Doe"
+      }
+    ]
+  }
+}
+```
+
+**To retrieve a single user with their** `id`**, run the following query:**
+
+```graphql
+query {
+  user(id: "user-1") {
+    id
+    name
+  }
+}
+```
+
+**Expected Output:**
+
+```json
+{
+  "data": {
+    "user": {
+      "id": "user-1",
+      "name": "Jane Doe"
+    }
+  }
+}
+```
+
+#### **Stop the Subgraphs**
+
+You will need to keep the script running in the background for this tutorial, but if it is necessary to stop it, run:
 
 ```sh
-cd subgraph-posts && npm i
+pkill -f "npm run dev"
 ```
 
-* In **Terminal 2**, navigate to the **Users** subgraph and install dependencies:
+### Step 3: Generate the Router Configuration
 
-```shell
-cd subgraph-users && npm i
-```
+The repository includes a `graph.localhost.yaml` configuration file for the `wgc` CLI tool to introspect and generate a router configuration.&#x20;
 
-You will only need to install the dependencies once. Once they are installed, you’re ready to start the subgraphs.
+#### Setup Considerations
 
-Use the same two terminals to start the subgraphs. In each terminal, navigate to the corresponding subgraph and run:
+* For Docker-based subgraphs, use `graph.yaml` instead of `graph.localhost.yaml`.&#x20;
+* For custom subgraphs, update the configuration file to match your setup.
 
-```sh
-npm run dev
-```
+#### Generate the Router Configuration
 
-This command allows you to run the subgraphs locally in each directory.&#x20;
-
-Additionally, each subgraph includes a Dockerfile for quick deployment to a platform of your choice.
-
-Here are the schemas for the subgraphs:
-
-| Posts                                                                                                                                                                                                        | Users                                                                                                                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <pre class="language-graphql"><code class="lang-graphql">type Post @key(fields: "id") {
-  id: ID!
-  content: String
-  authorId: ID!
-}
-
-type Query {
-  posts: [Post!]!
-  post(id: ID!): Post
-}
-
-</code></pre> | <pre class="language-graphql"><code class="lang-graphql">type User @key(fields: "id") {
-  id: ID!
-  name: String!
-}
-
-type Post @key(fields: "id") {
-  id: ID!
-  authorId: ID! @external
-  author: User! @requires(fields: "authorId")
-}
-
-type Query {
-  users: [User!]!
-  user(id: ID!): User
-}
-</code></pre> |
-
-
-
-## Create and Publish Subgraphs
-
-Once you have deployed the subgraphs, the next step is to register them on Cosmo and publish their GraphQL schemas to the Registry. This process is as simple as running two commands: `create` and `publish`.
-
-Cosmo also uses [labels](https://cosmo-docs.wundergraph.com/cli/essentials#labels), which allows you to assign each subgraph with one or more labels. The labels help federated graphs dynamically select the appropriate subgraphs for composition, offering teams greater flexibility in structuring their graphs.
-
-<figure><img src="../.gitbook/assets/image (85).png" alt=""><figcaption></figcaption></figure>
-
-Here is an example using the demo project. These commands need to be run in the project's **root directory**.
-
-```sh
-# Team A
-wgc subgraph create posts --label team=A --routing-url https://posts.domain.com
-wgc subgraph publish posts --schema ./subgraph-posts/schema.graphql
-```
-
-```bash
-# Team B
-wgc subgraph create users --label team=B --routing-url https://users.domain.com
-wgc subgraph publish users --schema ./subgraph-users/schema.graphql
-```
-
-After you run this command, you should see a confirmation message in the terminal
+Open a new terminal and run the following command to navigate to the `router` directory.
 
 ```
-Subgraph was created successfully.
-Subgraph published successfully.
+cd router
 ```
 
-If you’d like to confirm that your subgraphs have been successfully created and published, go to the Cosmo Dashboard and select Subgraphs from the men&#x75;**.** You should see a list of all registered subgraphs, their routing URLs, labels, and the last published time.&#x20;
-
-Now that both subgraphs have been registered on Cosmo and their GraphQL schemas have been published, we’re ready to compose them into a federated graph.
-
-## Create Federated Graph
-
-Now, it is time to compose the above subgraphs. We create a federated Graph by defining label-matchers, which we use to select the Subgraphs we'd like to add to our federated Graph.
-
-<figure><img src="../.gitbook/assets/image (78).png" alt=""><figcaption></figcaption></figure>
-
-Below is the command to create a federated graph. We need to specify the labels that it needs to consider and the routing URL. The routing URL is the endpoint of the router that we will deploy in the next step.
-
-```bash
-wgc federated-graph create production --label-matcher team=A,team=B --routing-url https://graph.domain.com/graphql
-```
-
-After you run this command, you will see a confirmation message in the terminal.
+Then, generate the router configuration by running:
 
 ```
-Federated Graph was created successfully.
+wgc router compose --input graph.localhost.yaml --out config.json
 ```
 
-To verify that your federated graph was successfully created, navigate to the Studio Overview in the Cosmo Dashboard. This page displays key details such as the number of subgraphs, composition status, schema validation, and the router URL. If everything is set up correctly, you should see a  successful schema check and a router URL ready to fetch data from the subgraphs.
+**Expected Output**:
 
-Our federated Graph is now composed. Let's deploy a Router to wire it all together.
-
-## Configure and Deploy your Router
-
-The final step before we can start querying our federated Graph is to configure and deploy the Cosmo Router. The Router is responsible for routing the requests to the correct service, aggregating the responses, and generating observability data like metrics and traces so we can understand the traffic that's flowing through our federated Graph.
-
-The Router has to connect to the Control Plane to fetch its Configuration and update it automatically when you make changes to the federated Graph.
-
-<figure><img src="../.gitbook/assets/image (76).png" alt=""><figcaption></figcaption></figure>
-
-As the router needs to authenticate against the Control Plane to be able to fetch the correct configuration, we have to create a Router Token first. We're doing so by using wgc with the name of our composed Graph (production).
-
-```bash
-wgc router token create mytoken --graph-name production
+```
+Router config successfully written to config.json
 ```
 
-You can run the router by executing a single Docker command. This way you can easily deploy to your own infra and expose the router using an endpoint with which your clients can query against. You can use this command to run a Router locally, or adjust it slightly to deploy a Router to your own infra, like Kubernetes, AWS Fargate or other deployment targets that allow you to run Container workloads.
+### Step 4: Run the router
+
+While still in the `router` directory, start the router using Docker. Make sure Docker is running on your machine before proceeding.
+
+We recommend using Docker to prevent dependency conflicts and maintain a consistent environment.
 
 ```bash
 docker run \
@@ -220,31 +242,110 @@ docker run \
   -e pull=always \
   -e DEV_MODE=true \
   -e LISTEN_ADDR=0.0.0.0:3002 \
-  -e GRAPH_API_TOKEN=$TOKEN \
+  -e EXECUTION_CONFIG_FILE_PATH="/config/config.json" \
+  -v "$(pwd)/config.json:/config/config.json" \
   ghcr.io/wundergraph/cosmo/router:latest
 ```
 
-## Setup CI/CD with schema checks
+The router will now be running in a Docker container.
 
-Finally, we want to set up a workflow to facilitate collaboration across teams while ensuring that changes don't break our composed Graph.
+### Step 5:  Query Against Your Router
 
-The wgc CLI provides two commands to accomplish this task, `subgraph check` and `subgraph publish`.
+Now that the router is running, you can test it by running queries on your federated graph at [http://localhost:3002](http://localhost:3002).
 
-<figure><img src="../.gitbook/assets/image (84).png" alt=""><figcaption></figcaption></figure>
+**Get All Posts with Author Details**
 
-You can use the following convention.
+```graphql
+query {
+  posts {
+    id
+    content
+    author {
+      id
+      name
+    }
+  }
+}
 
-* Run `subgraph check` on pull requests to prevent merging breaking changes into your main branch.
-* Run `subgraph publish` on push/merge to main
+```
 
-Example GitHub workflows to achieve the above are provided in the demo project under the `.github` directory.
+**Expected Output:**
 
-## The overall picture
+```json
+{
+  "data": {
+    "posts": [
+      {
+        "id": "1",
+        "content": "Sample content",
+        "author": {
+          "id": "user-1",
+          "name": "Jane Doe"
+        }
+      },
+      {
+        "id": "2",
+        "content": "Some more sample content",
+        "author": {
+          "id": "user-1",
+          "name": "Jane Doe"
+        }
+      },
+      {
+        "id": "3",
+        "content": "Quality content",
+        "author": {
+          "id": "user-2",
+          "name": "John Doe"
+        }
+      }
+    ]
+  },
+  "extensions": { /* omitted for brevity */ }
+```
 
-<figure><img src="../.gitbook/assets/image (77).png" alt=""><figcaption></figcaption></figure>
+**Get a Single Post with Author Details**
 
-## All Done!
+```graphql
+query {
+  post(id: "1") {
+    id
+    content
+    author {
+      id
+      name
+    }
+  }
+}
 
-Congrats! You're done with the initial setup of your federated Graph infrastructure. You've deployed two subgraphs for two different teams, composed them into a federated Graph, deployed a Router, and configured the necessary CI/CD pipelines to prevent breaking changes and publish changes to the Subgraphs.
+```
 
-Your federated Graph is now ready to be queried through the Explorer or GraphQL Endpoint on your Router. Once you've made some requests to the Graph, you can observe the metrics and traces in Cosmo Studio.
+**Expected Output:**
+
+```json
+{
+  "data": {
+    "post": {
+      "id": "1",
+      "content": "Sample content",
+      "author": {
+        "id": "user-1",
+        "name": "Jane Doe"
+      }
+    }
+  },
+  "extensions": { /* omitted for brevity */ }
+```
+
+### All done!
+
+Congrats! You've deployed two subgraphs, composed them into a federated Graph, and deployed a Router.
+
+Next, consider deploying to the cloud to enable features like metrics, tracing, and monitoring in Cosmo Studio.
+
+## Next Steps: Cosmo Cloud and deployments
+
+{% content-ref url="../getting-started/cosmo-cloud-onboarding.md" %}
+[cosmo-cloud-onboarding.md](../getting-started/cosmo-cloud-onboarding.md)
+{% endcontent-ref %}
+
