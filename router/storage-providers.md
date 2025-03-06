@@ -14,11 +14,11 @@ The same approach applies to persisted operations (PO), which manage an allowlis
 
 For both mechanisms, different storage providers can be used:
 
-* **CDN**: The default provider that used by Cosmo Cloud.
+* **CDN**: The default provider used by Cosmo Cloud.
 * **Amazon S3**: An object storage protocol. We support any S3 compatible object-storage e.g. Minio and AWS.
 
 {% hint style="success" %}
-By removing the dependency on Cosmo Cloud, your router no longer rely on us for operations while still benefiting from all its features.
+By removing the dependency on Cosmo Cloud, your router no longer relies on us for operations while still benefiting from all its features.
 {% endhint %}
 
 When using a custom storage provider, you are responsible for manually pushing those artifacts as part of your CI process. In the next section, we will explain how to do this:
@@ -64,17 +64,17 @@ The `object_path` field points to the file in your bucket that is updated after 
 
 <pre class="language-bash"><code class="lang-bash"><strong># Publish your subgraph
 </strong><strong>wgc subgraph publish my-subgraph --schema ./schema.graphqls
-</strong><strong># Download the latest execution config after succcessful composition
+</strong><strong># Download the latest execution config after successful composition
 </strong>wgc router fetch mygraph -o router.json
 # Upload the execution config to your S3 storage
 aws s3 cp router.json s3://cosmo/
 </code></pre>
 
-First, we publish our schema changes to Cosmo. After that, we will download the latest execution config and upload it your own S3 provider. The router will check for updates every 10 seconds (default) and hot-reload the router accordingly without impacting current user traffic.
+First, we publish our schema changes to Cosmo. After that, we will download the latest execution config and upload it to your own S3 provider. The router will check for updates every 10 seconds (default) and hot-reload the router accordingly without impacting current user traffic.
 
 ### Fallback storage
 
-You can configure a fallback storage for fetching the execution config in the event the router cannopt reach the primary storage. If enabled, it will default to using the Cosmo CDN but you can specify the provider as well. You cannot use the same provider for both primary and fallback storage.
+You can configure a fallback storage for fetching the execution config in the event the router cannot reach the primary storage. If enabled, it will default to using the Cosmo CDN but you can specify the provider as well. You cannot use the same provider for both primary and fallback storage.
 
 {% code title="config.yaml" %}
 ```yaml
@@ -125,7 +125,7 @@ Given the following persisted operation:
 ```
 {% endcode %}
 
-Upload the file to the bucket location as follow:
+Upload the file to the bucket location as follows:
 
 <pre class="language-bash"><code class="lang-bash"><strong># Upload the persisted operation to S3
 </strong>aws s3 cp c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2.json s3://cosmo/prod/operations/
