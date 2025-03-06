@@ -32,6 +32,21 @@ These metrics ensure efficient request handling, operation planning, and system 
 
 These metrics provide insights into the efficiency and effectiveness of caching GraphQL operations:
 
+#### Enable Cache Metrics
+
+Depending on your setup you can enable cache metrics for Prometheus and for Open Telemetry in the router configuration
+
+```yaml
+telemetry:
+  metrics:
+    prometheus:
+      graphql_cache: true
+    otlp:
+      graphql_cache: true
+```
+
+#### Metrics
+
 * [**`router_graphql_cache_cost_max`**](prometheus-metric-reference.md#router_graphql_cache_cost_max): Measures the maximum cost of cached operations to optimize cache usage.
   * **Cache Optimization:** High values may indicate excessive caching costs, necessitating analysis to improve cache strategy.
   * **Cost Management:** Helps in understanding and managing potential high-cost queries effectively.
