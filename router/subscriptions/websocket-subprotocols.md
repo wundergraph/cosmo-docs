@@ -40,3 +40,40 @@ subgraphs:
       websocketSubprotocol: "graphql-ws"
 ```
 
+### WebSocket Authentication
+
+Cosmo Router supports WebSocket authentication and offers two configurable options for handling it
+
+* via Headers
+* via Initial Payload
+
+#### Default WebSocket Authentication behaviour
+
+By default, the Router expects the JWT (JSON Web Token) to be included in the request headers. This token is then used to authenticate the WebSocket connection. If the Router makes subsequent Subgraph requests via HTTP(S), the header can be forwarded to the Subgraphs.
+
+#### WebSocket Authentication via initial payload
+
+Some clients, e.g. browsers, cannot set Headers when initiating a WebSocket connection. As such, the default behaviour to authenticate via Authorization Header is not suitable.
+
+For such cases, you can configure the Router to accept clients to Authenticate using the initial payload when initiating a WebSocket connection.
+
+When enabled, a client can set up a WebSocket connection and then send a JWT as part of the initial WebSocket message using the `initial_payload`field.
+
+In addition to allowing clients to authenticate using this method, you can also enable the `export_token`option. This feature takes the token from the initial payload and exports it into the Header of the Upgrade request. This allows the Router to treat every Subscription from this client as if the client sent the token as a header. Consequently, if [header forwarding](../proxy-capabilities/request-headers-operations.md) rules are enabled, the exported token will be forwarded accordingly.
+
+```yaml
+# config.yaml
+
+websocket:
+  enabled: true
+  authentication:
+    from_initial_payload:
+      enabled: true
+      key: "Authorization" # The property name in the initial payload holding the JWT. Default is 'Authorization'.
+      export_token: 
+        enabled: true
+        header_key: "Authorization" # Header key for exporting the JWT to the request header. If different from 'Authorization', include it in 'forward_upgrade_headers'.
+  forward_upgrade_headers: # Forward upgrade request headers in the extensions payload when starting a subscription on a Subgraph.
+    enabled: true
+    allow_list: ["Authorization"] # Headers to forward when initiating a subscription on a subgraph. Default is 'Authorization'.
+```
