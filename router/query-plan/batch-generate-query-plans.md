@@ -12,18 +12,20 @@ Available since Router 0.185.0
 
 To generate query plans, you will need the following:
 
-* A router executable version 0.185.0 or later
-* A router execution configuration file
-* A folder containing the queries you want to plan
-* A folder to store the output results
+* Router executable (version 0.185.0 or later)
+* Router execution configuration file
+* Queries folder
+* Output folder
 
-You can get the execution config using `wgc`:
+Generate the execution config using `wgc`:
 
 ```
 wgc router fetch $graphname -o execution-config.json
 ```
 
-If you need to generate query plans in a local environment or test modifications to subgraphs before deployment, you can create the execution configuration using the `wgc router compose` command. Follow the first two steps outlined here: [mastering-local-development-for-graphql-federation.md](../../tutorial/mastering-local-development-for-graphql-federation.md "mention").
+To generate query plans locally or test subgraphs modifications before deployment, use `wgc router compose`.
+
+For detailed steps, follow the first two steps outlined here: [mastering-local-development-for-graphql-federation.md](../../tutorial/mastering-local-development-for-graphql-federation.md "mention").
 
 ## Generating query plans
 
@@ -59,23 +61,32 @@ plans/query2.graphql
 
 ### Report generation
 
+{% hint style="info" %}
+The report structure changed since Router 0.189.0
+{% endhint %}
+
 You can use the `-print-report` option to generate a report in addition to the individual query plan files.\
 The report will be saved in the plans folder as `report.json` and will follow this structure:
 
-```
-[
-    {
-        "file_name": "[...]",
-        "plan": "[...]"
-    },
-    {
-        "file_name": "[...]",
-        "error": "[...]"
-    }
-]
+```json
+{
+    "error": "[...]",
+    "plans": [
+        {
+            "file_name": "[...]",
+            "plan": "[...]"
+        },
+        {
+            "file_name": "[...]",
+            "error": "[...]"
+        }
+    ]
+}
 ```
 
-If you only need the report, you can add the following option to the command `-print-per-file=false` .
+If you only need the report, you can add the following option to the command `-print-per-file=false`.
+
+The `error` field on the first level will contains a value only if there is an error that is not directly related to a single plan (eg: timeout error, missing or corrupted router config).
 
 ### Fail on planning error
 
