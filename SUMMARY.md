@@ -3,6 +3,7 @@
 * [WunderGraph Cosmo Docs](README.md)
 * [Architecture](architecture.md)
 * [Enterprise](enterprise.md)
+* [Security & Compliance](security-and-compliance.md)
 * [Self Hosting](self-hosted.md)
 * [Tutorial](tutorial/README.md)
   * [From Zero to Federation in 5 Steps using Cosmo](tutorial/from-zero-to-federation-in-5-steps-using-cosmo.md)
