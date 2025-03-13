@@ -1,5 +1,4 @@
 ---
-icon: newspaper
 description: >-
   An example of how feature flags could be used to release an experimental
   feature to a subset of a federated graph's consumers.

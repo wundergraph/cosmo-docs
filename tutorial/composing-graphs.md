@@ -2,7 +2,6 @@
 description: >-
   How to compose a federated graph with WunderGraph Schema Composition, a
   TypeScript composition library.
-icon: newspaper
 ---
 
 # Composing graphs

@@ -3,7 +3,6 @@ description: >-
   Let us go over how to use the subgraph check command in CI to prevent breaking
   changes in production. Use our GitHub app to seamlessly approve breaking
   changes in the Cosmo Studio.
-icon: newspaper
 ---
 
 # PR based workflow for Federation

@@ -1,5 +1,4 @@
 ---
-icon: newspaper
 description: >-
   Learn how to leverage Persisted Operations / Persisted Queries / Trusted
   Documents with Cosmo & Cosmo Router

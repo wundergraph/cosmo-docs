@@ -1,5 +1,4 @@
 ---
-icon: arrow-trend-up
 description: >-
   Overview of Prometheus metrics with explanations, queries, use cases, and
   error detection details
