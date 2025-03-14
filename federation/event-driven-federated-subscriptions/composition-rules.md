@@ -26,9 +26,12 @@ input edfs__NatsStreamConfigurationfiguration {
 
 Here is an example of a valid EDG mutation:
 
-{% code fullWidth="true" %}
+{% code fullWidth="false" %}
 ```graphql
-directive @edfs__natsPublish(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
+directive @edfs__natsPublish(
+  subject: String!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
 
 type Mutation {
     updateUser(

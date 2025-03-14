@@ -1,9 +1,9 @@
 ---
-icon: calendar-users
 description: >-
   EDFS combines the power of GraphQL Federation and Event-Driven Architecture
   (Kafka, NATS, SQS) to update a user GraphQL Subscription after an event occurs
   in your system.
+icon: calendar-users
 ---
 
 # Event-Driven Federated Subscriptions (EDFS)
@@ -54,14 +54,37 @@ Here is an overview about all EDFS directives:
 
 ```graphql
 # Nats and JetStream integration
-directive @edfs__natsRequest(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
-directive @edfs__natsPublish(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
-directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
+directive @edfs__natsRequest(
+  subject: String!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__natsPublish(
+  subject: String!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__natsSubscribe(
+  subjects: [String!]!, 
+  providerId: String! = "default", 
+  streamConfiguration: edfs__NatsStreamConfiguration
+) on FIELD_DEFINITION
+
 # Kafka integration
-directive @edfs__kafkaPublish(topic: String!, providerId: String! = "default") on FIELD_DEFINITION
-directive @edfs__kafkaSubscribe(topics: [String!]!, providerId: String! = "default") on FIELD_DEFINITION
+directive @edfs__kafkaPublish(
+  topic: String!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__kafkaSubscribe(
+  topics: [String!]!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
 # OpenFederation directive to filter subscription events
-directive @openfed__subscriptionFilter(condition: openfed__SubscriptionFilterCondition!) on FIELD_DEFINITION
+directive @openfed__subscriptionFilter(
+  condition: openfed__SubscriptionFilterCondition!
+) on FIELD_DEFINITION
 ```
 
 Let's explain each directive in detail:
@@ -103,9 +126,21 @@ If you run `make edfs-demo` in the Cosmo Monorepo, you'll automatically get a NA
 Below, you'll find an example Schema that use the NATS provider directives to connect the `@edfs__natsRequest` directive to a Query root field (employeeFromEvent), a Mutation root field (updateEmployee) that's connected to another topic using `@edfs__natsPublish` and a Subscription root field (employeeUpdated) that's connected via `@edfs__natsSubscribe`. Each of these fields is completely independent. Important to notice is that you can't implement this subgraph because the engine will implement the resolvers based on the router configuration.
 
 ```graphql
-directive @edfs__natsRequest(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
-directive @edfs__natsPublish(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
-directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
+directive @edfs__natsRequest(
+  subject: String!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__natsPublish(
+  subject: String!, 
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__natsSubscribe(
+  subjects: [String!]!, 
+  providerId: String! = "default", 
+  streamConfiguration: edfs__NatsStreamConfiguration
+) on FIELD_DEFINITION
 
 input edfs__NatsStreamConfiguration {
     consumerInactiveThreshold: Int! = 30
@@ -149,7 +184,12 @@ Given the following Schema:
 
 ```graphql
 type Subscription {
-    employeeUpdated(employeeID: ID!): Employee! @edfs__natsSubscribe(subjects: ["employeeUpdated.{{ args.employeeID }}"])
+    employeeUpdated(
+      employeeID: ID!
+    ): Employee! 
+      @edfs__natsSubscribe(
+        subjects: ["employeeUpdated.{{ args.employeeID }}"]
+      )
 }
 ```
 
@@ -271,8 +311,12 @@ input openfed__SubscriptionFilterCondition {
 
 <strong>type Subscription {
 </strong><strong>    filteredEmployeeUpdated(id: Int!): Employee!
-</strong>      @edfs__kafkaSubscribe(topics: ["employeeUpdated", "employeeUpdatedTwo"], providerId: "my-kafka")
-      @openfed__subscriptionFilter(condition: { IN: { fieldPath: "id", values: [1, 3, 4, 7, 11] } })
+</strong>      @edfs__kafkaSubscribe(
+        topics: ["employeeUpdated", "employeeUpdatedTwo"], providerId: "my-kafka"
+      )
+      @openfed__subscriptionFilter(
+        condition: { IN: { fieldPath: "id", values: [1, 3, 4, 7, 11] } }
+      )
 }
 </code></pre>
 
@@ -294,8 +338,12 @@ will receive Kafka events published on the topics `employeeUpdated` and `employe
 
 ```graphql
 filteredEmployeeUpdated(firstIds: [ID!]!, secondIds: [ID!]!): Employee!
-        @edfs__kafkaSubscribe(topics: ["employeeUpdated", "employeeUpdatedTwo"], providerId: "my-kafka")
-        @openfed__subscriptionFilter(condition: { IN: { fieldPath: "id", values: ["{{ args.firstIds }}", "{{ args.secondIds }}"] } })
+        @edfs__kafkaSubscribe(
+          topics: ["employeeUpdated", "employeeUpdatedTwo"], providerId: "my-kafka"
+        )
+        @openfed__subscriptionFilter(
+          condition: { IN: { fieldPath: "id", values: ["{{ args.firstIds }}", "{{ args.secondIds }}"] } }
+        )
 ```
 
 #### Variable expansion
@@ -328,7 +376,7 @@ We do not validate whether a client is allowed to subscribe to specific events o
 
 The Cosmo Router deduplicates Subscriptions internally to save resources. If multiple Subscriptions use the same topic as a trigger, all Subscriptions share the same trigger. The trigger is shut down when all Subscriptions that depend on it are unsubscribed. Internal resources, such as clients, are also cleaned up when no subscriptions are being served anymore.
 
-### Stateless-ness of Subgraphs
+### Statelessness of Subgraphs
 
 With EDFS, the Router connects directly to the Event Source but doesn't require any stateful connections, e.g. WebSocket, to the Subgraphs. This makes the Subgraphs much simpler to reason about and easier to deploy. Serverless deployment options usually have limitations on request length. With an Event Broker in the middle, Subgraphs can be stateless without having to give up on Subscriptions.
 

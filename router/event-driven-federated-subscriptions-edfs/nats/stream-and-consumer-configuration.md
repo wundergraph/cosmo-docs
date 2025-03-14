@@ -58,9 +58,13 @@ nats consumer add stream-name consumer-name
 
 In the example below, the NATS provider `my-nats` has also defined a stream configuration. The `streamName` input has been set to "myStream", and the `consumerName` input has been set to `myConsumer`.
 
-{% code fullWidth="true" %}
+{% code overflow="wrap" fullWidth="false" %}
 ```graphql
-directive @edfs__natsSubscribe(subjects: [String!]!, providerId: String! = "default", streamConfiguration: edfs__NatsStreamConfiguration) on FIELD_DEFINITION
+directive @edfs__natsSubscribe(
+  subjects: [String!]!,
+  providerId: String! = "default",
+  streamConfiguration: edfs__NatsStreamConfiguration
+) on FIELD_DEFINITION
 
 input edfs__NatsStreamConfiguration {
     consumerInactiveThreshold: Int! = 30
