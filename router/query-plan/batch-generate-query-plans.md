@@ -91,3 +91,37 @@ The `error` field on the first level will contains a value only if there is an e
 ### Fail on planning error
 
 If you want the command to exit with an error if at least one query fails to be planned, you can use the option `-fail-on-error`.
+
+## Other options
+
+You can see all the options available launching the command without any arguments:
+
+```
+~ % ./router query-plan
+  -concurrency int
+        how many query plan run concurrently
+  -execution-config string
+        required, execution config file location
+  -fail-fast
+        stop as soon as possible if a plan fails
+  -fail-on-error
+        if at least one plan fails, the command exit code will be 1
+  -filter string
+        operation filter file location which should contain file names of operations to include
+  -help
+        Prints the help message
+  -log-level string
+        log level to use (debug, info, warning, error, panic, fatal) (default "warning")
+  -max-collectors uint
+        max number of concurrent data source collectors, if unset or 0, no limit will be enforced
+  -operations string
+        required, source operations folder location
+  -plans string
+        required, output plans folder location
+  -print-per-file
+        write a file for each query, with inside the plan or the query plan error (default true)
+  -print-report
+        write a report.json file, with all the query plans and errors sorted by file name
+  -timeout string
+        timeout (default "30s")
+```
