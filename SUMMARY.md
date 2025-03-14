@@ -27,6 +27,7 @@
 * [Namespaces](concepts/namespaces.md)
 * [Schema Contracts](concepts/schema-contracts.md)
 * [Cache Warmer](concepts/cache-warmer.md)
+* [Router Compatibility Versions](concepts/router-compatibility-versions.md)
 
 ## Federation
 
@@ -73,6 +74,9 @@
   * [Fetch-Schema](cli/federated-graph/fetch-schema.md)
   * [Move](cli/federated-graph/move.md)
   * [Changelog](cli/federated-graph/changelog.md)
+  * [Version](cli/federated-graph/version/README.md)
+    * [Get](cli/federated-graph/version/get.md)
+    * [Set](cli/federated-graph/version/set.md)
 * [Monograph](cli/monograph/README.md)
   * [Create](cli/monograph/create.md)
   * [Publish](cli/monograph/publish.md)
@@ -84,6 +88,9 @@
   * [Fetch-Schema](cli/monograph/fetch.md)
   * [Changelog](cli/monograph/changelog.md)
   * [Migrate](cli/monograph/migrate.md)
+  * [Version](cli/monograph/version/README.md)
+    * [Get](cli/monograph/version/get.md)
+    * [Set](cli/monograph/version/set.md)
 * [Router](cli/router/README.md)
   * [Cache](cli/router/cache/README.md)
     * [Push](cli/router/cache/push.md)
@@ -94,6 +101,8 @@
   * [Fetch](cli/router/fetch.md)
   * [Compose](cli/router/compose.md)
   * [Download binary](cli/router/download-binary.md)
+  * [Compatibility version](cli/router/compatibility-version/README.md)
+    * [List](cli/router/compatibility-version/list.md)
 * [Auth](cli/auth/README.md)
   * [Login](cli/auth/login.md)
   * [Whoami](cli/auth/whoami.md)
@@ -218,6 +227,7 @@
 * [File Upload](router/file-upload.md)
 * [Access logs](router/access-logs.md)
 * [Profiling](router/profiling.md)
+* [Upgrading the Router](router/upgrading-the-router.md)
 
 ## Control Plane
 

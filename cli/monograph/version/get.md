@@ -1,0 +1,38 @@
+---
+description: >-
+  Retrieves and displays the router compatibility version that has been set for
+  a specific monograph.
+---
+
+# Get
+
+## Requirements
+
+| Package               | Minimum version                                                          |
+| --------------------- | ------------------------------------------------------------------------ |
+| [wgc](../../intro.md) | [0.74.0](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.74.0) |
+
+## Usage
+
+```bash
+npx wgc monograph version get <name>
+```
+
+## Description
+
+The `wgc monograph version get` command retrieves and displays the router compatibility version that has been set for a specific monograph.
+
+## Output
+
+The router compatibility version that has been set for the monograph.
+
+## Example
+
+```bash
+> npx wgc monograph version get mygraph -n prod
+┌────────────┬───────────┬─────────┐
+│ GRAPH NAME │ NAMESPACE │ VERSION │
+├────────────┼───────────┼─────────┤
+│ mygraph    │ prod      │ 1       │
+└────────────┴───────────┴─────────┘
+```
