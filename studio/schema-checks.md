@@ -34,7 +34,7 @@ This view lists all the checks performed, showing the timestamp of each check, t
 Have a glance at your check. Understand why the check succeeded or failed, and what graphs, operations, and clients were affected.
 
 {% hint style="info" %}
-Operation Checks can only function when your router sends schema usage metrics to Cosmo Cloud. This is the default behavior, provided you have not overwritten the default setting. By default operation checks look at the client traffic of the last 7 days to validate if a breaking change can be safely published. If you have a more advanced use case, please upgrade to a higher plan or contact us.
+Operation Checks can only function when your router sends schema usage metrics to Cosmo Cloud. This is the default behavior, provided you have not overwritten the default setting. By default operation checks look at the client traffic of the last 7 days to validate if a breaking change can be safely published, however, this can be configured using the namespace [Policies](policies/#schema-checks). If you have a more advanced use case, please upgrade to a higher plan or contact us.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/schema-check-detail.png" alt=""><figcaption></figcaption></figure>

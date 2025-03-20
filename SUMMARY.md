@@ -166,8 +166,8 @@
   * [Okta (OIN version)](studio/scim/okta-oin-version.md)
 * [Audit log](studio/audit-log.md)
 * [Cosmo AI](studio/cosmo-ai.md)
-* [Lint Policy](studio/lint-policy/README.md)
-  * [Linter rules](studio/lint-policy/linter-rules.md)
+* [Policies](studio/policies/README.md)
+  * [Linter rules](studio/policies/linter-rules.md)
 * [Graph Pruning](studio/graph-pruning.md)
 * [Invitations](studio/invitations.md)
 
