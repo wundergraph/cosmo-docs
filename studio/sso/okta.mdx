@@ -1,0 +1,126 @@
+---
+title: "Okta"
+description: "Setting up SSO with Okta"
+icon: "user-shield"
+---
+
+
+### Steps to set Okta as an OIDC identity provider
+
+<Steps>
+  <Step>
+    Navigate to the Applications view within your Okta Administrator Dashboard.
+  </Step>
+  <Step>
+    Click on **Create App Integration**.
+  </Step>
+  <Step>
+    A dialog appears, select OIDC - OpenID Connect as the sign-in method.
+  </Step>
+  <Step>
+    Now select the type of application and click on **Next.**
+
+<Frame>
+  <img src="/images/studio/sso/image-1.png" />
+</Frame>
+</Step>
+<Step>
+  Now give the app a name and scroll down to **Assignments.**
+
+<Frame>
+  <img src="/images/studio/sso/image-2.png" />
+</Frame>
+</Step>
+<Step>
+  For **Grant Type,** keep the defaults.
+</Step>
+<Step>
+  For **Assignments,** select one of the options based on your choice and then click on **Save.**
+
+  <Frame>
+    <img src="/images/studio/sso/image-3.png" />
+  </Frame>
+</Step>
+<Step>
+  Copy the **Client ID** and **Client Secret.**
+
+  <Frame>
+    <img src="/images/studio/sso/image-4.png" />
+  </Frame>
+</Step>
+<Step>
+  Navigate to Security -> API.
+
+  <Frame>
+    <img src="/images/studio/sso/image-5.png" />
+  </Frame>
+</Step>
+<Step>
+  Select the **default** authorization server.
+</Step>
+<Step>
+  Copy the **Metadata URI.**
+
+  <Frame>
+    <img src="/images/studio/sso/image-6.png" />
+  </Frame>
+</Step>
+
+<Step>
+  Navigate to the settings page on Cosmo.
+
+  <Frame>
+    <img src="/images/studio/sso/image-7.png" />
+  </Frame>
+</Step>
+<Step>
+  Give the connection a name, paste the **Metadata URI** copied before, into the  **Discovery Endpoint,**&#x61;nd paste the **Client ID** and  **Client secret**copied before into the **Client ID** and  **Client Secret fields respectively,**&#x61;nd then click on **Connect.**
+
+  <Frame>
+    <img src="/images/studio/sso/image-8.png" />
+  </Frame>
+</Step>
+<Step>
+  Configure the mapping between the roles in Cosmo and the user groups in Okta. The field **Group in the provider** can be populated with the name of the group or a regex to match the user groups. Once all the mappers are configured, click on **Save**.
+
+  <Frame>
+    <img src="/images/studio/sso/image-9.png" />
+  </Frame>
+</Step>
+<Step>
+  Copy the sign-in and sign-out redirect URIs displayed in the dialog.
+
+  <Frame>
+    <img src="/images/studio/sso/image-10.png" />
+  </Frame>
+</Step>
+<Step>
+  Navigate back to the application created on Okta and populate the Sign-in and Sign-out redirect URIs with the above-copied values. Click on **Save**.
+
+  <Frame>
+    <img src="/images/studio/sso/image-11.png" />
+  </Frame>
+</Step>
+
+<Step>
+  Navigate to Security-> API, and click on the **default** auth server. Navigate to the **claims** tab and then click on **Add Claim.**
+
+  <Frame>
+    <img src="/images/studio/sso/image-12.png" />
+  </Frame>
+</Step>
+<Step>
+  Name the claim "ssoGroups", and include it in the **ID Token,** for the value type select **Groups,** and  for the filter select **Matches regex** and populate the field with  **".\*".**&#x43;lick on **Create.**
+
+  <Frame>
+    <img src="/images/studio/sso/image-13.png" />
+  </Frame>
+</Step>
+<Step>
+  Now you can assign users/groups to the application, and those users will be able to log into Cosmo using the URL provided on setting up the provider.
+</Step>
+</Steps>
+
+<Info>
+  Please make sure that the users added to the application have a username.
+</Info>
