@@ -1,38 +1,32 @@
----
-icon: note
-description: >-
-  WunderGraph Cosmo is the Full Lifecycle GraphQL API Management Solution to
-  manage Federated Graphs at scale. Composition checks, routing, analytics, and
-  distributed tracing all in one platform.
----
+# Mintlify Starter Kit
 
-# WunderGraph Cosmo Docs
+Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
 
-{% hint style="warning" %}
-NOTE FOR SDK DOCUMENTATION\
+- Guide pages
+- Navigation
+- Customizations
+- API Reference pages
+- Use of popular components
 
+### Development
 
-The documentation for the TypeScript SDK has been relocated to [https://bff-docs.wundergraph.com](https://bff-docs.wundergraph.com). The domain [docs.wundergraph.com](https://docs.wundergraph.com) is now designated for Cosmo-related documentation.
-{% endhint %}
+Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
 
-<figure><img src=".gitbook/assets/logo.png" alt=""><figcaption></figcaption></figure>
+```
+npm i -g mintlify
+```
 
-### Built for any scale
+Run the following command at the root of your documentation (where docs.json is)
 
-Cosmo enables teams and organizations to manage and scale (federated) GraphQL architectures with ease. Quickly iterate without breaking anything through composition checks.
+```
+mintlify dev
+```
 
-WunderGraph Cosmo can easily run locally, on-premises, or in the cloud as a managed service. Cosmo is a batteries-included solution, covering everything from routing to analytics.
+### Publishing Changes
 
-Cosmo supports monolithic GraphQL APIs as well as Federation v1 and v2, including Subscriptions.
+Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
 
+#### Troubleshooting
 
-
-<figure><img src=".gitbook/assets/simple-architecture.png" alt=""><figcaption><p>The Core Components</p></figcaption></figure>
-
-### **The Cosmo stack**
-
-* [CLI](broken-reference): The Cosmo command line interface, referred to as `wgc`, plays a crucial role in managing the Cosmo platform. Its functions include pushing schemas, validating schemas, initiating new projects, and managing users, among others. It communicates directly with the Control Plane to perform these operations.
-* [Control Plane](broken-reference): The Control Plane forms the heart of the Cosmo platform and comprises two core elements: The Platform API and the Node API. The Platform API is utilized by the Cosmo CLI tool and Studio for platform management. On the other hand, the Node API facilitates fleet-specific operations, carried out by the Router nodes.
-* [Router](broken-reference): The Router is the component that understands the GraphQL Federation protocol. It is responsible for routing requests to the correct subgraphs and for aggregating the responses. While it maintains a connection with the Control Plane, its operation is independent and does not depend on the Control Plane's functionality for maximum availability.
-* [Studio](broken-reference): The Studio serves as the web interface for the Cosmo platform, providing a user-friendly medium for platform management and collaboration on GraphQL Federation. It maintains a connection with the Control Plane through the admin API, enabling efficient platform management.
-
+- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
+- Page loads as a 404 - Make sure you are running in a folder with `docs.json`
