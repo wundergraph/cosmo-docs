@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5839cecb-a581-4986-9478-6b27f351cd10" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Architecture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-03 at 19.39.08@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-03 at 19.41.10@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-22 at 12.13.33@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-22 at 12.50.39@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-22 at 12.54.07@2x (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-22 at 12.54.07@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/CleanShot 2024-10-22 at 13.03.19@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/EDFS Kafka.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/FieldUsage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Frame 8 (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Frame 8 (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Frame 8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/GitHub App Checks (1).mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screen Recording 2024-11-05 at 2.41.13 PM.mov" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-01 at 5.51.41 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-01 at 5.53.53 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-13 at 1.31.34 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-13 at 1.33.20 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-13 at 1.34.34 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-13 at 1.35.33 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-09-13 at 1.36.14 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-10-11 at 1.50.39 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-03 at 1.57.15 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-03 at 1.59.21 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-03 at 2.02.19 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-03 at 2.04.13 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-03 at 2.07.38 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-03 at 2.43.41 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-06 at 1.44.43 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-06 at 2.40.40 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-06 at 2.49.53 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-08 at 11.39.50.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-08 at 11.40.44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-08 at 11.43.28.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-08 at 11.45.52.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-08 at 11.48.13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-09 at 11.58.35 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-09 at 5.47.35 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-14 at 17.02.02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-14 at 17.02.39 (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2023-11-14 at 17.02.39.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-11 at 1.36.03 AM-min.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-11 at 1.46.11 AM-min.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 2.35.33 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 2.48.55 PM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 2.48.55 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 2.51.16 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 2.53.07 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.09.54 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.09.54 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.13.08 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.21.45 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.28.07 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.29.42 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.34.17 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.35.30 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.41.25 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.41.42 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.41.42 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.44.33 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.52.03 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-03-14 at 3.57.18 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-08 at 1.25.24 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-08 at 2.13.54 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 1.09.56 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 1.15.15 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 1.15.15 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 1.17.40 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 1.17.40 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.28.16 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.28.16 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.35.28 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.36.11 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.36.11 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.40.49 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.47.18 AM (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.47.18 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.49.50 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.52.33 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-04-17 at 12.58.36 AM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-07-08 at 7.09.37 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-07-08 at 7.14.28 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-07-08 at 7.17.36 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-07-08 at 7.20.06 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-07-08 at 7.28.42 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 11.14.17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 11.18.39.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 11.22.51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.02.47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.05.49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.07.21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.11.13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.14.01.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.17.34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.26.08.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.26.47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.35.49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 12.37.42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 13.01.36.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 13.13.42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 13.47.09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-08-20 at 13.52.53.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2024-09-20 at 11.20.50 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2025-02-07 at 10.01.05 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2025-02-07 at 9.48.30 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2025-02-28 at 2.15.32 PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Screenshot 2025-03-03 at 10.49.28.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/Unbenannt-2023-07-13-1412 (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/add-api-key-scoped (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/add-api-key-scoped.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/add-subgraph-member (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/add-subgraph-member.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/api-key-created.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/api-keys (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/api-keys (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/api-keys (3).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/api-keys.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/art.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/art2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/audit-log (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/audit-log.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/checks.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cluster-management.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/composition-details-min (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/composition-details-min.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/composition-errors-min.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/compositions-min.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/config val.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/config val2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/config val3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/config val4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo-architecture-final (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo-architecture-final (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo-architecture-final (3).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo-architecture-final (4).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo-architecture-final.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo-architecture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_default_graph_mygraph-with-admission_compositions (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_default_graph_mygraph-with-admission_compositions (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_default_graph_mygraph-with-admission_compositions.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production_analytics(Screenshots).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production_analytics_range=720(Screenshots) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production_analytics_range=720(Screenshots) (2) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production_analytics_range=720(Screenshots) (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/cosmo.wundergraph.com_wundergraph_graph_production_analytics_range=720(Screenshots).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/dd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/details.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/enable-graph-rbac.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/explorer-search (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/explorer-search.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/explorer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/fiedl-usage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/file.excalidraw.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (10).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (100).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (101).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (102).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (103).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (104).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (105).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (106).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (107).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (108).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (109).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (11).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (110).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (111).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (112).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (113).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (114).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (115).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (116).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (117).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (118).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (119).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (12).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (120).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (121).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (122).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (123).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (124).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (125).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (126).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (127).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (128).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (129).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (13).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (130).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (131).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (132).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (133).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (134).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (135).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (136).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (137).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (138).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (139).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (14).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (140).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (141) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (141).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (142).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (143).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (144).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (15).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (16).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (17).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (18).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (19).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (2) (1) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (2) (1) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (2) (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (2) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (20).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (21).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (22).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (23).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (24).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (25).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (26).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (27).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (28).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (29).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (3) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (3).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (30).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (31).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (32).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (33).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (34).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (35).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (36).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (37).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (38).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (39).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (4) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (4).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (40).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (41).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (42).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (43).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (44).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (45).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (46).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (47).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (48).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (49).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (5) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (5).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (50).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (51).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (52).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (53).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (54).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (55).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (56).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (57).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (58).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (59).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (6).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (60).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (61).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (62).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (63).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (64).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (65).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (66).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (67).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (68).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (69).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (7).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (70).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (71).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (72).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (73).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (74).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (75).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (76).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (77).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (78).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (79).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (8).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (80).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (81).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (82).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (83).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (84).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (85).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (86).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (87).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (88).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (89).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (9).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (90).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (91).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (92).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (93).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (94).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (95).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (96).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (97).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (98).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (99) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image (99).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/instance-details.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/localhost_3000_wundergraph_graph_production_schema_category=interfaces&amp;typename=Animal (1) (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/localhost_3000_wundergraph_graph_production_schema_category=interfaces&amp;typename=Animal (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/localhost_3000_wundergraph_graph_production_schema_category=interfaces&amp;typename=Animal (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/localhost_3000_wundergraph_graph_production_schema_category=interfaces&amp;typename=Animal (3).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/localhost_3000_wundergraph_graph_production_schema_category=interfaces&amp;typename=Animal (4).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/localhost_3000_wundergraph_graph_production_schema_category=interfaces&amp;typename=Animal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/monitoring_through_tracing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/new-api-key.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/ns switch.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/operations.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/overview.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/policies.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/registry (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/registry (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/registry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/router_instance_details.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-cehcks.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-check-detail-operations.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-check-detail.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-checks (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-checks.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-registry (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/schema-registry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/simple-architecture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F2JXm7az0v1ThP4BYHC0i%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F3rliQgreKhtbjcoLkOCh%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F41V213VNdNcsBmv7WuEK%2FScreenshot%202023-11-06%20at%202.40.40%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F5mmxr2EZkLgoTPP3Vo98%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F6QeJtGNgIA3ZfzZSNbpx%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F6cXC58aHld1mbvclAPyj%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F7pj0YRFiYEKbS8rjz6Nu%2FScreenshot%202023-11-03%20at%202.04.13%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2F8XMjUKjXBJsKaCXaAFFL%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FBeNdVqXwJByNIMvdm8np%2FScreenshot%202023-11-03%20at%201.57.15%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FCADiuTqdwDfWyII73h6I%2FScreenshot%202023-11-06%20at%201.44.43%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FCju13h3G1sFSSov0jxcG%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FDNSfFPNYhrdpFerFdqX7%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FFBzqcwhZFeSnKX20bnTj%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FGKwOyWmxUrrDxrlOSmAh%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FGiO4lMl97jdfte9pLa61%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FH3oZE82hqKcUujBe96EL%2FScreenshot%202023-11-09%20at%205.47.35%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FIIWurV7jqYQc0xWRQcCq%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FLDX5AqUvVgvI2w7rx7tS%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FPCxRzBseMSvlmkUtf0oA%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FQUnLSN2OZXFWyvDnnShs%2FScreenshot%202023-11-03%20at%202.43.41%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FTkVciMa6hsaAAX7mMD0q%2FScreenshot%202023-11-03%20at%202.02.19%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FVGQZ4CtOEJpZL64YLJkL%2FScreenshot%202023-11-03%20at%201.59.21%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FXHMztzUPzclYhL5wv444%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FcXz8ygpmq9JYLmzjzfyC%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Fdsf4x6FwzqMMgI1Kf9Ka%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FepUipoVv2tiJ5Vua6GaJ%2FScreenshot%202023-11-06%20at%202.49.53%20PM.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Ff8cptqVbEDinipg0r6Lq%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FfKYasokQtttbKtcLbJMM%2Fimage (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FfKYasokQtttbKtcLbJMM%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Fgk4Pu1e63WeMBdLxwSTp%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FiC7FCJoVJ8hSOUK098KF%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FkbNSAImipyzhkTAKtBwJ%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FrTGDWycuoEv1l09j4twg%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Ftea6srY12M1kRHizFI72%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2Fw35gev9un60xF9u11Tq1%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FyLd0yTvVI5fHeCZi522K%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/spaces%2Ff2zpPO8tcaY6tJoaEebc%2Fuploads%2FyZd865xXraxYMTdmWDop%2Fimage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/subscriptions-architecture (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/subscriptions-architecture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/subscriptions-multiplexing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/tree_view (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/tree_view.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/treeview (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/treeview.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/waterfal (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/waterfal (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/assets/waterfal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitbook/includes/func-m-jwtmodule-onorigi....md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "mintlify-migration",
+    "go.import.settings.migrated": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+</project>

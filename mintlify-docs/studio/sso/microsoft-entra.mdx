@@ -1,0 +1,169 @@
+---
+title: "Microsoft Entra"
+description: "Setting up SSO with Microsoft Entra"
+icon: "microsoft"
+---
+
+### Steps to set Entra as an OIDC identity provider:-
+<Steps>
+<Step>
+Log in to Microsoft Entra and navigate to the **Identity/Applications/Enterprise applications** view within Microsoft Entra.
+
+<Frame>
+  <img src="/images/studio/sso/image-34.png" />
+</Frame>
+</Step>
+<Step>
+Click on **New application.**
+</Step>
+<Step>
+Once navigated to a new page, click on **Create your own application**.
+
+<Frame>
+  <img src="/images/studio/sso/image-35.png" />
+</Frame>
+</Step>
+<Step>
+Provide a name to the application and select "**Register an application to integrate with Microsoft Entra ID (App you're developing)**" for the application purpose, then click on the **Create** button.
+</Step>
+<Step>
+Select who can use the application from the given options according to your needs and then click on **Register.**
+</Step>
+<Step>
+Now navigate to **Identity/Applications/App registrations.**
+</Step>
+<Step>
+In the **All applications tab,** select the application which we created.
+
+<Frame>
+  <img src="/images/studio/sso/image-36.png" />
+</Frame>
+</Step>
+<Step>
+Copy the Application(Client) ID, then click on **Endpoints** and then copy the **OpenID Connect metadata document**(Discovery Endpoint).
+
+<Frame>
+  <img src="/images/studio/sso/image-37.png" />
+</Frame>
+</Step>
+<Step>
+Navigate to **Certificates and Secrets.**
+</Step>
+<Step>
+Click on  **New client secret,**&#x67;ive it a description and select the expiry according to your needs and then click on **Add**.
+</Step>
+<Step>
+Copy the **value(client secret)** and store it, as it won't be shown again.
+
+<Frame>
+  <img src="/images/studio/sso/image-38.png" />
+</Frame>
+</Step>
+<Step>
+Navigate to the settings page on Cosmo.
+
+<Frame>
+  <img src="/images/studio/sso/image-39.png" />
+</Frame>
+</Step>
+<Step>
+ Give the connection a name, paste the **OpenID Connect metadata document** copied before, into the  **Discovery Endpoint,**&#x70;aste the **Client ID** and  **Client secret**copied before into the **Client ID** and  **Client Secret fields respectively,**&#x61;nd then click on **Connect.**
+
+<Frame>
+  <img src="/images/studio/sso/image-40.png" />
+</Frame>
+</Step>
+<Step>
+Configure the mapping between the roles in Cosmo and the groups in Microsoft Entra. The field **Group in the provider** should be populated with the **Object ID of a group from Entra.** Once all the mappers are configured, click on **Save**. Every member in those groups would get the respective role configured.
+
+<Frame>
+  <img src="/images/studio/sso/image-41.png" />
+</Frame>
+<br/>
+<Frame caption="Object ID of the groups in Entra">
+  <img src="/images/studio/sso/image-42.png" />
+</Frame>
+</Step>
+<Step>
+Copy the sign-in and sign-out redirect URIs displayed in the dialog.
+
+<Frame>
+  <img src="/images/studio/sso/image-43.png" />
+</Frame>
+</Step>
+<Step>
+
+  Navigate back to the **App registrations** page, in the **All applications** tab select the app which we created.
+</Step>
+<Step>
+ Click on **Add a redirect URI, and** now click on  **Add a platform,**&#x73;elect  **Web**and then paste the Sign-in and Sign-out redirect URIs in the **Redirect URIs** and  **Front-channel logout URL**respectivel&#x79;**.**
+
+<Frame>
+  <img src="/images/studio/sso/image-44.png" />
+</Frame>
+</Step>
+<Step>
+ Select  **ID tokens**and then click on **Configure.**
+</Step>
+<Step>
+  Now navigate to  **Token configuration, and**click on **Add groups claim.**
+</Step>
+<Step>
+Select  **Security groups,**&#x65;xpand  **ID,**&#x73;elect  **Group ID**and click on **Add.**
+
+<Frame>
+  <img src="/images/studio/sso/image-45.png" />
+</Frame>
+</Step>
+<Step>
+Navigate to **API Permissions, and** click on **Add a permission.**
+<Frame>
+  <img src="/images/studio/sso/image-46.png" />
+</Frame>
+</Step>
+<Step>
+ Click on **Microsoft Graph,** and then on  **Delegated permissions,**&#x73;elect  **email, openid and profile**and then click on **Add permissions.**
+</Step>
+<Step>
+Now you can assign users/groups to the application, and only those users will be able to log into Cosmo using the URL provided on setting up the provider.
+
+<Frame>
+  <img src="/images/studio/sso/image-47.png" />
+</Frame>
+</Step>
+</Steps>
+
+<Info>
+Please make sure that the users added to the application have an email.
+
+Steps to add a user:-
+<Steps>
+<Step>
+Navigate to Users/All users, click on New User and then click on Create a new user.
+
+<Frame>
+  <img src="/images/studio/sso/image-48.png" />
+</Frame>
+</Step>
+<Step>
+Provide the user principal name, the display name and then click on **Next**.
+
+<Frame>
+  <img src="/images/studio/sso/image-49.png" />
+</Frame>
+</Step>
+<Step>
+Provide the first name(optional) and the last name(optional).
+</Step>
+<Step>
+Provide the email of the user(**Required**).
+
+<Frame>
+  <img src="/images/studio/sso/image-50.png" />
+</Frame>
+</Step>
+<Step>
+Then click on **Next** and assign the user to the groups according to your needs.
+</Step>
+</Steps>
+</Info>
