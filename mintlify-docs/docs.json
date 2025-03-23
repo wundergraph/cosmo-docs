@@ -16,6 +16,11 @@
       "family": "Inter"
     }
   },
+  "seo": {
+    "metatags": {
+      "robots": "noindex"
+    }
+  },
   "background": {
     "decoration": "grid"
   },
@@ -99,7 +104,7 @@
         ]
       },
       {
-        "group": "CLI",
+        "group": "CLI (wgc)",
         "pages": [
           "cli/intro",
           "cli/essentials",
@@ -585,6 +590,14 @@
       "x": "https://twitter.com/wundergraphcom",
       "discord": "https://wundergraph.com/discord",
       "github": "https://github.com/wundergraph"
+    }
+  },
+  "integrations": {
+    "koala": {
+      "publicApiKey": "pk_c7477bfbf86479d918562f7add220a2d7098"
+    },
+    "plausible": {
+      "domain": "cosmo-docs.wundergraph.com"
     }
   }
 }
