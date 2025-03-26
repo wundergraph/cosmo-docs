@@ -55,6 +55,8 @@ The `request` object is a read-only entity that provides details about the incom
 
 * `request.url.port`
 
+* `request.trace.sampled`
+
 * `request.error`
 
 #### **Header Access**:
@@ -66,6 +68,24 @@ The `request` object is a read-only entity that provides details about the incom
 ```bash
 request.url.query.foo == 'bar' && request.Method = 'POST'
 request.header.Get('x-block-mutation') == 'yes'
+```
+
+### **Body Object**
+
+The body object holds information related to the request body. However, if used in telemetry attribute expressions, it will be empty because the router hasn’t read the body at that stage of processing yet.
+
+To optimize performance, the raw request body (`raw.body`) is only included in the expression context if at least one expression explicitly references it.
+
+**Available Fields**:
+
+* `request.body.raw`
+
+#### Example expressions
+
+This example returns the raw body only when an error occurs, which is useful for debugging when used in access log expressions.
+
+```
+request.error != nil ? request.body.raw : ''
 ```
 
 ### **Authentication Object**
