@@ -380,7 +380,7 @@ The configuration for the compliance. Includes for example the configuration for
 | Environment Variable | YAML | Required | Description |Default Value|
 | --- | --- | --- | --- | --- |
 | TRACING\_ENABLED | enabled | <Icon icon="square" /> |  | true |
-| TRACING\_SAMPLING\_RATE | sampling\_rate | <Icon icon="square-check" iconType="solid"  /> | The sampling rate for the traces. The value must be between 0 and 1. If the value is 0, no traces will be sampled. If the value is 1, all traces will be sampled. | 1 |
+| TRACING\_SAMPLING\_RATE | sampling\_rate | <Icon icon="square-check" iconType="solid"  /> | The sampling rate for the traces. The value must be between 0 and 1. If the value is 0, no traces will be sampled. If the value is 1, all traces will be sampled. For managed plans, the trace sampling rate will not exceed the rate imposed by the organization limit of the plan. | 1 |
 | TRACING\_PARENT\_BASED\_SAMPLER | parent\_based\_sampler | <Icon icon="square-check" iconType="solid"  /> | Enable the parent-based sampler. The parent-based sampler is used to sample the traces based on the parent trace. | true |
 | TRACING\_BATCH\_TIMEOUT | batch\_timeout | <Icon icon="square" /> | The maximum delay allowed before spans are exported. | 10s |
 | TRACING\_EXPORT\_GRAPHQL\_VARIABLES | export\_graphql\_variables | <Icon icon="square" /> | Export GraphQL variables as span attribute. Variables may contain sensitive data. | false |
