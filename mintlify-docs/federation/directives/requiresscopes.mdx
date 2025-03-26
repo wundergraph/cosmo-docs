@@ -200,7 +200,7 @@ When @requiresScopes is declared on an interface definition, the @requiresScopes
 
 If the same interface definition is defined in another subgraph without @authenticated, the corresponding field definitions **_unique_** to **_that_** subgraph be unaffected. But note that @requiresScopes could be applied to those field definitions through other means.
 
-In addition, @requiresScopes will be applied to the corresponding field definitions defined on the objects that implement that interface  **_within that subgraph_**.
+In addition, @requiresScopes will be applied to the corresponding field definitions defined on the objects that implement that interface **_within that subgraph_**.
 
 If at least one instance of a shared field is declared with @requiresScopes, that field definition will be declared with @requiresScopes in the federated graph (see [Federation](/federation/directives/requiresscopes#federation)). Consider the following example:
 
