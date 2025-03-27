@@ -15,3 +15,8 @@
   -moz-box-shadow: var(--box-shadow);
   box-shadow: var(--box-shadow);
 }
+
+
+.osano-cm-widget:focus {
+    outline: none;
+}
