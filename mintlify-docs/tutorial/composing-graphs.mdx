@@ -1,7 +1,7 @@
 ---
 title: "Composing Graphs"
 description: "How to compose a federated graph with WunderGraph Schema Composition, a TypeScript composition library."
-icon: network-wired
+icon: "network-wired"
 ---
 
 ## Subgraph object
@@ -60,12 +60,15 @@ export type FederationResult = {
   federatedGraphAST?: DocumentNode;
   federatedGraphSchema?: GraphQLSchema;
 };
-
 ```
 
 #### Properties
 
-**errors**: An optional array of all errors encountered during normalization and validation of the subgraph, or composition and validation of the federated graph. If there are any errors during normalization, federation will not be attempted. If federation was successful, the array will be undefined. **federatedGraphAST**: An optional graphql `DocumentNode` representation of the federated graph. If federation was unsuccessful, this property will be undefined. **federatedGraphSchema**: An optional graphql `GraphQLSchema` representation of the federated graph. If federation was unsuccessful, this property will be undefined.
+**errors**: An optional array of all errors encountered during normalization and validation of the subgraph, or composition and validation of the federated graph. If there are any errors during normalization, federation will not be attempted. If federation was successful, the array will be undefined. 
+
+**federatedGraphAST**: An optional graphql `DocumentNode` representation of the federated graph. If federation was unsuccessful, this property will be undefined. 
+
+**federatedGraphSchema**: An optional graphql `GraphQLSchema` representation of the federated graph. If federation was unsuccessful, this property will be undefined.
 
 #### Printing the federated schema
 
