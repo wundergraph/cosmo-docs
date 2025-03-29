@@ -16,11 +16,6 @@
       "family": "Inter"
     }
   },
-  "seo": {
-    "metatags": {
-      "robots": "noindex"
-    }
-  },
   "background": {
     "decoration": "grid"
   },
