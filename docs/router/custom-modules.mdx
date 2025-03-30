@@ -201,8 +201,6 @@ func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler)
 
 If you have to set the authentication scopes, but the authentication could be not set, you can call the method `ctx.SetAuthenticationScopes(scopes []string)` that, if the Authentication is not set, it will initialize it with an empty object and set the scopes. If the authentication is already set, it will just override the scopes.
 
-If you need to set authentication scopes but authentication is not yet initialized, you can call the method `ctx.SetAuthenticationScopes([]string)`. If authentication is not set, this method will initialize it with an empty object and apply the scopes. If authentication is already set, it will simply override the existing scopes.
-
 ```js
 func (m *SetScopesModule) Middleware(core.RequestContext, next http.Handler) {
 	// Initialize the scopes
@@ -304,7 +302,7 @@ Due to the circumstance that modules are pure Go code, we can leverage all tooli
 
 <Steps>
 	<Step>
-		Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo)
+		Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure you checkout on the latest [router tag](https://github.com/wundergraph/cosmo/tags).
 	</Step>
 	<Step>
 		Navigate to the router [directory](https://github.com/wundergraph/cosmo/tree/main/router)
@@ -349,3 +347,7 @@ Please ensure that you checkout on an official [router tag](https://github.com/w
 <Info>
 	Please inform us if you have more advanced use cases that cannot be accommodated with the current feature set.
 </Info>
+
+### Future Plans
+
+We're currently working on the iteration of the module system. It will allow you to fully customize the router with a complete overhaul of the development experience. The new module system will be available in the next major release of the router. If you have any questions or suggestions, please reach out to us on the [GitHub](https://github.com/wundergraph/cosmo/pull/1063) RFC.
