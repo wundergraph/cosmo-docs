@@ -1,6 +1,0 @@
----
-icon: router
----
-
-# Router
-
