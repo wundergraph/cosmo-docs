@@ -27,7 +27,6 @@ The module deploys the Cosmo Router in a highly available fashion by default (yo
 </Card>
 </CardGroup>
 
-
 ## Prerequisites
 
 The only requirement is that you have to create one secret manually via the [AWS Secret Manager](https://aws.amazon.com/secrets-manager). This secret should contain one key named `GRAPH_API_TOKEN` which holds the token required for communicating with the WunderGraph Cloud. You can find more information on how to create such a token in [our docs](https://cosmo-docs.wundergraph.com/tutorial/cosmo-cloud-onboarding#create-a-router-token).
@@ -81,7 +80,11 @@ In the previous usage example you might noticed that we pass the path to the Cos
 Please make sure to create the file before performing a `terraform apply`. The configuration options for the router are described in [our docs](/router/configuration) as well.
 
 <Info>
-**Important:** As described before, the actual `GRAPH_API_TOKEN` value needs to be defined in the secret. This value gets injected when the container of the Cosmo Router starts. Please make sure that you add the following lines to your `config.yaml`. Otherwise, the Router wouldn't be able to communicate with the Cosmo Control Plane.
+  **Important:** As described before, the actual `GRAPH_API_TOKEN` value needs
+  to be defined in the secret. This value gets injected when the container of
+  the Cosmo Router starts. Please make sure that you add the following lines to
+  your `config.yaml`. Otherwise, the Router wouldn't be able to communicate with
+  the Cosmo Control Plane.
 </Info>
 
 ```bash
@@ -89,4 +92,3 @@ graph:
   # Leave this definition as is. The variable will be substituted when the container starts.
   token: ${GRAPH_API_TOKEN}
 ```
-

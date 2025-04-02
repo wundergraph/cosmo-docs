@@ -4,20 +4,37 @@ icon: "router"
 description: "The following instructions help you install the Router Chart on Kubernetes."
 ---
 
-<Card title="Chart Repository" icon="share-nodes" horizontal href="https://ghcr.io/wundergraph/cosmo/helm-charts/router">
- `ghcr.io/wundergraph/cosmo/helm-charts/router`
+<Card
+  title="Chart Repository"
+  icon="share-nodes"
+  horizontal
+  href="https://ghcr.io/wundergraph/cosmo/helm-charts/router"
+>
+  `ghcr.io/wundergraph/cosmo/helm-charts/router`
 </Card>
 
-<Card title="ArtifactHub" icon="link" horizontal href="https://artifacthub.io/packages/helm/cosmo-router/router">
-[https://artifacthub.io/packages/helm/cosmo-router/router](https://artifacthub.io/packages/helm/cosmo-router/router)
+<Card
+  title="ArtifactHub"
+  icon="link"
+  horizontal
+  href="https://artifacthub.io/packages/helm/cosmo-router/router"
+>
+  [https://artifacthub.io/packages/helm/cosmo-router/router](https://artifacthub.io/packages/helm/cosmo-router/router)
 </Card>
 
-<Card title="Source" icon="github" horizontal href="https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router">
-[Repository](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router)
+<Card
+  title="Source"
+  icon="github"
+  horizontal
+  href="https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router"
+>
+  [Repository](https://github.com/wundergraph/cosmo/tree/main/helm/cosmo/charts/router)
 </Card>
 
 <Info>
-  Helm releases are currently not part of any release automation. We update them as recent as possible in the repository above. Please reach out to us if you need something else.
+  Helm releases are currently not part of any release automation. We update them
+  as recent as possible in the repository above. Please reach out to us if you
+  need something else.
 </Info>
 
 ## Install the Router
@@ -86,6 +103,7 @@ If you follow the default instructions the execution config is polled from the c
 ```bash
 wgc router fetch <graph-name> -n <namespace> -o router.json
 ```
+
 </Step>
 
 <Step title="Set the file content on the helm value">

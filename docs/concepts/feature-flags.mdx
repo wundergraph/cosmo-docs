@@ -13,7 +13,8 @@ icon: flag
 A feature flag is a toggle-able collection of "subgraph replacements", known as feature subgraphs, for one or more federated graphs. Feature flags enable you to release changes and experimental features incrementally to a subset of your consumer traffic, rather than all clients immediately.
 
 <Info>
-  Learn how to use feature flags [through this example](/tutorial/gradual-and-experimental-feature-rollout-with-feature-flags).
+  Learn how to use feature flags [through this
+  example](/tutorial/gradual-and-experimental-feature-rollout-with-feature-flags).
 </Info>
 
 ## Motivations
@@ -37,7 +38,10 @@ If everything goes well, you can enable the feature flag for 1% of your users, k
 After rolling out the feature to 100% of your users, it can be continually monitored in production until there is confidence to publish the new subgraph schema without the feature flag. You can then remove the feature flag as well as any remaining obsolete logic and declarations from the monolith.
 
 <Info>
-  The router is not responsible for traffic splitting. Modern cloud providers / load-balancers support traffic splitting e.g. based on IP or custom rules and allows to set custom headers. On our case, we would set the `X-Feature-Flag` header to the name of the feature flag to enable it.
+  The router is not responsible for traffic splitting. Modern cloud providers /
+  load-balancers support traffic splitting e.g. based on IP or custom rules and
+  allows to set custom headers. On our case, we would set the `X-Feature-Flag`
+  header to the name of the feature flag to enable it.
 </Info>
 
 ### Schema Evolution

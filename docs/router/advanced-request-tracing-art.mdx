@@ -4,36 +4,36 @@ description: "This section is about Advanced Request Tracing (ART) and how you c
 icon: stars
 ---
 
-
 <Frame>
-   <img src="/images/router/image-6.png" />
+  <img src="/images/router/image-6.png" />
 </Frame>
 
 <Note>
   Enabling Advanced Request Tracing may pose a potential security risk. For this reason, we have implemented a mechanism to ensure secure communication from Cosmo Studio to your routers. This allows to debug routers in production
 
 A connection with the controlplane is **required** and a router with version **0.42.3** or **higher.**
+
 </Note>
 
 Advanced Request Tracing (ART) renders the Execution Plan including verbose information about how it was resolved as a JSON and adds it to the GraphQL response in the "extensions" part of the response using the "trace" key.
 
 You get the following information from ART
 
-* planning timings, e.g. how long it took to generate an execution plan
+- planning timings, e.g. how long it took to generate an execution plan
 
-* the general structure of the execution plan
+- the general structure of the execution plan
 
-* the types of fetches (load operations) the Router does, like parallel, serial, entity, batch entity, etc.
+- the types of fetches (load operations) the Router does, like parallel, serial, entity, batch entity, etc.
 
-* what actual requests are being sent to the Subgraphs
+- what actual requests are being sent to the Subgraphs
 
-* what data was used to render the input for a load operation
+- what data was used to render the input for a load operation
 
-* the rendered input of a load operation
+- the rendered input of a load operation
 
-* the output of a load operation
+- the output of a load operation
 
-* the timings, like latency, of a load operation
+- the timings, like latency, of a load operation
 
 All of this information can be quite useful to fully understand how the Router resolves a request and why it might be slow or behave unexpectedly.
 
@@ -49,7 +49,7 @@ ENGINE_ENABLE_REQUEST_TRACING=false
 
 ### Request Parameters
 
-To use Advanced Request Tracing, you need to either use Request Headers or Query Parameters. To disable ART, simply omit the "X-WG-Trace" Header or the "wg\_trace" Query Parameter.
+To use Advanced Request Tracing, you need to either use Request Headers or Query Parameters. To disable ART, simply omit the "X-WG-Trace" Header or the "wg_trace" Query Parameter.
 
 #### Headers
 
@@ -71,17 +71,17 @@ POST http://example.com/graphql?wg_trace=true
 
 Other (optional) arguments that are available:
 
-* exclude\_planner\_stats (exclude planner timings in the trace)
+- exclude_planner_stats (exclude planner timings in the trace)
 
-* exclude\_raw\_input\_data (exclude the raw input data for a loader)
+- exclude_raw_input_data (exclude the raw input data for a loader)
 
-* exclude\_input (exclude the rendered input data for a loader)
+- exclude_input (exclude the rendered input data for a loader)
 
-* exclude\_output (exclude the output of a loader)
+- exclude_output (exclude the output of a loader)
 
-* exclude\_load\_stats (exclude load stats like latency)
+- exclude_load_stats (exclude load stats like latency)
 
-* enable\_predictable\_debug\_timings (useful for debugging, makes timings constant)
+- enable_predictable_debug_timings (useful for debugging, makes timings constant)
 
 ### Examples
 

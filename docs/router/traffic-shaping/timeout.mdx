@@ -31,17 +31,16 @@ traffic_shaping:
       expect_continue_timeout: 0s
 ```
 
-* `request_timeout`: The maximum amount of time a request can take. The timeout includes connection time, any redirects, and reading the response body.
+- `request_timeout`: The maximum amount of time a request can take. The timeout includes connection time, any redirects, and reading the response body.
 
-* `dial_timeout`: The maximum amount of time a dial will wait for a connect to complete
+- `dial_timeout`: The maximum amount of time a dial will wait for a connect to complete
 
-* `keep_alive_idle_timeout`: The maximum amount of time an idle (keep-alive) connection will remain idle before closing itself.
+- `keep_alive_idle_timeout`: The maximum amount of time an idle (keep-alive) connection will remain idle before closing itself.
 
-* `keep_alive_probe_interval`: Specifies the interval between keep-alive probes for an active network connection.
+- `keep_alive_probe_interval`: Specifies the interval between keep-alive probes for an active network connection.
 
-* `tls_handshake_timeout`: Specifies the maximum amount of time waiting to wait for a TLS handshake.
+- `tls_handshake_timeout`: Specifies the maximum amount of time waiting to wait for a TLS handshake.
 
-* `response_header_timeout`: If non-zero, specifies the amount of time to wait for a server's response headers after fully writing the request (including its body, if any).
+- `response_header_timeout`: If non-zero, specifies the amount of time to wait for a server's response headers after fully writing the request (including its body, if any).
 
-* `expect_continue_timeout`: If non-zero, specifies the amount of time to wait for a server's first response headers after fully writing the request headers if the request has an "Expect: 100-continue" header.
-
+- `expect_continue_timeout`: If non-zero, specifies the amount of time to wait for a server's first response headers after fully writing the request headers if the request has an "Expect: 100-continue" header.

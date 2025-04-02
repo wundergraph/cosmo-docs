@@ -25,37 +25,44 @@ var myHeaders = new Headers();
 myHeaders.append("Accept", "text/event-stream");
 
 var raw = JSON.stringify({
-  "query": "subscription test {\n currentTime {unixTime}\n}",
-  "operationName": "test"
+  query: "subscription test {\n currentTime {unixTime}\n}",
+  operationName: "test",
 });
 
 var requestOptions = {
-  method: 'POST',
+  method: "POST",
   headers: myHeaders,
   body: raw,
-  redirect: 'follow'
+  redirect: "follow",
 };
 
-const response = await fetch("https://demo-router.fly.dev/graphql", requestOptions)
+const response = await fetch(
+  "https://demo-router.fly.dev/graphql",
+  requestOptions,
+);
 
 // To recieve data as a string we use TextDecoderStream class in pipethrough
-const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
+const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
 
 // Consume unless you reload the page. You can also use the AbortController API to close the connection.
 while (true) {
-  const {value, done} = await reader.read();
+  const { value, done } = await reader.read();
   if (done) break;
   // Remove the data: prefix and parse the message
-  console.log('Received', JSON.parse(value.replace("data: ", "")));
+  console.log("Received", JSON.parse(value.replace("data: ", "")));
 }
 ```
 
 This code doesn't handle connection issues and retries.
 
 <Info>
-  Providing a compatible interface for `EventSource` is not very difficult to add, but we haven't seen the need for it yet. If you require it, please open an issue in our [repository](https://github.com/wundergraph/cosmo).
+  Providing a compatible interface for `EventSource` is not very difficult to
+  add, but we haven't seen the need for it yet. If you require it, please open
+  an issue in our [repository](https://github.com/wundergraph/cosmo).
 </Info>
 
 <Note>
-  We have deprecated the former way of triggering SSE (adding `?wg_sse=true` to the end of your HTTP request). We will continue to support it for a short grace period.
+  We have deprecated the former way of triggering SSE (adding `?wg_sse=true` to
+  the end of your HTTP request). We will continue to support it for a short
+  grace period.
 </Note>

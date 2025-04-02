@@ -6,7 +6,7 @@ sidebarTitle: Overview
 ---
 
 <Frame>
-   <img src="/images/router/image-8.png" />
+  <img src="/images/router/image-8.png" />
 </Frame>
 
 Event Driven Federated Subscriptions (EDFS) solves 3 major problems when it comes to GraphQL Federation and Subscriptions by directly connecting the Router to an event source like Kafka, NATS, SQS and making it a part of the Graph.
@@ -45,8 +45,16 @@ Enter Event-Driven Federated Subscriptions, a simple way to scale Federated Subs
 EDFS supports two event providers:
 
 <CardGroup>
-  <Card title="Kafka" href="/router/event-driven-federated-subscriptions-edfs/kafka" icon="sitemap" />
-  <Card title="NATS" href="/router/event-driven-federated-subscriptions-edfs/nats" icon="puzzle-piece" />
+  <Card
+    title="Kafka"
+    href="/router/event-driven-federated-subscriptions-edfs/kafka"
+    icon="sitemap"
+  />
+  <Card
+    title="NATS"
+    href="/router/event-driven-federated-subscriptions-edfs/nats"
+    icon="puzzle-piece"
+  />
 </CardGroup>
 
 Each provider consists of at least Publish and Subscribe capabilities. For NATS, we also provide Request/Reply semantics, and streaming capabilities can be configured in the second argument. This enables JetStream, which adds new functionalities and higher qualities of service on top of the base "Core NATS" features.
@@ -108,20 +116,18 @@ To use EDFS, you need to have an Event Source running and connected to the Route
 
 To get started, run a NATS instance and add the following configuration to your `config.yaml` Router Configuration:
 
-<CodeGroup>
-  ```yaml config.yaml
-  events:
-    providers:
-      nats:
-        - id: default
-          url: "nats://localhost:4222"
-          authentication:
-            token: "my-token" # or
-            user_info:
-              username: "my-username"
-              password: "my-password"
-  ```
-</CodeGroup>
+```yaml config.yaml
+events:
+  providers:
+    nats:
+      - id: default
+        url: "nats://localhost:4222"
+        authentication:
+          token: "my-token" # or
+          user_info:
+            username: "my-username"
+            password: "my-password"
+```
 
 We've intentionally moved this part of the configuration out of the Schema to keep the directives clean and for security reasons. Additionally, separating the implementation details of the Event Source from the Schema maintains a clear separation of concerns. Infrastructure teams can focus on Event Sources and their configuration, while API Developers can concentrate on using the Event Source and connecting Event Topics to their Subgraph Schema.
 
@@ -207,19 +213,15 @@ Variable expansion is only supported for NATS on the subject/topic argument.
 
 The `@edfs_natsRequest` directive creates a response topic (internally) and sends the JSON representation of all arguments to the topic specified in the topic argument. The Router then waits synchronously on the response topic for the result. The Router expects all fields to be part of the response that are defined in the Entity type in this Schema, as well as the `__typename` field to identify the Entity. In the example, the Employee Entity contains an \`id\` field, so the following response would be valid:
 
-<CodeGroup>
-  ```json valid.json
-  {"__typename": "Employee", "id":1}
-  ```
-</CodeGroup>
+```json valid.json
+{ "__typename": "Employee", "id": 1 }
+```
 
 The following response is invalid:
 
-<CodeGroup>
-  ```json invalid.json
-  {"id":1}
-  ```
-</CodeGroup>
+```json invalid.json
+{ "id": 1 }
+```
 
 Once the initial result is coming back from the "Event Subgraph", the Router is capable of extending the response with fields from other "regular" Subgraphs.
 
@@ -240,13 +242,13 @@ mutation UpdateEmployee($id: ID!, $update: UpdateEmployeeInput!) {
 ...with the following Variables JSON:
 
 ```json
-{"id":1, "update": {"name": "Jannik", "email": "jannik@neuse.de"}}
+{ "id": 1, "update": { "name": "Jannik", "email": "jannik@neuse.de" } }
 ```
 
 ...the Router would send the following JSON object to the topic `updateEmployee.1`:
 
 ```json
-{"id":1, "update": {"name": "Jannik", "email": "jannik@neuse.de"}}
+{ "id": 1, "update": { "name": "Jannik", "email": "jannik@neuse.de" } }
 ```
 
 ### Subscribe
@@ -268,26 +270,22 @@ subscription EmployeeUpdates($id: ID!){
 ...with the following Variables JSON:
 
 ```json
-{"id": 1}
+{ "id": 1 }
 ```
 
 The Router connects to the topic `employeeUpdated.1` and waits for the next message to be published. All fields that are defined in the response entity MUST be sent to the topic to be valid. Additional fields that are not part of this "Events Subgraph" will be resolved by the Router. In addition, it is required to send the `__typename` field to identify the Entity.
 
 Here's an example of a **valid** message:
 
-<CodeGroup>
-  ```json valid.json
-  {"__typename": "Employee", "id: 1}
-  ```
-</CodeGroup>
+```json valid.json
+{"__typename": "Employee", "id: 1}
+```
 
 Here's an **invalid** message as the `__typename` field is missing:
 
-<CodeGroup>
-  ```json invalid.json
-  {"id: 1}
-  ```
-</CodeGroup>
+```json invalid.json
+{"id: 1}
+```
 
 It's important to send the `__typename` field because this allows EDFS to also work for Union and Interface types.
 
@@ -372,7 +370,9 @@ subscription {
 This will combine both arguments `firstIds` and `secondIds` into a single array, which is then used for the `IN` check.
 
 <Info>
-  We do not validate whether a client is allowed to subscribe to specific events or topics. If this is a blocker for you, please contact us. We have ideas on how to address this issue.
+  We do not validate whether a client is allowed to subscribe to specific events
+  or topics. If this is a blocker for you, please contact us. We have ideas on
+  how to address this issue.
 </Info>
 
 ## Implementation Details and Noteworthy Information

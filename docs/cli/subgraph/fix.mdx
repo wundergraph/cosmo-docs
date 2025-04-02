@@ -16,17 +16,17 @@ The `npx wgc subgraph fix` command checks for composition errors in all connecte
 
 ### Parameters
 
-* `<name>`: The name of the subgraph for which you want to perform the fix. This should be the exact name of the subgraph you wish to check.
+- `<name>`: The name of the subgraph for which you want to perform the fix. This should be the exact name of the subgraph you wish to check.
 
 ### Required Options
 
-* `--schema <path-to-schema>`: The path to the new schema file that you want to validate and then fix its errors. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
+- `--schema <path-to-schema>`: The path to the new schema file that you want to validate and then fix its errors. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
 
 ### Options
 
-* `-n, --namespace` : The namespace of the federated graph (Default: "default").
+- `-n, --namespace` : The namespace of the federated graph (Default: "default").
 
-* `--out-schema <path-to-out-schema>`: The path where the fixed schema file should be written.
+- `--out-schema <path-to-out-schema>`: The path where the fixed schema file should be written.
 
 ## **Example**
 
@@ -38,7 +38,6 @@ npx wgc subgraph fix products --schema ../demo/subgraphs/products/products.graph
 
 ### Notes
 
-* The `npx wgc subgraph fix` command interacts with the Cosmo platform's control plane and connected federated graphs to perform the composition checks and then fix them.
+- The `npx wgc subgraph fix` command interacts with the Cosmo platform's control plane and connected federated graphs to perform the composition checks and then fix them.
 
-* The output of the fix can be written to the path provided to the `--out-schema` option.
-
+- The output of the fix can be written to the path provided to the `--out-schema` option.

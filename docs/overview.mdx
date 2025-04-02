@@ -12,7 +12,7 @@ The documentation for the TypeScript SDK has been relocated to [https://bff-docs
 </Note>
 
 <Frame>
-<img src="/images/image-1.png" />
+  <img src="/images/image-1.png" />
 </Frame>
 
 ## Built for any scale
@@ -24,22 +24,37 @@ WunderGraph Cosmo can easily run locally, on-premises, or in the cloud as a mana
 Cosmo supports monolithic GraphQL APIs as well as Federation v1 and v2, including Subscriptions.
 
 <Frame caption="The Core Components">
-<img src="/images/image-2.png" />
+  <img src="/images/image-2.png" />
 </Frame>
 
 ## **The Cosmo stack**
 
 <CardGroup>
-  <Card title="CLI" icon="terminal" href="/cli/intro" >
-   The Cosmo command line interface, referred to as `wgc`, plays a crucial role in managing the Cosmo platform. Its functions include pushing schemas, validating schemas, initiating new projects, and managing users, among others. It communicates directly with the Control Plane to perform these operations.
+  <Card title="CLI" icon="terminal" href="/cli/intro">
+    The Cosmo command line interface, referred to as `wgc`, plays a crucial role
+    in managing the Cosmo platform. Its functions include pushing schemas,
+    validating schemas, initiating new projects, and managing users, among
+    others. It communicates directly with the Control Plane to perform these
+    operations.
   </Card>
   <Card title="Control Plane" icon="server" href="/control-plane/intro">
-  The Control Plane forms the heart of the Cosmo platform and comprises two core elements: The Platform API and the Node API. The Platform API is utilized by the Cosmo CLI tool and Studio for platform management. On the other hand, the Node API facilitates fleet-specific operations, carried out by the Router nodes.
+    The Control Plane forms the heart of the Cosmo platform and comprises two
+    core elements: The Platform API and the Node API. The Platform API is
+    utilized by the Cosmo CLI tool and Studio for platform management. On the
+    other hand, the Node API facilitates fleet-specific operations, carried out
+    by the Router nodes.
   </Card>
   <Card title="Router" icon="router" href="/router/intro">
-  The Router is the component that understands the GraphQL Federation protocol. It is responsible for routing requests to the correct subgraphs and for aggregating the responses. While it maintains a connection with the Control Plane, its operation is independent and does not depend on the Control Plane's functionality for maximum availability.
+    The Router is the component that understands the GraphQL Federation
+    protocol. It is responsible for routing requests to the correct subgraphs
+    and for aggregating the responses. While it maintains a connection with the
+    Control Plane, its operation is independent and does not depend on the
+    Control Plane's functionality for maximum availability.
   </Card>
   <Card title="Studio" icon="microphone-lines" href="/studio/intro">
-  The Studio serves as the web interface for the Cosmo platform, providing a user-friendly medium for platform management and collaboration on GraphQL Federation. It maintains a connection with the Control Plane through the admin API, enabling efficient platform management.
+    The Studio serves as the web interface for the Cosmo platform, providing a
+    user-friendly medium for platform management and collaboration on GraphQL
+    Federation. It maintains a connection with the Control Plane through the
+    admin API, enabling efficient platform management.
   </Card>
 </CardGroup>

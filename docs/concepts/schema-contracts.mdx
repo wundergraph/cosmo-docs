@@ -119,15 +119,15 @@ To create a Schema Contract, you must first define filtering rules using `@tags`
 
 ```graphql
 type Query {
-    getDriverById(id: ID!): Driver
-    getDriverBySSN(ssn: String!): Driver
+  getDriverById(id: ID!): Driver
+  getDriverBySSN(ssn: String!): Driver
 }
 
 type Driver @key(fields: "id") @key(fields: "ssn") {
-    id: ID!
-    name: String!
-    dob: String!
-    ssn: String!
+  id: ID!
+  name: String!
+  dob: String!
+  ssn: String!
 }
 ```
 
@@ -137,15 +137,15 @@ To filter out the ssn field from the Schema Contract, we can add a `@tag` direct
 
 ```graphql
 type Query {
-    getDriverById(id: ID!): Driver
-    getDriverBySSN(ssn: String!): Driver
+  getDriverById(id: ID!): Driver
+  getDriverBySSN(ssn: String!): Driver
 }
 
 type Driver @key(fields: "id") @key(fields: "ssn") {
-    id: ID!
-    name: String!
-    dob: String!
-    ssn: String! @tag(name: "sensitive")
+  id: ID!
+  name: String!
+  dob: String!
+  ssn: String! @tag(name: "sensitive")
 }
 ```
 
@@ -153,15 +153,15 @@ Schema Contracts and tags can also be used at the query level to control access 
 
 ```graphql
 type Query {
-    getDriverById(id: ID!): Driver @tag(name: "public")
-    getDriverBySSN(ssn: String!): Driver @tag(name: "private")
+  getDriverById(id: ID!): Driver @tag(name: "public")
+  getDriverBySSN(ssn: String!): Driver @tag(name: "private")
 }
 
 type Driver @key(fields: "id") @key(fields: "ssn") {
-    id: ID!
-    name: String!
-    dob: String! @tag(name: "sensitive")
-    ssn: String! @tag(name: "sensitive")
+  id: ID!
+  name: String!
+  dob: String! @tag(name: "sensitive")
+  ssn: String! @tag(name: "sensitive")
 }
 ```
 
@@ -240,28 +240,61 @@ Maintaining and updating Schema Contracts over time is an important aspect of ma
 
 <CardGroup cols={2}>
   <Card title="Conduct Regular Audits" icon="square-check" iconType="solid">
-    Regularly review your Schema Contracts to ensure they are still meeting your application's needs. This includes checking that all fields are still necessary and that new fields that should be included in the contract haven't been added. It's easy to make a schema more complex than it needs to be. Try to keep your schema as simple as possible. This will make understanding, maintaining, and evolving easier over time.
+    Regularly review your Schema Contracts to ensure they are still meeting your
+    application's needs. This includes checking that all fields are still
+    necessary and that new fields that should be included in the contract
+    haven't been added. It's easy to make a schema more complex than it needs to
+    be. Try to keep your schema as simple as possible. This will make
+    understanding, maintaining, and evolving easier over time.
   </Card>
-  <Card title="Versioning the Schema Contract" icon="square-check" iconType="solid">
-    When making significant changes to a Schema Contract, consider versioning the contract. This allows you to introduce changes gradually and gives contract consumers time to adjust to the new schema.
+  <Card
+    title="Versioning the Schema Contract"
+    icon="square-check"
+    iconType="solid"
+  >
+    When making significant changes to a Schema Contract, consider versioning
+    the contract. This allows you to introduce changes gradually and gives
+    contract consumers time to adjust to the new schema.
   </Card>
-  <Card title="Keep Communication Lines Open" icon="square-check" iconType="solid">
-    Keep the lines of communication open with the consumers of your Schema Contracts. If you're planning on making changes, let them know in advance. This can help to avoid any unexpected surprises or breaking changes.
+  <Card
+    title="Keep Communication Lines Open"
+    icon="square-check"
+    iconType="solid"
+  >
+    Keep the lines of communication open with the consumers of your Schema
+    Contracts. If you're planning on making changes, let them know in advance.
+    This can help to avoid any unexpected surprises or breaking changes.
   </Card>
-  <Card title="Document Your Schema Contracts" icon="square-check" iconType="solid">
-    Keep your Schema Contracts well-documented. This includes what fields are included in the contract, why they are included, and any known limitations or caveats.
+  <Card
+    title="Document Your Schema Contracts"
+    icon="square-check"
+    iconType="solid"
+  >
+    Keep your Schema Contracts well-documented. This includes what fields are
+    included in the contract, why they are included, and any known limitations
+    or caveats.
   </Card>
   <Card title="Employ Automated Testing" icon="square-check" iconType="solid">
-    Implement automated testing for your Schema Contracts. This can help to catch any potential issues early before they become larger problems.
+    Implement automated testing for your Schema Contracts. This can help to
+    catch any potential issues early before they become larger problems.
   </Card>
-  <Card title="Try to Maintain Backward Compatibility" icon="square-check" iconType="solid">
-    When making changes to your Schema Contracts, try to maintain backward compatibility. If a breaking change is necessary, consider creating a new version of the contract.
+  <Card
+    title="Try to Maintain Backward Compatibility"
+    icon="square-check"
+    iconType="solid"
+  >
+    When making changes to your Schema Contracts, try to maintain backward
+    compatibility. If a breaking change is necessary, consider creating a new
+    version of the contract.
   </Card>
   <Card title="Deprecation Strategy" icon="square-check" iconType="solid">
-    Have a clear strategy for deprecating old or unused Schema Contracts. This includes communicating the deprecation to consumers and providing a clear timeline for when the contract will no longer be supported.
+    Have a clear strategy for deprecating old or unused Schema Contracts. This
+    includes communicating the deprecation to consumers and providing a clear
+    timeline for when the contract will no longer be supported.
   </Card>
   <Card title="Performance Monitoring" icon="square-check" iconType="solid">
-    Regularly monitor the performance of your Schema Contracts. If a contract is causing performance issues, it may need to be optimized or restructured.
+    Regularly monitor the performance of your Schema Contracts. If a contract is
+    causing performance issues, it may need to be optimized or restructured.
   </Card>
 </CardGroup>
 

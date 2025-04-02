@@ -16,19 +16,28 @@ Before using the Cosmo Previews GitHub Action, ensure that the following prerequ
 
 <CardGroup>
   <Card title="Cosmo API Key" icon="square-1" href="/studio/api-keys">
-  You must have a valid API key from WunderGraph Cosmo, which should be stored as a secret in your GitHub repository under `COSMO_API_KEY`.
+    You must have a valid API key from WunderGraph Cosmo, which should be stored
+    as a secret in your GitHub repository under `COSMO_API_KEY`.
   </Card>
   <Card title="Configuration File" icon="square-2" href="/studio/api-keys">
-  Create a `cosmo.yaml` file in the `.github` directory of your repository. This file should define the configuration for your subgraphs and feature flags.
+    Create a `cosmo.yaml` file in the `.github` directory of your repository.
+    This file should define the configuration for your subgraphs and feature
+    flags.
   </Card>
-    <Card title="Subgraphs on Wundergraph Cosmo" icon="square-3" href="/studio/api-keys">
-  All subgraphs referenced in the cosmo.yaml file must be created and published on Wundergraph Cosmo. Ensure that these subgraphs are correctly configured.
+  <Card
+    title="Subgraphs on Wundergraph Cosmo"
+    icon="square-3"
+    href="/studio/api-keys"
+  >
+    All subgraphs referenced in the cosmo.yaml file must be created and
+    published on Wundergraph Cosmo. Ensure that these subgraphs are correctly
+    configured.
   </Card>
   <Card title="GitHub Token" icon="square-4" href="/studio/api-keys">
-  The GitHub token is automatically provided by GitHub Actions, but ensure it is correctly referenced.
+    The GitHub token is automatically provided by GitHub Actions, but ensure it
+    is correctly referenced.
   </Card>
 </CardGroup>
-
 
 ### Setup
 
@@ -55,13 +64,13 @@ subgraphs:
     routing_url: '<routing-url-2>'
 ```
 
-* The paths to schema files should be relative to the root of your repository.
+- The paths to schema files should be relative to the root of your repository.
 
-* The `routing_url` can include the placeholder string '$\{PR\_NUMBER}', which will be replaced with the actual PR number. This enables deployment of the subgraph to a unique URL for each pull request.
+- The `routing_url` can include the placeholder string '$\{PR_NUMBER}', which will be replaced with the actual PR number. This enables deployment of the subgraph to a unique URL for each pull request.
 
-* Feature flag labels must match the federated graph for which the preview is created.
+- Feature flag labels must match the federated graph for which the preview is created.
 
-* Ensure that the subgraphs mentioned in cosmo.yaml are a part of a federated graph.
+- Ensure that the subgraphs mentioned in cosmo.yaml are a part of a federated graph.
 
 2 . Add the following GitHub Action workflow to your repository.
 
@@ -155,17 +164,17 @@ jobs:
 
 ## Action Parameters
 
-* `config_path`: The path to your `cosmo.yaml` configuration file.
+- `config_path`: The path to your `cosmo.yaml` configuration file.
 
-* `create`: Set to `true` to create the feature flag and subgraphs.
+- `create`: Set to `true` to create the feature flag and subgraphs.
 
-* `update`: Set to `true` to update the feature subgraphs.
+- `update`: Set to `true` to update the feature subgraphs.
 
-* `destroy`: Set to `true` to destroy the feature flag and subgraphs.
+- `destroy`: Set to `true` to destroy the feature flag and subgraphs.
 
-* `cosmo_api_key`: Your Cosmo API key stored in GitHub secrets.
+- `cosmo_api_key`: Your Cosmo API key stored in GitHub secrets.
 
-* `github_token`: Your GitHub token, typically `${{ secrets.GITHUB_TOKEN }}`.
+- `github_token`: Your GitHub token, typically `${{ secrets.GITHUB_TOKEN }}`.
 
 ## Jobs
 
@@ -211,10 +220,10 @@ The `destroy` job is triggered when a pull request is closed. It performs the fo
 
 ## Outputs
 
-* `feature_subgraphs_to_deploy`: A list of feature subgraphs to deploy. This output is provided in the create and update jobs.
+- `feature_subgraphs_to_deploy`: A list of feature subgraphs to deploy. This output is provided in the create and update jobs.
 
-* `feature_subgraphs_to_destroy`: A list of feature subgraphs to destroy. This output is provided in the update and destroy jobs.
+- `feature_subgraphs_to_destroy`: A list of feature subgraphs to destroy. This output is provided in the update and destroy jobs.
 
 ## Limitations
 
-* The cosmo.yaml file should not be changed after the pull request is opened. If changes are to be made, the pull request should be closed and reopened. Make sure that the destroy action is completed before reopening the pull request.
+- The cosmo.yaml file should not be changed after the pull request is opened. If changes are to be made, the pull request should be closed and reopened. Make sure that the destroy action is completed before reopening the pull request.

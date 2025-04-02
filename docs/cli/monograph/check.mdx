@@ -13,7 +13,9 @@ npx wgc monograph check <name> --schema <path-to-schema>
 ```
 
 <Info>
-  Use this command whenever you make modifications to your monograph schema. It will report any GraphQL or composition errors before they land on production. The report will be made visible under [Schema Checks](/studio/schema-checks).
+  Use this command whenever you make modifications to your monograph schema. It
+  will report any GraphQL or composition errors before they land on production.
+  The report will be made visible under [Schema Checks](/studio/schema-checks).
 </Info>
 
 ## Description
@@ -22,17 +24,17 @@ The `npx wgc monograph check` command checks for breaking changes and compositio
 
 ## Parameters
 
-* `<name>`: The name of the monograph for which you want to perform the validation check.
+- `<name>`: The name of the monograph for which you want to perform the validation check.
 
 ## Options
 
-* `-n, --namespace` : The namespace of the monograph (Default: "default").
+- `-n, --namespace` : The namespace of the monograph (Default: "default").
 
-* `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
+- `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
 
 ## Example
 
-Check for breaking changes and composition errors for the monograph "production" in the default namespace with the new schema file located at "./schemas/new\_schema.graphql":
+Check for breaking changes and composition errors for the monograph "production" in the default namespace with the new schema file located at "./schemas/new_schema.graphql":
 
 ```bash
 npx wgc monograph check production -n default --schema ./schemas/new_schema.graphql
@@ -42,10 +44,10 @@ npx wgc monograph check production -n default --schema ./schemas/new_schema.grap
 
 Changes
 
-|CHANGE|TYPE|DESCRIPTION|
-|------|----|-----------|
-|BREAKING|FIELD\_REMOVED|Field 'email' was removed from object type 'User'|
-|NON-BREAKING|FIELD\_ADDED|Field 'emailID' was added to object type 'User'|
+| CHANGE       | TYPE          | DESCRIPTION                                       |
+| ------------ | ------------- | ------------------------------------------------- |
+| BREAKING     | FIELD_REMOVED | Field 'email' was removed from object type 'User' |
+| NON-BREAKING | FIELD_ADDED   | Field 'emailID' was added to object type 'User'   |
 
 ## Usage in CI and GitHub Integration
 
@@ -53,7 +55,6 @@ Checkout the tutorial [here](/tutorial/pr-based-workflow-for-federation) on how 
 
 ## Notes
 
-* The `npx wgc monograph check` command interacts with the Cosmo platform's control plane to perform the validation checks.
+- The `npx wgc monograph check` command interacts with the Cosmo platform's control plane to perform the validation checks.
 
-* If there are no breaking changes or composition errors detected, the tables will be empty, indicating that the new schema is safe to be used in production.
-
+- If there are no breaking changes or composition errors detected, the tables will be empty, indicating that the new schema is safe to be used in production.

@@ -5,7 +5,9 @@ description: "Configuring a stream and consumer for a NATS provider."
 ---
 
 <Note>
-  Your NATS server must be configured to allow jetstreams before initiation. Please see [the documentation](https://docs.nats.io/nats-concepts/jetstream) for more details.
+  Your NATS server must be configured to allow jetstreams before initiation.
+  Please see [the documentation](https://docs.nats.io/nats-concepts/jetstream)
+  for more details.
 </Note>
 
 By configuring a stream and consumer, messages that are sent while a subscription is inactive can be consumed at a later time, e.g., when the subscription is restarted. This can help to prevent the loss of messages.
@@ -28,7 +30,7 @@ Note that if the `streamConfiguration` argument is undefined, the connection wil
 
 The stream name that is supplied to the `streamName` input must already be configured by your NATS server. If the relevant stream for a stream-reliant subscription cannot be found, an error will be returned.
 
-Please consult the following documentation on creating a stream (and ensure your NATS server has been configured to allow jetstreams): 
+Please consult the following documentation on creating a stream (and ensure your NATS server has been configured to allow jetstreams):
 
 https://docs.nats.io/nats-concepts/jetstream/streams
 
@@ -46,9 +48,9 @@ If a consumer is not found, the router will create a new durable consumer with t
 
 By default, consumers will automatically be deleted after 30 seconds of inactivity. Inactivity is classed as the lack of a running subscription. You can change this value by specifying the value for the `consumerInactiveThreshold` input in the stream configuration. If you set the `consumerInactiveThreshold` to `0` (or any negative value), the consumer will never be deleted.
 
-If you wish for your consumer to have a timeout threshold, please configure accordingly using the following documentation: 
+If you wish for your consumer to have a timeout threshold, please configure accordingly using the following documentation:
 
-https://docs.nats.io/nats-concepts/jetstream/consumers 
+https://docs.nats.io/nats-concepts/jetstream/consumers
 
 https://docs.nats.io/nats-concepts/jetstream/consumers/example_configuration
 

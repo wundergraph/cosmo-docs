@@ -10,11 +10,9 @@ GraphQL introspection is a powerful feature that allows clients to query a Graph
 
 By default introspection is enabled. The following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  introspection_enabled: false
-  ```
-</CodeGroup>
+```yaml router.yaml
+introspection_enabled: false
+```
 
 ## Disable Development Mode
 
@@ -22,11 +20,9 @@ The development mode enables certain configuration for a better developer experi
 
 By default the development mode is disabled. The following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  dev_mode: false
-  ```
-</CodeGroup>
+```yaml router.yaml
+dev_mode: false
+```
 
 ## Disable File Uploads
 
@@ -34,12 +30,10 @@ The router implements the spec [https://github.com/jaydenseric/graphql-multipart
 
 By default file uploads are enabled. The following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  file_upload:
-      enabled: false
-  ```
-</CodeGroup>
+```yaml router.yaml
+file_upload:
+  enabled: false
+```
 
 ## Enable Config Signing
 
@@ -47,12 +41,10 @@ The router configuration contains rules and settings for how your supergraph is 
 
 By default every unsigned config can be used. The following configuration should be applied after signing has been activated.
 
-<CodeGroup>
-  ```yaml router.yaml
-  graph:
-    sign_key: 'sign_key' # or GRAPH_CONFIG_SIGN_KEY
-  ```
-</CodeGroup>
+```yaml router.yaml
+graph:
+  sign_key: "sign_key" # or GRAPH_CONFIG_SIGN_KEY
+```
 
 ## Enable Rate Limiting
 
@@ -60,31 +52,30 @@ The router can protect your subgraphs from overloading by implementing a [GCRA](
 
 By default rate limiting is disabled. The following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  rate_limit:
-    enabled: true
-    storage:
-      cluster_enabled: false # set to true to use a Redis Cluster
-      urls:
-       - redis://localhost:6379
-      key_prefix: cosmo_rate_limit
-    simple_strategy:
-      rate: 100
-      burst: 200
-      period: 1s
-  ```
-</CodeGroup>
+```yaml router.yaml
+rate_limit:
+  enabled: true
+  storage:
+    cluster_enabled: false # set to true to use a Redis Cluster
+    urls:
+      - redis://localhost:6379
+    key_prefix: cosmo_rate_limit
+  simple_strategy:
+    rate: 100
+    burst: 200
+    period: 1s
+```
 
 <Note>
 Prior to [router@0.169.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.168.1), the redis configuration looks like:
 
 ```yaml
 rate_limit:
-   storage:
+  storage:
     url: redis://localhost:6379
     key_prefix: cosmo_rate_limit
 ```
+
 </Note>
 ## Configure CORS
 
@@ -92,21 +83,19 @@ If you don't have an intermediate proxy handling CORS requests, we recommend all
 
 By default all origins are allowed. The following configuration should be applied
 
-<CodeGroup>
-  ```yaml router.yaml
-  cors:
-    allow_methods:
-      - "POST"
-      - "GET"
-    allow_origins:
-      - "mydomain.com"
-      - "*.mydomain.com:*/api"
-    allow_headers:
-      - "Authorization"
-    max_age: 5m
-    allow_credentials: true
-  ```
-</CodeGroup>
+```yaml router.yaml
+cors:
+  allow_methods:
+    - "POST"
+    - "GET"
+  allow_origins:
+    - "mydomain.com"
+    - "*.mydomain.com:*/api"
+  allow_headers:
+    - "Authorization"
+  max_age: 5m
+  allow_credentials: true
+```
 
 ## Configure subgraph overrides
 
@@ -114,13 +103,11 @@ If your router operates in the same network as your subgraphs, we recommend over
 
 By default the subgraph routing URL from the [wgc subgraph create](/cli/subgraph/create) is used. The subgraph name needs to match wih the name from the command. The following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  override_routing_url:
-    subgraphs:
-      "subgraph1": "http://localhost:8000"
-  ```
-</CodeGroup>
+```yaml router.yaml
+override_routing_url:
+  subgraphs:
+    "subgraph1": "http://localhost:8000"
+```
 
 ## Leverage persistent operations
 
@@ -128,13 +115,11 @@ By default the subgraph routing URL from the [wgc subgraph create](/cli/subgraph
 
 By default, both persistent queries and regular queries are allowed. To allow only persistent queries, the following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  security:
-    block_non_persisted_operations:
-      enabled: true
-  ```
-</CodeGroup>
+```yaml router.yaml
+security:
+  block_non_persisted_operations:
+    enabled: true
+```
 
 We recommend reviewing the [Persisted Operations](/router/persisted-queries/persisted-operations) page to learn more about the different levels of security you can enforce.
 
@@ -142,15 +127,13 @@ We recommend reviewing the [Persisted Operations](/router/persisted-queries/pers
 
 Ideally, you should never expose more than necessary. Sometimes this is unavoidable or you want to enforce it for security reasons. In that case, you can disable subscriptions or mutation to avoid any surprises.
 
-<CodeGroup>
-  ```yaml router.yaml
-  security:
-    block_subscriptions:
-      enabled: true
-    block_mutations:
-      enabled: true
-  ```
-</CodeGroup>
+```yaml router.yaml
+security:
+  block_subscriptions:
+    enabled: true
+  block_mutations:
+    enabled: true
+```
 
 ## Enable TLS and HTTP/2
 
@@ -158,15 +141,13 @@ To ensure a secure connection between your load balancer and router, you can ena
 
 By default TLS is not used. The following configuration should be applied:
 
-<CodeGroup>
-  ```yaml router.yaml
-  tls:
-    server:
-      enabled: true
-      key_file: ../your/key.pem
-      cert_file: ../your/cert.pem
-  ```
-</CodeGroup>
+```yaml router.yaml
+tls:
+  server:
+    enabled: true
+    key_file: ../your/key.pem
+    cert_file: ../your/cert.pem
+```
 
 ## Log Level
 
@@ -174,8 +155,6 @@ When deploying GraphQL services in production, it's crucial to manage logging ef
 
 By default the level is **INFO**. The following configuration should be applied
 
-<CodeGroup>
-  ```yaml router.yaml
-  log_level: "error"
-  ```
-</CodeGroup>
+```yaml router.yaml
+log_level: "error"
+```

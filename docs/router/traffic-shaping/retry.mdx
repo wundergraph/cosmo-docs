@@ -22,22 +22,20 @@ traffic_shaping:
       max_duration: 10s
 ```
 
-* `enabled`: Enables the retry mechanism for GraphQL query operations.
+- `enabled`: Enables the retry mechanism for GraphQL query operations.
 
-* `algorithm`: Select the algorithm for the retry. Currently, only `backoff_jitter` is supported. Additional fields depend on the algorithm selection:
+- `algorithm`: Select the algorithm for the retry. Currently, only `backoff_jitter` is supported. Additional fields depend on the algorithm selection:
 
-* **backoff\_jitter**
+- **backoff_jitter**
 
-  * `max_attempts`: The maximum number of attempts before the operation is considered a failure.
+  - `max_attempts`: The maximum number of attempts before the operation is considered a failure.
 
-  * `interval`: The time duration between each retry attempt. Increase with every retry.
+  - `interval`: The time duration between each retry attempt. Increase with every retry.
 
-  * `max_duration`: The maximum allowable duration between retries (random).
+  - `max_duration`: The maximum allowable duration between retries (random).
 
 ### Debugging
 
 You can see the attempts by enabling [debug](/router/development/debugging#debug-log-level) mode.
 
-<Note>
-  Mutations won't be retried because they aren't idempotent.
-</Note>
+<Note>Mutations won't be retried because they aren't idempotent.</Note>

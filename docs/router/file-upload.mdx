@@ -52,11 +52,11 @@ curl localhost:3002/graphql \
 
 This command sends a multipart request where:
 
-* `operations` defines the GraphQL mutation with the `file` variable set to `null`.
+- `operations` defines the GraphQL mutation with the `file` variable set to `null`.
 
-* `map` associates the form field `0` with `variables.file`.
+- `map` associates the form field `0` with `variables.file`.
 
-* `0=@a.txt` uploads the file `a.txt` with the form field name `0`.
+- `0=@a.txt` uploads the file `a.txt` with the form field name `0`.
 
 #### Multiple Files Upload
 
@@ -72,11 +72,10 @@ curl localhost:3002/graphql \
 
 This command sends a multipart request where:
 
-* `operations` defines the GraphQL mutation with the `files` variable set to an array of `null` values.
+- `operations` defines the GraphQL mutation with the `files` variable set to an array of `null` values.
 
-* `map` associates the form fields `0` and `1` with `variables.files.0` and `variables.files.1` respectively.
+- `map` associates the form fields `0` and `1` with `variables.files.0` and `variables.files.1` respectively.
 
-* `0=@a.txt` and `1=@b.txt` upload the files `a.txt` and `b.txt` with form field names `0` and `1`.
+- `0=@a.txt` and `1=@b.txt` upload the files `a.txt` and `b.txt` with form field names `0` and `1`.
 
 By following these examples, you can configure your router to handle single and multiple file uploads effectively using GraphQL multipart requests. For more details, refer to the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec).
-

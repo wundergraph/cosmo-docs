@@ -23,13 +23,13 @@ execution_config:
 
 ## Parameters
 
-* `<name>`: The name of the federated graph for which you want to retrieve the router config.
+- `<name>`: The name of the federated graph for which you want to retrieve the router config.
 
 ## Options
 
-* `-n, --namespace` : The namespace of the federated graph (Default: "default").
+- `-n, --namespace` : The namespace of the federated graph (Default: "default").
 
-* `-o, --out` : Destination file for the router config. Prints to standard output if not provided.
+- `-o, --out` : Destination file for the router config. Prints to standard output if not provided.
 
 ## Examples
 
@@ -40,4 +40,3 @@ npx wgc router fetch production -o router.json
 ```
 
 Fetch the latest router config of the federated graph named `production` and save it to a file named `router.json`
-

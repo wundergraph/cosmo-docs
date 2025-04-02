@@ -18,6 +18,7 @@ icon: "cloud-sun"
     <Frame>
       ![Prepare your Organization](/images/getting-started/image-1.png)
     </Frame>
+
   </Step>
   <Step title="Install the CLI">
     Install the CLI to interact with the control plane and manage resources like graphs and API keys:
@@ -39,6 +40,7 @@ icon: "cloud-sun"
     ```bash
     wgc auth whoami
     ```
+
   </Step>
 </Steps>
 
@@ -77,18 +79,10 @@ A **federated graph** requires subgraphs to function. Without subgraphs, it cann
 For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. Follow the order below to ensure proper configuration:
 
 <CardGroup cols={2}>
-  <Card title="Products" icon="square-1" horizontal>
-    
-  </Card>
-  <Card title="Employee" icon="square-2" horizontal>
-    
-  </Card>
-  <Card title="Mood" icon="square-3" horizontal>
-    
-  </Card>
-  <Card title="Availability" icon="square-4" horizontal>
-    
-  </Card>
+  <Card title="Products" icon="square-1" horizontal></Card>
+  <Card title="Employee" icon="square-2" horizontal></Card>
+  <Card title="Mood" icon="square-3" horizontal></Card>
+  <Card title="Availability" icon="square-4" horizontal></Card>
 </CardGroup>
 
 <Tabs>
@@ -109,6 +103,7 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
         --namespace development \
         --schema ./schema.graphqls
     ```
+
   </Tab>
   <Tab title="Employee">
     1. Create the subgraph:
@@ -137,6 +132,7 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     --namespace development \
     --schema ./schema.graphqls
     ```
+
   </Tab>
   <Tab title="Mood">
     1. Create the subgraph:
@@ -157,6 +153,7 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     ```
 
     After publishing the Mood subgraph schema, several composition errors have been resolved. Next, publish the Availability subgraph.
+
   </Tab>
   <Tab title="Availability">
     1. Create the subgraph:
@@ -184,6 +181,7 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     <Frame>
       ![](/images/getting-started/image-5.png)
     </Frame>
+
   </Tab>
 </Tabs>
 
@@ -204,9 +202,10 @@ wgc router token create myName \
 
   ```bash
   Successfully created token myName for graph demo
-  
+
   <tokenhere>
   ```
+
 - **Copy and store the token securely**, as it will not be shown again. You will need it in the next step.
 
 ### Run the Router
@@ -215,9 +214,7 @@ Finally, go to the **Overview** page of your federated graph in **Cosmo Cloud** 
 
 Make sure to replace `<graph-api-token>` with the token you copied set in the previous step.
 
-<Frame>
-  ![](/images/getting-started/image-2.png)
-</Frame>
+<Frame>![](/images/getting-started/image-2.png)</Frame>
 
 Alternatively, you can use the following command:
 
@@ -236,7 +233,7 @@ docker run \
 
 ### Open the Playground
 
-Open [http://localhost:3002](http://localhost:3002/graphql) and run your first GraphQL operation with WunderGraph Cosmo\!  The same playground is also available on Cosmo Cloud.
+Open [http://localhost:3002](http://localhost:3002/graphql) and run your first GraphQL operation with WunderGraph Cosmo\! The same playground is also available on Cosmo Cloud.
 
 ### Example Query that involves all subgraphs
 
@@ -263,9 +260,7 @@ After executing the [Example Query](/getting-started/cosmo-cloud-onboarding#exam
 
 If you want to learn more about it, please take a look at [ART](/router/advanced-request-tracing-art) and [Query Plans](/router/query-plan).
 
-<Frame>
-  ![](/images/getting-started/image-3.png)
-</Frame>
+<Frame>![](/images/getting-started/image-3.png)</Frame>
 
 ## Prevent breaking changes
 
@@ -280,6 +275,7 @@ To integrate this into your workflow, use the check command to assess the impact
     ```bash
     curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/employees/subgraph/schema.graphqls
     ```
+
   </Step>
   <Step title="Locate and open the schema file">
     By default, the file is saved in your current working directory. Verify its location with:
@@ -295,6 +291,7 @@ To integrate this into your workflow, use the check command to assess the impact
     ```
 
     Once you've located the file, open it in your preferred text editor modify it.
+
   </Step>
   <Step title="Modify the Schema and Run the Check Command">
     Remove the `OPERATIONS` enum value from the schema:
@@ -314,6 +311,7 @@ To integrate this into your workflow, use the check command to assess the impact
         --namespace development \
         --schema ./schema.graphqls
     ```
+
   </Step>
   <Step title="Breaking change detected with client usage">
     You should see an output similar to the following. The change is flagged as breaking because the `departments` field was queried in an example query, meaning its removal would impact existing clients.
@@ -322,24 +320,25 @@ To integrate this into your workflow, use the check command to assess the impact
     ❯ wgc subgraph check employees \
         --namespace development \
         --schema ./schema.graphqls
-    
+
     Checking the proposed schema
     ⚠ Compared 1 breaking change's impacting 1 operations.
     Found client activity between 10/22/2024, 2:00:00 AM and 10/22/2024, 2:00:00 AM
-    
+
     Detected the following changes:
     ┌────────────┬────────────────────┬────────────────────────────────────────────────────────────┐
     │ CHANGE     │ TYPE               │ DESCRIPTION                                                │
     ├────────────┼────────────────────┼────────────────────────────────────────────────────────────┤
     │ ✖ BREAKING │ ENUM_VALUE_REMOVED │ Enum value 'OPERATIONS' was removed from enum 'Department' │
     └────────────┴────────────────────┴────────────────────────────────────────────────────────────┘
-    
+
     ✖ Schema check failed. This check has encountered 1 breaking change's that would break operations from existing client traffic.
     See https://cosmo-docs.wundergraph.com/studio/schema-checks for more information on resolving operation check errors.
     Open in studio: https://cosmo.wundergraph.com/.....
     ```
 
     Click the `Open in studio` link to review the schema check in Cosmo Studio.
+
   </Step>
   <Step title="Release your changes">
     Once you're confident about the impact of your changes, publish them to automatically update your router fleet:
@@ -349,6 +348,7 @@ To integrate this into your workflow, use the check command to assess the impact
         --namespace development \
         --schema ./schema.graphqls
     ```
+
   </Step>
 </Steps>
 

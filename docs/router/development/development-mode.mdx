@@ -19,7 +19,7 @@ json_log: false
 subgraph_error_propagation:
   propagate_status_codes: true
   omit_locations: false
-  allowed_extension_fields: [ "code", "stacktrace" ]
+  allowed_extension_fields: ["code", "stacktrace"]
 ```
 
 To enable specific features within your routing configuration, it may be necessary to first disable Dev Mode. Once Dev Mode is turned off, you can proceed to adjust the relevant configuration settings to suit your specific needs and ensure the desired features are activated properly. This process may require attention to detail, as various configuration elements need to be tailored to match your intended usage and environment.
@@ -28,21 +28,20 @@ To enable specific features within your routing configuration, it may be necessa
 
 `json_log`
 
-* **Use Case:** When `json_log` is set to `false`, it ensures logs are expressed in sugared output rather than JSON format. This is useful for environments where human readability is more important than structured data, such as during development or testing.
+- **Use Case:** When `json_log` is set to `false`, it ensures logs are expressed in sugared output rather than JSON format. This is useful for environments where human readability is more important than structured data, such as during development or testing.
 
 `subgraph_error_propagation.propagate_status_codes`
 
-* **Use Case:** This setting, when set to `true`, allows that subgraph HTTP response status codes will be propagated to the client in the extensions statusCode field. This is important for handling errors effectively and ensuring that the client is aware of any issues with the request processing on the server side.
+- **Use Case:** This setting, when set to `true`, allows that subgraph HTTP response status codes will be propagated to the client in the extensions statusCode field. This is important for handling errors effectively and ensuring that the client is aware of any issues with the request processing on the server side.
 
 `subgraph_error_propagation.omit_locations`
 
-* **Use Case:** Omit the extensions field of Subgraph errors. If the value is true, the extensions field of Subgraph errors will be omitted. This is useful in case you want to avoid leaking internal information to the client.
+- **Use Case:** Omit the extensions field of Subgraph errors. If the value is true, the extensions field of Subgraph errors will be omitted. This is useful in case you want to avoid leaking internal information to the client.
 
-* Some users of GraphQL leverage the errors.extensions.code field to implement error handling logic in the client, in which case you might want to set this to false.
+- Some users of GraphQL leverage the errors.extensions.code field to implement error handling logic in the client, in which case you might want to set this to false.
 
 `subgraph_error_propagation.allowed_extension_fields`
 
-* **Use Case:** The allowed extension fields are used to specify which fields of the Subgraph errors are allowed to be propagated to the client.
+- **Use Case:** The allowed extension fields are used to specify which fields of the Subgraph errors are allowed to be propagated to the client.
 
-* Development mode adds "code" and "stacktrace" as default values
-
+- Development mode adds "code" and "stacktrace" as default values

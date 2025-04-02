@@ -5,29 +5,36 @@ icon: "cubes"
 ---
 
 <Info>
-	In order to complete this section you need to have Golang 1.20 (or higher) and docker installed.
+  In order to complete this section you need to have Golang 1.20 (or higher) and
+  docker installed.
 </Info>
 
 The Cosmo Router can be easily extended by providing custom modules. Modules are pure Go code and can implement one or multiple interfaces. The following interfaces are provided:
 
-* `core.RouterOnRequestHandler` Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
+- `core.RouterOnRequestHandler` Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
 
-* `core.RouterMiddlewareHandler` Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
+- `core.RouterMiddlewareHandler` Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
 
-* `core.EnginePreOriginHandler` Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
+- `core.EnginePreOriginHandler` Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
 
-* `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
+- `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 
-* `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
+- `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
 
-* `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
+- `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
 
 <Info>
-	`*OriginHandler` handlers are called concurrently when your GraphQL operation results in multiple subgraph requests. Due to that circumstance, you should handle the initial router request/response objects `ctx.Request()` and `ctx.ResponseWriter()` as read-only objects. Any modification without protecting them from concurrent writes, e.g., by a mutex, results in a race condition.
+  `*OriginHandler` handlers are called concurrently when your GraphQL operation
+  results in multiple subgraph requests. Due to that circumstance, you should
+  handle the initial router request/response objects `ctx.Request()` and
+  `ctx.ResponseWriter()` as read-only objects. Any modification without
+  protecting them from concurrent writes, e.g., by a mutex, results in a race
+  condition.
 </Info>
 
 <Info>
-	`RouterOnRequestHander` is only available since Router [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
+  `RouterOnRequestHander` is only available since Router
+  [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 </Info>
 
 ## Example
@@ -130,14 +137,14 @@ In every handler, you can add/remove, or modify response headers. We also provid
 // ctx core.RequestContext
 
 // Sets a custom header on the final response
-ctx.ResponseWriter().Header().Set("myHeader", c.GetString("myKey"))
+ctx.ResponseWriter().Header().Set("myHeader", c.GetString("myKey"));
 
 // Provides access to the request logger
-ctx.Logger().Info("My log line")
+ctx.Logger().Info("My log line");
 
 // Sets a value on the context. Use c.GetString to access the underlying value
 // in any other handler you want
-ctx.Set("myKey", "myValue")
+ctx.Set("myKey", "myValue");
 ```
 
 ## Access Subgraph through Request Context
@@ -154,7 +161,8 @@ func (m MyModule) OnOriginRequest(request *http.Request, ctx core.RequestContext
 ```
 
 <Info>
-	A more complex example including tests is accessible at [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom)
+  A more complex example including tests is accessible at
+  [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom)
 </Info>
 
 ## Access authentication information
@@ -162,7 +170,8 @@ func (m MyModule) OnOriginRequest(request *http.Request, ctx core.RequestContext
 Authentication information, including claims and the provider that authenticated the request, can be accessed through `core.RequestContext.Authentication()`
 
 <Info>
-For a full example, please check out [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
+  For a full example, please check out
+  [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
 </Info>
 
 ## Change Authentication Information
@@ -286,36 +295,37 @@ type MyModule struct {
 
 Based on the example above we will populate the field `Value` with the value `1`. You can also validate your config in the `core.Provisioner` handler.
 
-<CodeGroup>
-  ```bash config.yaml
-  version: '1'
+```bash config.yaml
+version: '1'
 
-  modules:
-    myModule: # Id of your module
-      Value: 1
-  ```
-</CodeGroup>
+modules:
+  myModule: # Id of your module
+    Value: 1
+```
 
 ## Development
 
 Due to the circumstance that modules are pure Go code, we can leverage all tooling. If you have VSCode or Goland you can easily debug and profile your code. Let's make it running locally first:
 
 <Steps>
-	<Step>
-		Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure you checkout on the latest [router tag](https://github.com/wundergraph/cosmo/tags).
-	</Step>
-	<Step>
-		Navigate to the router [directory](https://github.com/wundergraph/cosmo/tree/main/router)
-	</Step>
-	<Step>
-		Copy `.env.example` to `.env` and fill in all required values.
-	</Step>
-	<Step>
-		Run `go run cmd/custom/main.go` to start your router or use your IDE to start the debug mode.
-	</Step>
-	<Step>
-		Open [http://localhost:3002](http://localhost:3002) to test your module code.
-	</Step>
+  <Step>
+    Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure
+    you checkout on the latest [router
+    tag](https://github.com/wundergraph/cosmo/tags).
+  </Step>
+  <Step>
+    Navigate to the router
+    [directory](https://github.com/wundergraph/cosmo/tree/main/router)
+  </Step>
+  <Step>Copy `.env.example` to `.env` and fill in all required values.</Step>
+  <Step>
+    Run `go run cmd/custom/main.go` to start your router or use your IDE to
+    start the debug mode.
+  </Step>
+  <Step>
+    Open [http://localhost:3002](http://localhost:3002) to test your module
+    code.
+  </Step>
 </Steps>
 
 ## Build your own Router Image
@@ -345,7 +355,8 @@ docker run \
 Please ensure that you checkout on an official [router tag](https://github.com/wundergraph/cosmo/tags) when extending the router, and only upgrade if necessary. This way, you can avoid any surprises. For every release, we provide detailed release notes that should provide you with a good overview of whether an upgrade is worthwhile.
 
 <Info>
-	Please inform us if you have more advanced use cases that cannot be accommodated with the current feature set.
+  Please inform us if you have more advanced use cases that cannot be
+  accommodated with the current feature set.
 </Info>
 
 ### Future Plans

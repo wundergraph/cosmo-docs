@@ -15,16 +15,18 @@ npx wgc namespace delete [name]
 The `npx wgc namespace delete` command allows you to delete a namespace within the organization.
 
 <Warning>
-Deleting a namespace will delete all resources (federated graphs and subgraphs) within it. Please use the command carefully. Only admins and creators of the namespace can perform this action.
+  Deleting a namespace will delete all resources (federated graphs and
+  subgraphs) within it. Please use the command carefully. Only admins and
+  creators of the namespace can perform this action.
 </Warning>
 
 ## **Parameters**
 
-* `[name]`: The name of the namespace you want to delete.
+- `[name]`: The name of the namespace you want to delete.
 
 ## Options
 
-* `-f, --force`: An optional flag that allows you to force delete the namespace without being prompted for confirmation.
+- `-f, --force`: An optional flag that allows you to force delete the namespace without being prompted for confirmation.
 
 ## **Example**
 
@@ -33,4 +35,3 @@ Deleting a namespace will delete all resources (federated graphs and subgraphs) 
 ```bash
 npx wgc namespace delete production
 ```
-

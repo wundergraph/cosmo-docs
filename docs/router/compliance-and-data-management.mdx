@@ -4,44 +4,39 @@ description: "Get an overview about what data the router collects and its purpos
 icon: cloud-binary
 ---
 
-
 In a nutshell, the router is an HTTP server that accepts GraphQL requests and responds with an appropriate response. During this process, a request goes through different stages and each stage can generate and export data. What data is exported depends on the router's configuration. By default, the following modules are enabled. You can disable or fine tune these settings. Please refer to the router [configuration](/router/configuration) page.
 
 ## Compliance
 
 By default, IP anonymization is enabled. This ensures that no sensitive data will ever leave your router. You can change the anonymization method, for example, to "hash," which allows for anonymous analytics.
 
-<CodeGroup>
-  ```yaml config.yaml
-  compliance:
-    anonymize_ip:
-      enabled: true
-      method: redact # hash or redact
-  ```
-</CodeGroup>
+```yaml config.yaml
+compliance:
+  anonymize_ip:
+    enabled: true
+    method: redact # hash or redact
+```
 
 ## Tracing
 
 We export [OTEL](https://opentelemetry.io/) trace information by default to provide [distributed tracing](/studio/analytics/distributed-tracing). That includes:
 
-* Request Host, Schema, User-Agent, Protocol, Read / Written Bytes
+- Request Host, Schema, User-Agent, Protocol, Read / Written Bytes
 
-* Router Process ID, Hostname, Service Name, SDK instrumentation information
+- Router Process ID, Hostname, Service Name, SDK instrumentation information
 
-* GraphQL Operation Name, Query, Variables
+- GraphQL Operation Name, Query, Variables
 
 The Operation Content is in normalization form, meaning user data is not included.
 
 GraphQL variables are very useful for reproducing exact queries, but they also pose a potential risk because they include request data. To mitigate this, you have to explicitly opt in. In the future, we will provide tools to redact specific arguments.
 
-<CodeGroup>
-  ```yaml config.yaml
-  version: "1"
-  telemetry:
-    tracing:
-        export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
-  ```
-</CodeGroup>
+```yaml config.yaml
+version: "1"
+telemetry:
+  tracing:
+    export_graphql_variables: true # TRACING_EXPORT_GRAPHQL_VARIABLES
+```
 
 This enables the option to replay GraphQL queries with variables in the Studio.
 
@@ -49,15 +44,15 @@ This enables the option to replay GraphQL queries with variables in the Studio.
 
 We export [OTEL](https://opentelemetry.io/) metric information by default to provide [advanced analytics](/studio/analytics). That includes:
 
-* Count of total request
+- Count of total request
 
-* Count of total received and written bytes
+- Count of total received and written bytes
 
-* Count of total in-flight requests
+- Count of total in-flight requests
 
-* Latency of router requests
+- Latency of router requests
 
-* Runtime behavior
+- Runtime behavior
 
 All metrics are tracked across different dimensions, such as Operation Name and Subgraph Name. Please refer to the [metrics](/router/metrics-and-monitoring#dimensions) page for more details.
 
@@ -65,9 +60,9 @@ All metrics are tracked across different dimensions, such as Operation Name and 
 
 Besides measuring common request metrics, we also collect information about GraphQL operation usage. This allows us to provide [breaking-change detection](/studio/schema-checks) and [field-level analytics](/studio/analytics/schema-field-usage). This includes:
 
-* GraphQL operation content
+- GraphQL operation content
 
-* Used GraphQL types per operation
+- Used GraphQL types per operation
 
 ## Router self-registering
 
@@ -81,11 +76,11 @@ Every time you update your schema via [wgc](/cli/intro), we will upload the late
 
 The router logs every incoming request at the INFO log level. Request logs **aren't** sent to any external systems and can only be accessed in the environment where the router runs. The log contains the following information:
 
-* Request Method, Path, Query, User-Agent, Client-IP (anonymized)
+- Request Method, Path, Query, User-Agent, Client-IP (anonymized)
 
-* Router Version, Router Config Version
+- Router Version, Router Config Version
 
-* Response Status, Latency
+- Response Status, Latency
 
 ## Retention
 
@@ -96,5 +91,6 @@ If you use Cosmo Cloud, your data is not stored indefinitely. Depending on your 
 By default, we exercise strict caution regarding the data that is collected and exported. We do not collect personally identifiable information (PII), Client-IP are anonymized by default. By configuring the router, you can opt out of sharing certain information. Additionally, it is possible to run the router in standalone mode without any connection to external systems.
 
 <Note>
-  Disabling features will result in a degraded experience on the Cosmo Platform because many features rely on the information the router sends to us.
+  Disabling features will result in a degraded experience on the Cosmo Platform
+  because many features rely on the information the router sends to us.
 </Note>

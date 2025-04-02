@@ -16,7 +16,7 @@ The `npx wgc federated-graph create` command allows you to create a new federate
 
 ## Parameters
 
-* `<name>`: The name of the federated graph you want to create. Replace `<name>` with the desired name for your federated graph.
+- `<name>`: The name of the federated graph you want to create. Replace `<name>` with the desired name for your federated graph.
 
 ## Required Options
 
@@ -28,19 +28,19 @@ The `npx wgc federated-graph create` command allows you to create a new federate
 
 ## Options
 
-* `-n, --namespace` : The namespace of the federated graph (Default: "default").
+- `-n, --namespace` : The namespace of the federated graph (Default: "default").
 
-* `-r, --routing-url` :The routing url of your router. This is the url that the router will be accessible at.
+- `-r, --routing-url` :The routing url of your router. This is the url that the router will be accessible at.
 
-* `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
+- `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 
-* `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
+- `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
 
-* `--label-matcher [labels...]` : The label matcher is used to select the subgraphs to federate. The labels are passed in the format = =. They are separated by spaces and grouped using comma. Example: --label-matcher team=A,team=B env=prod
+- `--label-matcher [labels...]` : The label matcher is used to select the subgraphs to federate. The labels are passed in the format = =. They are separated by spaces and grouped using comma. Example: --label-matcher team=A,team=B env=prod
 
-* `--readme` : The markdown file which describes the federated graph.
+- `--readme` : The markdown file which describes the federated graph.
 
-* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
+- `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 
@@ -52,7 +52,6 @@ Create a federated graph named "production" with a routing URL of "[http://route
 
 ## Notes
 
-* The `npx wgc federated-graph create` command interacts with the Cosmo platform's control plane to create the specified federated graph.
+- The `npx wgc federated-graph create` command interacts with the Cosmo platform's control plane to create the specified federated graph.
 
-* The routing URL of the router should be accessible by the federated graph to handle incoming queries and route them to the appropriate subgraphs.
-
+- The routing URL of the router should be accessible by the federated graph to handle incoming queries and route them to the appropriate subgraphs.

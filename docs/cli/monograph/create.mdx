@@ -16,7 +16,7 @@ The `npx wgc monograph create` command allows you to create a new monograph on t
 
 ## Parameters
 
-* `<name>`: The name of the monograph you want to create. Replace `<name>` with the desired name for your monograph.
+- `<name>`: The name of the monograph you want to create. Replace `<name>` with the desired name for your monograph.
 
 ## Required Options
 
@@ -26,25 +26,25 @@ The `npx wgc monograph create` command allows you to create a new monograph on t
 
 ## Other Options
 
-* `-n, --namespace` : The namespace of the monograph (Default: "default").
+- `-n, --namespace` : The namespace of the monograph (Default: "default").
 
-* `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
+- `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the federated graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
 
-* `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
+- `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
 
-* `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
+- `--subscription-url:` Optionally, use a different URL for subscription requests. If no subscription URL is provided, the router URL is used for subscriptions.
 
-* `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
+- `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
 
-  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
+  - `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
 
-  * `sse`: Use Server-Sent Events with a GET request.
+  - `sse`: Use Server-Sent Events with a GET request.
 
-  * `sse_post`: Use Server-Sent events with a POST request.
+  - `sse_post`: Use Server-Sent events with a POST request.
 
-* `--readme` : The markdown file which describes the monograph.
+- `--readme` : The markdown file which describes the monograph.
 
-* `--websocket-subprotocol:` The subprotocol to use when subscribing to the monograph. The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
+- `--websocket-subprotocol:` The subprotocol to use when subscribing to the monograph. The supported protocols are auto(default), graphql-ws, and graphql-transport-ws. It should be used only if the subscription protocol is ws.
 
 ## Examples
 
@@ -56,7 +56,6 @@ Create a monograph named "production" with a routing URL of "[http://router.exam
 
 ## Notes
 
-* The `npx wgc monograph create` command interacts with the Cosmo platform's control plane to create the specified monograph.
+- The `npx wgc monograph create` command interacts with the Cosmo platform's control plane to create the specified monograph.
 
-* The routing URL of the router should be accessible by the monograph to handle incoming queries and route them to the GraphQL server.
-
+- The routing URL of the router should be accessible by the monograph to handle incoming queries and route them to the GraphQL server.
