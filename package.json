@@ -1,8 +1,10 @@
 {
   "scripts": {
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "dev": "cd docs && mintlify dev"
   },
   "dependencies": {
+    "mintlify": "^4.0.459",
     "prettier": "^3.5.3"
   }
 }
