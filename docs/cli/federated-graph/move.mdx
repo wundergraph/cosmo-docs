@@ -10,7 +10,8 @@ npx wgc federated-graph move <name> -n fromNS -t toNS
 ```
 
 <Info>
-   Moving a federated graph will result in a new graph composition but only subgraphs from the target namespace are respected.
+  Moving a federated graph will result in a new graph composition but only
+  subgraphs from the target namespace are respected.
 </Info>
 
 ## Description
@@ -19,21 +20,20 @@ The `npx wgc federated-graph move` command allows you to move a federated-graph 
 
 ## Parameters
 
-* `<name>`: The name of the federated-graph you want to move.
+- `<name>`: The name of the federated-graph you want to move.
 
 ## Options
 
-* `-n, --namespace` : The namespace of the federated-graph.
+- `-n, --namespace` : The namespace of the federated-graph.
 
-* `-t, --to`: The new namespace of the federated-graph.
+- `-t, --to`: The new namespace of the federated-graph.
 
-* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
+- `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 
 - Moves the federated-graph named "mygraph" into the "production" namespace.
 
-   ```bash
-   npx wgc subgraph move mygraph -n default -t production
-   ```
-
+  ```bash
+  npx wgc subgraph move mygraph -n default -t production
+  ```

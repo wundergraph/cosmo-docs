@@ -5,14 +5,16 @@ icon: upload
 ---
 
 <Note>
-  Currently, there is only one router compatibility version. Consequently, this command does not yet serve a meaningful function (but will in the near future).
+  Currently, there is only one router compatibility version. Consequently, this
+  command does not yet serve a meaningful function (but will in the near
+  future).
 </Note>
 
 ## Requirements
 
-|Package|Minimum version|
-|---|---|
-|[wgc](/cli/intro)|[0.74.0](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.74.0)|
+| Package           | Minimum version                                                          |
+| ----------------- | ------------------------------------------------------------------------ |
+| [wgc](/cli/intro) | [0.74.0](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.74.0) |
 
 ## Usage
 
@@ -22,16 +24,16 @@ npx wgc federated-graph version set <name> --version <router compatibility versi
 
 ## Arguments
 
-|Description|Type|
-|---|---|
-|The name of the federated graph.|string|
+| Description                      | Type   |
+| -------------------------------- | ------ |
+| The name of the federated graph. | string |
 
 ## Options
 
-|Option|Type|Value|Required|Default value|
-|---|---|---|---|---|
-|`--version/-v`|string|The router compatibility version to be set.|true|n/a|
-|`--namespace/-n`|string|The namespace where the federated graph exists.|false|"default"|
+| Option           | Type   | Value                                           | Required | Default value |
+| ---------------- | ------ | ----------------------------------------------- | -------- | ------------- |
+| `--version/-v`   | string | The router compatibility version to be set.     | true     | n/a           |
+| `--namespace/-n` | string | The namespace where the federated graph exists. | false    | "default"     |
 
 ## Description
 
@@ -52,4 +54,3 @@ npx wgc federated-graph version set mygraph -v 1
 │ prod       │ default   │ 2                │ 1           │
 └────────────┴───────────┴──────────────────┴─────────────┘
 ```
-

@@ -10,12 +10,13 @@ By default, the router polls the CDN (Content Delivery Network) for configuratio
 
 There are a few configuration flags that impact this procedure:
 
-* **GRACE\_PERIOD**: Defines the maximum time for graceful shutdown of graph resources, such as the planner cache and flushing telemetry data. The default value is 30 seconds.
+- **GRACE_PERIOD**: Defines the maximum time for graceful shutdown of graph resources, such as the planner cache and flushing telemetry data. The default value is 30 seconds.
 
-* **SHUTDOWN\_DELAY**: Defines the maximum time the router waits before canceling all server resources, such as active client connections, to shut down the process. This setting applies when a shutdown signal (e.g., `SIGTERM`, `SIGINT`, `SIGHUP`) is sent to the process. The default value is 60 seconds.
+- **SHUTDOWN_DELAY**: Defines the maximum time the router waits before canceling all server resources, such as active client connections, to shut down the process. This setting applies when a shutdown signal (e.g., `SIGTERM`, `SIGINT`, `SIGHUP`) is sent to the process. The default value is 60 seconds.
 
 <Info>
-  Timeouts can be [configured](/router/configuration) as environment variables and in the config.yaml file.
+  Timeouts can be [configured](/router/configuration) as environment variables
+  and in the config.yaml file.
 </Info>
 
 ### Subscriptions
@@ -25,4 +26,3 @@ WebSocket or SSE (Server-Sent Events) connections are long-lived and will be clo
 ### Latency Implications
 
 When the configuration is swapped, a new graph is created internally. This implies that the planner cache is invalidated, as a plan is coupled to a specific graph. In high-traffic scenarios, this can increase latency. We are currently working on a solution to mitigate this by warming up the cache with the latest top 100 operations during the initial router start and configuration changes.
-

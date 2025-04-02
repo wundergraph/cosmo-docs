@@ -4,12 +4,13 @@ description: "We provide default attributes for every metric, but it's often nec
 icon: "chart-line"
 ---
 
-<Info>
-  **Available since Router version 0.126.0**.
-</Info>
+<Info>**Available since Router version 0.126.0**.</Info>
 
 <Note>
-  Please note that each attribute increases cardinality. Furthermore, attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider. You should only attach headers that have been sanitized by your infrastructure.
+  Please note that each attribute increases cardinality. Furthermore, attributes
+  based on request header values may potentially leak sensitive information when
+  stored on the telemetry storage provider. You should only attach headers that
+  have been sanitized by your infrastructure.
 </Note>
 
 In certain scenarios, it may be necessary to add additional attributes to your metrics. A common example is including details from a request header or adding context information, such as the services involved in a GraphQL request. This can be easily accomplished by modifying a few lines of configuration.
@@ -59,4 +60,3 @@ This will add the attribute `myAttribute=myValue` unless the client provides the
 Additionally, the unique list of subgraph error codes will be appended to all emitted metric values. This enables correlation between error cases and corresponding metrics.
 
 For a complete list of available options, please refer to the relevant documentation [section](/router/configuration#telemetry).
-

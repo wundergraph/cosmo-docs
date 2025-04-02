@@ -10,11 +10,11 @@ Namespaces are the way to group and isolate graphs in different environments, su
 
 Namespaces have the following restrictions:
 
-* Must begin and end with alphanumeric characters
+- Must begin and end with alphanumeric characters
 
-* Could contain dashes (-) or underscores (\_) in between.
+- Could contain dashes (-) or underscores (\_) in between.
 
-* Special characters other than the above mentioned are not allowed
+- Special characters other than the above mentioned are not allowed
 
 Namespaces allow to create and organize multiple environments. Every federated graph represents physically a router instance and every subgraph is a service connected to the router.
 
@@ -38,11 +38,11 @@ Labels are a `key=value` pair separated by a `=` sign. Ex: `team=A` `region=us-e
 
 You can assign labels to only subgraphs. Labels have the following restrictions
 
-* Both key and value must be 63 characters or less (cannot be empty).
+- Both key and value must be 63 characters or less (cannot be empty).
 
-* Must begin and end with an alphanumeric character (\[a-z0-9A-Z]).
+- Must begin and end with an alphanumeric character (\[a-z0-9A-Z]).
 
-* Could contain dashes (-), underscores (\_), dots (.), and alphanumerics between.
+- Could contain dashes (-), underscores (\_), dots (.), and alphanumerics between.
 
 ## Label Matcher
 
@@ -51,7 +51,11 @@ Label matchers are used with Federated Graphs to determine which subgraphs are c
 To understand how they work here is an example.
 
 <Info>
-  You can create subgraphs and federated graphs without labels and label matchers. In such a case, federated graphs with empty label matchers will only compose subgraphs with empty labels. The vice versa is also true, subgraphs without labels can only be composed by federated graphs with empty label matchers.
+  You can create subgraphs and federated graphs without labels and label
+  matchers. In such a case, federated graphs with empty label matchers will only
+  compose subgraphs with empty labels. The vice versa is also true, subgraphs
+  without labels can only be composed by federated graphs with empty label
+  matchers.
 </Info>
 
 #### Federated Graph example
@@ -64,7 +68,7 @@ the long version is
 
 `--label-matcher team=A,team=B --label-matcher region=us-east-1`
 
-The above *matcher* translates to logically to `(team=A || team=B) && region=us-east-1`
+The above _matcher_ translates to logically to `(team=A || team=B) && region=us-east-1`
 
 #### Subgraphs example:
 
@@ -76,15 +80,15 @@ Assuming we have the following subgraphs with exact one label:
 
 3\. Users `--labels region=us-east-1`
 
-Based on the two examples above this setup will create a federated graph consisting of subgraphs *Products* and *Users*.
+Based on the two examples above this setup will create a federated graph consisting of subgraphs _Products_ and _Users_.
 
 ## Validate composition
 
 While labeling is a powerful concept it can be very error-prone to understand the final result of your composition. For those reasons, we provide the CLI commands
 
-* [`wgc federated-graph check`](/cli/federated-graph/check) and
+- [`wgc federated-graph check`](/cli/federated-graph/check) and
 
-* [`wgc subgraph check`](/cli/subgraph/check)
+- [`wgc subgraph check`](/cli/subgraph/check)
 
 That allows you to validate if the composition will produce any errors and what the result will look like at the end.
 

@@ -140,7 +140,7 @@ When @authenticated is declared on an interface definition, @authenticated will 
 
 If the same interface definition is defined in another subgraph without @authenticated, the corresponding field definitions **_unique_** to **_that_** subgraph be unaffected. But note that @authenticated could be applied to those field definitions through other means.
 
-In addition, @authenticated will be applied to the corresponding field definitions defined on the objects that implement that interface  **_within that subgraph_**.
+In addition, @authenticated will be applied to the corresponding field definitions defined on the objects that implement that interface **_within that subgraph_**.
 
 If at least one instance of a shared field is declared @authenticated, that field definition will be declared @authenticated in the federated graph (see [Federation](/federation/directives/authenticated#federation)). Consider the following example:
 
@@ -419,11 +419,13 @@ In the event that an unauthenticated agent selects a **_non-nullable_** field th
 
 ```json
 {
-"errors":[{
-  "message":"Unauthorized to load field 'Query.enumField'. Reason: not authenticated",
-  "path":["enumField"]
-}],
-  "data":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.enumField'. Reason: not authenticated",
+      "path": ["enumField"]
+    }
+  ],
+  "data": null
 }
 ```
 
@@ -431,12 +433,14 @@ In the event that an unauthenticated agent selects a **_nullable_** field that i
 
 ```json
 {
-"errors":[{
-  "message":"Unauthorized to load field 'Query.enumField'. Reason: not authenticated",
-  "path":["enumField"]
-}],
-  "data":{
-    "enumField":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.enumField'. Reason: not authenticated",
+      "path": ["enumField"]
+    }
+  ],
+  "data": {
+    "enumField": null
   }
 }
 ```
@@ -465,13 +469,15 @@ An unauthenticated agent sending the query above would receive something like th
 
 ```json
 {
-  "errors":[{
-    "message":"Unauthorized to load field 'Query.intField'. Reason: not authenticated",
-    "path":["intField"]
-  }],
-  "data":{
-    "intField":null,
-    "stringField":"I'm a string!"
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.intField'. Reason: not authenticated",
+      "path": ["intField"]
+    }
+  ],
+  "data": {
+    "intField": null,
+    "stringField": "I'm a string!"
   }
 }
 ```
@@ -515,10 +521,16 @@ An unauthenticated agent sending the query above would receive something like th
 
 ```json
 {
-  "errors":[{
-    "message":"Unauthorized to load field 'Query.objectField.unauthenticatedNestedObjectField.authenticatedNonNullableIntField'. Reason: not authenticated",
-    "path":["objectField","unauthenticatedNestedObectField","authenticatedNonNullableIntField"]
-  }],
-  "data":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.objectField.unauthenticatedNestedObjectField.authenticatedNonNullableIntField'. Reason: not authenticated",
+      "path": [
+        "objectField",
+        "unauthenticatedNestedObectField",
+        "authenticatedNonNullableIntField"
+      ]
+    }
+  ],
+  "data": null
 }
 ```

@@ -4,21 +4,19 @@ description: "You can generate query plans using the ./router query-plan command
 icon: "layer-group"
 ---
 
-<Info>
-Available since Router 0.185.0
-</Info>
+<Info>Available since Router 0.185.0</Info>
 
 ## Prerequisites
 
 To generate query plans, you will need the following:
 
-* Router executable (version 0.185.0 or later)
+- Router executable (version 0.185.0 or later)
 
-* Router execution configuration file
+- Router execution configuration file
 
-* Queries folder
+- Queries folder
 
-* Output folder
+- Output folder
 
 Generate the execution config using `wgc`:
 
@@ -64,10 +62,10 @@ plans/query2.graphql
 
 ### Report generation
 
-<Info>
-The report structure changed since Router 0.189.0
-</Info>
-You can use the `-print-report` option to generate a report in addition to the individual query plan files. The report will be saved in the plans folder as `report.json` and will follow this structure:
+<Info>The report structure changed since Router 0.189.0</Info>
+You can use the `-print-report` option to generate a report in addition to the
+individual query plan files. The report will be saved in the plans folder as
+`report.json` and will follow this structure:
 
 ```bash
 {
@@ -126,4 +124,3 @@ You can see all the options available launching the command without any argument
   -timeout string
         timeout (default "30s")
 ```
-

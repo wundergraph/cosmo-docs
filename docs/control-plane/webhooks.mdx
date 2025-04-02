@@ -5,7 +5,8 @@ icon: "webhook"
 ---
 
 <Info>
-  For organization webhook events, check the docs, [here](/studio/alerts-and-notifications/webhooks).
+  For organization webhook events, check the docs,
+  [here](/studio/alerts-and-notifications/webhooks).
 </Info>
 
 ## Configuration
@@ -18,9 +19,9 @@ To enable webhooks, configure the `WEBHOOK_URL` and `WEBHOOK_SECRET` environment
 
 Triggered whenever a user registration is successful.
 
-* `user_id`: The unique identifier of the registered user.
+- `user_id`: The unique identifier of the registered user.
 
-* `user_email`: The email address of the registered user.
+- `user_email`: The email address of the registered user.
 
 **Sample Payload:**
 
@@ -57,13 +58,13 @@ Triggered when graph migration is initiated.
 
 Triggered when graph migration succeeds.
 
-* `federated_graph`: An object representing the federated graph details.
+- `federated_graph`: An object representing the federated graph details.
 
-  * `id`: The unique identifier of the federated graph.
+  - `id`: The unique identifier of the federated graph.
 
-  * `name`: The name of the federated graph.
+  - `name`: The name of the federated graph.
 
-* `actor_id` (optional): The identifier of the actor initializing the migration.
+- `actor_id` (optional): The identifier of the actor initializing the migration.
 
 **Sample Payload:**
 
@@ -95,17 +96,21 @@ To verify the webhook request, you need to compute the HMAC signature on your se
 Here's an example in Node.js:
 
 ```js
-import crypto from 'crypto';
+import crypto from "crypto";
 
 function verifySignature(body, receivedSignature, secret) {
   const computedSignature = crypto
-    .createHmac('sha256', secret)
+    .createHmac("sha256", secret)
     .update(body)
-    .digest('hex');
+    .digest("hex");
 
   return computedSignature === receivedSignature;
 }
 
 // Usage:
-const isVerified = verifySignature(JSON.stringify(req.body), req.headers['x-cosmo-signature-256'], YOUR_SECRET);
+const isVerified = verifySignature(
+  JSON.stringify(req.body),
+  req.headers["x-cosmo-signature-256"],
+  YOUR_SECRET,
+);
 ```

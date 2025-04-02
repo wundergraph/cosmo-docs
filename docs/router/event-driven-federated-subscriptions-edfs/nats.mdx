@@ -5,18 +5,17 @@ icon: circle-info
 description: "NATS event provider support for EDFS"
 ---
 
-
 <Frame caption="NATS with EDFS">
   <img src="/images/router/event-driven-federated-subscriptions-edfs/image-1.png" />
 </Frame>
 
 ## Minimum requirements
 
-|Package|Minimum version|
-|---|---|
-|controlplane|0.88.3|
-|router|0.88.0|
-|wgc|0.55.0|
+| Package      | Minimum version |
+| ------------ | --------------- |
+| controlplane | 0.88.3          |
+| router       | 0.88.0          |
+| wgc          | 0.55.0          |
 
 ## Full schema example
 
@@ -78,20 +77,18 @@ wgc subgraph publish edg --namespace default --schema edg.graphqls
 
 Based on the example above, you will need a compatible router configuration.
 
-<CodeGroup>
-  ```yaml config.yaml
-  events:
-    providers:
-      nats:
-        - id: my-nats
-          url: "nats://localhost:4222"
-          authentication:
-            token: "token" # or
-            user_info:
-              username: "username"
-              password: "password"
-  ```
-</CodeGroup>
+```yaml config.yaml
+events:
+  providers:
+    nats:
+      - id: my-nats
+        url: "nats://localhost:4222"
+        authentication:
+          token: "token" # or
+          user_info:
+            username: "username"
+            password: "password"
+```
 
 ## Example Query
 

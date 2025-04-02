@@ -10,11 +10,11 @@ descripton: "Kafka event provider support for EDFS"
 
 ## Minimum requirements
 
-|Package|Minimum version|
-|---|---|
-|controlplane|0.88.3|
-|router|0.88.0|
-|wgc|0.55.0|
+| Package      | Minimum version |
+| ------------ | --------------- |
+| controlplane | 0.88.3          |
+| router       | 0.88.0          |
+| wgc          | 0.55.0          |
 
 ## Full schema example
 
@@ -96,22 +96,20 @@ wgc subgraph publish edg --namespace default --schema eedg.graphqls
 
 Based on the example above, you will need a compatible router configuration.
 
-<CodeGroup>
-  ```yaml config.yaml
-  events:
-    providers:
-      kafka:
-        - id: my-kafka # Needs to match with the providerID in the directive
-          tls:
-            enabled: true
-          authentication:
-            sasl_plain:
-              password: "password"
-              username: "username"
-          brokers:
-            - "localhost:9092"
-  ```
-</CodeGroup>
+```yaml config.yaml
+events:
+  providers:
+    kafka:
+      - id: my-kafka # Needs to match with the providerID in the directive
+        tls:
+          enabled: true
+        authentication:
+          sasl_plain:
+            password: "password"
+            username: "username"
+        brokers:
+          - "localhost:9092"
+```
 
 ## Example Query
 

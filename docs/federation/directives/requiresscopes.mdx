@@ -18,7 +18,7 @@ Make sure you have correctly set up [Authentication & Authorization](/router/aut
 
 ```graphql
 directive @requiresScopes(
-    scopes: [[openfed__Scope!]!]!
+  scopes: [[openfed__Scope!]!]!
 ) on ENUM | FIELD_DEFINITION | INTERFACE | OBJECT | SCALAR
 
 scalar openfed__Scope
@@ -36,7 +36,7 @@ The outmost array represents a set of OR scopes.
 
 Each nested array sibling represents a set of AND scopes.
 
-Each element in the AND scopes array should be an "openfed__Scope" scalar, which is an instance of permissions as defined in your authentication token. For example, "read:field".
+Each element in the AND scopes array should be an "openfed\_\_Scope" scalar, which is an instance of permissions as defined in your authentication token. For example, "read:field".
 
 ## Declaration
 
@@ -70,11 +70,14 @@ Consider the following @requiresScopes declared on Query.fieldThree
 
 ```graphql
 type Query {
-  fieldThree: String! @requiresScopes(scopes: [
-    ["read:field", "read:scalar"],
-    ["read:query", "read:private"],
-    ["read:all"]
-  ])
+  fieldThree: String!
+    @requiresScopes(
+      scopes: [
+        ["read:field", "read:scalar"]
+        ["read:query", "read:private"]
+        ["read:all"]
+      ]
+    )
 }
 ```
 
@@ -334,9 +337,8 @@ These scopes are combined through the "AND" operator:
 ```graphql
 # subgraph-e (normalized)
 type Query {
-  enumField: Enum! @requiresScopes(scopes: [
-    ["read:private", "read:query", "read:enum"]
-  ])
+  enumField: Enum!
+    @requiresScopes(scopes: [["read:private", "read:query", "read:enum"]])
 }
 
 enum Enum {
@@ -351,10 +353,10 @@ Consider the following example:
 ```graphql
 # subgraph-f (raw)
 type Query @requiresScopes(scopes: [["read:query"], ["read:root"]]) {
-  enumField: Enum! @requiresScopes(scopes: [
-    ["read:private", "read:field"],
-    ["read:private", "read:object"]
-  ])
+  enumField: Enum!
+    @requiresScopes(
+      scopes: [["read:private", "read:field"], ["read:private", "read:object"]]
+    )
 }
 
 enum Enum @requiresScopes(scopes: [["read:enum"]]) {
@@ -388,12 +390,15 @@ Which would appear in the normalized subgraph like so:
 ```graphql
 # subgraph-f (normalized)
 type Query {
-  enumField: Enum! @requiresScopes(scopes: [
-    ["read:private", "read:field", "read:query", "read:enum"],
-    ["read:private", "read:field", "read:root", "read:enum"],
-    ["read:private", "read:object", "read:query", "read:enum"],
-    ["read:private", "read:object", "read:root", "read:enum"]
-  ])
+  enumField: Enum!
+    @requiresScopes(
+      scopes: [
+        ["read:private", "read:field", "read:query", "read:enum"]
+        ["read:private", "read:field", "read:root", "read:enum"]
+        ["read:private", "read:object", "read:query", "read:enum"]
+        ["read:private", "read:object", "read:root", "read:enum"]
+      ]
+    )
 }
 
 enum Enum {
@@ -418,7 +423,8 @@ enum Enum @requiresScopes(scopes: [["read:enum"]]) {
 
 type Interface {
   intField: Int!
-  stringField: String! @requiresScopes(scopes: [["read:string"], ["read:scalar"]])
+  stringField: String!
+    @requiresScopes(scopes: [["read:string"], ["read:scalar"]])
 }
 
 type Object implements Interface @key(fields: "id") {
@@ -608,11 +614,13 @@ In the event that an agent without relevant permissions selects a **_non-nullabl
 
 ```json
 {
-"errors":[{
-  "message":"Unauthorized to load field 'Query.enumField'. Reason: required scopes: ('read:enum' AND 'read:field') OR ('read:all'), actual scopes: <none>",
-  "path":["enumField"]
-}],
-  "data":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.enumField'. Reason: required scopes: ('read:enum' AND 'read:field') OR ('read:all'), actual scopes: <none>",
+      "path": ["enumField"]
+    }
+  ],
+  "data": null
 }
 ```
 
@@ -620,12 +628,14 @@ In the event that an agent without relevant permissions selects a **_nullable_**
 
 ```json
 {
-"errors":[{
-  "message":"Unauthorized to load field 'Query.enumField'. Reason: required scopes: ('read:enum' AND 'read:field') OR ('read:all'), actual scopes: <none>",
-  "path":["enumField"]
-}],
-  "data":{
-    "enumField":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.enumField'. Reason: required scopes: ('read:enum' AND 'read:field') OR ('read:all'), actual scopes: <none>",
+      "path": ["enumField"]
+    }
+  ],
+  "data": {
+    "enumField": null
   }
 }
 ```
@@ -637,9 +647,13 @@ Imagine an agent without relevant permissions selects a field that is declared w
 ```graphql
 # federated graph
 type Query {
-  """Note that Query.intField is nullable"""
+  """
+  Note that Query.intField is nullable
+  """
   intField: Int @requiresScope(scopes: [["read:int"]])
-  """Note that Query.floatField is non-nullable"""
+  """
+  Note that Query.floatField is non-nullable
+  """
   floatField: Float! @authenticated(scopes: [["read:float"]])
   stringField: String! # note that this field does not require any permissions
 }
@@ -656,13 +670,15 @@ An agent without any permissions sending the query above would receive something
 
 ```json
 {
-  "errors":[{
-    "message":"Unauthorized to load field 'Query.intField'. Reason: required scopes: 'read:int', actual scopes: <none>",
-    "path":["intField"]
-  }],
-  "data":{
-    "intField":null,
-    "stringField":"I'm a string!"
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.intField'. Reason: required scopes: 'read:int', actual scopes: <none>",
+      "path": ["intField"]
+    }
+  ],
+  "data": {
+    "intField": null,
+    "stringField": "I'm a string!"
   }
 }
 ```
@@ -684,7 +700,9 @@ type Object {
 }
 
 type NestedObject {
-  """Note that NestedObject.authenticatedIntField is non-nullable"""
+  """
+  Note that NestedObject.authenticatedIntField is non-nullable
+  """
   authenticatedIntField: Int! @requiresScopes(scopes: [["read:int"]])
   unauthenticatedStringField: String!
 }
@@ -707,11 +725,17 @@ An agent without the "read:int" permission sending the query above would receive
 
 ```json
 {
-  "errors":[{
-    "message":"Unauthorized to load field 'Query.objectField.unauthenticatedNestedObjectField.authenticatedNonNullableIntField'. Reason: required scopes: 'read:int', actual scopes: <none>",
-    "path":["objectField","unauthenticatedNestedObectField","authenticatedNonNullableIntField"]
-  }],
-  "data":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.objectField.unauthenticatedNestedObjectField.authenticatedNonNullableIntField'. Reason: required scopes: 'read:int', actual scopes: <none>",
+      "path": [
+        "objectField",
+        "unauthenticatedNestedObectField",
+        "authenticatedNonNullableIntField"
+      ]
+    }
+  ],
+  "data": null
 }
 ```
 
@@ -721,10 +745,12 @@ An agent must have **_all_** relevant permissions within at least one entire set
 
 ```json
 {
-  "errors":[{
-    "message":"Unauthorized to load field 'Query.employeeField'. Reason: required scopes: ('read:employee' AND 'read:private') OR ('read:all'), actual scopes: read:employee",
-    "path":["employeeField"]
-  }],
-  "data":null
+  "errors": [
+    {
+      "message": "Unauthorized to load field 'Query.employeeField'. Reason: required scopes: ('read:employee' AND 'read:private') OR ('read:all'), actual scopes: read:employee",
+      "path": ["employeeField"]
+    }
+  ],
+  "data": null
 }
 ```

@@ -4,10 +4,9 @@ description: "Lists all the requests made to your router. For each request, it s
 icon: route
 ---
 
-
-
 <Info>
-  The amount of traces depends on the sampling rate of the OTEL instrumentation in the router.
+  The amount of traces depends on the sampling rate of the OTEL instrumentation
+  in the router.
 </Info>
 
 <Frame caption="WunderGraph Cosmo Analytics: Traces overview">
@@ -26,7 +25,7 @@ The date range filter lets you narrow down the list of requests based on when th
 
 Filters allow you to narrow down to specific requests and are a powerful tool to find and debug GraphQL requests.
 
-*The available filters can be different depending on the selected date range or grouping field.*
+_The available filters can be different depending on the selected date range or grouping field._
 
 <Frame caption="Selecting an Analytics: Traces filter">
   <img src="/images/studio/analytics/image-3.png" />
@@ -36,13 +35,13 @@ Filters allow you to narrow down to specific requests and are a powerful tool to
 
 The grouping feature allows you to group the data in the table by none, operation name, client, or error message.
 
-* **None**: The default view with no grouping applied. Each row represents an individual request made to the federated graph.
+- **None**: The default view with no grouping applied. Each row represents an individual request made to the federated graph.
 
-* **Operation Name**: Grouping by operation name will cluster the requests based on the operation type that was executed.
+- **Operation Name**: Grouping by operation name will cluster the requests based on the operation type that was executed.
 
-  * **Client**: Grouping by client allows you to see all the requests made by a particular client and client version. These are read from the headers `graphql-client-name` and `graphql-client-version` that you can set on your client application.
+  - **Client**: Grouping by client allows you to see all the requests made by a particular client and client version. These are read from the headers `graphql-client-name` and `graphql-client-version` that you can set on your client application.
 
-* **Error Message**: Grouping by error message clusters all requests that resulted in the same error message. This grouping can be particularly useful for identifying and diagnosing common errors.
+- **Error Message**: Grouping by error message clusters all requests that resulted in the same error message. This grouping can be particularly useful for identifying and diagnosing common errors.
 
 Clicking on a row under groups other than \`none\` will relink the table to "group by none" and apply the appropriate filter. For example, if you click on a row in "group by operation name", it will take you back to the table grouped by none but only show requests with the operation name you selected.
 

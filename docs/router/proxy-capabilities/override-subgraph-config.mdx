@@ -7,7 +7,7 @@ icon: "sliders"
 
 By default, we read the routing URL for each of your subgraphs from the router execution config. In most cases, no additional configuration is required.
 
-However, if you *do* need to override a particular subgraph's routing URL (for example, to handle changing network topography), you can do so with the following config
+However, if you _do_ need to override a particular subgraph's routing URL (for example, to handle changing network topography), you can do so with the following config
 
 #### New way
 
@@ -23,9 +23,9 @@ overrides:
       subscription_websocket_subprotocol: graphql-ws
 ```
 
-The available options for subscription\_protocol are ws, sse and sse\_post.
+The available options for subscription_protocol are ws, sse and sse_post.
 
-The available options for subscription\_websocket\_subprotocol are graphql-ws, graphql-transport-ws and auto.
+The available options for subscription_websocket_subprotocol are graphql-ws, graphql-transport-ws and auto.
 
 #### Old way (Will be deprecated soon)
 
@@ -40,6 +40,5 @@ override_routing_url:
 A more practical example is for routers inside a Kubernetes cluster so they can use the cluster-local DNS name while keeping the public DNS name config in the control plane.
 
 <Info>
-Keep in mind, that this will also modify the URLs in your router config.
+  Keep in mind, that this will also modify the URLs in your router config.
 </Info>
-

@@ -9,11 +9,11 @@ icon: "network-wired"
 The subgraph object is the core of the composition library. It has the following form:
 
 ```typescript
-import { DocumentNode } from 'graphql';
-import { federateSubgraphs, Subgraph } from '@wundergraph/composition';
+import { DocumentNode } from "graphql";
+import { federateSubgraphs, Subgraph } from "@wundergraph/composition";
 
 export type Subgraph = {
-  definitions: DocumentNode
+  definitions: DocumentNode;
   name: string;
   url: string;
 };
@@ -22,12 +22,12 @@ export type Subgraph = {
 A `DocumentNode` can be created using the graphql libary `parse` function. A simple example subgraph is provided below :
 
 ```typescript
-import { DocumentNode } from 'graphql';
-import { federateSubgraphs, Subgraph } from '@wundergraph/composition';
+import { DocumentNode } from "graphql";
+import { federateSubgraphs, Subgraph } from "@wundergraph/composition";
 
 const subgraphA = {
-  name: 'subgraph-a',
-  url: 'http://localhost:4001',
+  name: "subgraph-a",
+  url: "http://localhost:4001",
   definitions: parse(`
     type User {
       name: String!
@@ -53,7 +53,7 @@ export function federateSubgraphs(subgraphs: Subgraph[]): FederationResult;
 The `federateSubgraphs` function returns a `FederationResult`, which has the following form:
 
 ```typescript
-import { DocumentNode, GraphQLSchema } from 'graphql';
+import { DocumentNode, GraphQLSchema } from "graphql";
 
 export type FederationResult = {
   errors?: Error[];
@@ -64,9 +64,9 @@ export type FederationResult = {
 
 #### Properties
 
-**errors**: An optional array of all errors encountered during normalization and validation of the subgraph, or composition and validation of the federated graph. If there are any errors during normalization, federation will not be attempted. If federation was successful, the array will be undefined. 
+**errors**: An optional array of all errors encountered during normalization and validation of the subgraph, or composition and validation of the federated graph. If there are any errors during normalization, federation will not be attempted. If federation was successful, the array will be undefined.
 
-**federatedGraphAST**: An optional graphql `DocumentNode` representation of the federated graph. If federation was unsuccessful, this property will be undefined. 
+**federatedGraphAST**: An optional graphql `DocumentNode` representation of the federated graph. If federation was unsuccessful, this property will be undefined.
 
 **federatedGraphSchema**: An optional graphql `GraphQLSchema` representation of the federated graph. If federation was unsuccessful, this property will be undefined.
 
@@ -75,7 +75,7 @@ export type FederationResult = {
 You can produce a string of the federated graph through graphql `print` or graphql `printSchema`.
 
 ```typescript
-import { print, printSchema } from 'graphql';
+import { print, printSchema } from "graphql";
 
 const result = federateSubgraphs([subgraphA, subgraphB]);
 if (result.errors) {

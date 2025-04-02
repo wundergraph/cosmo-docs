@@ -4,7 +4,6 @@ description: "Overview of Prometheus metrics with explanations, queries, use cas
 icon: "gauge-high"
 ---
 
-
 ## Recommended Metrics for Production
 
 In a production environment, prioritize monitoring the following metrics to ensure system reliability and performance:
@@ -13,29 +12,29 @@ In a production environment, prioritize monitoring the following metrics to ensu
 
 These metrics ensure efficient request handling, operation planning, and system responsiveness:
 
-* [`router_http_requests_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_requests_total): Observes overall HTTP traffic trends and rates.
+- [`router_http_requests_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_requests_total): Observes overall HTTP traffic trends and rates.
 
-  * Using this with a `rate` function will show a change in traffic.
+  - Using this with a `rate` function will show a change in traffic.
 
-  * A high rate indicates a lot of traffic on the router which could lead to higher latency.
+  - A high rate indicates a lot of traffic on the router which could lead to higher latency.
 
-* [`router_http_requests_in_flight`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_requests_in_flight): Tracks concurrent in-flight requests to avoid overloads.
+- [`router_http_requests_in_flight`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_requests_in_flight): Tracks concurrent in-flight requests to avoid overloads.
 
-  * **Increased Latency:** A high number of in-flight requests can lead to delayed responses as server resources become constrained, resulting in slower processing of new requests.
+  - **Increased Latency:** A high number of in-flight requests can lead to delayed responses as server resources become constrained, resulting in slower processing of new requests.
 
-  * **Potential Overload:** Excessive in-flight requests can overwhelm the application, causing resource exhaustion, degraded performance, or even service outages.
+  - **Potential Overload:** Excessive in-flight requests can overwhelm the application, causing resource exhaustion, degraded performance, or even service outages.
 
-* [`router_http_request_duration_milliseconds`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_request_duration_milliseconds_-sum-count): Measures average request duration to detect latency issues.
+- [`router_http_request_duration_milliseconds`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_request_duration_milliseconds_-sum-count): Measures average request duration to detect latency issues.
 
-  * **Backend Performance Issues:** Prolonged durations can signal bottlenecks in the application or database, requiring investigation and optimization.
+  - **Backend Performance Issues:** Prolonged durations can signal bottlenecks in the application or database, requiring investigation and optimization.
 
-* [`router_graphql_operation_planning_time`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_operation_planning_time): Tracks GraphQL query planning time to identify performance inefficiencies.
+- [`router_graphql_operation_planning_time`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_operation_planning_time): Tracks GraphQL query planning time to identify performance inefficiencies.
 
-  * **Increased Query Latency:** High planning times can delay the execution of GraphQL queries, negatively affecting response times.
+  - **Increased Query Latency:** High planning times can delay the execution of GraphQL queries, negatively affecting response times.
 
-  * **Scalability Challenges:** Excessive operation planning durations can lead to resource contention under heavy workloads, limiting scalability.
+  - **Scalability Challenges:** Excessive operation planning durations can lead to resource contention under heavy workloads, limiting scalability.
 
-  * **Operation Design:** Complex queries can also lead to increased planning time as those are parsed and validated.
+  - **Operation Design:** Complex queries can also lead to increased planning time as those are parsed and validated.
 
 ### GraphQL Operation Cache Metrics
 
@@ -56,58 +55,57 @@ telemetry:
 
 #### Metrics
 
-* [`router_graphql_cache_cost_max`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_cost_max): Measures the maximum cost of cached operations to optimize cache usage.
+- [`router_graphql_cache_cost_max`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_cost_max): Measures the maximum cost of cached operations to optimize cache usage.
 
-  * **Cache Optimization:** High values may indicate excessive caching costs, necessitating analysis to improve cache strategy.
+  - **Cache Optimization:** High values may indicate excessive caching costs, necessitating analysis to improve cache strategy.
 
-  * **Cost Management:** Helps in understanding and managing potential high-cost queries effectively.
+  - **Cost Management:** Helps in understanding and managing potential high-cost queries effectively.
 
-* [`router_graphql_cache_cost_stats_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_cost_stats_total): Tracks total cost statistics of cached operations to ensure balanced resource allocation.
+- [`router_graphql_cache_cost_stats_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_cost_stats_total): Tracks total cost statistics of cached operations to ensure balanced resource allocation.
 
-  * **Resource Allocation:** Ensures cached operations do not consume disproportionate resources, affecting performance.
+  - **Resource Allocation:** Ensures cached operations do not consume disproportionate resources, affecting performance.
 
-  * **Contention Risks:** Identifies potential cases where caching may not be as beneficial as expected.
+  - **Contention Risks:** Identifies potential cases where caching may not be as beneficial as expected.
 
-* [`router_graphql_cache_keys_stats_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_keys_stats_total): Counts the total number of unique cache keys to monitor cache utilization.
+- [`router_graphql_cache_keys_stats_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_keys_stats_total): Counts the total number of unique cache keys to monitor cache utilization.
 
-  * **Cache Utilization:** Aids in determining if the cache is effectively utilized or if there are opportunities for improvement.
+  - **Cache Utilization:** Aids in determining if the cache is effectively utilized or if there are opportunities for improvement.
 
-  * **Key Bloat:** Helps detect issues with excessive unique keys that might lead to cache inefficiencies.
+  - **Key Bloat:** Helps detect issues with excessive unique keys that might lead to cache inefficiencies.
 
-* [`router_graphql_cache_request_stats_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_request_stats_total): Monitors the total number of requests served from the cache to assess cache hit rates.
+- [`router_graphql_cache_request_stats_total`](/router/metrics-and-monitoring/prometheus-metric-reference#router_graphql_cache_request_stats_total): Monitors the total number of requests served from the cache to assess cache hit rates.
 
-  * **Cache Hit Rate:** High values indicate effective cache performance, reducing backend load.
+  - **Cache Hit Rate:** High values indicate effective cache performance, reducing backend load.
 
-  * **Improvement Areas:** Low cache request stats highlight the need for potential optimization or caching strategy updates.
+  - **Improvement Areas:** Low cache request stats highlight the need for potential optimization or caching strategy updates.
 
 ### Go Runtime Metrics
 
 These metrics help monitor application memory usage, concurrency, and garbage collection efficiency:
 
-* [`go_memstats_sys_bytes`](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_sys_bytes): Monitors memory obtained from the system across all instances.
+- [`go_memstats_sys_bytes`](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_sys_bytes): Monitors memory obtained from the system across all instances.
 
-  * **Excessive Memory Usage:** High values suggest that the application is consuming more system memory than expected, which can impact other processes.
+  - **Excessive Memory Usage:** High values suggest that the application is consuming more system memory than expected, which can impact other processes.
 
-  * **Inefficient Allocation:** A mismatch between allocated and used memory may indicate suboptimal memory usage patterns.
+  - **Inefficient Allocation:** A mismatch between allocated and used memory may indicate suboptimal memory usage patterns.
 
-* [`go_memstats_heap_alloc_bytes`](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_heap_alloc_bytes): Number of heap bytes allocated and still in use across all instances. Focuses on heap memory usage for efficient memory management. The value is same as [**go\_memstats\_alloc\_bytes**](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_alloc_bytes).
+- [`go_memstats_heap_alloc_bytes`](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_heap_alloc_bytes): Number of heap bytes allocated and still in use across all instances. Focuses on heap memory usage for efficient memory management. The value is same as [**go_memstats_alloc_bytes**](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_alloc_bytes).
 
-  * **Heap Saturation Risk:** High heap memory usage can lead to increased garbage collection frequency and performance degradation.
+  - **Heap Saturation Risk:** High heap memory usage can lead to increased garbage collection frequency and performance degradation.
 
-* [`go_gc_duration_seconds`](/router/metrics-and-monitoring/prometheus-metric-reference#go_gc_duration_seconds): Tracks garbage collection duration to identify performance bottlenecks.
+- [`go_gc_duration_seconds`](/router/metrics-and-monitoring/prometheus-metric-reference#go_gc_duration_seconds): Tracks garbage collection duration to identify performance bottlenecks.
 
-  * **Performance Bottlenecks:** Long garbage collection pauses can cause application slowdowns, especially under high load.
+  - **Performance Bottlenecks:** Long garbage collection pauses can cause application slowdowns, especially under high load.
 
-  * **Request Latency:** Increased GC durations may directly impact request processing times, degrading user experience.
+  - **Request Latency:** Increased GC durations may directly impact request processing times, degrading user experience.
 
-* [`go_goroutines`](/router/metrics-and-monitoring/prometheus-metric-reference#go_goroutines): Monitors active goroutines to prevent resource exhaustion.
+- [`go_goroutines`](/router/metrics-and-monitoring/prometheus-metric-reference#go_goroutines): Monitors active goroutines to prevent resource exhaustion.
 
-  * **Resource Leaks:** An unexpected increase in goroutines can signal a leak, leading to excessive memory and CPU usage.
+  - **Resource Leaks:** An unexpected increase in goroutines can signal a leak, leading to excessive memory and CPU usage.
 
-  * **Concurrency Bottlenecks:** High goroutine counts may indicate insufficient handling of concurrency or blocking operations
+  - **Concurrency Bottlenecks:** High goroutine counts may indicate insufficient handling of concurrency or blocking operations
 
 Focusing on these metrics enables comprehensive monitoring and proactive issue detection in a production environment.
-
 
 Below is the extended documentation for common Prometheus metrics. Each section is structured with a clear explanation of the metric, an example PromQL query, and the importance of the metric, including potential error cases.
 
@@ -138,11 +136,11 @@ rate(router_graphql_operation_planning_time_count[5m])
 
 **Error Cases Addressed:**
 
-* High planning latency.
+- High planning latency.
 
-* Performance regressions.
+- Performance regressions.
 
-* Possible inefficent query design
+- Possible inefficent query design
 
 ### `Analyze upper boundary of latency`
 
@@ -160,13 +158,13 @@ histogram_quantile(0.95, sum by (wg_operation_name, le)(rate(router_graphql_oper
 
 **Error Cases Addressed:**
 
-* High variation in operation planning times.
+- High variation in operation planning times.
 
-* Identifying latency spikes for certain operations.
+- Identifying latency spikes for certain operations.
 
-* Tail latency issues that might not be visible with average metrics alone.
+- Tail latency issues that might not be visible with average metrics alone.
 
-***
+---
 
 ## `router_http_request_duration_milliseconds_{sum,count}`
 
@@ -185,11 +183,11 @@ avg by(wg_operation_name) (
 
 **Error Cases Addressed:**
 
-* High latency requests.
+- High latency requests.
 
-* Request duration anomalies.
+- Request duration anomalies.
 
-***
+---
 
 ## `router_http_requests_in_flight`
 
@@ -205,9 +203,9 @@ avg by(wg_federated_graph_id) (router_http_requests_in_flight)
 
 **Error Cases Addressed:**
 
-* Resource exhaustion due to high concurrency.
+- Resource exhaustion due to high concurrency.
 
-* Application overloads.
+- Application overloads.
 
 ## `router_http_requests_total`
 
@@ -223,9 +221,9 @@ rate(router_http_requests_total[5m])
 
 **Error Cases Addressed:**
 
-* Sudden traffic surges.
+- Sudden traffic surges.
 
-* Unexpected drops in request rates.
+- Unexpected drops in request rates.
 
 ## `router_graphql_cache_cost_max`
 
@@ -302,9 +300,9 @@ sum(router_graphql_cache_keys_stats_total{cache_type="execution",operation="evic
 
 **Addressed Error Cases:**
 
-* **Unexpected Evictions:** A high number of evicted keys could indicate insufficient cache space or inefficient caching strategies.
+- **Unexpected Evictions:** A high number of evicted keys could indicate insufficient cache space or inefficient caching strategies.
 
-* **Unbounded Growth:** A consistent increase in the total number of added keys without corresponding evictions might signal potential memory issues.
+- **Unbounded Growth:** A consistent increase in the total number of added keys without corresponding evictions might signal potential memory issues.
 
 ## `router_graphql_cache_request_stats_total`
 
@@ -327,10 +325,9 @@ sum(rate(router_graphql_cache_requests_stats_total{cache_type="execution"}[2h]))
 
 **Addressed Error Cases:**
 
-* **Low Cache Hit Rate:** A decreased hit rate may indicate misconfigured cache settings or suboptimal data retrieval strategies, necessitating immediate attention to improve performance.
+- **Low Cache Hit Rate:** A decreased hit rate may indicate misconfigured cache settings or suboptimal data retrieval strategies, necessitating immediate attention to improve performance.
 
-* **Unpredictable Request Patterns:** Anomalous or erratic request patterns can signal potential application or user behavior issues, requiring prompt investigation to maintain system reliability.
-
+- **Unpredictable Request Patterns:** Anomalous or erratic request patterns can signal potential application or user behavior issues, requiring prompt investigation to maintain system reliability.
 
 ## `go_memstats_alloc_bytes`
 
@@ -346,10 +343,9 @@ avg by (job) (go_memstats_alloc_bytes)
 
 **Error Cases Addressed:**
 
-* Memory leaks.
+- Memory leaks.
 
-* Inefficient memory utilization.
-
+- Inefficient memory utilization.
 
 ## `go_memstats_sys_bytes`
 
@@ -365,9 +361,9 @@ avg by(job)(go_memstats_sys_bytes)
 
 **Error Cases Addressed:**
 
-* Excessive memory consumption.
+- Excessive memory consumption.
 
-* Discrepancies in memory usage across instances.
+- Discrepancies in memory usage across instances.
 
 ## `go_memstats_alloc_bytes_total`
 
@@ -383,9 +379,9 @@ rate(go_memstats_alloc_bytes_total[5m])
 
 **Error Cases Addressed:**
 
-* Spikes in memory allocation.
+- Spikes in memory allocation.
 
-* Potential over-allocation issues.
+- Potential over-allocation issues.
 
 ## `go_memstats_heap_objects`
 
@@ -401,9 +397,9 @@ go_memstats_heap_objects
 
 **Error Cases Addressed:**
 
-* Excessive heap object creation.
+- Excessive heap object creation.
 
-* Unreleased heap objects.
+- Unreleased heap objects.
 
 ## `go_memstats_heap_alloc_bytes`
 
@@ -419,9 +415,9 @@ avg by(job) (go_memstats_heap_alloc_bytes)
 
 **Error Cases Addressed:**
 
-* Memory leaks.
+- Memory leaks.
 
-* Abnormal heap memory growth.
+- Abnormal heap memory growth.
 
 ## `go_memstats_heap_inuse_bytes`
 
@@ -437,9 +433,9 @@ avg by(job) (go_memstats_heap_inuse_bytes)
 
 **Error Cases Addressed:**
 
-* Unexpected increases in active memory usage.
+- Unexpected increases in active memory usage.
 
-* Inefficient memory allocation patterns.
+- Inefficient memory allocation patterns.
 
 ## `go_memstats_heap_idle_bytes`
 
@@ -455,9 +451,9 @@ avg by(job) (go_memstats_heap_idle_bytes)
 
 **Error Cases Addressed:**
 
-* Excessive unused memory allocation.
+- Excessive unused memory allocation.
 
-* Inefficient memory provisioning.
+- Inefficient memory provisioning.
 
 ## `go_memstats_next_gc_bytes`
 
@@ -473,9 +469,9 @@ avg by(job) (go_memstats_next_gc_bytes)
 
 **Error Cases Addressed:**
 
-* Suboptimal garbage collection configurations.
+- Suboptimal garbage collection configurations.
 
-* Unexpected memory growth leading to increased GC frequency.
+- Unexpected memory growth leading to increased GC frequency.
 
 ## `go_memstats_mallocs_total`
 
@@ -491,9 +487,9 @@ rate(go_memstats_mallocs_total[5m])
 
 **Error Cases Addressed:**
 
-* Inefficient allocation patterns.
+- Inefficient allocation patterns.
 
-* Potential performance degradation due to excessive `malloc` calls.
+- Potential performance degradation due to excessive `malloc` calls.
 
 ## `go_gc_duration_seconds`
 
@@ -509,9 +505,9 @@ rate(go_gc_duration_seconds_sum[5m]) / rate(go_gc_duration_seconds_count[5m])
 
 **Error Cases Addressed:**
 
-* Prolonged garbage collection pauses.
+- Prolonged garbage collection pauses.
 
-* Performance bottlenecks during peak usage.
+- Performance bottlenecks during peak usage.
 
 #### Using Percentiles for `go_gc_duration_seconds` Summary
 
@@ -539,11 +535,12 @@ go_goroutines
 
 **Error Cases Addressed:**
 
-* Goroutine leaks.
+- Goroutine leaks.
 
-* Unexpected growth in active goroutines.
+- Unexpected growth in active goroutines.
 
 <Note>
-  **Note:** When crafting PromQL queries using range vectors, ensure that you adjust the time range according to your specific monitoring needs and system performance characteristics for accurate observability.
+  **Note:** When crafting PromQL queries using range vectors, ensure that you
+  adjust the time range according to your specific monitoring needs and system
+  performance characteristics for accurate observability.
 </Note>
-

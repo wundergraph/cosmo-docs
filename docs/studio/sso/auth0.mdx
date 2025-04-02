@@ -82,11 +82,12 @@ Copy the below code and paste it into the editor shown, then click the **Deploy*
 
 ```js
 exports.onExecutePostLogin = async (event, api) => {
-  if(event.authorization){
+  if (event.authorization) {
     api.idToken.setCustomClaim(`ssoGroups`, event.authorization.roles);
   }
 };
 ```
+
 </Step>
 
 <Step>

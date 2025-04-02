@@ -6,21 +6,21 @@ icon: plug
 
 The available WebSocket subprotocols are:-
 
-* **auto**: This is the default subprotocol. If auto is selected, we negotiate with the subgraph for the subprotocol. The subprotocols **graphql-ws** and **graphql-transport-ws** are used for the negotiation. If the subgraph doesn't return a subprotocol, it falls back to **graphql-ws.**
+- **auto**: This is the default subprotocol. If auto is selected, we negotiate with the subgraph for the subprotocol. The subprotocols **graphql-ws** and **graphql-transport-ws** are used for the negotiation. If the subgraph doesn't return a subprotocol, it falls back to **graphql-ws.**
 
-* **graphql-ws**
+- **graphql-ws**
 
-* **graphql-transport-ws**
+- **graphql-transport-ws**
 
 ## How to set the WebSocket subprotocol
 
-* While creating a subgraph, the WebSocket subprotocol can be set using the [create subgraph](/cli/subgraph/create) command.
+- While creating a subgraph, the WebSocket subprotocol can be set using the [create subgraph](/cli/subgraph/create) command.
 
 ```bash
 npx wgc subgraph create <name> -r <routing-url> --label [labels] --subscription-protocol ws --websocket-subprotocol <subprotocol>
 ```
 
-* If the subgraph is already created, it can be updated using the [update subgraph](/cli/subgraph/update) command.
+- If the subgraph is already created, it can be updated using the [update subgraph](/cli/subgraph/update) command.
 
 ```bash
 npx wgc subgraph update <name> --websocket-subprotocol <protocol>
@@ -44,9 +44,9 @@ subgraphs:
 
 Cosmo Router supports WebSocket authentication and offers two configurable options for handling it
 
-* via Headers
+- via Headers
 
-* via Initial Payload
+- via Initial Payload
 
 ### Default WebSocket Authentication behaviour
 
@@ -78,4 +78,3 @@ websocket:
     enabled: true
     allow_list: ["Authorization"] # Headers to forward when initiating a subscription on a subgraph. Default is 'Authorization'.
 ```
-

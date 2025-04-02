@@ -36,7 +36,7 @@ In the example above, two subgraphs define the type `User` with the field `id`. 
 
 ### OBJECT declaration
 
-If the `@shareable` directive is declared on an object type, _all_ fields currently\* defined on that type will be declared shareable. This is the same as declaring the `@shareable` separately to each current\* field definition. 
+If the `@shareable` directive is declared on an object type, _all_ fields currently\* defined on that type will be declared shareable. This is the same as declaring the `@shareable` separately to each current\* field definition.
 
 \*If an object is extended, unless a field definition on the object extension is explicitly declared `@shareable`, it will not be considered shareable on the original object. This is true even if that object was originally declared `@shareable`. An example is shown below:
 

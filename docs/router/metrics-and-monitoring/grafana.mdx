@@ -12,7 +12,8 @@ The included dashboards are particularly useful for developers, enabling you to 
 
 <Steps>
   <Step title="Checkout the repository">
-    The cosmo repository provides us with all the necessary pre-defined configurations
+    The cosmo repository provides us with all the necessary pre-defined
+    configurations
   </Step>
   <Step title="Start Grafana and Prometheus">
     Makefile targets make it easy to start and stop the containers
@@ -33,9 +34,9 @@ The current dashboards are located [here](https://github.com/wundergraph/cosmo/t
 
 In order to run Grafana locally you need the following tools installed:
 
-* **Docker Compose**: Ensure you have Docker Compose installed to manage multi-container Docker applications. This will be crucial for setting up Grafana and other services.
+- **Docker Compose**: Ensure you have Docker Compose installed to manage multi-container Docker applications. This will be crucial for setting up Grafana and other services.
 
-* **Make**: Install Make to automate and streamline the setup process by running defined tasks, ensuring a smooth and efficient integration.
+- **Make**: Install Make to automate and streamline the setup process by running defined tasks, ensuring a smooth and efficient integration.
 
 ## Setup
 
@@ -71,7 +72,7 @@ Check the prometheus config in the `./docker`directory. By default it defines sc
 
 ```yaml
 global:
-  scrape_interval:     15s
+  scrape_interval: 15s
   evaluation_interval: 10s
 
 scrape_configs:
@@ -127,7 +128,7 @@ telemetry:
       # but must be enabled in the OpenTelemetry config
       router_runtime: true
       exporters:
-          # Prometheus container endpoint. Not the router metrics endpoint
+        # Prometheus container endpoint. Not the router metrics endpoint
         - endpoint: "localhost:9090"
           exporter: http
           path: /api/v1/otlp/v1/metrics

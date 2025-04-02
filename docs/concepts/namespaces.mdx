@@ -33,9 +33,9 @@ Note that a namespace must already exist before resources can be placed therein.
 
 Labels and Namespaces serve complementary but distinct roles in organizing and managing resources within WunderGraph Cosmo.
 
-* Labels allow for flexible, declarative composition of federated graphs by letting you specify which subgraphs to include when composing;
+- Labels allow for flexible, declarative composition of federated graphs by letting you specify which subgraphs to include when composing;
 
-* Namespaces are used to group and/or isolate federated graphs and subgraphs, often in different environments, such as `development`, `staging`, and `production.`
+- Namespaces are used to group and/or isolate federated graphs and subgraphs, often in different environments, such as `development`, `staging`, and `production.`
 
 Leverage both Namespaces and Labels to allow for flexible and dynamic composition of your federated graphs while protecting against accidental composition of graphs from different environments.
 
@@ -63,7 +63,9 @@ wgc namespace create development
 ```
 
 <Note>
-  Namespace names must begin and end with an alphanumeric character; with the exception of dashes (-) and underscores (\_), no other special characters are allowed.
+  Namespace names must begin and end with an alphanumeric character; with the
+  exception of dashes (-) and underscores (\_), no other special characters are
+  allowed.
 </Note>
 
 ## Listing Namespaces

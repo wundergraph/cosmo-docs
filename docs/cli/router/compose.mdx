@@ -5,7 +5,12 @@ icon: layer-group
 ---
 
 <Info>
-  IMPORTANT: Please note that since this command runs locally, the subgraphs may or may not exist on the control plane. It is recommended to **not** use this for production, if you plan to use the Cosmo platform as schema registry or analytics platform. For production, you can fetch the latest router execution config for your federated graph using the [fetch](/cli/router/fetch) command instead.
+  IMPORTANT: Please note that since this command runs locally, the subgraphs may
+  or may not exist on the control plane. It is recommended to **not** use this
+  for production, if you plan to use the Cosmo platform as schema registry or
+  analytics platform. For production, you can fetch the latest router execution
+  config for your federated graph using the [fetch](/cli/router/fetch) command
+  instead.
 </Info>
 
 ## Usage
@@ -20,11 +25,11 @@ The `npx wgc router compose` command allows you to compose subgraphs and build a
 
 ## Options
 
-* `-i, --input`: The path to the input config file that contains information about your subgraphs.
+- `-i, --input`: The path to the input config file that contains information about your subgraphs.
 
-* `-o, --out` : Destination file for the router config. Prints to standard output if not provided.
+- `-o, --out` : Destination file for the router config. Prints to standard output if not provided.
 
-* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
+- `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Input file structure
 
@@ -65,5 +70,4 @@ Compose subgraphs mentioned in graph.yaml and write it to `router.json`
 
 ## Notes
 
-* The `npx wgc router compose` command does not interact with the control plane and completely runs locally.
-
+- The `npx wgc router compose` command does not interact with the control plane and completely runs locally.

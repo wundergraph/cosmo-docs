@@ -11,11 +11,15 @@ npx wgc federated-graph delete <name> [-f, --force]
 ```
 
 <Note>
-  **Delete** is an irreversible action. It will delete the entire federated graph, including versions, schema checks, etc. It will not delete the associated subgraphs.
+  **Delete** is an irreversible action. It will delete the entire federated
+  graph, including versions, schema checks, etc. It will not delete the
+  associated subgraphs.
 </Note>
 
 <Note>
-  Contract Graph behavior: Deleting a federated grpah will delete all associated contract graphs. Deleting a contract graph has no effect on the source federated graph.
+  Contract Graph behavior: Deleting a federated grpah will delete all associated
+  contract graphs. Deleting a contract graph has no effect on the source
+  federated graph.
 </Note>
 
 ## Description
@@ -24,7 +28,7 @@ The `npx wgc federated-graph delete` command allows you to delete a federated gr
 
 ## Parameters
 
-* `<name>`: The name of the federated graph you want to delete. Replace `<name>` with the name of the federated graph you wish to remove.
+- `<name>`: The name of the federated graph you want to delete. Replace `<name>` with the name of the federated graph you wish to remove.
 
 ## Options
 
@@ -52,7 +56,6 @@ Force delete the federated graph named "production" without confirmation.
 
 ## Notes
 
-* The `npx wgc federated-graph delete` command interacts with the Cosmo platform's control plane to delete the specified federated graph. Ensure that you have the necessary permissions to perform this operation.
+- The `npx wgc federated-graph delete` command interacts with the Cosmo platform's control plane to delete the specified federated graph. Ensure that you have the necessary permissions to perform this operation.
 
-* When using the `--force` option, the command will not prompt for confirmation, so exercise caution to prevent accidental deletions.
-
+- When using the `--force` option, the command will not prompt for confirmation, so exercise caution to prevent accidental deletions.

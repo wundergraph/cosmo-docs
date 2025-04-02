@@ -7,8 +7,13 @@ icon: rocket
 ### Prerequisites
 
 <CardGroup>
-  <Card title="Node.js (>= 20 LTS)" icon="node" horizontal/>
-  <Card title="Docker" icon="docker" href="https://www.docker.com/" horizontal/>
+  <Card title="Node.js (>= 20 LTS)" icon="node" horizontal />
+  <Card
+    title="Docker"
+    icon="docker"
+    href="https://www.docker.com/"
+    horizontal
+  />
 </CardGroup>
 
 ## Project setup
@@ -55,11 +60,21 @@ Run the following command to install dependencies and start the subgraphs in the
 Once the script finishes, check the subgraphs are running by visiting:
 
 <CardGroup>
-  <Card title="http://localhost:4001/graphql" icon="link" horizontal href="http://localhost:4001/graphql">
-  (for `subgraph-posts`)
+  <Card
+    title="http://localhost:4001/graphql"
+    icon="link"
+    horizontal
+    href="http://localhost:4001/graphql"
+  >
+    (for `subgraph-posts`)
   </Card>
-  <Card title="http://localhost:4002/graphql" icon="link" horizontal href="http://localhost:4002/graphql">
-  (for `subgraph-users`)
+  <Card
+    title="http://localhost:4002/graphql"
+    icon="link"
+    horizontal
+    href="http://localhost:4002/graphql"
+  >
+    (for `subgraph-users`)
   </Card>
 </CardGroup>
 
@@ -205,9 +220,9 @@ The repository includes a `graph.localhost.yaml` configuration file for the `wgc
 
 #### Setup Considerations
 
-* For Docker-based subgraphs, use `graph.yaml` instead of `graph.localhost.yaml`.
+- For Docker-based subgraphs, use `graph.yaml` instead of `graph.localhost.yaml`.
 
-* For custom subgraphs, update the configuration file to match your setup.
+- For custom subgraphs, update the configuration file to match your setup.
 
 #### Generate the Router Configuration
 
@@ -347,5 +362,10 @@ Next, consider deploying to the cloud to enable features like metrics, tracing, 
 ## Next Steps: Cosmo Cloud and deployments
 
 <CardGroup>
-  <Card title="Cosmo Cloud Onboarding" icon="cloud-sun" href="/getting-started/cosmo-cloud-onboarding" horizontal/>
+  <Card
+    title="Cosmo Cloud Onboarding"
+    icon="cloud-sun"
+    href="/getting-started/cosmo-cloud-onboarding"
+    horizontal
+  />
 </CardGroup>
