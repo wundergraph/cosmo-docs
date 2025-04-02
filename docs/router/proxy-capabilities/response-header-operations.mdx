@@ -71,13 +71,13 @@ The `subgraphs` section allows to propagate headers for specific subgraphs. The 
 
 Currently, we support the following header rules:
 
-* **propagate&#x20;**- Forwards all matching response headers from the subgraphs. You can choose between the following options:
+* **propagate** - Forwards all matching response headers from the subgraphs. You can choose between the following options:
 
-  * **algorithm -&#x20;**&#x54;his defines the algorithm, selecting between `first_write`, `last_write`, and `append`
+  * **algorithm -** This defines the algorithm, selecting between `first_write`, `last_write`, and `append`
 
   * **named** - It exactly matches on the header name.
 
-  * **matching -&#x20;**&#x52;egex matches on the header name. You can use[regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router *never* propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers) (such as `Connection`) when propagating by regex.
+  * **matching -** Regex matches on the header name. You can use[regex101.com](https://regex101.com/) to test your regexes. Go to the website and select `Golang` on the left panel. **Note:** The Router *never* propagates [hop-by-hop headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers) (such as `Connection`) when propagating by regex.
 
   * **rename**: Replaces the identified header based on its name or matching criteria and transfers the value to the newly specified header.
 

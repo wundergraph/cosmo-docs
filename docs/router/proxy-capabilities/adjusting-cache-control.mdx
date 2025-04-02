@@ -44,23 +44,23 @@ The cache control policy algorithm ensures that the strictest caching policy fro
 
 The algorithm evaluates the following in order:
 
-1. `no-cache`**&#x20;and&#x20;**`no-store`**&#x20;directives** take priority, and these will override any other directives.
+1. `no-cache` **and** `no-store` **directives** take priority, and these will override any other directives.
 
-2. `max-age`**&#x20;values**: The smallest `max-age` value from any subgraph (or the default, if specified in the configuration) is selected.
+2. `max-age` **values**: The smallest `max-age` value from any subgraph (or the default, if specified in the configuration) is selected.
 
-3. `Expires`**&#x20;header**: The earliest expiration date will be used if `Expires` headers are provided.
+3. `Expires` **header**: The earliest expiration date will be used if `Expires` headers are provided.
 
 <Info>
-  `no-cache`**/**`no-store`**&#x20;Wins:** When any subgraph returns `no-cache` or `no-store` directives, they will take precedence over all other cache settings, regardless of `max-age` values. This guarantees that sensitive data will not be stored in caches, providing an extra layer of security.
+  `no-cache`**/**`no-store` **Wins:** When any subgraph returns `no-cache` or `no-store` directives, they will take precedence over all other cache settings, regardless of `max-age` values. This guarantees that sensitive data will not be stored in caches, providing an extra layer of security.
 </Info>
 
 <Note>
-  **Mutation Requests Automatically Set&#x20;**`no-cache`**:** If a global cache control policy is enabled, we will automatically set `Cache-Control: no-cache` to GraphQL **mutation** request for security reasons, ensuring that mutation results are never cached.
+  **Mutation Requests Automatically Set** `no-cache`**:** If a global cache control policy is enabled, we will automatically set `Cache-Control: no-cache` to GraphQL **mutation** request for security reasons, ensuring that mutation results are never cached.
 </Note>
 
 ### **Example Scenarios:**
 
-#### **Scenario 1: Global Default + Subgraph Specific&#x20;**`max-age`
+#### **Scenario 1: Global Default + Subgraph Specific `max-age`**
 
 * **Global Default**: `Cache-Control: max-age=600` (10 minutes)
 
@@ -68,9 +68,9 @@ The algorithm evaluates the following in order:
 
 * **Subgraph B**: No cache control specified
 
-  * **Result**: `Cache-Control: max-age=300`, since Subgraph A’s `max-age=300` is more restrictive than the global default.
+**Result**: `Cache-Control: max-age=300`, since Subgraph A’s `max-age=300` is more restrictive than the global default.
 
-#### **Scenario 2: Subgraph-Specific&#x20;**`no-cache`**&#x20;with Global Default**
+#### **Scenario 2: Subgraph-Specific `no-cache` with Global Default**
 
 * **Global Default**: `Cache-Control: max-age=600`
 
@@ -78,17 +78,17 @@ The algorithm evaluates the following in order:
 
 * **Subgraph B**: `Cache-Control: max-age=300`
 
-  * **Result**: `Cache-Control: no-cache` overrides everything due to its strictness.
+**Result**: `Cache-Control: no-cache` overrides everything due to its strictness.
 
-#### **Scenario 3:&#x20;**`Expires`**&#x20;in Subgraphs**
+#### **Scenario 3: `Expires` in Subgraphs**
 
 * **Subgraph A**: `Cache-Control: max-age=300`, `Expires=Wed, 15 Sep 2024 18:00:00 GMT`
 
 * **Subgraph B**: `Cache-Control: max-age=600`, `Expires=Wed, 15 Sep 2024 17:00:00 GMT`
 
-  * **Result**: The response uses `Expires=Wed, 15 Sep 2024 17:00:00 GMT`, the earlier expiration time.
+**Result**: The response uses `Expires=Wed, 15 Sep 2024 17:00:00 GMT`, the earlier expiration time.
 
-#### **Scenario 4: Combining Global Defaults with&#x20;**`no-cache`
+#### **Scenario 4: Combining Global Defaults with `no-cache`**
 
 * **Global Default**: `Cache-Control: max-age=600`
 
@@ -96,17 +96,17 @@ The algorithm evaluates the following in order:
 
 * **Subgraph B**: No cache control set
 
-  * **Result**: `Cache-Control: no-store` takes precedence, as it’s stricter than the global default.
+**Result**: `Cache-Control: no-store` takes precedence, as it’s stricter than the global default.
 
 #### **Scenario 5: No global default**
 
-* **Global:&#x20;**`enabled: true`, `value` unset
+* **Global:** `enabled: true`, `value` unset
 
 * **Subgraph A**: no cache control set
 
 * **Subgraph B**: `Cache-Control: max-age=300`
 
-  * **Result:&#x20;**&#x41;ny requests which access `subgraph B` will have `Cache-Control: max-age=300`set, but requests which don't access subgraph B won't have any cache-control set
+**Result**: Any requests which access `subgraph B` will have `Cache-Control: max-age=300` set, but requests which don't access subgraph B won't have any cache-control set
 
 By combining these mechanisms, the algorithm ensures that data handling adheres to the strictest cache control settings from all subgraph responses, promoting both security and performance integrity. Users can define global defaults to enforce a baseline cache policy, and can rely on `no-cache` or `no-store` directives for security sensitive subgraphs.
 
@@ -133,4 +133,3 @@ headers:
 ```
 
 For this configuration, any request which hits the `specific-subgraph` will have the desired subgraph cache control value set (`max-age=5400`).
-

@@ -40,7 +40,7 @@ This mode will help smooth migration from the Apollo router to the WunderGraph C
 
 The output of this command is stored in the structure mentioned below
 
-* **\<graph-name>-\<namespace>:&#x20;**&#x54;he top-level folder which contains 2 folders, subgraphs and supergraphs.
+* **\<graph-name>-\<namespace>:** The top-level folder which contains 2 folders, subgraphs and supergraphs.
 
   * **subgraphs** folder: This folder contains the files of all the subgraph's SDLs.
 
@@ -50,13 +50,13 @@ The output of this command is stored in the structure mentioned below
 
     * cosmoConfig.json - The router config of the federated graph.
 
-  * **cosmo-composition.yaml:&#x20;**&#x54;he Cosmo federated graph configuration file includes configuration options for each of your subgraphs. This file can be used to generate the router config using the [compose](/cli/router/compose) command.
+  * **cosmo-composition.yaml:** The Cosmo federated graph configuration file includes configuration options for each of your subgraphs. This file can be used to generate the router config using the [compose](/cli/router/compose) command.
 
 If **Apollo-compatibility mode** is enabled, the output will contain a few more folders/files, they are as follows:-
 
-* **rover-composition.yaml:&#x20;**&#x54;he Apollo supergraph configuration file includes configuration options for each of your subgraphs.
+* **rover-composition.yaml:** The Apollo supergraph configuration file includes configuration options for each of your subgraphs.
 
-* **scripts&#x20;**&#x66;older
+* **scripts** folder
 
   * apollo.sh - This script is used to generate the supergraph schema using rover, and the generated file would be in the **supergraph** folder and the name of the file would be '**apolloSchema.graphql**'.
 
@@ -73,4 +73,3 @@ npx wgc federated-graph fetch production --apollo-compatibility -v 2.6.1
 ```
 
 Fetches the latest valid SDL and router config of the federated graph named "production" and SDL of all its subgraphs. As Apollo compatibility mode is enabled, it generates the extra files mentioned above. Using the `-v` option, pass the version of the federation used by the rover, if not provided it falls back to "2.5.0".
-

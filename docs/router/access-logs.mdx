@@ -172,7 +172,7 @@ Here’s an explanation of each field’s meaning:
 
 * **operationSha256**: This field logs the SHA-256 hash of the original GraphQL operation, serving as a unique identifier for the operation's structure. It helps to identify operations in a secure and consistent way.
 
-* **requestError:&#x20;**&#x54;his field is only present when an error has been encountered with the request, and will be `true`if so.
+* **requestError:** This field is only present when an error has been encountered with the request, and will be `true`if so.
 
 * **responseErrorMessage**: This field logs any error message returned in the response. It captures detailed information about what went wrong during the execution of the operation.
 
@@ -208,7 +208,7 @@ Here are the fields that are specifically added in error cases:
 
 * **response\_error\_message**: Contains the actual error message returned in the response. This message can be used to better understand what went wrong and why the request failed.
 
-* **requestError:&#x20;**&#x54;his field is only present when an error has been encountered with the request, and will be `true`if so. This can better help clients filter their logs (if`requestError: true)`to find error cases.
+* **requestError:** This field is only present when an error has been encountered with the request, and will be `true`if so. This can better help clients filter their logs (if`requestError: true)`to find error cases.
 
 #### Expression Fields
 
@@ -449,7 +449,7 @@ Here’s an explanation of each field’s meaning:
 
 * **operationValidationTime**: This field logs the time (float seconds) spent validating the GraphQL operation, ensuring that the operation is correct and adheres to the GraphQL schema and rules before execution.
 
-* **requestError:&#x20;**&#x54;his field is only present when an error has been encountered with the request to the subgraph, and will be `true`if so.
+* **requestError:** This field is only present when an error has been encountered with the request to the subgraph, and will be `true`if so.
 
 * **responseErrorMessage**: This field logs any error message returned in the response from the subgraph. It captures detailed information about what went wrong during the execution of the operation.
 
@@ -466,4 +466,3 @@ Additionally, currently the following context fields available in router access 
 ## Conclusion
 
 By configuring access logs, you can gather vital data on the traffic processed by your router. This helps in monitoring performance, debugging issues, and understanding request patterns. Whether logging to `stdout` or to a file, the logs provide flexibility with both default and custom fields to suit your specific needs.
-
