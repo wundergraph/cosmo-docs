@@ -1127,6 +1127,7 @@ Configure WebSocket handlers, protocols, and more.
 |  |forward\_upgrade\_headers | <Icon icon="square" /> |Forward all useful Headers from the Upgrade Request, like User-Agent or Authorization in the extensions field when subscribing on a Subgraph|  |
 |  |forward\_upgrade\_query\_params | <Icon icon="square" /> |Forward all query parameters from the Upgrade Request in the extensions field when subscribing on a Subgraph|  |
 |  |forward\_initial\_payload | <Icon icon="square" /> |Forward the initial payload from a client subscription in the extensions field when subscribing on a Subgraph| true |
+|  |client\_info\_from\_initial\_payload | <Icon icon="square" /> |[WebSocket Client Info Configuration](/router/configuration#websocket-client-info-configuration)|  |
 
 ### Absinthe Protocol Configuration
 
@@ -1137,12 +1138,24 @@ Legacy WebSocket clients that use the Absinthe protocol might not be able to sen
 |WEBSOCKETS\_ABSINTHE\_ENABLED |enabled| <Icon icon="square" /> |  | true |
 | WEBSOCKETS_ABSINTHE_HANDLER_PATH |handler\_path | <Icon icon="square" /> |The path to mount the Absinthe handler on| /absinthe/socket |
 
-
 ### WebSocket Authentication
 
 It's possible that Authentication for a WebSocket connection is not possible at the HTTP layer. In such a case, you can enable Authentication "from\_initial\_payload". This will extract a value from the "initial\_payload" field in the first WebSocket message which is responsible for negotiating the protocol between client and server.
 
 In addition, it's possible to export the extracted value into a Request Header, which allows the Router to propagate it using [Header Propagation Rules](/router/configuration#global-header-rules) in subsequent Subgraph Requests.
+
+### WebSocket Client Info Configuration
+
+Configure how to extract client info from the initial WebSocket payload. This allows you to set client name and version information from the initial connection payload, which can then be forwarded to request headers if needed.
+
+|Environment Variable|YAML|Required|Description|Default Value|
+|---|---|---|---|---|
+| WEBSOCKETS\_CLIENT\_INFO\_FROM\_INITIAL\_PAYLOAD\_ENABLED |enabled| <Icon icon="square" /> |Enable extracting client info from initial payload| true |
+| WEBSOCKETS\_CLIENT\_INFO\_FROM\_INITIAL\_PAYLOAD\_NAME\_FIELD |name\_field| <Icon icon="square" /> |The field name in the initial payload to extract the client name from|  |
+| WEBSOCKETS\_CLIENT\_INFO\_FROM\_INITIAL\_PAYLOAD\_VERSION\_FIELD |version\_field| <Icon icon="square" /> |The field name in the initial payload to extract the client version from|  |
+| WEBSOCKETS\_CLIENT\_INFO\_FROM\_INITIAL\_PAYLOAD\_FORWARD\_TO\_REQUEST\_HEADERS\_ENABLED |forward\_to\_request\_headers.enabled| <Icon icon="square" /> |Enable forwarding extracted client info to request headers| true |
+| WEBSOCKETS\_CLIENT\_INFO\_FROM\_INITIAL\_PAYLOAD\_NAME\_TARGET\_HEADER |forward\_to\_request\_headers.name\_target\_header| <Icon icon="square" /> |The header name to forward the client name to|  |
+| WEBSOCKETS\_CLIENT\_INFO\_FROM\_INITIAL\_PAYLOAD\_VERSION\_TARGET\_HEADER |forward\_to\_request\_headers.version\_target\_header| <Icon icon="square" /> |The header name to forward the client version to|  |
 
 ### Example WebSocket YAML config:
 
@@ -1164,6 +1177,21 @@ In addition, it's possible to export the extracted value into a Request Header, 
       enabled: true
       allow_list:
         - "Authorization"
+    client_info_from_initial_payload:
+      # enable extracting client info from initial payload
+      enabled: true
+      # the field name in the initial payload to extract the client name from
+      name_field: "graphql-client-name"
+      # the field name in the initial payload to extract the client version from
+      version_field: "graphql-client-version"
+      # enable forwarding extracted client info to request headers
+      forward_to_request_headers:
+        # enable forwarding extracted client info to request headers
+        enabled: true
+        # the header name to forward the client name to
+        name_target_header: "GraphQL-Client-Name"
+        # the header name to forward the client version to
+        version_target_header: "GraphQL-Client-Version"
     authentication:
       # enable authentication from the initial payload
       from_initial_payload:
