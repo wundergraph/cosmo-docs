@@ -8,7 +8,7 @@
     "dark": "#ea4899"
   },
   "favicon": "/favicon.png",
-  "fonts":{
+  "fonts": {
     "body": {
       "family": "Inter"
     },
@@ -292,7 +292,6 @@
             ]
           },
           "studio/studio",
-          "studio/discussions",
           "studio/compositions",
           {
             "group": "Analytics",
