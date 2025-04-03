@@ -980,32 +980,43 @@ The configuration for the execution setup contains instructions for the router t
 
 ### Example YAML config:
 
-<CodeGroup>
-  ```yaml config.yaml
-  version: "1"
+```yaml config.yaml
+version: "1"
 
-  execution_config:
+execution_config:
   storage:
     provider_id: s3
     object_path: /prod
 ```
-</CodeGroup>
-### Subgraph Request Rules
 
-These rules apply to requests being made from the Router to all Subgraphs.
+or
 
-|Environment Variable|YAML|Required|Description|Default Value|
-|---|---|---|---|---|
-|  | execution\_config | <Icon icon="square" /> | The configuration for the execution config. |  |
-|  | file | <Icon icon="square" /> | The configuration for the execution config file. The config file is used to load the execution config from the local file system. The file has precedence over the storage provider. |  |
-|EXECUTION_CONFIG_FILE_PATH | file.path | <Icon icon="square" /> | The path to the execution config file. The path is used to load the execution config from the local file system. |  |
-|EXECUTION_CONFIG_FILE_WATCH | file.watch | <Icon icon="square" /> | Enable the watch mode. The watch mode is used to watch the execution config file for changes. If the file changes, the router will reload the execution config without downtime. | true |
-|  | execution_config.storage | <Icon icon="square" /> | The storage provider for the execution config. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the execution config. |  |
-| EXECUTION_CONFIG_STORAGE_PROVIDER_ID | execution_config.storage.provider_id | <Icon icon="square-check" iconType="solid"  /> | The ID of the storage provider. The ID must match the ID of the storage provider in the `storage_providers` section. |  |
-| EXECUTION_CONFIG_STORAGE_OBJECT_PATH | execution_config.storage.object_path | <Icon icon="square-check" iconType="solid"  /> | The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket. |  |
-| EXECUTION_CONFIG_FALLBACK_STORAGE_ENABLED | execution_config.fallback_storage.enabled | <Icon icon="square" /> | Enable a fallback storage to fetch the execution config in case the above primary source fails. | false |
-| EXECUTION_CONFIG_FALLBACK_STORAGE_PROVIDER_ID | execution_config.fallback_storage.provider_id | <Icon icon="square" /> | The ID of the storage provider. The ID must match the ID of the storage provider in the `storage_providers` section. |  |
-| EXECUTION_CONFIG_FALLBACK_STORAGE_OBJECT_PATH | execution_config.fallback_storage.object_path | <Icon icon="square" /> | The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket. |  |
+```yaml config.yaml
+version: "1"
+
+execution_config:
+  file:
+    path: "./__schemas/config.json"
+    watch: true
+    watch_interval: "1s"
+```
+
+### Execution config options
+
+| Environment Variable                          | YAML                                          | Required                                       | Description                                                                                                                                                                                         | Default Value |
+| --------------------------------------------- | --------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|                                               | execution_config                              | <Icon icon="square" />                         | The configuration for the execution config.                                                                                                                                                         |               |
+|                                               | file                                          | <Icon icon="square" />                         | The configuration for the execution config file. The config file is used to load the execution config from the local file system. The file has precedence over the storage provider.                |               |
+| EXECUTION_CONFIG_FILE_PATH                    | file.path                                     | <Icon icon="square" />                         | The path to the execution config file. The path is used to load the execution config from the local file system.                                                                                    |               |
+| EXECUTION_CONFIG_FILE_WATCH                   | file.watch                                    | <Icon icon="square" />                         | Enable the watch mode. The watch mode is used to watch the execution config file for changes. If the file changes, the router will reload the execution config without downtime.                    | true          |
+| EXECUTION_CONFIG_FILE_WATCH_INTERVAL          | file.watch_interval                           | <Icon icon="square" />                         | The interval at which the file is checked for changes.                                                                                                                                              | 1s            |
+|                                               | execution_config.storage                      | <Icon icon="square" />                         | The storage provider for the execution config. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the execution config. |               |
+| EXECUTION_CONFIG_STORAGE_PROVIDER_ID          | execution_config.storage.provider_id          | <Icon icon="square-check" iconType="solid"  /> | The ID of the storage provider. The ID must match the ID of the storage provider in the `storage_providers` section.                                                                                |               |
+| EXECUTION_CONFIG_STORAGE_OBJECT_PATH          | execution_config.storage.object_path          | <Icon icon="square-check" iconType="solid"  /> | The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket.                                                                     |               |
+| EXECUTION_CONFIG_FALLBACK_STORAGE_ENABLED     | execution_config.fallback_storage.enabled     | <Icon icon="square" />                         | Enable a fallback storage to fetch the execution config in case the above primary source fails.                                                                                                     | false         |
+| EXECUTION_CONFIG_FALLBACK_STORAGE_PROVIDER_ID | execution_config.fallback_storage.provider_id | <Icon icon="square" />                         | The ID of the storage provider. The ID must match the ID of the storage provider in the `storage_providers` section.                                                                                |               |
+| EXECUTION_CONFIG_FALLBACK_STORAGE_OBJECT_PATH | execution_config.fallback_storage.object_path | <Icon icon="square" />                         | The path to the execution config in the storage provider. The path is used to download the execution config from the S3 bucket.                                                                     |               |
+
 
 ## Traffic Shaping
 
