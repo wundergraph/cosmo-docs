@@ -1433,6 +1433,7 @@ Configure the GraphQL Execution Engine of the Router.
 |ENGINE\_RESOLVER\_MAX\_RECYCLABLE\_PARSER\_SIZE|resolver\_max\_recyclable\_parser\_size| <Icon icon="square" /> |Limits the size of the Parser that can be recycled back into the Pool. If set to 0, no limit is applied. This helps keep the Heap size more maintainable if you regularly perform large queries. | 32768 |
 |ENGINE\_ENABLE\_VALIDATION\_CACHE|enable\_validation\_cache| <Icon icon="square" /> |Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations. | true |
 |ENGINE\_VALIDATION\_CACHE\_SIZE|validation\_cache\_size| <Icon icon="square" /> |The size of the validation cache. | 1024 |
+|ENGINE\_DISABLE\_EXPOSING\_VARIABLES\_CONTENT\_ON\_VALIDATION\_ERROR|disable\_exposing\_variables\_content\_on\_validation\_error| <Icon icon="square" /> |Disables exposing the variables content in the error response. This is useful to avoid leaking sensitive information in the error response. | false |
 |ENGINE\_ENABLE\_SUBGRAPH\_FETCH\_OPERATION\_NAME|enable\_subgraph\_fetch\_operation\_name| <Icon icon="square" /> |Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $operationName\_\_$subgraphName\_\_$sequenceID. | true |
 |ENGINE\_SUBSCRIPTION\_FETCH\_TIMEOUT|subscription\_fetch\_timeout| <Icon icon="square" /> |The maximum time a subscription fetch can take before it is considered timed out. | 30s |
 
@@ -1459,6 +1460,7 @@ Configure the GraphQL Execution Engine of the Router.
     parsekit_pool_size: 8
     enable_validation_cache: true
     validation_cache_size: 1024
+    disable_exposing_variables_content_on_validation_error: false
     enable_subgraph_fetch_operation_name: true
     subscription_fetch_timeout: 30s
   ```
