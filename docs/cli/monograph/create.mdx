@@ -12,7 +12,7 @@ npx wgc monograph create <name> -r <routing-url> -u <graph-url>
 
 ## Description
 
-The `npx wgc monograph create` command allows you to create a new monograph on the Cosmo platform's control plane. A monograph does not allow for GraphQL Federation as it is strictly limited to one subgrpah. This subgraph is automatically created for you internally and you do not need to interact with it directly.
+The `npx wgc monograph create` command allows you to create a new monograph on the Cosmo platform's control plane. A monograph does not allow for GraphQL Federation as it is strictly limited to one subgraph. This subgraph is automatically created for you internally and you do not need to interact with it directly.
 
 ## Parameters
 
@@ -36,7 +36,7 @@ The `npx wgc monograph create` command allows you to create a new monograph on t
 
 * `--subscription-protocol:` Optionally, set a protocol to use for subscriptions. The available options are:
 
-  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `grapqhl-ws` and `subscription-transport-ws` are supported.
+  * `ws` (default): Negotiate an appropriate protocol over websockets. Both `graphql-ws` and `subscription-transport-ws` are supported.
 
   * `sse`: Use Server-Sent Events with a GET request.
 
