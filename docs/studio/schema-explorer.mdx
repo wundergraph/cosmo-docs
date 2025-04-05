@@ -5,7 +5,7 @@ description: "An interactive explorer to navigate though your federated graph sc
 ---
 
 <Frame caption="Schema Explorer">
-  <img src="/images/studio/image-3.png" />
+  <img src="/images/studio/explorer.png" />
 </Frame>
 
 
@@ -34,6 +34,29 @@ Open the search modal by hitting `Cmd/Ctrl + K` on your keyboard. Jump to any ty
 You can view all deprecated fields in your schema in one place along with their usage. This helps to determine if it is safe to remove the field/argument.
 
 <Frame caption="Deprecated Fields">
-  <img src="/images/studio/image-1.png" />
+  <img src="/images/studio/deprecated-fields.png" />
 </Frame>
 
+## Authenticated Types and Fields
+
+You can easily view all types and fields that use the `@authenticated` and/or `@requiresScopes` directives in a single place.
+
+<Note>
+  At this time, `@authenticated` and `@requiresScopes` are only exposed by the Router Schema.
+</Note>
+
+<Frame caption="Authenticated Types and Fields">
+  <img src="/images/studio/authentication.png" />
+</Frame>
+
+When a type or field is annotated with the `@requiresScopes` directive, the list of required scopes can be accessed by clicking the `View scopes` button in the type header.
+
+<Frame caption="Authenticated Types and Fields">
+  <img src="/images/studio/type-scopes.png" />
+</Frame>
+
+Or beside the type/field name in the table.
+
+<Frame caption="Authenticated Types and Fields">
+  <img src="/images/studio/field-scopes.png" />
+</Frame>
