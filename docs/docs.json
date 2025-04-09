@@ -66,6 +66,7 @@
           "concepts/feature-flags",
           "concepts/namespaces",
           "concepts/schema-contracts",
+          "concepts/schema-proposals",
           "concepts/cache-warmer",
           "concepts/router-compatibility-versions"
         ]
@@ -191,10 +192,7 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": [
-                  "cli/router/cache",
-                  "cli/router/cache/push"
-                ]
+                "pages": ["cli/router/cache", "cli/router/cache/push"]
               },
               {
                 "group": "Token",
@@ -232,10 +230,7 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": [
-              "cli/operations",
-              "cli/operations/push"
-            ]
+            "pages": ["cli/operations", "cli/operations/push"]
           },
           {
             "group": "Schema Contracts",
@@ -245,6 +240,17 @@
               "cli/schema-contracts/create",
               "cli/schema-contracts/update",
               "cli/schema-contracts/delete-list-fetch-and-more"
+            ]
+          },
+          {
+            "group": "Proposals",
+            "icon": "clipboard-check",
+            "pages": [
+              "cli/proposal",
+              "cli/proposal/create",
+              "cli/proposal/update",
+              "cli/proposal/review",
+              "cli/proposal/implement"
             ]
           },
           {
@@ -286,10 +292,7 @@
           {
             "group": "Playground++",
             "icon": "rectangle-code",
-            "pages": [
-              "studio/playground",
-              "studio/playground/custom-scripts"
-            ]
+            "pages": ["studio/playground", "studio/playground/custom-scripts"]
           },
           "studio/studio",
           "studio/compositions",
@@ -352,10 +355,7 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": [
-              "studio/policies",
-              "studio/lint-policy/linter-rules"
-            ]
+            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
           },
           "studio/graph-pruning",
           "studio/invitations"
