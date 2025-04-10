@@ -1,8 +1,8 @@
 ---
-title: "Configuration"
-description: "Learn how to configure your router."
-icon: "circle-info"
-sidebarTitle: "Overview"
+title: "Router Configuration"
+description: "Router Configuration Reference"
+icon: circle-info
+sidebarTitle: Overview
 ---
 
 The router provides three different ways of customization:
@@ -1464,56 +1464,60 @@ events:
 
 Configure the GraphQL Execution Engine of the Router.
 
-| Environment Variable                               | YAML                                        | Required               | Description                                                                                                                                                                                                                                                                                                | Default Value |
-| -------------------------------------------------- | ------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| ENGINE_ENABLE_SINGLE_FLIGHT                        | enable_single_flight                        | <Icon icon="square" /> | Deduplicate exactly the same in-flight origin request                                                                                                                                                                                                                                                      | true          |
-| ENGINE_ENABLE_REQUEST_TRACING                      | enable_request_tracing                      | <Icon icon="square" /> | Enable [Advanced Request Tracing (ART)](/router/advanced-request-tracing-art)This config is not correlated to OTEL tracing.                                                                                                                                                                                | true          |
-| ENGINE_ENABLE_EXECUTION_PLAN_CACHE_RESPONSE_HEADER | enable_execution_plan_cache_response_header | <Icon icon="square" /> | Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS"                                                                                                                                                                        | false         |
-| ENGINE_MAX_CONCURRENT_RESOLVERS                    | max_concurrent_resolvers                    | <Icon icon="square" /> | Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router.                                                                                                                                                        | 32            |
-| ENGINE_ENABLE_NET_POLL                             | enable_net_poll                             | <Icon icon="square" /> | Enables the more efficient poll implementation for all WebSocket implementations (client, server) of the router. This is only available on Linux and MacOS. On Windows or when the host system is limited, the default synchronous implementation is used.                                                 | true          |
-| ENGINE_WEBSOCKET_CLIENT_POLL_TIMEOUT               | websocket_client_poll_timeout               | <Icon icon="square" /> | The timeout for the poll loop of the WebSocket client implementation. The period is specified as a string with a number and a unit                                                                                                                                                                         | 1s            |
-| ENGINE_WEBSOCKET_CLIENT_CONN_BUFFER_SIZE           | websocket_client_conn_buffer_size           | <Icon icon="square" /> | The buffer size for the poll buffer of the WebSocket client implementation. The buffer size determines how many connections can be handled in one loop.                                                                                                                                                    | 128           |
-| ENGINE_WEBSOCKET_CLIENT_READ_TIMEOUT               | websocket_client_read_timeout               | <Icon icon="square" /> | The timeout for the websocket read of the WebSocket client implementation.                                                                                                                                                                                                                                 | 5s            |
-| ENGINE_EXECUTION_PLAN_CACHE_SIZE                   | execution_plan_cache_size                   | <Icon icon="square" /> | Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency.                                                                                                                               | 1024          |
-| ENGINE_MINIFY_SUBGRAPH_OPERATIONS                  | minify_subgraph_operations                  | <Icon icon="square" /> | Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times.                                              | false         |
-| ENGINE_ENABLE_PERSISTED_OPERATIONS_CACHE           | enable_persisted_operations_cache           | <Icon icon="square" /> | Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance.                                                                                                                                                             | true          |
-| ENGINE_ENABLE_NORMALIZATION_CACHE                  | enable_normalization_cache                  | <Icon icon="square" /> | Enable the normalization cache. The normalization cache is used to cache normalized operations to improve performance.                                                                                                                                                                                     | true          |
-| ENGINE_NORMALIZATION_CACHE_SIZE                    | normalization_cache_size                    | <Icon icon="square" /> | The size of the normalization cache.                                                                                                                                                                                                                                                                       | 1024          |
-| ENGINE_PARSEKIT_POOL_SIZE                          | parsekit_pool_size                          | <Icon icon="square" /> | The size of the ParseKit pool. The ParseKit pool provides re-usable Resources for parsing, normalizing, validating and planning GraphQL Operations. Setting the pool size to a value much higher than the number of CPU Threads available will not improve performance, but only increase memory usage.    | 8             |
-| ENGINE_RESOLVER_MAX_RECYCLABLE_PARSER_SIZE         | resolver_max_recyclable_parser_size         | <Icon icon="square" /> | Limits the size of the Parser that can be recycled back into the Pool. If set to 0, no limit is applied. This helps keep the Heap size more maintainable if you regularly perform large queries.                                                                                                           | 32768         |
-| ENGINE_ENABLE_VALIDATION_CACHE                     | enable_validation_cache                     | <Icon icon="square" /> | Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations.                                                                                                                                                                                               | true          |
-| ENGINE_VALIDATION_CACHE_SIZE                       | validation_cache_size                       | <Icon icon="square" /> | The size of the validation cache.                                                                                                                                                                                                                                                                          | 1024          |
-| ENGINE_ENABLE_SUBGRAPH_FETCH_OPERATION_NAME        | enable_subgraph_fetch_operation_name        | <Icon icon="square" /> | Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $$operationName\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\_\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\_$$        subgraphName_\_$sequenceID. | true          |
-| ENGINE_SUBSCRIPTION_FETCH_TIMEOUT                  | subscription_fetch_timeout                  | <Icon icon="square" /> | The maximum time a subscription fetch can take before it is considered timed out.                                                                                                                                                                                                                          | 30s           |
+|Environment Variable|YAML|Required|Description|Default Value|
+|---|---|---|---|---|
+|ENGINE\_ENABLE\_SINGLE\_FLIGHT|enable\_single\_flight| <Icon icon="square" /> |Deduplicate exactly the same in-flight origin request | true |
+|ENGINE\_ENABLE\_REQUEST\_TRACING|enable\_request\_tracing| <Icon icon="square" /> |Enable [Advanced Request Tracing (ART)](/router/advanced-request-tracing-art)This config is not correlated to OTEL tracing. | true |
+|ENGINE\_ENABLE\_EXECUTION\_PLAN\_CACHE\_RESPONSE\_HEADER|enable\_execution\_plan\_cache\_response\_header| <Icon icon="square" /> |Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS" | false |
+|ENGINE\_MAX\_CONCURRENT\_RESOLVERS|max\_concurrent\_resolvers| <Icon icon="square" /> |Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router. | 32 |
+|ENGINE\_ENABLE\_NET\_POLL|enable\_net\_poll| <Icon icon="square" /> |Enables the more efficient poll implementation for all WebSocket implementations (client, server) of the router. This is only available on Linux and MacOS. On Windows or when the host system is limited, the default synchronous implementation is used. | true |
+|ENGINE\_WEBSOCKET\_CLIENT\_POLL\_TIMEOUT|websocket\_client\_poll\_timeout| <Icon icon="square" /> |The timeout for the poll loop of the WebSocket client implementation. The period is specified as a string with a number and a unit | 1s |
+|ENGINE\_WEBSOCKET\_CLIENT\_CONN\_BUFFER\_SIZE|websocket\_client\_conn\_buffer\_size| <Icon icon="square" /> |The buffer size for the poll buffer of the WebSocket client implementation. The buffer size determines how many connections can be handled in one loop. | 128 |
+|ENGINE\_WEBSOCKET\_CLIENT\_READ\_TIMEOUT|websocket\_client\_read\_timeout| <Icon icon="square" /> |The timeout for the websocket read of the WebSocket client implementation. | 5s |
+|ENGINE\_WEBSOCKET\_CLIENT\_WRITE\_TIMEOUT|websocket\_client\_write\_timeout| <Icon icon="square" /> |The timeout for the websocket write of the WebSocket client implementation. | 10s |
+|ENGINE\_WEBSOCKET\_CLIENT\_PING\_INTERVAL|websocket\_client\_ping\_interval| <Icon icon="square" /> |The Websocket client ping interval to the subgraph. Defines how often the router will ping the subgraph to signal that the connection is still alive. | 10s |
+|ENGINE\_EXECUTION\_PLAN\_CACHE\_SIZE|execution\_plan\_cache\_size| <Icon icon="square" /> |Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency. | 1024 |
+|ENGINE\_MINIFY\_SUBGRAPH\_OPERATIONS|minify\_subgraph\_operations| <Icon icon="square" /> |Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times. | false |
+|ENGINE\_ENABLE\_PERSISTED\_OPERATIONS\_CACHE|enable\_persisted\_operations\_cache| <Icon icon="square" /> |Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance. | true |
+|ENGINE\_ENABLE\_NORMALIZATION\_CACHE|enable\_normalization\_cache| <Icon icon="square" /> |Enable the normalization cache. The normalization cache is used to cache normalized operations to improve performance. | true |
+|ENGINE\_NORMALIZATION\_CACHE\_SIZE|normalization\_cache\_size| <Icon icon="square" /> |The size of the normalization cache. | 1024 |
+|ENGINE\_PARSEKIT\_POOL\_SIZE|parsekit\_pool\_size| <Icon icon="square" /> |The size of the ParseKit pool. The ParseKit pool provides re-usable Resources for parsing, normalizing, validating and planning GraphQL Operations. Setting the pool size to a value much higher than the number of CPU Threads available will not improve performance, but only increase memory usage. | 8 |
+|ENGINE\_RESOLVER\_MAX\_RECYCLABLE\_PARSER\_SIZE|resolver\_max\_recyclable\_parser\_size| <Icon icon="square" /> |Limits the size of the Parser that can be recycled back into the Pool. If set to 0, no limit is applied. This helps keep the Heap size more maintainable if you regularly perform large queries. | 32768 |
+|ENGINE\_ENABLE\_VALIDATION\_CACHE|enable\_validation\_cache| <Icon icon="square" /> |Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations. | true |
+|ENGINE\_VALIDATION\_CACHE\_SIZE|validation\_cache\_size| <Icon icon="square" /> |The size of the validation cache. | 1024 |
+|ENGINE\_DISABLE\_EXPOSING\_VARIABLES\_CONTENT\_ON\_VALIDATION\_ERROR|disable\_exposing\_variables\_content\_on\_validation\_error| <Icon icon="square" /> |Disables exposing the variables content in the error response. This is useful to avoid leaking sensitive information in the error response. | false |
+|ENGINE\_ENABLE\_SUBGRAPH\_FETCH\_OPERATION\_NAME|enable\_subgraph\_fetch\_operation\_name| <Icon icon="square" /> |Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $operationName\_\_$subgraphName\_\_$sequenceID. | true |
+|ENGINE\_SUBSCRIPTION\_FETCH\_TIMEOUT|subscription\_fetch\_timeout| <Icon icon="square" /> |The maximum time a subscription fetch can take before it is considered timed out. | 30s |
 
 ### Example YAML config:
 
 <CodeGroup>
+  ```yaml config.yaml
+  version: "1"
 
-```yaml config.yaml
-version: "1"
-
-engine:
-  enable_single_flight: true
-  enable_request_tracing: true
-  enable_execution_plan_cache_response_header: false
-  max_concurrent_resolvers: 32
-  enable_websocket_epoll_kqueue: true
-  epoll_kqueue_poll_timeout: "1s"
-  epoll_kqueue_conn_buffer_size: 128
-  websocket_client_read_timeout: "1s"
-  execution_plan_cache_size: 10000
-  minify_subgraph_operations: true
-  enable_persisted_operations_cache: true
-  enable_normalization_cache: true
-  normalization_cache_size: 1024
-  parsekit_pool_size: 8
-  enable_validation_cache: true
-  validation_cache_size: 1024
-  enable_subgraph_fetch_operation_name: true
-  subscription_fetch_timeout: 30s
-```
-
+  engine:
+    enable_single_flight: true
+    enable_request_tracing: true
+    enable_execution_plan_cache_response_header: false
+    max_concurrent_resolvers: 32
+    enable_websocket_epoll_kqueue: true
+    epoll_kqueue_poll_timeout: "1s"
+    epoll_kqueue_conn_buffer_size: 128
+    websocket_client_read_timeout: "1s"
+    websocket_client_write_timeout: "5s"
+    websocket_client_ping_interval: "10s"
+    execution_plan_cache_size: 10000
+    minify_subgraph_operations: true
+    enable_persisted_operations_cache: true
+    enable_normalization_cache: true
+    normalization_cache_size: 1024
+    parsekit_pool_size: 8
+    enable_validation_cache: true
+    validation_cache_size: 1024
+    disable_exposing_variables_content_on_validation_error: false
+    enable_subgraph_fetch_operation_name: true
+    subscription_fetch_timeout: 30s
+  ```
 </CodeGroup>
 
 ### Debug Configuration
