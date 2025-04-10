@@ -1,0 +1,134 @@
+---
+title: "Query Batching"
+description: "Learn how to use GraphQL query batching in the router."
+icon: layer-group
+sidebarTitle: Query Batching
+---
+
+## Overview
+
+Query batching allows you to send multiple GraphQL operations in a single HTTP request. The router supports processing batched GraphQL requests where multiple operations are sent in a single JSON array. Each operation in the batch is processed concurrently, with configurable limits on the number of operations and concurrency.
+
+<Info>
+ Hereafter, when we refer to a `batch` or `a batch`, we mean the entire batch request. An `operation` or `batch operation` refers to a single record in the batch array that will be processed independently.
+</Info>
+
+<Warning>
+ We do not recommend batching and suggest alternate approaches. Please see the [section below](/router/query-batching#why-we-do-not-recommend-batching) for more information.
+</Warning>
+
+## Configuration
+
+Query batching can be configured in your router configuration file:
+
+```yaml config.yaml
+batching:
+  enabled: true # default: false
+  max_concurrency: 10 # default: 10
+  max_entries_per_batch: 100 # default: 100
+  omit_extensions: false # default: false
+```
+
+* `enabled`: As we do not recommend the use of batching, it is disabled by default.
+* `max_concurrency`: Specifies how many operations will be processed concurrently. If you wish to disable concurrency and process everything serially, you may set the `max_concurrency` value to `1`.
+* `max_entries_per_batch`: Defines the maximum number of operations that can be present in a batch. While we do not support unlimited entries, you can set an extremely high number.
+* `omit_extensions`: There are certain `errorCodes` returned specific to batch operation failures that can be omitted.
+
+## Usage
+
+To use query batching, send a POST request to your GraphQL endpoint with a JSON array of operations:
+
+```json
+[
+ {
+    "query": "query GetUser { user(id: \"1\") { id name } }"
+ },
+ {
+    "query": "query GetPosts { posts { id title } }"
+ },
+ {
+    "mutation": "mutation ModifyPost(id: \"7\", data: { \"title\": \"new title\" }) { post { id title } }"
+ }
+]
+```
+
+Note that while the operations may be processed concurrently, the responses will always be returned in the same order as the operations in the response array.
+
+```json
+[
+  {
+    "data": {
+      "user": {
+        "id": "1",
+        "name": "John Doe"
+      }
+    }
+  },
+  {
+    "data": {
+      "posts": [
+        {
+          "id": "1",
+          "title": "Hello World"
+        }
+      ]
+    }
+  },
+  {
+    "data": {
+      "post": {
+        "id": "1",
+        "title": "new title"
+      }
+    }
+  }
+]
+```
+
+Note that batches do not support subscriptions as part of their operations. If a subscription is included, the batched request will fail.
+
+## Tracing
+
+When batching is enabled, we have added a few parameters to make it easier to trace batch requests. For batched requests, the root span (or the start cosmo-router span) will always have the following attributes:
+
+* `wg.operation.batched.is_batched`: Used to identify if it is a batched request
+* `wg.operation.batched.operations_count`: Used to identify how many operations are expected to be present in the batch request
+
+Additionally, for every direct child span, the following attributes are available:
+
+* `wg.operation.batched.operation_index`: Used to identify which index of the batch operation array this operation belongs to
+
+For more information, please refer to the [tracing](open-telemetry) page.
+
+## Rate Limiting
+
+For batching, the same subgraph rate limiting rules apply if enabled. This means that if a rate limit of 15 per 5 seconds is defined, a batch of 20 operations would have 5 of them fail with a rate-limiting error. For more information, please refer to the [rate limiting](/router/configuration) page.
+
+## Feature Flags
+
+Feature flags work the same as normal requests. The flag will be identified by the cookie or feature flag header. However, note that the feature flag will apply to all operations in the batch. For more information, please refer to the [feature flag](/router/configuration) page.
+
+## Why We Do Not Recommend Batching
+
+Batching as a feature has been built to support clients who are already using query batching in their infrastructure and to make it easy for those users to start using the Cosmo router. If you haven't used batching yet and are planning to, here are a few reasons to reconsider:
+
+1. Load Balancing: A single batch is processed by a single router instance. This means if you have 50 routers running, a batch of 200 will still be processed on one single instance. Depending on the `max_concurrency` you have set, this could result in slower responses than sending 200 separate load-balanced requests from the client.
+
+2. Security: If you have set an extremely high `max_entries_per_batch` value, it is much easier for an attacker to DDoS the router by sending large batches of requests. This requires much less effort than sending every single batch operation as an individual request.
+
+3. Caching: It's easier to cache individual operations than it is to cache batches. [TODO: Improve]
+
+## Alternatives to Batching
+
+Instead of using query batching, consider these alternatives:
+
+1. HTTP/2 Multiplexing: This allows sending multiple requests over a single connection while still enabling load balancing across multiple router instances. This approach maintains the benefits of efficient connection usage while distributing the load effectively.
+
+2. Custom Batching Layer: You can build a thin layer on top of the router that implements batching functionality. This layer would:
+   - Accept an array of operations
+   - Distribute them across multiple router instances
+   - Maintain the same JSON array batch API for clients
+   - Ensure proper load distribution across the router infrastructure
+
+This approach gives you the best of both worlds: the convenience of batch operations for clients while maintaining efficient load distribution across your router infrastructure.
+

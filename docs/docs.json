@@ -492,6 +492,7 @@
             ]
           },
           "router/compliance-and-data-management",
+          "router/query-batching",
           "router/subgraph-error-propagation",
           "router/file-upload",
           "router/access-logs",
