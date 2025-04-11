@@ -269,7 +269,8 @@
               "cli/feature-flags/update-feature-flag",
               "cli/feature-flags/delete-feature-flag"
             ]
-          }
+          },
+          "cli/mcp"
         ]
       },
       {
