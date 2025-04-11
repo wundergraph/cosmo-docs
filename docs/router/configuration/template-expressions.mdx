@@ -6,7 +6,11 @@ icon: "brackets-curly"
 
 ## Template Expressions Overview
 
-Template Expressions are a robust mechanism for accessing information related to requests, responses, and other key aspects of the router's operation. They enable conditional feature activation and allow for extracting and configuring values dynamically. A common use case involves conditionally blocking mutations:
+Template Expressions are a robust mechanism for accessing information related to requests, responses,
+and other key aspects of the router's operation.
+They enable conditional feature activation and allow for extracting and configuring values dynamically.
+
+An example use case involves conditionally blocking mutations:
 
 ```yaml
 security:
@@ -15,9 +19,14 @@ security:
     condition: "request.header.Get('x-block-mutation') == 'yes'"
 ```
 
-In this example, the condition is evaluated each time a request is made. Template Expressions provide access to request details, including headers, URLs, and query parameters. However, not all fields are consistently available throughout the request lifecycle. For instance, authentication data becomes accessible only after successful authentication.
+In this example, the condition is evaluated each time a request is made.
+Template Expressions provide access to request details, including headers, URLs, and query parameters.
+However, not all fields are consistently available throughout the request lifecycle.
+For instance, authentication data becomes accessible only after successful authentication.
 
-During the build process, the router validates expressions. If an expression is invalid or does not return the expected type (such as a boolean or string), an error message is generated to ensure clarity and correctness.
+During the build process, the router validates expressions.
+If an expression is invalid or does not return the expected type (such as a boolean or string),
+an error message is generated to ensure clarity and correctness.
 
 ### Template Language
 
@@ -120,6 +129,11 @@ The `auth` object contains authentication-related information for the request. I
 
 ```bash
 'read:miscellaneous' in request.auth.scopes
+```
+
+---
+
+```
 request.auth.isAuthenticated
 ```
 
