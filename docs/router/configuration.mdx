@@ -793,6 +793,27 @@ headers:
 
 </CodeGroup>
 
+#### Header Rule Example Using Template Expression:
+
+This example sets the `X-User-ID` header based on the `sub` claim from the JWT token, if the user is authenticated.
+Learn more about [template expressions](/router/configuration/template-expressions).
+
+<CodeGroup>
+
+```yaml config.yaml
+version: "1"
+
+headers:
+  all:
+    request:
+      - op: "set"
+        name: "X-User-ID"
+        # Sets the header only if the user is authenticated
+        expression: "request.auth.isAuthenticated ? request.auth.claims.sub : ''"
+```
+
+</CodeGroup>
+
 ### Request Header Rule
 
 Apply to requests to specific Subgraphs.
