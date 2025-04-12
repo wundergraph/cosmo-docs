@@ -1,0 +1,264 @@
+---
+title: 'AI Integration with MCP'
+description: 'Integrate your GraphQL API with AI models using the Model Context Protocol (MCP)'
+---
+
+# AI Integration with Model Context Protocol (MCP)
+
+## Introduction
+
+The Model Context Protocol (MCP) server in WunderGraph Cosmo Router enables seamless integration between your GraphQL API and AI models such as ChatGPT, Claude, and other Large Language Models (LLMs). This powerful feature allows AI agents to discover, understand, and interact with your GraphQL API in a structured and secure way.
+
+## What is MCP?
+
+MCP (Model Context Protocol) is a protocol designed to help AI models interact with your APIs by providing context, schema information, and a standardized interface. The Cosmo Router implements an MCP server that exposes your GraphQL operations as tools that AI models can use.
+
+<Info>MCP enables AI models to understand and interact with your GraphQL API without requiring custom integration code for each model.</Info>
+
+Here's what enabling MCP in your Cosmo Router provides:
+
+<CardGroup cols={2}>
+  <Card title="API Discovery" icon="magnifying-glass">
+    Make your GraphQL API automatically discoverable by AI models like OpenAI, Claude, and Cursor
+  </Card>
+  <Card title="Rich Metadata" icon="tag">
+    Provide detailed schema information and input requirements for each operation
+  </Card>
+  <Card title="Secure Access" icon="shield-check">
+    Enable controlled, precise access to your data with operation-level granularity
+  </Card>
+  <Card title="AI Empowerment" icon="robot">
+    Empower AI assistants to work with your application's data through a standardized interface
+  </Card>
+</CardGroup>
+
+## Why the GraphQL + MCP Combination is Revolutionary
+
+The integration of GraphQL with MCP creates a uniquely powerful system for AI-API interactions:
+
+- **Precise data selection**: GraphQL's nature allows you to define exactly what data AI models can access, from simple queries to complex operations across your entire graph.
+- **Declarative operation definition**: Create purpose-built `.graphql` files with operations tailored specifically for AI consumption.
+- **Flexible data exposure**: Control exactly which operations and fields are exposed to AI systems with granular precision.
+- **Compositional API design**: Build different operation sets for different AI use cases without changing your underlying API.
+- **Runtime safety**: GraphQL's strong typing ensures AI models can only request valid data patterns that match your schema.
+- **Built-in validation**: Operation validation prevents malformed queries from ever reaching your backend systems.
+- **Evolve without breaking**: Change your underlying data model while maintaining stable AI-facing operations.
+- **Federation-ready**: Works seamlessly with federated GraphQL schemas, giving AI access to data across your entire organization.
+
+But what does this mean in practice? How do these technical benefits translate to real-world solutions? To truly understand the transformative power of GraphQL with MCP, let's explore a common scenario that organizations face when integrating AI with their existing systems.
+
+## The GraphQL Advantage: Real Security for AI Integration
+
+When a major financial services company integrated AI assistants into their customer support workflow, they faced a critical challenge: how could they let AI access transaction data without exposing sensitive financial information or risking regulatory non-compliance?
+
+<Info>Without proper data boundaries, AI models might inadvertently access or expose sensitive customer information, creating security and compliance risks.</Info>
+
+The stakes were high - a single data breach could cost millions in damages and regulatory fines. Their initial attempts using traditional REST APIs led to three significant problems:
+
+1. **Security vulnerabilities**: Their existing REST endpoints contained mixed sensitive and non-sensitive data, making them unusable for AI integration without major restructuring.
+
+2. **Development bottlenecks**: Their engineering team estimated 6+ months to create and maintain a parallel "AI-safe" REST API, delaying their AI initiative significantly.
+
+3. **Data governance issues**: Without granular control, they couldn't meet regulatory requirements for tracking and limiting what data AI systems could access.
+
+**The GraphQL + MCP solution changed everything.**
+
+Instead of rebuilding their API infrastructure, they defined specific GraphQL operations that precisely controlled what data the AI could see:
+
+```graphql
+# AI-safe transaction query with PII and financial details removed
+query GetTransactionHistory($accountId: ID!, $last: Int!) {
+  account(id: $accountId) {
+    transactions(last: $last) {
+      id
+      date
+      merchantNameMasked
+      category
+      amount
+      status
+      # No account numbers, routing information, location data, or full merchant details
+    }
+  }
+}
+```
+
+This approach delivered immediate, tangible benefits:
+
+- **Compliance approval in weeks, not months**: Their compliance team could clearly verify exactly what data AI systems could access, accelerating approval.
+
+- **95% reduction in security review time**: With GraphQL's schema enforcement, security teams had confidence that AI systems couldn't accidentally access unauthorized data.
+
+- **Zero API duplication**: They maintained a single source of truth in their API layer while creating different "views" for different consumers.
+
+- **Future-proof integration**: As they added new data fields to their internal models, those fields remained invisible to AI until explicitly added to AI-accessible operations.
+
+When customers ask questions like "Did my payment to Amazon go through?", the AI assistant can provide helpful answers by querying only transaction status and basic details - without ever seeing full account numbers, balance information, or other sensitive data.
+
+Meanwhile, the same underlying API serves their web and mobile applications with complete data access where appropriate.
+
+This level of surgical precision in data exposure is what makes GraphQL with MCP the gold standard for secure AI integration. No other approach offers this combination of security, flexibility, and developer productivity.
+
+## How It Works
+
+The Cosmo Router server:
+
+1. Loads GraphQL operations from a specified directory
+2. Validates them against your schema
+3. Generates JSON schemas for operation variables
+4. Exposes these operations as tools that AI models can discover and use
+5. Handles execution of operations when called by AI models
+
+When an AI model interacts with your MCP endpoint:
+
+1. It discovers available GraphQL operations
+2. Understands input requirements through the JSON schema
+3. Executes operations with appropriate parameters
+4. Receives structured data that it can interpret and use in its responses
+
+## Built-in MCP Tools
+
+The MCP server provides several tools out of the box to help AI models discover and interact with your GraphQL API:
+
+### Discovery Tools
+
+<CardGroup cols={2}>
+  <Card title="list_graphql_operations" icon="list">
+    Lists all available GraphQL operations with their names, descriptions, and operation types. This is typically the first tool AI models use to discover what capabilities your API offers.
+  </Card>
+  <Card title="get_graphql_operation_info" icon="circle-info">
+    Retrieves detailed information about a specific GraphQL operation, including its input schema, query structure, and execution guidance. AI models use this to understand how to properly call an operation.
+  </Card>
+</CardGroup>
+
+These discovery tools are essential for AI models to understand what data they can access and how to properly format requests to your API.
+
+### Operation Tools
+
+For each GraphQL operation in your operations directory, the MCP server automatically generates a corresponding tool:
+
+- **Tool naming**: Tools follow the pattern `{operationType}_{operationName}` (e.g., `query_getUsers` or `mutation_createUser`)
+- **Tool schema**: Generated from your GraphQL operation's variables, ensuring type safety
+- **Tool description**: Inherited from your GraphQL operation descriptions, including operation name and additional context
+
+The tool descriptions are automatically derived from the descriptions in your GraphQL operations. This means that well-documented GraphQL operations result in more informative tools for AI models. For mutation operations, a warning about side effects is automatically added.
+
+By default, all operations in your specified directory will be exposed as tools. Use the `exclude_mutations: true` configuration option to prevent mutation operations from being exposed if you want to ensure AI models can only read data.
+
+## Configuration
+
+To enable MCP in your Cosmo Router, add the following configuration to your `config.yaml`:
+
+```yaml
+mcp:
+  enabled: true
+  listen_addr: ":5025"
+  operations_dir: "operations"
+  graph_name: "my-graph"
+  exclude_mutations: true
+```
+
+### Configuration Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `enabled` | Enable or disable the MCP server | `false` |
+| `listen_addr` | The address where the MCP server will listen for requests | `:5025` |
+| `operations_dir` | Directory where GraphQL operations are stored | `operations` |
+| `graph_name` | The name of the graph to be used by the MCP server | `cosmo` |
+| `exclude_mutations` | Whether to exclude mutation operations from being exposed | `false` |
+
+## Setting Up Operations
+
+1. Create a directory to store your GraphQL operations as specified in your `operations_dir` configuration.
+2. Add `.graphql` files containing named GraphQL operations.
+
+Example of a query operation in `operations/getUsers.graphql`:
+
+```graphql
+query GetUsers {
+  users {
+    id
+    name
+    email
+  }
+}
+```
+
+Example of a mutation operation in `operations/createUser.graphql`:
+
+```graphql
+mutation CreateUser($name: String!, $email: String!) {
+  createUser(input: { name: $name, email: $email }) {
+    id
+    name
+    email
+  }
+}
+```
+
+## Security Considerations
+
+- **Access Control**: Secure your MCP endpoint with appropriate authentication mechanisms.
+- **Operation Limitations**: Use `exclude_mutations: true` to prevent AI models from modifying data.
+- **Data Exposure**: Be mindful of what data you expose through your operations.
+- **Rate Limiting**: Consider implementing rate limits to prevent abuse.
+
+## Integration with AI Platforms
+
+The MCP server exposes GraphQL operations in a format compatible with AI platforms that support function calling or tool use, such as:
+
+- OpenAI's GPT models (via function calling)
+- Anthropic's Claude models (with tool use)
+- Cursor IDE (with tool use)
+- Windsurf AI (with function calling)
+- Other LLMs that support similar capabilities
+
+<Info>MCP's JSON schema generation automatically provides AI models with the metadata they need to understand your operations' input requirements and capabilities.</Info>
+
+These platforms can discover your API's capabilities and execute operations with appropriate parameters.
+
+## Use Cases
+
+- **AI-powered chatbots** that can query your application data
+- **Voice assistants** that need to interact with your business logic
+- **Autonomous agents** that make decisions based on your application state
+- **Data analysis** tools that need to query specific information
+- **Content generation** systems that use your data as context
+
+## Future Outlook
+
+The MCP server in Cosmo Router is under active development, with several exciting features on the roadmap:
+
+<Accordion title="Enhanced Security and Control">
+  - **Advanced Authentication**: We're working on comprehensive authentication options for the MCP server, including JWT support, API key validation, and integration with existing auth providers. This will allow for fine-grained access control to ensure only authorized AI agents can access your GraphQL operations.
+
+  - **Rate Limiting**: Upcoming rate limiting features will protect your backend systems from excessive requests, with configurable limits based on client identity, operation type, and other factors. This will help prevent abuse and ensure fair resource allocation among different AI clients.
+
+  - **Request Quotas**: Implementation of daily/monthly quotas per client to manage resource allocation for different tiers of AI service access.
+</Accordion>
+
+<Accordion title="Observability and Monitoring">
+  - **OpenTelemetry Integration**: Native OpenTelemetry support is in development, enabling detailed tracing of AI requests through your entire system. This will provide visibility into how AI agents are interacting with your data and help identify bottlenecks or issues.
+
+  - **Usage Analytics**: Comprehensive analytics dashboard to understand which operations are most frequently used by AI agents, performance metrics, and error rates.
+
+  - **Audit Logging**: Detailed audit logs of all AI interactions for compliance and security review.
+</Accordion>
+
+<Accordion title="Enhanced Developer Experience">
+  - **Operation Insights**: Tools to help developers understand which operations would be most useful to AI agents based on common user questions and requests.
+
+  - **Schema Visualization**: Visual representations of which parts of your GraphQL schema are exposed to AI systems, making it easier to manage data boundaries.
+
+  - **MCP Explorer**: An interactive UI for testing and debugging MCP operations before exposing them to AI models.
+</Accordion>
+
+These upcoming features will further strengthen the MCP server's position as the most robust solution for securely exposing GraphQL operations to AI systems while maintaining full control over your data.
+
+## Conclusion
+
+The MCP integration in Cosmo Router provides a powerful bridge between your GraphQL API and AI models. By enabling AI systems to discover and interact with your data through a familiar and structured interface, you open up new possibilities for AI-enhanced applications without extensive custom development.
+
+<Tip>Start with a small set of read-only operations to test your AI integration before expanding to more complex functionality.</Tip>
+
+With minimal configuration, you can transform your GraphQL API into a rich ecosystem that AI models can navigate and utilize, creating more intelligent and capable AI-powered features for your users. 
