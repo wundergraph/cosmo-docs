@@ -497,6 +497,7 @@
           "router/file-upload",
           "router/access-logs",
           "router/profiling",
+          "router/mcp",
           "router/upgrading-the-router"
         ]
       },
