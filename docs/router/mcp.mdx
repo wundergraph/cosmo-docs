@@ -127,25 +127,33 @@ The MCP server provides several tools out of the box to help AI models discover 
 ### Discovery Tools
 
 <CardGroup cols={2}>
-  <Card title="list_graphql_operations" icon="list">
+  <Card title="list_operations" icon="list">
     Lists all available GraphQL operations with their names, descriptions, and operation types. This is typically the first tool AI models use to discover what capabilities your API offers.
   </Card>
-  <Card title="get_graphql_operation_info" icon="circle-info">
+  <Card title="get_operation_info" icon="circle-info">
     Retrieves detailed information about a specific GraphQL operation, including its input schema, query structure, and execution guidance. AI models use this to understand how to properly call an operation.
+  </Card>
+  <Card title="get_schema" icon="code">
+    Provides the full GraphQL schema as a string. This helps AI models understand the entire API structure. This tool is only available if `expose_schema` is enabled.
   </Card>
 </CardGroup>
 
-These discovery tools are essential for AI models to understand what data they can access and how to properly format requests to your API.
+### Execution Tools
 
-### Operation Tools
+<CardGroup cols={2}>
+  <Card title="execute_graphql" icon="play">
+    Executes arbitrary GraphQL queries or mutations against your API. This tool is only available if `enable_arbitrary_operations` is enabled, allowing AI models to craft and execute custom operations beyond predefined ones.
+  </Card>
+  <Card title="execute_*" icon="rocket">
+    For each GraphQL operation in your operations directory, the MCP server automatically generates a corresponding execution tool with the pattern `execute_<operation_name>` (e.g., `execute_get_users`).
+  </Card>
+</CardGroup>
 
-For each GraphQL operation in your operations directory, the MCP server automatically generates a corresponding tool:
+The operation execution tools provide a structured and controlled way for AI models to interact with your API:
 
-- **Tool naming**: Tools follow the pattern `{operationType}_{operationName}` (e.g., `query_getUsers` or `mutation_createUser`)
+- **Tool naming**: Tools follow the pattern `execute_<operation_name>` (with operation names converted to snake_case)
 - **Tool schema**: Generated from your GraphQL operation's variables, ensuring type safety
 - **Tool description**: Inherited from your GraphQL operation descriptions, including operation name and additional context
-
-The tool descriptions are automatically derived from the descriptions in your GraphQL operations. This means that well-documented GraphQL operations result in more informative tools for AI models. For mutation operations, a warning about side effects is automatically added.
 
 By default, all operations in your specified directory will be exposed as tools. Use the `exclude_mutations: true` configuration option to prevent mutation operations from being exposed if you want to ensure AI models can only read data.
 
@@ -160,6 +168,8 @@ mcp:
   operations_dir: "operations"
   graph_name: "my-graph"
   exclude_mutations: true
+  enable_arbitrary_operations: false
+  expose_schema: true
 ```
 
 ### Configuration Options
@@ -171,6 +181,8 @@ mcp:
 | `operations_dir` | Directory where GraphQL operations are stored | `operations` |
 | `graph_name` | The name of the graph to be used by the MCP server | `cosmo` |
 | `exclude_mutations` | Whether to exclude mutation operations from being exposed | `false` |
+| `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |
+| `expose_schema` | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `true` |
 
 ## Setting Up Operations
 
