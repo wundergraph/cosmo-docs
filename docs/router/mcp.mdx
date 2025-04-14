@@ -295,6 +295,8 @@ Operations are converted to snake_case for tool naming consistency.
 
 Currently, only public operations are supported by default. Passing authentication headers will be supported soon by Cursor, Claude, and other AI tools. Once supported, users can issue regular tokens to interact with the router as usual through the standard router authentication integration.
 
+When your Cosmo Router is secured using native authentication strategies such as JWT, the GraphQL operations exposed via MCP won't be executable without valid authentication credentials. This ensures that your API remains secure even when the MCP server is enabled. The MCP server honors all authentication and authorization mechanisms configured in your router, so there's no additional security vulnerability introduced by enabling MCP functionality.
+
 ## Integration with AI Platforms
 
 The MCP server exposes GraphQL operations in a format compatible with AI platforms that support function calling or tool use. Here's how to configure popular AI platforms to connect to your Cosmo Router's MCP endpoint:
