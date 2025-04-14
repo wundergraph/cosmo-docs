@@ -1,5 +1,5 @@
 ---
-title: 'MCP Integration'
+title: 'MCP Gateway'
 description: 'Integrate your GraphQL API with AI models using the Model Context Protocol (MCP)'
 icon: "robot"
 ---
@@ -20,6 +20,8 @@ MCP (Model Context Protocol) is a protocol designed to help AI models interact w
 
 <Info>MCP enables AI models to understand and interact with your GraphQL API without requiring custom integration code for each model.</Info>
 
+The Cosmo MCP Server builds on top of the concept of persisted operations (also known as persisted queries or trusted documents). Instead of allowing AI models to execute arbitrary GraphQL operations, it exposes a predefined set of validated and approved operations. This provides a secure and controlled way for AI systems to interact with your data while maintaining tight control over what operations can be executed.
+
 Here's what enabling MCP in your Cosmo Router provides:
 
 <CardGroup cols={2}>
@@ -37,12 +39,12 @@ Here's what enabling MCP in your Cosmo Router provides:
   </Card>
 </CardGroup>
 
-## Why the GraphQL + MCP Combination is Revolutionary
+## Why combining GraphQL + MCP is Revolutionary
 
 The integration of GraphQL with MCP creates a uniquely powerful system for AI-API interactions:
 
 - **Precise data selection**: GraphQL's nature allows you to define exactly what data AI models can access, from simple queries to complex operations across your entire graph.
-- **Declarative operation definition**: Create purpose-built `.graphql` files with operations tailored specifically for AI consumption.
+- **Declarative operation definition**: Create purpose-built `.graphql` files with operations tailored specifically for AI consumption. These function as persisted operations (trusted documents), giving you complete control over what queries AI models can execute.
 - **Flexible data exposure**: Control exactly which operations and fields are exposed to AI systems with granular precision.
 - **Compositional API design**: Build different operation sets for different AI use cases without changing your underlying API.
 - **Runtime safety**: GraphQL's strong typing ensures AI models can only request valid data patterns that match your schema.
@@ -154,6 +156,7 @@ The operation execution tools provide a structured and controlled way for AI mod
 - **Tool naming**: Tools follow the pattern `execute_<operation_name>` (with operation names converted to snake_case)
 - **Tool schema**: Generated from your GraphQL operation's variables, ensuring type safety
 - **Tool description**: Inherited from your GraphQL operation descriptions, including operation name and additional context
+- **Mutation warnings**: Tools for mutation operations include a warning that the operation has side effects
 
 By default, all operations in your specified directory will be exposed as tools. Use the `exclude_mutations: true` configuration option to prevent mutation operations from being exposed if you want to ensure AI models can only read data.
 
@@ -164,12 +167,20 @@ To enable MCP in your Cosmo Router, add the following configuration to your `con
 ```yaml
 mcp:
   enabled: true
-  listen_addr: ":5025"
-  operations_dir: "operations"
+  server:
+    port: "5025"
+  storage:
+    provider_id: "operations-fs"  # References a file_system provider defined below
   graph_name: "my-graph"
   exclude_mutations: true
   enable_arbitrary_operations: false
-  expose_schema: true
+  expose_schema: false
+
+# Configure storage providers
+storage_providers:
+  file_system:
+    - id: "operations-fs"
+      path: "/path/to/operations"
 ```
 
 ### Configuration Options
@@ -177,21 +188,48 @@ mcp:
 | Option | Description | Default |
 |--------|-------------|---------|
 | `enabled` | Enable or disable the MCP server | `false` |
-| `listen_addr` | The address where the MCP server will listen for requests | `:5025` |
-| `operations_dir` | Directory where GraphQL operations are stored | `operations` |
+| `server.port` | The port where the MCP server will listen for requests | `5025` |
+| `storage.provider_id` | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported. | - |
 | `graph_name` | The name of the graph to be used by the MCP server | `cosmo` |
 | `exclude_mutations` | Whether to exclude mutation operations from being exposed | `false` |
 | `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |
-| `expose_schema` | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `true` |
+| `expose_schema` | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |
+
+## Storage Providers
+
+MCP loads operations from a configured file system storage provider. This allows you to centralize the configuration of operation sources:
+
+```yaml
+storage_providers:
+  file_system:
+    - id: "operations-fs"
+      path: "/path/to/operations"
+```
+
+Then reference this storage provider in your MCP configuration:
+
+```yaml
+mcp:
+  storage:
+    provider_id: "operations-fs"
+```
+
+A storage provider must be specified to load GraphQL operations.
 
 ## Setting Up Operations
 
-1. Create a directory to store your GraphQL operations as specified in your `operations_dir` configuration.
+1. Create a directory to store your GraphQL operations as specified in your `storage.provider_id` configuration.
 2. Add `.graphql` files containing named GraphQL operations.
 
-Example of a query operation in `operations/getUsers.graphql`:
+Each operation file should contain a single named operation along with a description comment that AI models can use to understand its purpose.
+
+### Example Query Operation
+
+Create a file `operations/getUsers.graphql`:
 
 ```graphql
+# Returns a list of all users in the system with their basic information
+# This is a read-only operation that doesn't modify any data
 query GetUsers {
   users {
     id
@@ -201,9 +239,13 @@ query GetUsers {
 }
 ```
 
-Example of a mutation operation in `operations/createUser.graphql`:
+### Example Mutation Operation
+
+Create a file `operations/createUser.graphql`:
 
 ```graphql
+# Creates a new user in the system
+# Required inputs: name and email
 mutation CreateUser($name: String!, $email: String!) {
   createUser(input: { name: $name, email: $email }) {
     id
@@ -213,26 +255,122 @@ mutation CreateUser($name: String!, $email: String!) {
 }
 ```
 
+### Directory Structure
+
+Here's an example of how your project directory might be structured:
+
+```
+my-router-project/
+├── config.yaml                 # Router configuration file
+├── operations/                 # Operations directory (as configured in storage provider)
+│   ├── getUsers.graphql        # Query operation
+│   ├── createUser.graphql      # Mutation operation
+│   ├── getUserById.graphql     # Query with parameters
+└── ...
+```
+
+The important points:
+- The path in your `storage_providers.file_system.path` should point to the operations directory
+- All `.graphql` files in this directory (and subdirectories) will be loaded
+- Each file should contain a single named GraphQL operation
+
+### Operation Naming and Tool Generation
+
+The MCP server converts each operation into a corresponding tool:
+
+- Operation name: `GetUsers` → Tool name: `execute_get_users`
+- Operation name: `CreateUser` → Tool name: `execute_create_user`
+
+Operations are converted to snake_case for tool naming consistency.
+
+### Best Practices
+
+1. **Meaningful names**: Give operations clear, action-oriented names that describe what they do.
+2. **Add descriptions**: Include comments that describe the operation's purpose, required inputs, and any side effects.
+3. **Use explicit types**: Define all input variables with explicit types to ensure proper validation.
+4. **Create focused operations**: Design operations specifically for AI model consumption rather than exposing generic operations.
+5. **Security considerations**: For mutation operations, add checks and validations to prevent misuse.
+
 ## Security Considerations
 
-- **Access Control**: Secure your MCP endpoint with appropriate authentication mechanisms.
-- **Operation Limitations**: Use `exclude_mutations: true` to prevent AI models from modifying data.
-- **Data Exposure**: Be mindful of what data you expose through your operations.
-- **Rate Limiting**: Consider implementing rate limits to prevent abuse.
+Currently, only public operations are supported by default. Passing authentication headers will be supported soon by Cursor, Claude, and other AI tools. Once supported, users can issue regular tokens to interact with the router as usual through the standard router authentication integration.
 
 ## Integration with AI Platforms
 
-The MCP server exposes GraphQL operations in a format compatible with AI platforms that support function calling or tool use, such as:
+The MCP server exposes GraphQL operations in a format compatible with AI platforms that support function calling or tool use. Here's how to configure popular AI platforms to connect to your Cosmo Router's MCP endpoint:
+
+### Claude Desktop App
+
+For Claude desktop app on macOS/Linux:
+
+1. Locate or create the Claude config file:
+   ```bash
+   code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+   ```
+
+2. Add the following configuration:
+   ```json
+   {
+     "mcpServers": {
+       "mygraph": {
+         "command": "npx",
+         "args": [
+           "mcp-remote",
+           "http://localhost:5025/sse"
+         ]
+       }
+     }
+   }
+   ```
+
+3. Save the file and restart Claude.
+
+### Cursor IDE
+
+To configure Cursor to connect to your MCP endpoint:
+
+1. Open a chat session with an AI agent in Cursor
+2. Click on the three dots (⋮) in the top-right corner of the chat panel
+3. Select "Chat Settings"
+4. Navigate to the MCP section
+5. Click on "Add new global MCP server"
+6. Enter the following configuration:
+   ```json
+   {
+     "mcpServers": {
+       "mygraph": {
+         "url": "http://localhost:5025/sse"
+       }
+     }
+   }
+   ```
+7. Save the configuration
+
+### Windsurf
+
+To configure Windsurf to connect to your MCP endpoint:
+
+1. Open a chat session with an AI agent in Windsurf
+2. Click on the hammer icon with the text "Configure"
+3. Use the following template:
+   ```json
+   {
+     "mcpServers": {
+       "mygraph": {
+         "serverUrl": "http://localhost:5025/sse"
+       }
+     }
+   }
+   ```
+
+### Other Compatible Platforms
+
+These platforms also support MCP or similar tool-use capabilities:
 
 - OpenAI's GPT models (via function calling)
-- Anthropic's Claude models (with tool use)
-- Cursor IDE (with tool use)
-- Windsurf AI (with function calling)
 - Other LLMs that support similar capabilities
 
 <Info>MCP's JSON schema generation automatically provides AI models with the metadata they need to understand your operations' input requirements and capabilities.</Info>
-
-These platforms can discover your API's capabilities and execute operations with appropriate parameters.
 
 ## Use Cases
 

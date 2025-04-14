@@ -375,6 +375,7 @@
               "router/configuration/template-expressions"
             ]
           },
+          "router/mcp",
           "router/custom-modules",
           "router/authentication-and-authorization",
           {
@@ -497,7 +498,6 @@
           "router/file-upload",
           "router/access-logs",
           "router/profiling",
-          "router/mcp",
           "router/upgrading-the-router"
         ]
       },
