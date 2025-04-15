@@ -302,7 +302,7 @@ The MCP server respects the "Authorization" header from MCP clients and forwards
       "command": "npx",
       "args": [
         "mcp-remote",
-        "http://localhost:5025/sse",
+        "http://localhost:5025/mcp",
         "--header",
         "Authorization: Bearer ${AUTH_TOKEN}"
       ]
@@ -334,7 +334,7 @@ For Claude desktop app on macOS/Linux:
          "command": "npx",
          "args": [
            "mcp-remote",
-           "http://localhost:5025/sse"
+           "http://localhost:5025/mcp"
          ]
        }
      }
@@ -357,7 +357,7 @@ To configure Cursor to connect to your MCP endpoint:
    {
      "mcpServers": {
        "mygraph": {
-         "url": "http://localhost:5025/sse"
+         "url": "http://localhost:5025/mcp"
        }
      }
    }
@@ -375,7 +375,7 @@ To configure Windsurf to connect to your MCP endpoint:
    {
      "mcpServers": {
        "mygraph": {
-         "serverUrl": "http://localhost:5025/sse"
+         "serverUrl": "http://localhost:5025/mcp"
        }
      }
    }
