@@ -293,7 +293,23 @@ Operations are converted to snake_case for tool naming consistency.
 
 ## Security Considerations
 
-Currently, only public operations are supported by default. Passing authentication headers will be supported soon by Cursor, Claude, and other AI tools. Once supported, users can issue regular tokens to interact with the router as usual through the standard router authentication integration.
+The MCP server respects the "Authorization" header from MCP clients and forwards them to the router. Currently, this functionality is supported by Claude and other tools using the `mcp-remote` command with specific header configuration:
+
+```json
+{
+  "mcpServers": {
+    "mygraph": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://localhost:5025/sse",
+        "--header",
+        "Authorization: Bearer ${AUTH_TOKEN}"
+      ]
+    }
+  }
+}
+```
 
 When your Cosmo Router is secured using native authentication strategies such as JWT, the GraphQL operations exposed via MCP won't be executable without valid authentication credentials. This ensures that your API remains secure even when the MCP server is enabled. The MCP server honors all authentication and authorization mechanisms configured in your router, so there's no additional security vulnerability introduced by enabling MCP functionality.
 
