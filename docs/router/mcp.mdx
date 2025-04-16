@@ -143,17 +143,17 @@ The MCP server provides several tools out of the box to help AI models discover 
 ### Execution Tools
 
 <CardGroup cols={2}>
-  <Card title="execute" icon="play">
+  <Card title="execute_graphql" icon="play">
     Executes arbitrary GraphQL queries or mutations against your API. This tool is only available if `enable_arbitrary_operations` is enabled, allowing AI models to craft and execute custom operations beyond predefined ones.
   </Card>
-  <Card title="execute_*" icon="rocket">
-    For each GraphQL operation in your operations directory, the MCP server automatically generates a corresponding execution tool with the pattern `execute_<operation_name>` (e.g., `execute_get_users`).
+  <Card title="execute_operation_*" icon="rocket">
+    For each GraphQL operation in your operations directory, the MCP server automatically generates a corresponding execution tool with the pattern `execute_operation_<operation_name>` (e.g., `execute_operation_get_users`).
   </Card>
 </CardGroup>
 
 The operation execution tools provide a structured and controlled way for AI models to interact with your API:
 
-- **Tool naming**: Tools follow the pattern `execute_<operation_name>` (with operation names converted to snake_case)
+- **Tool naming**: Tools follow the pattern `execute_operation_<operation_name>` (with operation names converted to snake_case)
 - **Tool schema**: Generated from your GraphQL operation's variables, ensuring type safety
 - **Tool description**: Inherited from your GraphQL operation descriptions, including operation name and additional context
 - **Mutation warnings**: Tools for mutation operations include a warning that the operation has side effects
@@ -278,8 +278,8 @@ The important points:
 
 The MCP server converts each operation into a corresponding tool:
 
-- Operation name: `GetUsers` → Tool name: `execute_get_users`
-- Operation name: `CreateUser` → Tool name: `execute_create_user`
+- Operation name: `GetUsers` → Tool name: `execute_operation_get_users`
+- Operation name: `CreateUser` → Tool name: `execute_operation_create_user`
 
 Operations are converted to snake_case for tool naming consistency.
 
