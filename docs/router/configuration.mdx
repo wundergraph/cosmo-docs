@@ -256,7 +256,7 @@ The Model Context Protocol (MCP) server allows AI models to discover and interac
 | ------------------------------ | ----------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | MCP_ENABLED                    | mcp.enabled                   | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                      | false         |
 | MCP_SERVER_PORT                | mcp.server.port               | <Icon icon="square" /> | The port where the MCP server will listen for requests                                                                                | 5025          |
-| MCP_ROUTER_URL                 | mcp.router_url                | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy.                                | -             |
+| MCP_ROUTER_URL                 | mcp.router_url                | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.  | -             |
 | MCP_STORAGE_PROVIDER_ID        | mcp.storage.provider_id       | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                         |               |
 | MCP_GRAPH_NAME                 | mcp.graph_name                | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                    | cosmo         |
 | MCP_EXCLUDE_MUTATIONS          | mcp.exclude_mutations         | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                             | false         |
@@ -274,7 +274,7 @@ mcp:
   enabled: true
   server:
     port: "5025"
-  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use when router is behind a proxy
+  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use when router is behind a proxy. Purely metadata for the AI model.
   storage:
     provider_id: "operations-fs"  # References a file_system provider defined below
   graph_name: "my-graph"
