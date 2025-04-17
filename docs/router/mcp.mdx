@@ -165,7 +165,7 @@ To enable MCP in your Cosmo Router, add the following configuration to your `con
 mcp:
   enabled: true
   server:
-    port: "5025"
+    port: 5025
   router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use this when router is behind a proxy
   storage:
     provider_id: "operations-fs"  # References a file_system provider defined below
@@ -290,9 +290,19 @@ Operations are converted to snake_case for tool naming consistency.
 4. **Create focused operations**: Design operations specifically for AI model consumption rather than exposing generic operations.
 5. **Security considerations**: For mutation operations, add checks and validations to prevent misuse.
 
-## Security Considerations
+## Authentication
 
-The MCP server respects the "Authorization" header from MCP clients and forwards them to the router. Currently, this functionality is supported by Claude and other tools using the `mcp-remote` command with specific header configuration:
+The MCP server respects the "Authorization" header from MCP clients and forwards them to the router. This allows you to leverage all the authentication and authorization capabilities of your Cosmo Router when AI models interact with your GraphQL API.
+
+<Info>By passing authentication headers from AI tools to your GraphQL API, you can maintain consistent security across all API consumers while giving AI models appropriate access to your data.</Info>
+
+### Configuration
+
+The authentication header can be configured in various AI tools and environments:
+
+#### Claude Desktop
+
+Configure Claude to use your MCP server with authentication by using the `mcp-remote` command:
 
 ```json
 {
@@ -303,9 +313,31 @@ The MCP server respects the "Authorization" header from MCP clients and forwards
         "mcp-remote",
         "http://localhost:5025/mcp",
         "--header",
-        "Authorization: Bearer ${AUTH_TOKEN}"
+        "Authorization: Bearer YOUR_API_KEY",
       ]
     }
   }
 }
 ```
+
+#### VS Code (Preview)
+
+In VS Code, you can configure the MCP extension with authentication headers in your `settings.json`:
+
+```json
+"mcp": {
+  "servers": {
+    "mygraph": {
+      "type": "sse",
+      "url": "http://localhost:5025/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+#### Other MCP-compatible Tools
+
+Other tools and AI models that support the MCP protocol typically provide similar ways to configure authentication headers. Always check the documentation for your specific AI tool for the exact configuration syntax.
