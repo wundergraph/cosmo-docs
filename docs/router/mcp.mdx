@@ -166,6 +166,7 @@ mcp:
   enabled: true
   server:
     port: "5025"
+  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use this when router is behind a proxy
   storage:
     provider_id: "operations-fs"  # References a file_system provider defined below
   graph_name: "my-graph"
@@ -186,6 +187,7 @@ storage_providers:
 |--------|-------------|---------|
 | `enabled` | Enable or disable the MCP server | `false` |
 | `server.port` | The port where the MCP server will listen for requests | `5025` |
+| `router_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. | `http://{listen_addr}{graphql_path}` |
 | `storage.provider_id` | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported. | - |
 | `graph_name` | The name of the graph to be used by the MCP server | `cosmo` |
 | `exclude_mutations` | Whether to exclude mutation operations from being exposed | `false` |
@@ -307,128 +309,3 @@ The MCP server respects the "Authorization" header from MCP clients and forwards
   }
 }
 ```
-
-When your Cosmo Router is secured using native authentication strategies such as JWT, the GraphQL operations exposed via MCP won't be executable without valid authentication credentials. This ensures that your API remains secure even when the MCP server is enabled. The MCP server honors all authentication and authorization mechanisms configured in your router, so there's no additional security vulnerability introduced by enabling MCP functionality.
-
-## Integration with AI Platforms
-
-The MCP server exposes GraphQL operations in a format compatible with AI platforms that support function calling or tool use. Here's how to configure popular AI platforms to connect to your Cosmo Router's MCP endpoint:
-
-### Claude Desktop App
-
-For Claude desktop app on macOS/Linux:
-
-1. Locate or create the Claude config file:
-   ```bash
-   code ~/Library/Application\ Support/Claude/claude_desktop_config.json
-   ```
-
-2. Add the following configuration:
-   ```json
-   {
-     "mcpServers": {
-       "mygraph": {
-         "command": "npx",
-         "args": [
-           "mcp-remote",
-           "http://localhost:5025/mcp"
-         ]
-       }
-     }
-   }
-   ```
-
-3. Save the file and restart Claude.
-
-### Cursor IDE
-
-To configure Cursor to connect to your MCP endpoint:
-
-1. Open a chat session with an AI agent in Cursor
-2. Click on the three dots (⋮) in the top-right corner of the chat panel
-3. Select "Chat Settings"
-4. Navigate to the MCP section
-5. Click on "Add new global MCP server"
-6. Enter the following configuration:
-   ```json
-   {
-     "mcpServers": {
-       "mygraph": {
-         "url": "http://localhost:5025/mcp"
-       }
-     }
-   }
-   ```
-7. Save the configuration
-
-### Windsurf
-
-To configure Windsurf to connect to your MCP endpoint:
-
-1. Open a chat session with an AI agent in Windsurf
-2. Click on the hammer icon with the text "Configure"
-3. Use the following template:
-   ```json
-   {
-     "mcpServers": {
-       "mygraph": {
-         "serverUrl": "http://localhost:5025/mcp"
-       }
-     }
-   }
-   ```
-
-### Other Compatible Platforms
-
-These platforms also support MCP or similar tool-use capabilities:
-
-- OpenAI's GPT models (via function calling)
-- Other LLMs that support similar capabilities
-
-<Info>MCP's JSON schema generation automatically provides AI models with the metadata they need to understand your operations' input requirements and capabilities.</Info>
-
-## Use Cases
-
-- **AI-powered chatbots** that can query your application data
-- **Voice assistants** that need to interact with your business logic
-- **Autonomous agents** that make decisions based on your application state
-- **Data analysis** tools that need to query specific information
-- **Content generation** systems that use your data as context
-
-## Future Outlook
-
-The MCP server in Cosmo Router is under active development, with several exciting features on the roadmap:
-
-<Accordion title="Enhanced Security and Control">
-  - **Advanced Authentication**: We're working on comprehensive authentication options for the MCP server, including JWT support, API key validation, and integration with existing auth providers. This will allow for fine-grained access control to ensure only authorized AI agents can access your GraphQL operations.
-
-  - **Rate Limiting**: Upcoming rate limiting features will protect your backend systems from excessive requests, with configurable limits based on client identity, operation type, and other factors. This will help prevent abuse and ensure fair resource allocation among different AI clients.
-
-  - **Request Quotas**: Implementation of daily/monthly quotas per client to manage resource allocation for different tiers of AI service access.
-</Accordion>
-
-<Accordion title="Observability and Monitoring">
-  - **OpenTelemetry Integration**: Native OpenTelemetry support is in development, enabling detailed tracing of AI requests through your entire system. This will provide visibility into how AI agents are interacting with your data and help identify bottlenecks or issues.
-
-  - **Usage Analytics**: Comprehensive analytics dashboard to understand which operations are most frequently used by AI agents, performance metrics, and error rates.
-
-  - **Audit Logging**: Detailed audit logs of all AI interactions for compliance and security review.
-</Accordion>
-
-<Accordion title="Enhanced Developer Experience">
-  - **Operation Insights**: Tools to help developers understand which operations would be most useful to AI agents based on common user questions and requests.
-
-  - **Schema Visualization**: Visual representations of which parts of your GraphQL schema are exposed to AI systems, making it easier to manage data boundaries.
-
-  - **MCP Explorer**: An interactive UI for testing and debugging MCP operations before exposing them to AI models.
-</Accordion>
-
-These upcoming features will further strengthen the MCP server's position as the most robust solution for securely exposing GraphQL operations to AI systems while maintaining full control over your data.
-
-## Conclusion
-
-The MCP integration in Cosmo Router provides a powerful bridge between your GraphQL API and AI models. By enabling AI systems to discover and interact with your data through a familiar and structured interface, you open up new possibilities for AI-enhanced applications without extensive custom development.
-
-<Tip>Start with a small set of read-only operations to test your AI integration before expanding to more complex functionality.</Tip>
-
-With minimal configuration, you can transform your GraphQL API into a rich ecosystem that AI models can navigate and utilize, creating more intelligent and capable AI-powered features for your users. 
