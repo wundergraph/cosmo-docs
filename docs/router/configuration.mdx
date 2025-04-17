@@ -1106,7 +1106,7 @@ traffic_shaping:
     tls_handshake_timeout: 0s
     response_header_timeout: 0s
     expect_continue_timeout: 0s
-    keep_alive_idle_timeout: 0s
+    keep_alive_idle_timeout: 90s
     keep_alive_probe_interval: 30s
     max_idle_conns: 1024
     max_conns_per_host: 100
@@ -1144,7 +1144,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 |                      | response_header_timeout   | <Icon icon="square" />                        |                                                                                     | 0s            |
 |                      | expect_continue_timeout   | <Icon icon="square" />                        |                                                                                     | 0s            |
 |                      | tls_handshake_timeout     | <Icon icon="square" />                        |                                                                                     | 10s           |
-|                      | keep_alive_idle_timeout   | <Icon icon="square" />                        |                                                                                     | 0s            |
+|                      | keep_alive_idle_timeout   | <Icon icon="square" />                        |                                                                                     | 90s            |
 |                      | keep_alive_probe_interval | <Icon icon="square" />                        |                                                                                     | 30s           |
 |                      | max_idle_conns            | <Icon icon="square" />                        |                                                                                     | 1024          |
 |                      | max_conns_per_host        | <Icon icon="square" />                        |                                                                                     | 100           |
@@ -1160,7 +1160,7 @@ In addition to the general traffic shaping rules, we also allow users to set sub
 |                      | dial_timeout              | <Icon icon="square" /> |             | 30s           |
 |                      | response_header_timeout   | <Icon icon="square" /> |             | 0s            |
 |                      | expect_continue_timeout   | <Icon icon="square" /> |             | 0s            |
-|                      | keep_alive_idle_timeout   | <Icon icon="square" /> |             | 0s            |
+|                      | keep_alive_idle_timeout   | <Icon icon="square" /> |             | 90s            |
 |                      | keep_alive_probe_interval | <Icon icon="square" /> |             | 30s           |
 |                      | max_idle_conns            | <Icon icon="square" /> |             | 1024          |
 |                      | max_conns_per_host        | <Icon icon="square" /> |             | 100           |
