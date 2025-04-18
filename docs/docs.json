@@ -375,6 +375,7 @@
               "router/configuration/template-expressions"
             ]
           },
+          "router/mcp",
           "router/custom-modules",
           "router/authentication-and-authorization",
           {

@@ -248,6 +248,51 @@ graph:
 
 </CodeGroup>
 
+## MCP (Model Context Protocol)
+
+The Model Context Protocol (MCP) server allows AI models to discover and interact with your GraphQL API in a secure way.
+
+| Environment Variable           | YAML                          | Required               | Description                                                                                                                           | Default Value |
+| ------------------------------ | ----------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| MCP_ENABLED                    | mcp.enabled                   | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                      | false         |
+| MCP_SERVER_PORT                | mcp.server.port               | <Icon icon="square" /> | The port where the MCP server will listen for requests                                                                                | 5025          |
+| MCP_ROUTER_URL                 | mcp.router_url                | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.  | -             |
+| MCP_STORAGE_PROVIDER_ID        | mcp.storage.provider_id       | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                         |               |
+| MCP_GRAPH_NAME                 | mcp.graph_name                | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                    | cosmo         |
+| MCP_EXCLUDE_MUTATIONS          | mcp.exclude_mutations         | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                             | false         |
+| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | false         |
+| MCP_EXPOSE_SCHEMA              | mcp.expose_schema             | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | false         |
+
+Example YAML config:
+
+<CodeGroup>
+
+```yaml config.yaml
+version: "1"
+
+mcp:
+  enabled: true
+  server:
+    port: 5025
+  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use when router is behind a proxy. Purely metadata for the AI model.
+  storage:
+    provider_id: "mcp"  # References a file_system provider defined below
+  graph_name: "my-graph"
+  exclude_mutations: true
+  enable_arbitrary_operations: false
+  expose_schema: false
+
+# Configure storage providers
+storage_providers:
+  file_system:
+    - id: "mcp"
+      path: "operations" # Relative to the router binary
+```
+
+</CodeGroup>
+
+For more details on how to use the MCP server, see the [MCP Integration documentation](/router/mcp).
+
 ## TLS
 
 The Router supports TLS and mTLS for secure communication with your clients and infrastructure components like load balancer.
@@ -892,72 +937,86 @@ headers:
 
 ## Storage Providers
 
-The configuration for the storage providers. Storage providers can be used to store the persisted operations and the execution config.
+Storage providers allow you to configure different backends for persisted operations, router execution config and MCP operations.
 
 ### Example YAML config:
 
-```yaml
+<CodeGroup>
+
+```yaml config.yaml
 version: "1"
 
 storage_providers:
-  cdn:
-    - url: https://cosmo-cdn.wundergraph.com
-      id: cdn
   s3:
-    - id: "s3"
-      endpoint: "localhost:10000"
-      bucket: "cosmo"
-      access_key: "key"
-      secret_key: "secret"
-      region: us-east-1
-      secure: false
+    - id: "s3-provider"
+      endpoint: "s3.amazonaws.com"
+      access_key: "${AWS_ACCESS_KEY_ID}"
+      secret_key: "${AWS_SECRET_ACCESS_KEY}"
+      bucket: "my-bucket"
+      region: "us-east-1"
+      secure: true
   redis:
-    - id: "my-redis"
-      cluster_enabled: false
+    - id: "redis-provider"
       urls:
         - "redis://localhost:6379"
+      cluster_enabled: false
+  file_system:
+    - id: "fs-provider"
+      path: "/path/to/files"
+  cdn:
+    - id: "cdn-provider"
+      url: "https://cosmo-cdn.wundergraph.com"
 ```
 
-<Info>
-  Users can supply a list of URLs for their redis storage provider.
+</CodeGroup>
 
-  - If `cluster_enabled: false` , then we will use the first URL for the connection URL.
-  - If `cluster_enabled: true` , then we will use all of the URLs for the [Redis Cluster](https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/) connection.
+### Storage Provider Types
 
-  URLs can be supplied with redis configuration options embedded, such as: `redis://myUser:myPass@localhost:6379?ssl=true&db=1@connectTimeout=2`
-</Info>
+#### File System Storage Provider
+
+This provider allows you to load files from the local file system. This is particularly useful for the MCP server to load GraphQL operations.
+
+| Environment Variable      | YAML | Required                                      | Description                                                      | Default Value |
+| ------------------------- | ---- | --------------------------------------------- | ---------------------------------------------------------------- | ------------- |
+| STORAGE_PROVIDER_FS_ID    | id   | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations       |               |
+| STORAGE_PROVIDER_FS_PATH  | path | <Icon icon="square-check" iconType="solid" /> | The path on the file system where files should be loaded from    |               |
 
 <Note>
-  Prior to [router@v0.169.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.168.1), the redis configuration looks like:
-
-  ```
-    redis:
-      - id: "my_redis"
-        url: "redis://localhost:6379"
-  ```
+  The file system storage provider is **currently only supported by the MCP feature**. It cannot be used for persisted operations or execution configurations.
 </Note>
 
-### Storage Provider Yaml Options
+#### Redis Storage Provider
 
-These rules apply to requests being made from the Router to all Subgraphs.
+Used for distributed caching like automatic persisted queries.
 
-| Environment Variable                   | YAML                  | Required                                      | Description                                                                                                   | Default Value                       |
-| -------------------------------------- | --------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-|                                        | cdn                   | <Icon icon="square" />                        | CDN storage provider.                                                                                         |                                     |
-|                                        | cdn.id                | <Icon icon="square-check" iconType="solid" /> | Unique ID of the provider. It is used as reference in `persisted_operations` and `execution_config` sections. |                                     |
-|                                        | cdn.url               | <Icon icon="square" />                        | URL of the storage provider.                                                                                  | "https://cosmo-cdn.wundergraph.com" |
-|                                        | redis                 | <Icon icon="square" />                        | Redis storage provider.                                                                                       |                                     |
-| STORAGE_PROVIDER_REDIS_ID              | redis.id              | <Icon icon="square-check" iconType="solid" /> | Unique ID of the provider. It is used as reference in `persisted_operations` and `execution_config` sections. |                                     |
-| STORAGE_PROVIDER_REDIS_CLUSTER_ENABLED | redis.cluster_enabled | <Icon icon="square" />                        | If the Redis instance is a Redis cluster                                                                      |                                     |
-| STORAGE_PROVIDER_REDIS_URLS            | redis.urls            | <Icon icon="square-check" iconType="solid" /> | List of Redis urls, containing port and auth information if necessary. Must contain at least one element      |                                     |
-|                                        | s3                    | <Icon icon="square" />                        | S3 storage provider.                                                                                          |                                     |
-|                                        | s3.id                 | <Icon icon="square-check" iconType="solid" /> | Unique ID of the privider. It is used as reference in `persisted_operations` and `execution_config` sections. |                                     |
-|                                        | s3.endpoint           | <Icon icon="square" />                        | The endpoint of the S3 bucket. The endpoint is used to specify the endpoint of the S3 bucket.                 |                                     |
-|                                        | s3.bucket             | <Icon icon="square" />                        | The name of the S3 bucket. The S3 bucket is used to store the execution config.                               |                                     |
-|                                        | s3.access_key         | <Icon icon="square" />                        | The access key of the S3 bucket. The access key ID is used to authenticate with the S3 bucket.                |                                     |
-|                                        | s3.secret_key         | <Icon icon="square" />                        | The secret key of the S3 bucket. The secret access key is used to authenticate with the S3 bucket.            |                                     |
-|                                        | s3.region             | <Icon icon="square" />                        | The region of the S3 bucket. The region is used to specify the region of the S3 bucket                        |                                     |
-|                                        | s3.secure             | <Icon icon="square" />                        | Enables https in the provided endpoint. Must be set to `false` when accessing http endpoints                  | true                                |
+| Environment Variable              | YAML            | Required                                      | Description                                                                           | Default Value |
+| --------------------------------- | --------------- | --------------------------------------------- | ------------------------------------------------------------------------------------- | ------------- |
+| STORAGE_PROVIDER_REDIS_ID         | id              | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations                            |               |
+| STORAGE_PROVIDER_REDIS_URLS        | urls            | <Icon icon="square-check" iconType="solid" /> | List of Redis URLs to connect to. If cluster_enabled is true, these are the seeds to discover the cluster |               |
+| STORAGE_PROVIDER_REDIS_CLUSTER_ENABLED | cluster_enabled | <Icon icon="square" />                        | Whether to use the Redis Cluster client                                               | false         |
+
+#### S3 Storage Provider
+
+For storing operations and configs in S3-compatible storage.
+
+| Environment Variable | YAML       | Required                                      | Description                                                    | Default Value |
+| -------------------- | ---------- | --------------------------------------------- | -------------------------------------------------------------- | ------------- |
+|                      | id         | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations     |               |
+|                      | endpoint   | <Icon icon="square-check" iconType="solid" /> | The endpoint of the S3 service                                 |               |
+|                      | access_key | <Icon icon="square-check" iconType="solid" /> | The access key for the S3 service                              |               |
+|                      | secret_key | <Icon icon="square-check" iconType="solid" /> | The secret key for the S3 service                              |               |
+|                      | bucket     | <Icon icon="square-check" iconType="solid" /> | The bucket where objects will be stored                        |               |
+|                      | region     | <Icon icon="square" />                        | The region of the S3 bucket                                    |               |
+|                      | secure     | <Icon icon="square" />                        | Whether to use HTTPS for S3 connections                        | true          |
+
+#### CDN Provider
+
+For connecting to the Cosmo CDN.
+
+| Environment Variable | YAML | Required                                      | Description                                                      | Default Value                    |
+| -------------------- | ---- | --------------------------------------------- | ---------------------------------------------------------------- | -------------------------------- |
+|                      | id   | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations       |               |
+|                      | url  | <Icon icon="square-check" iconType="solid" /> | The URL of the CDN                                               | https://cosmo-cdn.wundergraph.com |
 
 ## Persisted Operations
 
