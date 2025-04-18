@@ -168,7 +168,7 @@ mcp:
     port: 5025
   router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use this when router is behind a proxy
   storage:
-    provider_id: "operations-fs"  # References a file_system provider defined below
+    provider_id: "mcp"  # References a file_system provider defined below
   graph_name: "my-graph"
   exclude_mutations: true
   enable_arbitrary_operations: false
@@ -177,7 +177,7 @@ mcp:
 # Configure storage providers
 storage_providers:
   file_system:
-    - id: "operations-fs"
+    - id: "mcp"
       path: "/path/to/operations"
 ```
 
@@ -201,7 +201,7 @@ MCP loads operations from a configured file system storage provider. This allows
 ```yaml
 storage_providers:
   file_system:
-    - id: "operations-fs"
+    - id: "mcp"
       path: "/path/to/operations"
 ```
 
@@ -210,7 +210,7 @@ Then reference this storage provider in your MCP configuration:
 ```yaml
 mcp:
   storage:
-    provider_id: "operations-fs"
+    provider_id: "mcp"
 ```
 
 A storage provider must be specified to load GraphQL operations.
