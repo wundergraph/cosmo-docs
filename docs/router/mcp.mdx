@@ -178,7 +178,7 @@ mcp:
 storage_providers:
   file_system:
     - id: "mcp"
-      path: "/path/to/operations"
+      path: "operations" # Relative to the router binary
 ```
 
 ### Configuration Options
@@ -202,7 +202,7 @@ MCP loads operations from a configured file system storage provider. This allows
 storage_providers:
   file_system:
     - id: "mcp"
-      path: "/path/to/operations"
+      path: "operations" # Relative to the router binary
 ```
 
 Then reference this storage provider in your MCP configuration:
