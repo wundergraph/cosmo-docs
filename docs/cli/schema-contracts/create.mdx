@@ -1,7 +1,7 @@
 ---
 title: "Create"
 description: "Creates a contract from a federated graph or monograph."
-icon: plus
+icon: "plus"
 ---
 
 ## Usage
@@ -24,7 +24,7 @@ The `npx wgc contract create` command allows you to create a contract from a fed
 
 ## Parameters
 
-* `<name>`: The name of the contract graph you want to create.
+- `<name>`: The name of the contract graph you want to create.
 
 ## Required Options
 
@@ -35,34 +35,27 @@ The `npx wgc contract create` command allows you to create a contract from a fed
 ## Options
 
 <Note>
-  The --exclude and --include options are currently *mutually exclusive*. An error will be returned if more than one are defined.
+  The --exclude and --include options are currently _mutually exclusive_. An error will be returned if more than one are defined.
 </Note>
 
-* `-n, --namespace` : The namespace of the contract graph and source graph (Default: "default").
-
-* `--exclude` : The list of tags that need to be excluded from the source graph schema.
-
-* `--include` : The list of tags that need to be included from the source graph schema.
-
-* `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the contract graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
-
-* `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
-
-* `--readme` : The markdown file which describes the contract graph.
-
-* `--suppress-warnings`: This flag suppresses any warnings produced by composition.
+- `-n, --namespace` : The namespace of the contract graph and source graph (Default: "default").
+- `--exclude` : The list of tags that need to be excluded from the source graph schema.
+- `--include` : The list of tags that need to be included from the source graph schema.
+- `--admission-webhook-url <url>` the base url of the admission webhook. This is the url that the controlplane will use to implement admission control for the contract graph. Example: `https://admission.example.com` (without the `/validate-config` path name)
+- `--admission-webhook-secret`: Allows you to sign requests (HMAC) made to your admission webhook url. The header containing this signature is `X-Cosmo-Signature-256`
+- `--readme` : The markdown file which describes the contract graph.
+- `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 ## Examples
 
 ```bash
-npx wgc contract create production-external --source production --exlude internal,experimental -r http://router.example.com/graphql
+npx wgc contract create production-external --source production --exlude internal experimental -r http://router.example.com/graphql
 ```
 
 Create a contract graph named `production-external` from the source graph schema of `production` that excludes all schema elements tagged with `internal` or `experimental`.
 
 ```bash
-npx wgc contract create production-external --source production --include public,api -r http://router.example.com/graphql
+npx wgc contract create production-external --source production --include public api -r http://router.example.com/graphql
 ```
 
 Create a contract graph named `production-external` from the source graph schema of `production` that excludes all schema elements tagged with `public` or `api`.
-
