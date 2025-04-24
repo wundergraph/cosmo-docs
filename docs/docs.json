@@ -63,10 +63,10 @@
       {
         "group": "Concepts",
         "pages": [
+          "concepts/proposals",
           "concepts/feature-flags",
           "concepts/namespaces",
           "concepts/schema-contracts",
-          "concepts/schema-proposals",
           "concepts/cache-warmer",
           "concepts/router-compatibility-versions"
         ]
@@ -240,17 +240,6 @@
               "cli/schema-contracts/create",
               "cli/schema-contracts/update",
               "cli/schema-contracts/delete-list-fetch-and-more"
-            ]
-          },
-          {
-            "group": "Proposals",
-            "icon": "clipboard-check",
-            "pages": [
-              "cli/proposal",
-              "cli/proposal/create",
-              "cli/proposal/update",
-              "cli/proposal/review",
-              "cli/proposal/implement"
             ]
           },
           {
