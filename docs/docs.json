@@ -79,6 +79,7 @@
             "icon": "sign-post",
             "pages": [
               "federation/directives",
+              "federation/federation-directives-index",
               "federation/directives/shareable",
               "federation/directives/authenticated",
               "federation/directives/requiresscopes",
