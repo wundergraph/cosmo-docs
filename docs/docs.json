@@ -264,6 +264,15 @@
               "cli/feature-flags/update-feature-flag",
               "cli/feature-flags/delete-feature-flag"
             ]
+          },
+          {
+            "group": "Proposal",
+            "icon": "file-circle-plus",
+            "pages": [
+              "cli/proposal",
+              "cli/proposal/create",
+              "cli/proposal/update"
+            ]
           }
         ]
       },
