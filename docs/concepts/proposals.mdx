@@ -57,7 +57,7 @@ The typical workflow for proposals includes:
 Use the [`wgc proposal create`](/cli/proposal/create) command to create a new proposal:
 
 ```bash
-npx wgc proposal create [name] --federation-graph [federated-graph-name] --subgraph/--new-subgraph/--deleted-subgraph [options]
+npx wgc proposal create <name> --federation-graph <federated-graph-name> (--subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name>)... [options]
 ```
 
 ### Updating a Proposal
@@ -65,7 +65,7 @@ npx wgc proposal create [name] --federation-graph [federated-graph-name] --subgr
 Use the [`wgc proposal update`](/cli/proposal/update) command to modify an existing proposal:
 
 ```bash
-npx wgc proposal update [name] --federation-graph [federated-graph-name] --subgraph/--new-subgraph/--deleted-subgraph [options]
+npx wgc proposal update <name> --federation-graph <federated-graph-name> (--subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name>)... [options]
 ```
 
 **Note**: When updating a proposal, any subgraphs you specify will completely replace the corresponding subgraphs in the existing proposal. The update is not incremental.

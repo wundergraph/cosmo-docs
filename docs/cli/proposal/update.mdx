@@ -7,7 +7,7 @@ icon: pen-to-square
 ## Usage
 
 ```bash
-npx wgc proposal update <name> --federation-graph <federated-graph-name> --subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name> [options]
+npx wgc proposal update <name> --federation-graph <federated-graph-name> (--subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name>)... [options]
 ```
 
 <Info>
@@ -44,6 +44,10 @@ When you specify subgraphs in the update command, they will completely replace t
 
 - `--deleted-subgraph <name>`: Specify a subgraph to be deleted in the proposal. Can be specified multiple times.
   - Example: `--deleted-subgraph outdated-service`
+
+<Info>
+  Atleast one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must be provided.
+</Info>
 
 ## **Examples**
 

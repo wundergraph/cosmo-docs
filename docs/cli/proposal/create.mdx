@@ -7,7 +7,7 @@ icon: plus
 ## Usage
 
 ```bash
-npx wgc proposal create <name> --federation-graph <federated-graph-name> --subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name> [options]
+npx wgc proposal create <name> --federation-graph <federated-graph-name> (--subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name>)... [options]
 ```
 
 <Info>
@@ -41,6 +41,10 @@ The `npx wgc proposal create` command allows you to create a new proposal for fe
 
 - `--deleted-subgraph <name>`: Specify a subgraph to be deleted in the proposal. Can be specified multiple times.
   - Example: `--deleted-subgraph legacy-products`
+
+<Info>
+  Atleast one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must be provided.
+</Info>
 
 ## **Examples**
 
