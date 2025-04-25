@@ -265,6 +265,7 @@
               "cli/feature-flags/delete-feature-flag"
             ]
           },
+          "cli/mcp",
           {
             "group": "Proposal",
             "icon": "file-circle-plus",
@@ -372,6 +373,7 @@
               "router/configuration/template-expressions"
             ]
           },
+          "router/mcp",
           "router/custom-modules",
           "router/authentication-and-authorization",
           {
@@ -490,6 +492,7 @@
             ]
           },
           "router/compliance-and-data-management",
+          "router/query-batching",
           "router/subgraph-error-propagation",
           "router/file-upload",
           "router/access-logs",

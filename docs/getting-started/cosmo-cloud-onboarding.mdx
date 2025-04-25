@@ -76,7 +76,7 @@ A **federated graph** requires subgraphs to function. Without subgraphs, it cann
 
 For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. Follow the order below to ensure proper configuration:
 
-<CardGroup cols={2}>
+<CardGroup cols="2">
   <Card title="Products" icon="square-1" horizontal>
     
   </Card>
@@ -96,9 +96,9 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     1. Create the subgraph:
 
     ```bash
-    wgc subgraph create employees \
+    wgc subgraph create products \
         --namespace development \
-        --routing-url https://employees-api.fly.dev/graphql
+        --routing-url https://product-api.fly.dev/graphql
     ```
 
     1. Download the schema and publish it:
@@ -114,9 +114,9 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     1. Create the subgraph:
 
     ```bash
-    wgc subgraph create products \
+    wgc subgraph create employees \
         --namespace development \
-        --routing-url https://product-api.fly.dev/graphql
+        --routing-url https://employee-api.fly.dev/graphql
     ```
 
     1. Download the schema and publish it:
@@ -143,8 +143,8 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
 
     ```bash
     wgc subgraph create mood \
-      --namespace development \
-      --routing-url https://mood-api.fly.dev/graphql
+        --namespace development \
+        --routing-url https://mood-api.fly.dev/graphql
     ```
 
     1. Download the schema and publish it:
@@ -152,8 +152,8 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     ```bash
     curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/mood/subgraph/schema.graphqls \
     && wgc subgraph publish mood \
-      --namespace development \
-      --schema ./schema.graphqls
+        --namespace development \
+        --schema ./schema.graphqls
     ```
 
     After publishing the Mood subgraph schema, several composition errors have been resolved. Next, publish the Availability subgraph.
@@ -162,10 +162,9 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     1. Create the subgraph:
 
     ```bash
-    curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/products/subgraph/schema.graphqls \
-    && wgc subgraph publish products \
+    wgc subgraph create availability \
         --namespace development \
-        --schema ./schema.graphqls
+      	--routing-url https://availability-api.fly.dev/graphql
     ```
 
     1. Download the schema and publish it:
@@ -173,8 +172,8 @@ For this demo, you'll use pre-deployed demo subgraphs on a serverless platform. 
     ```bash
     curl -O https://raw.githubusercontent.com/wundergraph/cosmo/refs/heads/main/demo/pkg/subgraphs/availability/subgraph/schema.graphqls \
     && wgc subgraph publish availability \
-        --namespace development \
-        --schema ./schema.graphqls
+         --namespace development \
+         --schema ./schema.graphqls
     ```
 
     After publishing the schema, there should be no composition errors. Your graph has been successfully composed and is now ready to be retrieved by the router.
