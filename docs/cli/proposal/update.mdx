@@ -7,7 +7,7 @@ icon: pen-to-square
 ## Usage
 
 ```bash
-npx wgc proposal update [name] --federation-graph [federated-graph-name] --subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name> [options]
+npx wgc proposal update <name> --federation-graph <federated-graph-name> --subgraph <subgraph> --new-subgraph <subgraph> --deleted-subgraph <subgraph-name> [options]
 ```
 
 <Info>
@@ -30,7 +30,7 @@ When you specify subgraphs in the update command, they will completely replace t
 
 - `-f, --federation-graph <federatedGraphName>` (required): The name of the federated graph this proposal is for.
 
-- `-n, --namespace <namespace>` : The namespace of the federated graph (Default: "default").
+- `-n, --namespace [namespace]` : The namespace of the federated graph (Default: "default").
 
 - `--subgraph <subgraph>`: Specify a subgraph to update in the proposal with its updated schema. Can be specified multiple times for different subgraphs.
 
