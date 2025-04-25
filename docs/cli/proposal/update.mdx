@@ -45,9 +45,9 @@ When you specify subgraphs in the update command, they will completely replace t
 - `--deleted-subgraph <name>`: Specify a subgraph to be deleted in the proposal. Can be specified multiple times.
   - Example: `--deleted-subgraph outdated-service`
 
-<Info>
-  Atleast one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must be provided.
-</Info>
+<Note>
+  At least one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must be provided.
+</Note>
 
 ## **Examples**
 
@@ -77,11 +77,6 @@ npx wgc proposal update revised-plan --federation-graph my-graph \
   --new-subgraph name:analytics,schemaPath:./schemas/analytics.graphql,labels:"team=data" \
   --deleted-subgraph unused-service
 ```
-
-<Note>
-  At least one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must
-  be provided to update the proposal.
-</Note>
 
 <Warning>
   Remember that each subgraph specified in the update command will override the

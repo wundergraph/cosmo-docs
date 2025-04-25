@@ -42,9 +42,9 @@ The `npx wgc proposal create` command allows you to create a new proposal for fe
 - `--deleted-subgraph <name>`: Specify a subgraph to be deleted in the proposal. Can be specified multiple times.
   - Example: `--deleted-subgraph legacy-products`
 
-<Info>
-  Atleast one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must be provided.
-</Info>
+<Note>
+  At least one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must be provided.
+</Note>
 
 ## **Examples**
 
@@ -74,8 +74,3 @@ npx wgc proposal create quarterly-update --federation-graph my-graph \
   --new-subgraph name:reviews,schemaPath:./schemas/reviews.graphql,labels:"team=product" \
   --deleted-subgraph legacy-products
 ```
-
-<Note>
-  At least one of `--subgraph`, `--new-subgraph`, or `--deleted-subgraph` must
-  be provided.
-</Note>
