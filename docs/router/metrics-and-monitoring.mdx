@@ -42,6 +42,10 @@ We collect the following metrics to get useful insights in the HTTP traffic:
 
 * `router.http.requests.error`: Total number of failed requests.
 
+Additionally, we expose the following metric:
+
+* `router_info`: Provides information about the router configuration versions currently in use. There will be one entry for the base configuration and additional entries for each feature flag. For the base configuration, no feature flag name will be attached. The metric value is always set to 1.
+
 #### GraphQL specific metrics
 
 `router.graphql.operation.planning_time`: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
