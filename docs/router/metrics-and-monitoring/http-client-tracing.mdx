@@ -1,0 +1,131 @@
+# HTTP Client Tracing Metrics
+
+The Cosmo Router provides detailed HTTP client tracing metrics that help monitor and debug HTTP requests. These metrics are available when tracing is enabled and provide insights into various stages of HTTP request processing.
+
+## Configuration
+
+HTTP client tracing can be enabled in the router configuration. There are two types of tracing available:
+
+- **Log Hooks**: Enable detailed logging of HTTP client events
+- **Trace Hooks**: Enable OpenTelemetry tracing of HTTP client events
+
+### Configuration Example
+
+```yaml
+telemetry:
+  request_transport_trace:
+    log_hooks: true    # Enable detailed logging of HTTP client events
+    trace_hooks: true  # Enable OpenTelemetry tracing of HTTP client events
+```
+
+Both options are disabled by default. You can enable either or both depending on your needs:
+- Use `log_hooks` for detailed logging in your application logs
+- Use `trace_hooks` to collect metrics through OpenTelemetry
+
+The tracing implementation is based on Go's standard library [`http.ClientTrace`](https://pkg.go.dev/net/http/httptrace#ClientTrace) type, which provides hooks for various stages of an HTTP request. The router extends this functionality by exposing these events as OpenTelemetry metrics and detailed logs.
+
+We will be referring to the go sourcecode comments for documentation, as we trace based on when go runs these hooks.
+
+### GetConn
+[`GetConn`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L85) is called before a connection is created or retrieved from an idle pool. 
+
+- `wg.transport.trace.getconn.time`: Timestamp when attempting to get a connection
+- `wg.transport.trace.getconn.hostport`: The host and port being connected to
+
+### GotConn
+[`GotConn`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L87) should be called after when a connection is obtained. Is called after `GetConn`.
+
+- `wg.transport.trace.gotconn.time`: Timestamp when a connection is established, you can measure the duration taken to obtain a connection by getting the difference of this attribute and `wg.transport.trace.getconn.time`
+- `wg.transport.trace.gotconn.reused`: Whether the connection was reused
+- `wg.transport.trace.gotconn.wasidle`: Whether the connection was idle
+- `wg.transport.trace.gotconn.idletime`: Duration the connection was idle
+
+### ConnectStart
+[`ConnectStart`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L123) is called when a new connection's Dial begins.
+
+- `wg.transport.trace.connectstart.time`: Timestamp when connection attempt starts
+- `wg.transport.trace.connectstart.network`: Network type (e.g., "tcp")
+- `wg.transport.trace.connectstart.address`: Address being connected to
+
+### ConnectDone
+[`ConnectDone`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L133) is called when a new connection's Dial completes. Is called after `ConnectStart`.
+
+- `wg.transport.trace.connectdone.time`: Timestamp when connection attempt completes, you can get the duration by getting the difference of this attribute and `wg.transport.trace.connectstart.time`
+- `wg.transport.trace.connectdone.network`: Network type used
+- `wg.transport.trace.connectdone.address`: Address connected to
+- `wg.transport.trace.connectdone.error`: Any error that occurred during connection
+
+### PutIdleConn
+[`PutIdleConn`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L101) is called when the connection is returned to the idle pool. Is Usually called after the request has been completed.
+- `wg.transport.trace.putidleconn.time`: Timestamp when returning a connection to the idle pool
+- `wg.transport.trace.putidleconn.error`: Any error that occurred while putting the connection back to idle
+
+### GotFirstResponseByte
+[`GotFirstResponseByte`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L105) is called when the first byte of the response headers is available.
+- `wg.transport.trace.gotfirstresponsebyte.time`: Timestamp when the first response byte is received
+
+### Got100Continue
+[`Got100Continue`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L109) is called when the server responds with a "100 Continue" response.
+- `wg.transport.trace.got100continue.time`: Timestamp when a 100 Continue response is received
+- `wg.transport.trace.wait100continue.time`: Timestamp when waiting for a 100 Continue response
+
+
+### DNSStart
+[`DNSStart`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L118) is called when DNS Lookup begins.
+
+- `wg.transport.trace.dnsstart.time`: Timestamp when DNS resolution starts
+- `wg.transport.trace.dnsstart.host`: The hostname being resolved
+
+### DNSDone
+[`DNSDone`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L121) is called when DNS Lookup ends. Is called after DNSStart.
+
+- `wg.transport.trace.dnsdone.time`: Timestamp when DNS resolution completes. You can calculate the duration by finding the difference between this and `wg.transport.trace.dnsstart.time`.
+- `wg.transport.trace.dnsdone.addresses`: List of resolved IP addresses
+- `wg.transport.trace.dnsdone.coalesced`: Whether DNS queries were coalesced
+- `wg.transport.trace.dnsdone.error`: Any error that occurred during DNS resolution
+
+
+### TLSHandshakeStart
+[`TLSHandshakeStart`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L138) is called when the TLS handshake is started.
+
+- `wg.transport.trace.tlshandshakestart.time`: Timestamp when TLS handshake starts
+
+### TLSHandshakeDone
+[`TLSHandshakeDone`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L143) is called when the TLS handshake is done. This is called after "TLSHandshakeStart".
+
+- `wg.transport.trace.tlshandshakedone.time`: Timestamp when TLS handshake completes
+- `wg.transport.trace.tlshandshakedone.complete`: Whether the handshake completed successfully
+- `wg.transport.trace.tlshandshakedone.error`: Any error that occurred during TLS handshake
+- `wg.transport.trace.tls.cipher`: The cipher suite used
+- `wg.transport.trace.tls.resumed`: Whether the session was resumed
+- `wg.transport.trace.tls.protocol_version`: The TLS protocol version used
+
+### WroteHeaders
+[`WroteHeaders`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L152) is called after the transport has written all request headers.
+
+- `wg.transport.trace.wroteheaders.time`: Timestamp when request headers are written
+
+### WroteRequest
+[`WroteRequest`] is called with the result of the writing the request.
+
+- `wg.transport.trace.wroterequest.time`: Timestamp when the request is fully written
+- `wg.transport.trace.wroterequest.error`: Any error that occurred while writing the request
+
+## Usage
+
+These metrics are automatically collected when tracing is enabled in the router configuration. They can be used to:
+
+- Monitor connection pool behavior
+- Debug slow DNS resolutions
+- Track TLS handshake performance
+- Identify connection reuse patterns
+- Troubleshoot request/response timing issues
+
+It is important to note that in certain situations, depending on how go handles the request some of the hooks can be called multiple times. For example in the case of retries `WroteRequest` can be called multiple times. In case a hook is called multiple times we only trace the latest value, however each call of the hook is logged.
+
+Every hook has a `time` attribute span, which can be used to either calculate slow areas of a request. For example to calculate how long it took to obtain a connection, you can do the following
+
+`wg.transport.trace.gotconn.time - `wg.transport.trace.getconn.time`
+
+
+
