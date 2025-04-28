@@ -1,6 +1,14 @@
-# HTTP Client Tracing Metrics
+---
+title: "HTTP Client Tracing Metrics"
+description: "The router provides additional information for request traces, this is available as span attributes as well as logs."
+icon: "chart-line"
+---
+
+# Introduction
 
 The Cosmo Router provides detailed HTTP client tracing metrics that help monitor and debug HTTP requests. These metrics are available when tracing is enabled and provide insights into various stages of HTTP request processing.
+
+The tracing implementation is based on Go's standard library [`http.ClientTrace`](https://pkg.go.dev/net/http/httptrace#ClientTrace) type, which provides hooks for various stages of an HTTP request. The router extends this functionality by exposing these events as OpenTelemetry metrics and detailed logs.
 
 ## Configuration
 
@@ -21,10 +29,6 @@ telemetry:
 Both options are disabled by default. You can enable either or both depending on your needs:
 - Use `log_hooks` for detailed logging in your application logs
 - Use `trace_hooks` to collect metrics through OpenTelemetry
-
-The tracing implementation is based on Go's standard library [`http.ClientTrace`](https://pkg.go.dev/net/http/httptrace#ClientTrace) type, which provides hooks for various stages of an HTTP request. The router extends this functionality by exposing these events as OpenTelemetry metrics and detailed logs.
-
-We will be referring to the go sourcecode comments for documentation, as we trace based on when go runs these hooks.
 
 ### GetConn
 [`GetConn`](https://github.com/golang/go/blob/f9ce1dddc264cb30e68bfedbabf159b32bb6a719/src/net/http/httptrace/trace.go#L85) is called before a connection is created or retrieved from an idle pool. 
@@ -111,6 +115,15 @@ We will be referring to the go sourcecode comments for documentation, as we trac
 - `wg.transport.trace.wroterequest.time`: Timestamp when the request is fully written
 - `wg.transport.trace.wroterequest.error`: Any error that occurred while writing the request
 
+## Viewing Traces
+
+All HTTP client tracing attributes are attached to the "Engine - Fetch" span in your tracing backend. This span represents the entire subgraph fetch operation and contains all the transport-level attributes.
+
+Here's an example of how the trace looks in your tracing backend:
+
+![HTTP Client Trace Example](/images/httptrace.png)
+
+
 ## Usage
 
 These metrics are automatically collected when tracing is enabled in the router configuration. They can be used to:
@@ -125,7 +138,11 @@ It is important to note that in certain situations, depending on how go handles 
 
 Every hook has a `time` attribute span, which can be used to either calculate slow areas of a request. For example to calculate how long it took to obtain a connection, you can do the following
 
-`wg.transport.trace.gotconn.time - `wg.transport.trace.getconn.time`
+```
+wg.transport.trace.gotconn.time - wg.transport.trace.getconn.time
+```
+
+
 
 
 
