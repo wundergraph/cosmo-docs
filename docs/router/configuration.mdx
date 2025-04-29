@@ -1555,7 +1555,9 @@ Configure the GraphQL Execution Engine of the Router.
 |ENGINE\_WEBSOCKET\_CLIENT\_CONN\_BUFFER\_SIZE|websocket\_client\_conn\_buffer\_size| <Icon icon="square" /> |The buffer size for the poll buffer of the WebSocket client implementation. The buffer size determines how many connections can be handled in one loop. | 128 |
 |ENGINE\_WEBSOCKET\_CLIENT\_READ\_TIMEOUT|websocket\_client\_read\_timeout| <Icon icon="square" /> |The timeout for the websocket read of the WebSocket client implementation. | 5s |
 |ENGINE\_WEBSOCKET\_CLIENT\_WRITE\_TIMEOUT|websocket\_client\_write\_timeout| <Icon icon="square" /> |The timeout for the websocket write of the WebSocket client implementation. | 10s |
-|ENGINE\_WEBSOCKET\_CLIENT\_PING\_INTERVAL|websocket\_client\_ping\_interval| <Icon icon="square" /> |The Websocket client ping interval to the subgraph. Defines how often the router will ping the subgraph to signal that the connection is still alive. | 10s |
+|ENGINE\_WEBSOCKET\_CLIENT\_PING\_INTERVAL|websocket\_client\_ping\_interval| <Icon icon="square" /> |The Websocket client ping interval to the subgraph. Defines how often the router will ping the subgraph to signal that the connection is still alive. Timeout needs to be coordinated with the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 15s |
+|ENGINE\_WEBSOCKET\_CLIENT\_PING\_TIMEOUT|websocket\_client\_ping\_timeout| <Icon icon="square" /> |The Websocket client ping timeout to the subgraph. Defines how long the router will wait for a ping response from the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 30s |
+|ENGINE\_WEBSOCKET\_CLIENT\_FRAME\_TIMEOUT|websocket\_client\_frame\_timeout| <Icon icon="square" /> |The Websocket client frame timeout to the subgraph. Defines how long the router will wait for a frame response from the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 100ms |
 |ENGINE\_EXECUTION\_PLAN\_CACHE\_SIZE|execution\_plan\_cache\_size| <Icon icon="square" /> |Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency. | 1024 |
 |ENGINE\_MINIFY\_SUBGRAPH\_OPERATIONS|minify\_subgraph\_operations| <Icon icon="square" /> |Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times. | false |
 |ENGINE\_ENABLE\_PERSISTED\_OPERATIONS\_CACHE|enable\_persisted\_operations\_cache| <Icon icon="square" /> |Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance. | true |
@@ -1585,7 +1587,9 @@ Configure the GraphQL Execution Engine of the Router.
     epoll_kqueue_conn_buffer_size: 128
     websocket_client_read_timeout: "1s"
     websocket_client_write_timeout: "5s"
-    websocket_client_ping_interval: "10s"
+    websocket_client_ping_interval: "15s"
+    websocket_client_ping_timeout: "30s"
+    websocket_client_frame_timeout: "100ms"
     execution_plan_cache_size: 10000
     minify_subgraph_operations: true
     enable_persisted_operations_cache: true
