@@ -42,6 +42,10 @@ We collect the following metrics to get useful insights in the HTTP traffic:
 
 * `router.http.requests.error`: Total number of failed requests.
 
+Additionally, we expose the following metric:
+
+* `router_info`: Provides information about the router configuration versions currently in use. There will be one entry for the base configuration and additional entries for each feature flag. For the base configuration, no feature flag name will be attached. The metric value is always set to 1.
+
 #### GraphQL specific metrics
 
 `router.graphql.operation.planning_time`: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
@@ -305,3 +309,14 @@ By collecting the metrics, you can find answers to the following questions:
 * What's the resource utilization in terms of CPU / Memory of my router instance?
 
 * What're the Go runtime information of my router instance?
+
+### HTTP Client Tracing Metrics
+
+The router provides detailed HTTP client tracing metrics that help monitor and debug HTTP requests to subgraphs. These metrics provide insights into various stages of HTTP request processing, including:
+
+- Connection pool behavior
+- DNS resolution
+- TLS handshake performance
+- Request/response timing
+
+For a complete list of available HTTP client tracing metrics, see the [HTTP Client Tracing Metrics](/router/http-client-tracing) documentation.
