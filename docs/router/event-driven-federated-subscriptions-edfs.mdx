@@ -1,22 +1,20 @@
 ---
 title: "Event-Driven Federated Subscriptions (EDFS)"
-description: "EDFS combines the power of GraphQL Federation and Event-Driven Architecture (Kafka, NATS, SQS) to update a user GraphQL Subscription after an event occurs in your system."
-icon: circle-info
-sidebarTitle: Overview
+description: "EDFS combines the power of GraphQL Federation and Event-Driven Architecture (Kafka, NATS) to update a user GraphQL Subscription after an event occurs in your system."
+icon: "circle-info"
+sidebarTitle: "Overview"
 ---
 
 <Frame>
-   <img src="/images/router/image-8.png" />
+  ![](/images/router/image-8.png)
 </Frame>
 
-Event Driven Federated Subscriptions (EDFS) solves 3 major problems when it comes to GraphQL Federation and Subscriptions by directly connecting the Router to an event source like Kafka, NATS, SQS and making it a part of the Graph.
+Event Driven Federated Subscriptions (EDFS) solves 3 major problems when it comes to GraphQL Federation and Subscriptions by directly connecting the Router to an event source like Kafka and NATS and making it a part of the Graph.
 
 ## Intro
 
 1. Subscriptions can only have one single root field
-
 2. Subgraphs should be stateless
-
 3. Maintaining 3 WebSocket Connections per client is a waste of resources
 
 Let me explain the three Problems:
@@ -44,9 +42,13 @@ Enter Event-Driven Federated Subscriptions, a simple way to scale Federated Subs
 
 EDFS supports two event providers:
 
-<CardGroup>
-  <Card title="Kafka" href="/router/event-driven-federated-subscriptions-edfs/kafka" icon="sitemap" />
-  <Card title="NATS" href="/router/event-driven-federated-subscriptions-edfs/nats" icon="puzzle-piece" />
+<CardGroup cols="2">
+  <Card title="Kafka" icon="sitemap" href="/router/event-driven-federated-subscriptions-edfs/kafka">
+    
+  </Card>
+  <Card title="NATS" icon="puzzle-piece" href="/router/event-driven-federated-subscriptions-edfs/nats">
+    
+  </Card>
 </CardGroup>
 
 Each provider consists of at least Publish and Subscribe capabilities. For NATS, we also provide Request/Reply semantics, and streaming capabilities can be configured in the second argument. This enables JetStream, which adds new functionalities and higher qualities of service on top of the base "Core NATS" features.
@@ -109,18 +111,20 @@ To use EDFS, you need to have an Event Source running and connected to the Route
 To get started, run a NATS instance and add the following configuration to your `config.yaml` Router Configuration:
 
 <CodeGroup>
-  ```yaml config.yaml
-  events:
-    providers:
-      nats:
-        - id: default
-          url: "nats://localhost:4222"
-          authentication:
-            token: "my-token" # or
-            user_info:
-              username: "my-username"
-              password: "my-password"
-  ```
+
+```yaml config.yaml
+events:
+  providers:
+    nats:
+      - id: default
+        url: "nats://localhost:4222"
+        authentication:
+          token: "my-token" # or
+          user_info:
+            username: "my-username"
+            password: "my-password"
+```
+
 </CodeGroup>
 
 We've intentionally moved this part of the configuration out of the Schema to keep the directives clean and for security reasons. Additionally, separating the implementation details of the Event Source from the Schema maintains a clear separation of concerns. Infrastructure teams can focus on Event Sources and their configuration, while API Developers can concentrate on using the Event Source and connecting Event Topics to their Subgraph Schema.
@@ -208,17 +212,21 @@ Variable expansion is only supported for NATS on the subject/topic argument.
 The `@edfs_natsRequest` directive creates a response topic (internally) and sends the JSON representation of all arguments to the topic specified in the topic argument. The Router then waits synchronously on the response topic for the result. The Router expects all fields to be part of the response that are defined in the Entity type in this Schema, as well as the `__typename` field to identify the Entity. In the example, the Employee Entity contains an \`id\` field, so the following response would be valid:
 
 <CodeGroup>
-  ```json valid.json
-  {"__typename": "Employee", "id":1}
-  ```
+
+```json valid.json
+{"__typename": "Employee", "id":1}
+```
+
 </CodeGroup>
 
 The following response is invalid:
 
 <CodeGroup>
-  ```json invalid.json
-  {"id":1}
-  ```
+
+```json invalid.json
+{"id":1}
+```
+
 </CodeGroup>
 
 Once the initial result is coming back from the "Event Subgraph", the Router is capable of extending the response with fields from other "regular" Subgraphs.
@@ -276,17 +284,21 @@ The Router connects to the topic `employeeUpdated.1` and waits for the next mess
 Here's an example of a **valid** message:
 
 <CodeGroup>
-  ```json valid.json
-  {"__typename": "Employee", "id: 1}
-  ```
+
+```json valid.json
+{"__typename": "Employee", "id: 1}
+```
+
 </CodeGroup>
 
 Here's an **invalid** message as the `__typename` field is missing:
 
 <CodeGroup>
-  ```json invalid.json
-  {"id: 1}
-  ```
+
+```json invalid.json
+{"id: 1}
+```
+
 </CodeGroup>
 
 It's important to send the `__typename` field because this allows EDFS to also work for Union and Interface types.
@@ -391,7 +403,7 @@ EDFS is built on top of Event-Driven principles, which means that the implementa
 
 We're using Epoll and Kqueue on Systems that support it (Linux, Darwin, etc.) to be as efficient as possible.
 
-To give you some numbers, 10.000 clients connected to one Router consume \~150-200MB of Memory and have 0% CPU usage when idle (not publishing any messages). In addition, these 10k clients when idle require \~40 goroutines, e.g. for thread pools, etc...
+To give you some numbers, 10.000 clients connected to one Router consume ~150-200MB of Memory and have 0% CPU usage when idle (not publishing any messages). In addition, these 10k clients when idle require ~40 goroutines, e.g. for thread pools, etc...
 
 The Router supports multi-core out of the box and is capable of scaling up to a multitude of 10k events per second published.
 
