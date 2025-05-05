@@ -63,6 +63,7 @@
       {
         "group": "Concepts",
         "pages": [
+          "concepts/proposals",
           "concepts/feature-flags",
           "concepts/namespaces",
           "concepts/schema-contracts",
@@ -192,10 +193,7 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": [
-                  "cli/router/cache",
-                  "cli/router/cache/push"
-                ]
+                "pages": ["cli/router/cache", "cli/router/cache/push"]
               },
               {
                 "group": "Token",
@@ -233,10 +231,7 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": [
-              "cli/operations",
-              "cli/operations/push"
-            ]
+            "pages": ["cli/operations", "cli/operations/push"]
           },
           {
             "group": "Schema Contracts",
@@ -271,7 +266,16 @@
               "cli/feature-flags/delete-feature-flag"
             ]
           },
-          "cli/mcp"
+          "cli/mcp",
+          {
+            "group": "Proposal",
+            "icon": "file-circle-plus",
+            "pages": [
+              "cli/proposal",
+              "cli/proposal/create",
+              "cli/proposal/update"
+            ]
+          }
         ]
       },
       {
@@ -288,10 +292,7 @@
           {
             "group": "Playground++",
             "icon": "rectangle-code",
-            "pages": [
-              "studio/playground",
-              "studio/playground/custom-scripts"
-            ]
+            "pages": ["studio/playground", "studio/playground/custom-scripts"]
           },
           "studio/studio",
           "studio/compositions",
@@ -354,10 +355,7 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": [
-              "studio/policies",
-              "studio/lint-policy/linter-rules"
-            ]
+            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
           },
           "studio/graph-pruning",
           "studio/invitations"
