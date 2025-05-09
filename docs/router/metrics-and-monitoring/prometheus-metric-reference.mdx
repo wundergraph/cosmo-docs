@@ -37,6 +37,13 @@ These metrics ensure efficient request handling, operation planning, and system 
 
   * **Operation Design:** Complex queries can also lead to increased planning time as those are parsed and validated.
 
+* [`router_info`](/router/metrics-and-monitoring/prometheus-metric-reference#router_info): Info metric that provides metadata about every running router configuration.
+
+  * There will be an instance for the base router configuration as well as every feature flag configuration.
+
+  * The value will always be 1.
+
+
 ### GraphQL Operation Cache Metrics
 
 These metrics provide insights into the efficiency and effectiveness of caching GraphQL operations:
@@ -330,6 +337,27 @@ sum(rate(router_graphql_cache_requests_stats_total{cache_type="execution"}[2h]))
 * **Low Cache Hit Rate:** A decreased hit rate may indicate misconfigured cache settings or suboptimal data retrieval strategies, necessitating immediate attention to improve performance.
 
 * **Unpredictable Request Patterns:** Anomalous or erratic request patterns can signal potential application or user behavior issues, requiring prompt investigation to maintain system reliability.
+
+## `router_info`
+
+**Description:**
+
+Get router runtime information as well as detect whenever the router configuration changes. This metric is a gauge that provides metadata about the running base router configuration and feature flag router configurations.
+
+**Example PromQL Query To Detect When The Router Config Changed:**
+
+```bash
+count(count(count_over_time(router_info{wg_feature_flag=""}[20s])) by (wg_router_config_version)) > 1
+```
+
+Whenever the router execution config is updated (via a schema change for example), the router will internally restart with the new execution config version. This means that the old config version would not be available in the `router_info` metric.
+This means that we can assume for the last N (in this case 20) seconds that there would have been two router_info metrics detected for the base configuration.
+
+**Reason for Monitoring:**
+
+1. **Router Change Detection:** Monitoring whenever a new router execution configuration was pushed to the router.
+
+2. **Uptime Detection:** Whenever the router is running the `router_info` metric will be available. This can be used to detect whenever the router is down.
 
 
 ## `go_memstats_alloc_bytes`
