@@ -187,6 +187,7 @@ storage_providers:
 |--------|-------------|---------|
 | `enabled` | Enable or disable the MCP server | `false` |
 | `server.listen_addr` | The address and port where the MCP server will listen for requests | `localhost:5025` |
+| `server.base_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.  | - |
 | `router_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. | `http://{listen_addr}{graphql_path}` |
 | `storage.provider_id` | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported. | - |
 | `graph_name` | The name of the graph to be used by the MCP server | `mygraph` |
