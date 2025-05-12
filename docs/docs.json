@@ -292,7 +292,7 @@
           {
             "group": "Playground++",
             "icon": "rectangle-code",
-            "pages": ["studio/playground", "studio/playground/custom-scripts"]
+            "pages": ["studio/playground", "studio/playground/custom-scripts", "studio/playground/shared-playground-state"]
           },
           "studio/studio",
           "studio/compositions",
