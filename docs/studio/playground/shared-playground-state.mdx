@@ -9,15 +9,11 @@ When creating a shareable link, you can **choose which parts** of your Playgroun
 
 Here's what you can share:
 
-| Option                                            | Included by Default | Required |
-| :------------------------------------------------ | :------------------ | -------- |
-| GraphQL Operation (query, mutation, subscription) | ✅ Yes               | ✅ Yes    |
-| Variables                                         | ❌ Optional          | ❌ No     |
-| Headers                                           | ❌ Optional          | ❌ No     |
-
-<Note>
-  The **GraphQL operation is always included**. If variables or headers are not defined, they will appear in a disabled section labeled "No content available to share. Add content to enable sharing these options"
-</Note>
+| Option                                            | Shareable? | Required | Notes                                                                                                                                                                                                                                                               |
+| :------------------------------------------------ | :--------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GraphQL Operation (query, mutation, subscription) | Always     | Yes      | Always included by default. Cannot be deselected.                                                                                                                                                                                                                   |
+| Variables                                         | If present | No       | Included only when content is available and the option is selected. If no content is present, the option appears disabled under "No content available to share. Add content to enable sharing these options." To enable it, add relevant content in the Playground. |
+| Headers                                           | If present | No       | Included only when content is available and the option is selected. If no content is present, the option appears disabled under "No content available to share. Add content to enable sharing these options." To enable it, add relevant content in the Playground. |
 
 ## How to Share a Session?
 
@@ -33,12 +29,40 @@ Here's what you can share:
   </Step>
   <Step title="A modal will appear with options to choose:">
     - Available options will appear in top section
-    - Unavailable options (e.g., if no variables) will appear in the bottom section
+    - Unavailable options (if no content available) will appear in the bottom section
   </Step>
   <Step title="Select the available options you want to include the share link">
     
   </Step>
-  <Step title='Click "Copy link" to generate and copy the sharable URL'>
+  <Step title='Click "Copy link" to generate and copy the shareable URL'>
     
   </Step>
 </Steps>
+
+## Opening a Shared Link
+
+Recipients of a shared link will see the shared Playground session in a new tab with:
+
+- The **operation** restored exactly as composed
+- Optional **variables** and **headers** if they were included
+
+## Not Included in Shared Links
+
+The following are never included in the share link:
+
+- Pre-flight scripts
+- Pre-operation scripts
+- Post-operation scripts
+
+## Security Considerations
+
+- If you choose to include headers, they are compressed and encoded as part of the generated URL.
+- While the data is not human-readable, it is accessible to anyone who has the link.
+- For your safety, avoid including sensitive data such as API tokens or credentials in shared headers.
+
+## Use Cases
+
+- Share reproducible bugs with your team
+- Collaborate on queries with full context
+- Link to example queries in internal docs
+- Speed up onboarding of new developers with pre-filled queries
