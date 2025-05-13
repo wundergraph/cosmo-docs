@@ -55,6 +55,8 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 
 * `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
+* `--label [labels...]`: The labels to apply to the new subgraph. The labels are passed in the format <key>=<value> <key>=<value>. This parameter is always ignored if the subgraph already exists.
+
 <Info>
    The check command requires either the `--schema` or `--delete` parameter.
 </Info>
@@ -66,6 +68,16 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
    ```bash
    npx wgc subgraph check products -n default --schema ./schemas/new_schema.graphql
    ```
+
+2. Check for breaking changes and composition errors for the subgraph which does not exist yet:
+
+   ```bash
+   npx wgc subgraph check newSubgraph -n default --schema ./schemas/new_schema.graphql --label team=A
+   ```
+
+<Info>
+   The labels should match the labels of the federated graph you want to check against.
+</Info>
 
 ## Sample output with changes and errors
 
