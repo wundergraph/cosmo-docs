@@ -165,8 +165,8 @@ To enable MCP in your Cosmo Router, add the following configuration to your `con
 mcp:
   enabled: true
   server:
-    port: 5025
-  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use this when router is behind a proxy
+    listen_addr: "localhost:5025"
+  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use when router is behind a proxy
   storage:
     provider_id: "mcp"  # References a file_system provider defined below
   graph_name: "my-graph"
@@ -186,10 +186,11 @@ storage_providers:
 | Option | Description | Default |
 |--------|-------------|---------|
 | `enabled` | Enable or disable the MCP server | `false` |
-| `server.port` | The port where the MCP server will listen for requests | `5025` |
+| `server.listen_addr` | The address and port where the MCP server will listen for requests | `localhost:5025` |
+| `server.base_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.  | - |
 | `router_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. | `http://{listen_addr}{graphql_path}` |
 | `storage.provider_id` | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported. | - |
-| `graph_name` | The name of the graph to be used by the MCP server | `cosmo` |
+| `graph_name` | The name of the graph to be used by the MCP server | `mygraph` |
 | `exclude_mutations` | Whether to exclude mutation operations from being exposed | `false` |
 | `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |
 | `expose_schema` | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |

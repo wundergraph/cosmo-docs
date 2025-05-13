@@ -63,6 +63,7 @@
       {
         "group": "Concepts",
         "pages": [
+          "concepts/proposals",
           "concepts/feature-flags",
           "concepts/namespaces",
           "concepts/schema-contracts",
@@ -79,6 +80,7 @@
             "icon": "sign-post",
             "pages": [
               "federation/directives",
+              "federation/federation-directives-index",
               "federation/directives/shareable",
               "federation/directives/authenticated",
               "federation/directives/requiresscopes",
@@ -191,10 +193,7 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": [
-                  "cli/router/cache",
-                  "cli/router/cache/push"
-                ]
+                "pages": ["cli/router/cache", "cli/router/cache/push"]
               },
               {
                 "group": "Token",
@@ -232,10 +231,7 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": [
-              "cli/operations",
-              "cli/operations/push"
-            ]
+            "pages": ["cli/operations", "cli/operations/push"]
           },
           {
             "group": "Schema Contracts",
@@ -270,7 +266,16 @@
               "cli/feature-flags/delete-feature-flag"
             ]
           },
-          "cli/mcp"
+          "cli/mcp",
+          {
+            "group": "Proposal",
+            "icon": "file-circle-plus",
+            "pages": [
+              "cli/proposal",
+              "cli/proposal/create",
+              "cli/proposal/update"
+            ]
+          }
         ]
       },
       {
@@ -289,7 +294,8 @@
             "icon": "rectangle-code",
             "pages": [
               "studio/playground",
-              "studio/playground/custom-scripts"
+              "studio/playground/custom-scripts",
+              "studio/playground/shared-playground-state"
             ]
           },
           "studio/studio",
@@ -353,10 +359,7 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": [
-              "studio/policies",
-              "studio/lint-policy/linter-rules"
-            ]
+            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
           },
           "studio/graph-pruning",
           "studio/invitations"
@@ -599,6 +602,10 @@
     },
     "osano": {
       "scriptSource": "https://cmp.osano.com/useYQdd6k1/6006b494-d3ca-4de7-860d-e8e78f744c5f/osano.js"
+    },
+    "posthog": {
+      "apiKey": "phc_CEnvoyw3KcTuC5E1seDPrgvAamgGRDLfzPi1e7RU1G1",
+      "apiHost": "https://eu.i.posthog.com"
     }
   }
 }
