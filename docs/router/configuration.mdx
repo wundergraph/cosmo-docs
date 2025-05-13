@@ -1,8 +1,8 @@
 ---
 title: "Router Configuration"
 description: "Router Configuration Reference"
-icon: circle-info
-sidebarTitle: Overview
+icon: "circle-info"
+sidebarTitle: "Overview"
 ---
 
 The router provides three different ways of customization:
@@ -126,6 +126,7 @@ The following sections describe each configuration in detail with all available 
 | LOCALHOST_FALLBACK_INSIDE_DOCKER | localhost_fallback_inside_docker | <Icon icon="square" />                        | Enable fallback for requests that fail to connect to localhost while running in Docker                                                                                                             | true                             |
 | DEV_MODE                         | dev_mode                         | <Icon icon="square" />                        | Enables pretty log output and allows to use [Advanced Request Tracing (ART)](/router/advanced-request-tracing-art) without further security protection.                                            | false                            |
 | INSTANCE_ID                      | instance_id                      | <Icon icon="square" />                        | If not specified, a new ID will be generated with each router start. A stable ID ensures that metrics with the same ID are grouped together and the same server can be identified on the platform. |                                  |
+| DEMO_MODE                        | demo_mode                        | <Icon icon="square" />                        | Launch the router in demo mode. If no execution config is found, the router will start with a demo execution config and deploy a demo federated graph that can be used for testing purposes.       |                                  |
 
 ### Example configuration:
 
@@ -977,10 +978,10 @@ storage_providers:
 
 This provider allows you to load files from the local file system. This is particularly useful for the MCP server to load GraphQL operations.
 
-| Environment Variable      | YAML | Required                                      | Description                                                      | Default Value |
-| ------------------------- | ---- | --------------------------------------------- | ---------------------------------------------------------------- | ------------- |
-| STORAGE_PROVIDER_FS_ID    | id   | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations       |               |
-| STORAGE_PROVIDER_FS_PATH  | path | <Icon icon="square-check" iconType="solid" /> | The path on the file system where files should be loaded from    |               |
+| Environment Variable     | YAML | Required                                      | Description                                                   | Default Value |
+| ------------------------ | ---- | --------------------------------------------- | ------------------------------------------------------------- | ------------- |
+| STORAGE_PROVIDER_FS_ID   | id   | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations   |               |
+| STORAGE_PROVIDER_FS_PATH | path | <Icon icon="square-check" iconType="solid" /> | The path on the file system where files should be loaded from |               |
 
 <Note>
   The file system storage provider is **currently only supported by the MCP feature**. It cannot be used for persisted operations or execution configurations.
@@ -990,34 +991,34 @@ This provider allows you to load files from the local file system. This is parti
 
 Used for distributed caching like automatic persisted queries.
 
-| Environment Variable              | YAML            | Required                                      | Description                                                                           | Default Value |
-| --------------------------------- | --------------- | --------------------------------------------- | ------------------------------------------------------------------------------------- | ------------- |
-| STORAGE_PROVIDER_REDIS_ID         | id              | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations                            |               |
-| STORAGE_PROVIDER_REDIS_URLS        | urls            | <Icon icon="square-check" iconType="solid" /> | List of Redis URLs to connect to. If cluster_enabled is true, these are the seeds to discover the cluster |               |
-| STORAGE_PROVIDER_REDIS_CLUSTER_ENABLED | cluster_enabled | <Icon icon="square" />                        | Whether to use the Redis Cluster client                                               | false         |
+| Environment Variable                   | YAML            | Required                                      | Description                                                                                               | Default Value |
+| -------------------------------------- | --------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------- |
+| STORAGE_PROVIDER_REDIS_ID              | id              | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations                                               |               |
+| STORAGE_PROVIDER_REDIS_URLS            | urls            | <Icon icon="square-check" iconType="solid" /> | List of Redis URLs to connect to. If cluster_enabled is true, these are the seeds to discover the cluster |               |
+| STORAGE_PROVIDER_REDIS_CLUSTER_ENABLED | cluster_enabled | <Icon icon="square" />                        | Whether to use the Redis Cluster client                                                                   | false         |
 
 #### S3 Storage Provider
 
 For storing operations and configs in S3-compatible storage.
 
-| Environment Variable | YAML       | Required                                      | Description                                                    | Default Value |
-| -------------------- | ---------- | --------------------------------------------- | -------------------------------------------------------------- | ------------- |
-|                      | id         | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations     |               |
-|                      | endpoint   | <Icon icon="square-check" iconType="solid" /> | The endpoint of the S3 service                                 |               |
-|                      | access_key | <Icon icon="square-check" iconType="solid" /> | The access key for the S3 service                              |               |
-|                      | secret_key | <Icon icon="square-check" iconType="solid" /> | The secret key for the S3 service                              |               |
-|                      | bucket     | <Icon icon="square-check" iconType="solid" /> | The bucket where objects will be stored                        |               |
-|                      | region     | <Icon icon="square" />                        | The region of the S3 bucket                                    |               |
-|                      | secure     | <Icon icon="square" />                        | Whether to use HTTPS for S3 connections                        | true          |
+| Environment Variable | YAML       | Required                                      | Description                                                 | Default Value |
+| -------------------- | ---------- | --------------------------------------------- | ----------------------------------------------------------- | ------------- |
+|                      | id         | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations |               |
+|                      | endpoint   | <Icon icon="square-check" iconType="solid" /> | The endpoint of the S3 service                              |               |
+|                      | access_key | <Icon icon="square-check" iconType="solid" /> | The access key for the S3 service                           |               |
+|                      | secret_key | <Icon icon="square-check" iconType="solid" /> | The secret key for the S3 service                           |               |
+|                      | bucket     | <Icon icon="square-check" iconType="solid" /> | The bucket where objects will be stored                     |               |
+|                      | region     | <Icon icon="square" />                        | The region of the S3 bucket                                 |               |
+|                      | secure     | <Icon icon="square" />                        | Whether to use HTTPS for S3 connections                     | true          |
 
 #### CDN Provider
 
 For connecting to the Cosmo CDN.
 
-| Environment Variable | YAML | Required                                      | Description                                                      | Default Value                    |
-| -------------------- | ---- | --------------------------------------------- | ---------------------------------------------------------------- | -------------------------------- |
-|                      | id   | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations       |               |
-|                      | url  | <Icon icon="square-check" iconType="solid" /> | The URL of the CDN                                               | https://cosmo-cdn.wundergraph.com |
+| Environment Variable | YAML | Required                                      | Description                                                 | Default Value                     |
+| -------------------- | ---- | --------------------------------------------- | ----------------------------------------------------------- | --------------------------------- |
+|                      | id   | <Icon icon="square-check" iconType="solid" /> | The ID of the provider to reference in other configurations |                                   |
+|                      | url  | <Icon icon="square-check" iconType="solid" /> | The URL of the CDN                                          | https://cosmo-cdn.wundergraph.com |
 
 ## Persisted Operations
 
@@ -1054,7 +1055,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 | PERSISTED_OPERATIONS_CACHE_SIZE            | persisted_operations.cache.size            | <Icon icon="square" />                        | The size of the cache in SI unit.                                                                                                                                                                      | "100MB"       |
 |                                            | persisted_operations.storage               | <Icon icon="square" />                        | The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations. |               |
 | PERSISTED_OPERATIONS_STORAGE_PROVIDER_ID   | persisted_operations.storage.provider_id   | <Icon icon="square-check" iconType="solid" /> | The ID of the storage provider. The ID must match the ID of the storage provider in the `storage_providers` section.                                                                                   |               |
-| PERSISTED_OPERATIONS_STORAGE_OBJECT_PREFIX | persisted_operations.storage.object_prefix | <Icon icon="square-check" iconType="solid" /> | The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256.json                                                                |               |
+| PERSISTED_OPERATIONS_STORAGE_OBJECT_PREFIX | persisted_operations.storage.object_prefix | <Icon icon="square-check" iconType="solid" /> | The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. \$prefix/SHA256.json                                                               |               |
 | PERSISTED_OPERATIONS_LOG_UNKNOWN           | persisted_operations.log_unknown           | <Icon icon="square" />                        | Log operations (sent with the operation body) which haven't yet been persisted. If the value is true, all operations not yet persisted are logged to the router logs.                                  | false         |
 | PERSISTED_OPERATIONS_SAFELIST_ENABLED      | persisted_operations.safelist.enabled      | <Icon icon="square" />                        | Only allows persisted operations (sent with operation body). If the value is true, all operations not explicitly added to the safelist are blocked.                                                    | false         |
 
@@ -1096,7 +1097,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 |                      | automatic_persisted_queries.cache.ttl             | <Icon icon="square" />                        | The TTL of the cache, in seconds. Set to 0 to set no TTL                                                                                                                                                                                                           |               |
 |                      | automatic_persisted_queries.storage               | <Icon icon="square" />                        | The external storage provider (redis) for automatic persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to using a local in-memory cache (configured in the `automatic_persisted_queries.cache` options) |               |
 |                      | automatic_persisted_queries.storage.provider_id   | <Icon icon="square-check" iconType="solid" /> | The ID of the Redis storage provider. The ID must match the ID of the storage provider in the `storage_providers.redis` section.                                                                                                                                   |               |
-|                      | automatic_persisted_queries.storage.object_prefix | <Icon icon="square-check" iconType="solid" /> | The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. $prefix/SHA256                                                                                                                                 |               |
+|                      | automatic_persisted_queries.storage.object_prefix | <Icon icon="square-check" iconType="solid" /> | The prefix of the object in the storage provider location. The prefix is put in front of the operation SHA256 hash. \$prefix/SHA256                                                                                                                                |               |
 
 ## Execution Config
 
@@ -1204,7 +1205,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 |                      | response_header_timeout   | <Icon icon="square" />                        |                                                                                     | 0s            |
 |                      | expect_continue_timeout   | <Icon icon="square" />                        |                                                                                     | 0s            |
 |                      | tls_handshake_timeout     | <Icon icon="square" />                        |                                                                                     | 10s           |
-|                      | keep_alive_idle_timeout   | <Icon icon="square" />                        |                                                                                     | 90s            |
+|                      | keep_alive_idle_timeout   | <Icon icon="square" />                        |                                                                                     | 90s           |
 |                      | keep_alive_probe_interval | <Icon icon="square" />                        |                                                                                     | 30s           |
 |                      | max_idle_conns            | <Icon icon="square" />                        |                                                                                     | 1024          |
 |                      | max_conns_per_host        | <Icon icon="square" />                        |                                                                                     | 100           |
@@ -1220,7 +1221,7 @@ In addition to the general traffic shaping rules, we also allow users to set sub
 |                      | dial_timeout              | <Icon icon="square" /> |             | 30s           |
 |                      | response_header_timeout   | <Icon icon="square" /> |             | 0s            |
 |                      | expect_continue_timeout   | <Icon icon="square" /> |             | 0s            |
-|                      | keep_alive_idle_timeout   | <Icon icon="square" /> |             | 90s            |
+|                      | keep_alive_idle_timeout   | <Icon icon="square" /> |             | 90s           |
 |                      | keep_alive_probe_interval | <Icon icon="square" /> |             | 30s           |
 |                      | max_idle_conns            | <Icon icon="square" /> |             | 1024          |
 |                      | max_conns_per_host        | <Icon icon="square" /> |             | 100           |
