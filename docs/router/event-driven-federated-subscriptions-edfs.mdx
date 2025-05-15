@@ -389,7 +389,7 @@ This will combine both arguments `firstIds` and `secondIds` into a single array,
 
 #### Limitations
 
-To use **subscription filters with variables**, you'll have to **disable variables remapping**.\
+To use the current implementation of **subscription filters with variables**, you'll have to **disable variables remapping**.\
 By default, a subscription like the following won't work, because `filteredEmployeeUpdated`  is using a filter on `firstIds` and `secondIds` that are values resolved using variables:
 
 ```graphql
