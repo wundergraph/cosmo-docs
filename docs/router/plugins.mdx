@@ -87,7 +87,7 @@ The gRPC plugin architecture works by:
 1. **Plugin Registration**: Plugins are registered with the Cosmo Router at startup
 2. **Schema Integration**: The plugin's schema is integrated into the federated graph
 3. **Request Handling**: When the router receives a GraphQL request, it routes relevant parts to the appropriate plugins
-4. **In-Process Execution**: Plugins resolve their portion of the query within the router process
+4. **Cross-Process Communication**: Plugins run in separate processes and communicate with the router via gRPC
 5. **Response Assembly**: The router assembles the complete response from all resolvers
 
 ## Use Cases
@@ -209,6 +209,6 @@ For more details on the directory structure and build process, see the [`wgc plu
 
 ## Conclusion
 
-gRPC plugins for the Cosmo Router provide a powerful way to implement high-performance subgraphs directly within the router process. By eliminating network hops while maintaining a clean architecture, they offer the best of both worlds for many use cases.
+gRPC plugins for the Cosmo Router provide a powerful way to implement high-performance subgraphs that communicate with the router via a secure cross-process architecture. By leveraging the battle-tested HashiCorp go-plugin framework while maintaining clean separation of concerns, they offer the best of both worlds for many use cases.
 
-For complex systems, consider a hybrid approach: use gRPC plugins for performance-critical paths and traditional subgraphs for areas that require independent scaling or deployment. 
+For complex systems, consider a hybrid approach: use gRPC plugins for performance-critical paths and traditional subgraphs for areas that require independent scaling or deployment.
