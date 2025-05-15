@@ -2034,3 +2034,26 @@ cache_warmup:
 ```
 
 </CodeGroup>
+
+## Plugins
+
+The configuration for the router gRPC plugins.
+
+| Environment Variable | YAML    | Required               | Description                                                                         | Default Value |
+| -------------------- | ------- | ---------------------- | ----------------------------------------------------------------------------------- | ------------- |
+| PLUGINS_ENABLED      | enabled | <Icon icon="square" /> | Enable the router plugins. If the value is true, the router plugins are enabled.    | false         |
+| PLUGINS_PATH         | path    | <Icon icon="square" /> | The path to the plugins directory. The plugins directory is used to load the plugins.| plugins       |
+
+### Example YAML config:
+
+<CodeGroup>
+
+```yaml config.yaml
+version: "1"
+
+plugins:
+  enabled: true
+  path: "plugins"
+```
+
+</CodeGroup>
