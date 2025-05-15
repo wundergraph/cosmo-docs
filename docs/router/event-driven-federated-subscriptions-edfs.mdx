@@ -387,6 +387,32 @@ This will combine both arguments `firstIds` and `secondIds` into a single array,
   We do not validate whether a client is allowed to subscribe to specific events or topics. If this is a blocker for you, please contact us. We have ideas on how to address this issue.
 </Info>
 
+#### Limitations
+
+To use **subscription filters with variables**, you'll have to **disable variables remapping**.\
+By default, a subscription like the following won't work, because `filteredEmployeeUpdated`  is using a filter on `firstIds` and `secondIds` that are values resolved using variables:
+
+```graphql
+subscription ($firstIds: [ID!]!, $secondIds: [ID!]!) {
+    filteredEmployeeUpdated(firstIds: $firstIds, secondIds: $secondIds) {
+        id
+        details {
+            forename
+            surname
+        }
+    }
+}
+```
+
+To make it work you'll need to disable the variables remapping in the router configuration, like so:
+
+```yaml
+engine:
+	disable_variables_remapping: true
+```
+
+Please note that disabling variables remapping might reduce planner cache hits.
+
 ## Implementation Details and Noteworthy Information
 
 ### Deduplication of Subscriptions
