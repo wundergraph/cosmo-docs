@@ -1,0 +1,103 @@
+---
+title: 'Build'
+description: 'Build a gRPC router plugin'
+icon: 'hammer'
+---
+
+# wgc plugin build
+
+The `build` command generates gRPC code based on your GraphQL schema and compiles your plugin into platform-specific binaries.
+
+## Usage
+
+```bash
+wgc plugin build [options] [directory]
+```
+
+## Arguments
+
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `directory` | Directory of the plugin | `.` (current directory) |
+
+## Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--generate-only` | Generate only the proto and mapping files, do not compile the plugin | `false` |
+| `--go-module-path <path>` | Go module path to use for the plugin | `github.com/wundergraph/cosmo/plugin` |
+| `--debug` | Build the binary with debug information | `false` |
+| `--platform [platforms...]` | Platform-architecture combinations (e.g., darwin-arm64 linux-amd64) | Host platform |
+| `--all-platforms` | Build for all supported platforms | `false` |
+| `--skip-tools-installation` | Skip tool installation | `false` |
+| `--force-tools-installation` | Force tools installation regardless of version check or confirmation | `false` |
+
+## Description
+
+This command performs several steps to build your plugin:
+
+1. **Generate Proto and Mapping Files**: Processes your GraphQL schema to generate Protocol Buffers definitions and mapping files
+2. **Generate gRPC Code**: Uses the generated Proto files to create Go code for the gRPC service
+3. **Install Go Dependencies**: Installs all required Go dependencies for your plugin
+4. **Build Binaries**: Compiles the plugin for one or more platform-architecture combinations
+
+If you only want to generate code but not compile the binary (useful when you're updating your GraphQL schema), you can use the `--generate-only` flag.
+
+<Tip>
+The build command will automatically check for and install the necessary toolchain (like protoc, protoc-gen-go, etc.) when required tools can't be found on your system. You can control this behavior with the `--skip-tools-installation` and `--force-tools-installation` flags.
+
+**Platform Compatibility**: The target platform for your plugin must match the platform where the Cosmo Router is running. For example, if your router runs on a Linux AMD64 server, your plugin must be built for `linux-amd64`. When no platform is specified, the command uses your local machine's platform (the host platform) by default.
+</Tip>
+
+## Examples
+
+### Build for the current platform
+
+```bash
+wgc plugin build ./my-plugin
+```
+
+### Generate code only
+
+```bash
+wgc plugin build --generate-only ./my-plugin
+```
+
+### Build for multiple platforms
+
+```bash
+wgc plugin build --platform darwin-arm64 linux-amd64 ./my-plugin
+```
+
+### Build for all supported platforms
+
+```bash
+wgc plugin build --all-platforms ./my-plugin
+```
+
+## Supported Platforms
+
+The following platform-architecture combinations are supported:
+
+| Platform | Description | When to use |
+|----------|-------------|-------------|
+| `linux-amd64` | Linux on 64-bit Intel/AMD processors | Most Linux servers, including AWS EC2, Google Cloud, Azure VMs |
+| `linux-arm64` | Linux on 64-bit ARM processors | ARM-based servers, AWS Graviton instances, Raspberry Pi 4 |
+| `darwin-amd64` | macOS on Intel processors | Intel-based Mac development machines |
+| `darwin-arm64` | macOS on Apple Silicon (M1/M2) | Apple Silicon Mac development machines |
+| `windows-amd64` | Windows on 64-bit Intel/AMD processors | Windows servers or development machines |
+
+When using the `--all-platforms` flag, binaries for all of the above platforms will be built.
+
+## Output
+
+The build process creates several outputs:
+
+- Generated Go code in the `generated/` directory
+- Compiled binaries in the `bin/` directory, named according to the target platform (e.g., `my-plugin-darwin-arm64`, `my-plugin-linux-amd64`)
+
+After building, you can configure the Cosmo Router to use your plugin by referencing the appropriate binary in your router configuration.
+
+<Warning>
+Ensure that the platform of your built plugin matches the platform where your Cosmo Router runs. For example, if you build your plugin on a Mac (darwin-arm64) but deploy your router on Linux (linux-amd64), you'll need to specify `--platform linux-amd64` during the build process. Using an incompatible plugin binary will result in runtime errors when the router attempts to load the plugin.
+</Warning>

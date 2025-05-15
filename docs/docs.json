@@ -219,6 +219,16 @@
             ]
           },
           {
+            "group": "Plugin",
+            "icon": "plug",
+            "pages": [
+              "cli/plugin",
+              "cli/plugin/init",
+              "cli/plugin/build",
+              "cli/plugin/test"
+            ]
+          },
+          {
             "group": "Auth",
             "icon": "key",
             "pages": [
@@ -376,6 +386,7 @@
           },
           "router/mcp",
           "router/custom-modules",
+          "router/plugins",
           "router/authentication-and-authorization",
           {
             "group": "Subscriptions",
