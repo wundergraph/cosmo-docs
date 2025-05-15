@@ -7,12 +7,13 @@ sidebarTitle: "Overview"
 
 The router provides three different ways of customization:
 
-1. **Configure the router runtime:** You can specify a  for convenience or pass [environment variables](/router/configuration#environment-variables). In both ways, you can configure the global behavior of the router. For a full reference of all available options see below or use your [IDE of choice](/router/configuration#config-validation-and-auto-completion).
-2. **Configure how your graph is served:** This file can be provided as config option or is pulled automatically from the cdn. It contains information on how to resolve your federated schema. The engine uses the information to build a highly optimized query planner. For more information see  to build the file locally for development or  to download the latest production version.
+1. **Configure the router runtime:** You can specify a for convenience or pass [environment variables](/router/configuration#environment-variables). In both ways, you can configure the global behavior of the router. For a full reference of all available options see below or use your [IDE of choice](/router/configuration#config-validation-and-auto-completion).
+2. **Configure how your graph is served:** This file can be provided as config option or is pulled automatically from the cdn. It contains information on how to resolve your federated schema. The engine uses the information to build a highly optimized query planner. For more information see to build the file locally for development or to download the latest production version.
 3. **Customize the router programatically through** Go [modules](/router/custom-modules). It is unlikely that we will provide every possible feature as an in-built functionality. For advanced use cases or more control, you can build Go modules and compile the Router in a few commands. If you are uncertain about if your use case should be implemented as a custom module, don't hesitate to open an issue. We might already have a plan for this or can assist you with the implementation.
 
 <Info>
-  **Recommendation** Create a config file and use environment variable expansion to avoid storing secrets on the file system.
+  **Recommendation** Create a config file and use environment variable expansion
+  to avoid storing secrets on the file system.
 </Info>
 
 ## Config file
@@ -22,16 +23,19 @@ For convenience, you can create a `config.yaml` to specify all router options. S
 <CodeGroup>
 
 ```yaml config.yaml
-version: '1'
+version: "1"
 
 graph:
-    token: "${GRAPH_API_TOKEN}"
+  token: "${GRAPH_API_TOKEN}"
 ```
 
 </CodeGroup>
 
 <Note>
-  Values specified in the config file have **precedence** over Environment variables. This also includes empty values so only specify values that should be overwritten. That means, you can see the config file as a single source of truth.
+  Values specified in the config file have **precedence** over Environment
+  variables. This also includes empty values so only specify values that should
+  be overwritten. That means, you can see the config file as a single source of
+  truth.
 </Note>
 
 ### Expand Environment Variables
@@ -41,7 +45,7 @@ You can expand environment variables in the file like this:
 <CodeGroup>
 
 ```yaml config.yaml
-version: '1'
+version: "1"
 
 log_level: "${LOG_LEVEL}"
 ```
@@ -73,7 +77,7 @@ As the next step, add the following line to the head of your `config.yaml`file. 
 ```yaml config.yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/main/router/pkg/config/config.schema.json
 
-version: '1'
+version: "1"
 ```
 
 </CodeGroup>
@@ -101,7 +105,8 @@ The following sections describe each configuration in detail with all available 
 <Info>
   Intervals, timeouts, and delays are specified in Go [duration](https://pkg.go.dev/maze.io/x/duration#ParseDuration) syntax e.g 1s, 5m or 1h.
 
-  Sizes can be specified in 2MB, 1mib.
+Sizes can be specified in 2MB, 1mib.
+
 </Info>
 
 | Environment Variable             | YAML                             | Required                                      | Description                                                                                                                                                                                        | Default Value                    |
@@ -153,38 +158,69 @@ router_config_path: ""
 
 </CodeGroup>
 
+## Hot config reloading
+
+The router is capable of reloading itself using an updated config without a full process restart. You can trigger a reload in one of two ways:
+
+- Sending a `SIGHUP` signal to the router process.
+- Configuring the `watch_config` section to automatically reload the configuration at regular intervals.
+
+```yaml config.yaml
+watch_config:
+  enabled: true
+  interval: "10s"
+
+  startup_delay:
+    enabled: false
+    maximum: "10s"
+```
+
+### `watch_config` options
+
+| Environment Variable               | YAML                               | Required               | Description                                                                                               | Default Value |
+| ---------------------------------- | ---------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------- | ------------- |
+| WATCH_CONFIG_ENABLED               | watch_config.enabled               | <Icon icon="square" /> | Enable automatic configuration reloading at regular intervals.                                            | false         |
+| WATCH_CONFIG_INTERVAL              | watch_config.interval              | <Icon icon="square" /> | The interval at which the router checks for configuration changes.                                        | 10s           |
+| WATCH_CONFIG_STARTUP_DELAY_ENABLED | watch_config.startup_delay.enabled | <Icon icon="square" /> | Enable a random delay before the first configuration check to avoid thundering herd problems in clusters. | false         |
+| WATCH_CONFIG_STARTUP_DELAY_MAXIMUM | watch_config.startup_delay.maximum | <Icon icon="square" /> | The maximum random delay before the first configuration check.                                            | 10s           |
+
+Hot reloading has some limitations:
+
+- Changes to the `watch_config` section are not hot-reloaded.
+- Changes to flags and environment variables are not possible.
+
 ## Access Logs
 
 For a detailed example, please refer to the [Access Logs](/router/access-logs) section.
 
-| Environment Variable              | YAML                                             | Required               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Default Value |
-| --------------------------------- | ------------------------------------------------ | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-|                                   | access_logs                                      | <Icon icon="square" /> | Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.                                                                                                                                                                                                                                                                                                                                                         |               |
-| ACCESS_LOGS_ENABLED               | access_logs.enabled                              | <Icon icon="square" /> | Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.                                                                                                                                                                                                                                                                                                                                                         | true          |
-|                                   | access_logs.buffer                               | <Icon icon="square" /> | The buffer is used to buffer the logs before writing them to the output.                                                                                                                                                                                                                                                                                                                                                                                                                                          |               |
-| ACCESS_LOGS_BUFFER_ENABLED        | access_logs.buffer.enabled                       | <Icon icon="square" /> | Enable the buffer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | false         |
-| ACCESS_LOGS_BUFFER_SIZE           | access_logs.buffer.size                          | <Icon icon="square" /> | The size of the buffer. The default value is 256KB.                                                                                                                                                                                                                                                                                                                                                                                                                                                               |               |
-| ACCESS_LOGS_FLUSH_INTERVAL        | access_logs.buffer.flush_interval                | <Icon icon="square" /> | The interval at which the buffer is flushed. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                                                                                                                                                                                                                                                                                                                                    |               |
-|                                   | access_logs.output                               | <Icon icon="square" /> | The log destination. The supported destinations are stdout and file. Only one option can be enabled. The default destination is stdout.                                                                                                                                                                                                                                                                                                                                                                           |               |
-| ACCESS_LOGS_OUTPUT_STDOUT_ENABLED | access_logs.output.stdout.enabled                | <Icon icon="square" /> |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | true          |
-| ACCESS_LOGS_OUTPUT_FILE_ENABLED   | access_logs.output.file.enabled                  | <Icon icon="square" /> |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | false         |
-| ACCESS_LOGS_FILE_OUTPUT_PATH      | access_logs.output.file.path                     | <Icon icon="square" /> | The path to the log file. The path is used to specify the path to the log file.                                                                                                                                                                                                                                                                                                                                                                                                                                   |               |
-|                                   | access_logs.router                               | <Icon icon="square" /> | The configuration for access logs for the router.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |               |
-|                                   | access_logs.router.fields                        | <Icon icon="square" /> | The fields to add to the access logs for router. The fields are added to the logs as key-value pairs.                                                                                                                                                                                                                                                                                                                                                                                                             | []            |
-|                                   | access_logs.router.fields.key                    | <Icon icon="square" /> | The key of the field to add to the logs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |               |
-|                                   | access_logs.router.fields.default                | <Icon icon="square" /> | The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.                                                                                                                                                                                                                                                                                                      |               |
-|                                   | access_logs.router.value_from                   | <Icon icon="square" /> | Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.                                                                                                                                                                                                                                                                                                                                                                               |               |
-|                                   | access_logs.router.value_from.request_header     | <Icon icon="square" /> | The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                              |               |
-|                                   | access_logs.router.value_from.context_field      | <Icon icon="square" /> | The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used.   **One of:** [ "operation_name", "operation_type", "operation_service_names", "operation_hash", "persisted_operation_sha256", "operation_sha256", "response_error_message", "graphql_error_codes", "graphql_error_service_names", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ] |               |
-|                                   | access_logs.subgraphs                            | <Icon icon="square" /> | The subgraph access logs configuration                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |               |
-|                                   | access_logs.subgraphs.enabled                    | <Icon icon="square" /> | Enable the subgraphs access logs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | false         |
-|                                   | access_logs.subgraphs.fields                     | <Icon icon="square" /> | The fields to add to the logs when printing subgraph access logs. The fields are added to the logs as key-value pairs.                                                                                                                                                                                                                                                                                                                                                                                            |               |
-|                                   | access_logs.subgraphs.fields.key                 | <Icon icon="square" /> | The key of the field to add to the logs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |               |
-|                                   | access_logs.subgraphs.fields.default             | <Icon icon="square" /> | The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.                                                                                                                                                                                                                                                                                                      |               |
-|                                   | access_logs.subgraphs.value_from                 | <Icon icon="square" /> | Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.                                                                                                                                                                                                                                                                                                                                                                               |               |
-|                                   | access_logs.subgraphs.value_from.request_header  | <Icon icon="square" /> | The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                              |               |
-|                                   | access_logs.subgraphs.value_from.response_header | <Icon icon="square" /> | The name of the response header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                             |               |
-|                                   | access_logs.subgraphs.value_from.context_field   | <Icon icon="square" /> | The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used.   **One of:** [ "operation_name", "operation_type", "operation_service_names", "operation_hash", "persisted_operation_sha256", "operation_sha256", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ]                                                                                 |               |
+| Environment Variable              | YAML                                             | Required               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Default Value |
+| --------------------------------- | ------------------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|                                   | access_logs                                      | <Icon icon="square" /> | Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.                                                                                                                                                                                                                                                                                                                                                       |               |
+| ACCESS_LOGS_ENABLED               | access_logs.enabled                              | <Icon icon="square" /> | Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.                                                                                                                                                                                                                                                                                                                                                       | true          |
+|                                   | access_logs.buffer                               | <Icon icon="square" /> | The buffer is used to buffer the logs before writing them to the output.                                                                                                                                                                                                                                                                                                                                                                                                                                        |               |
+| ACCESS_LOGS_BUFFER_ENABLED        | access_logs.buffer.enabled                       | <Icon icon="square" /> | Enable the buffer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | false         |
+| ACCESS_LOGS_BUFFER_SIZE           | access_logs.buffer.size                          | <Icon icon="square" /> | The size of the buffer. The default value is 256KB.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |               |
+| ACCESS_LOGS_FLUSH_INTERVAL        | access_logs.buffer.flush_interval                | <Icon icon="square" /> | The interval at which the buffer is flushed. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                                                                                                                                                                                                                                                                                                                                  |               |
+|                                   | access_logs.output                               | <Icon icon="square" /> | The log destination. The supported destinations are stdout and file. Only one option can be enabled. The default destination is stdout.                                                                                                                                                                                                                                                                                                                                                                         |               |
+| ACCESS_LOGS_OUTPUT_STDOUT_ENABLED | access_logs.output.stdout.enabled                | <Icon icon="square" /> |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | true          |
+| ACCESS_LOGS_OUTPUT_FILE_ENABLED   | access_logs.output.file.enabled                  | <Icon icon="square" /> |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | false         |
+| ACCESS_LOGS_FILE_OUTPUT_PATH      | access_logs.output.file.path                     | <Icon icon="square" /> | The path to the log file. The path is used to specify the path to the log file.                                                                                                                                                                                                                                                                                                                                                                                                                                 |               |
+|                                   | access_logs.router                               | <Icon icon="square" /> | The configuration for access logs for the router.                                                                                                                                                                                                                                                                                                                                                                                                                                                               |               |
+|                                   | access_logs.router.fields                        | <Icon icon="square" /> | The fields to add to the access logs for router. The fields are added to the logs as key-value pairs.                                                                                                                                                                                                                                                                                                                                                                                                           | []            |
+|                                   | access_logs.router.fields.key                    | <Icon icon="square" /> | The key of the field to add to the logs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |               |
+|                                   | access_logs.router.fields.default                | <Icon icon="square" /> | The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.                                                                                                                                                                                                                                                                                                    |               |
+|                                   | access_logs.router.value_from                    | <Icon icon="square" /> | Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.                                                                                                                                                                                                                                                                                                                                                                             |               |
+|                                   | access_logs.router.value_from.request_header     | <Icon icon="square" /> | The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                            |               |
+|                                   | access_logs.router.value_from.context_field      | <Icon icon="square" /> | The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used. **One of:** [ "operation_name", "operation_type", "operation_service_names", "operation_hash", "persisted_operation_sha256", "operation_sha256", "response_error_message", "graphql_error_codes", "graphql_error_service_names", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ] |               |
+|                                   | access_logs.subgraphs                            | <Icon icon="square" /> | The subgraph access logs configuration                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |               |
+|                                   | access_logs.subgraphs.enabled                    | <Icon icon="square" /> | Enable the subgraphs access logs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | false         |
+|                                   | access_logs.subgraphs.fields                     | <Icon icon="square" /> | The fields to add to the logs when printing subgraph access logs. The fields are added to the logs as key-value pairs.                                                                                                                                                                                                                                                                                                                                                                                          |               |
+|                                   | access_logs.subgraphs.fields.key                 | <Icon icon="square" /> | The key of the field to add to the logs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |               |
+|                                   | access_logs.subgraphs.fields.default             | <Icon icon="square" /> | The default value of the field. If the value is not set, value_from is used. If both value and value_from are set, value_from has precedence and in case of a missing value_from, the default value is used.                                                                                                                                                                                                                                                                                                    |               |
+|                                   | access_logs.subgraphs.value_from                 | <Icon icon="square" /> | Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.                                                                                                                                                                                                                                                                                                                                                                             |               |
+|                                   | access_logs.subgraphs.value_from.request_header  | <Icon icon="square" /> | The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                            |               |
+|                                   | access_logs.subgraphs.value_from.response_header | <Icon icon="square" /> | The name of the response header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                           |               |
+|                                   | access_logs.subgraphs.value_from.context_field   | <Icon icon="square" /> | The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used. **One of:** [ "operation_name", "operation_type", "operation_service_names", "operation_hash", "persisted_operation_sha256", "operation_sha256", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ]                                                                                 |               |
 
 ### Example YAML config:
 
@@ -205,23 +241,23 @@ access_logs:
       path: "access.log"
   router:
     fields:
-    - key: "service"
-      value_from:
-        request_header: "x-service"
-    - key: "operationName"
-      value_from:
-        context_field: operation_name
+      - key: "service"
+        value_from:
+          request_header: "x-service"
+      - key: "operationName"
+        value_from:
+          context_field: operation_name
   subgraphs:
     fields:
-    - key: "service"
-      value_from:
-        request_header: "x-service"
-    - key: "response-service"
-      value_from:
-        response_header: "x-response-service"
-    - key: "operationName"
-      value_from:
-        context_field: operation_name
+      - key: "service"
+        value_from:
+          request_header: "x-service"
+      - key: "response-service"
+        value_from:
+          response_header: "x-response-service"
+      - key: "operationName"
+        value_from:
+          context_field: operation_name
 ```
 
 </CodeGroup>
@@ -253,17 +289,17 @@ graph:
 
 The Model Context Protocol (MCP) server allows AI models to discover and interact with your GraphQL API in a secure way.
 
-| Environment Variable           | YAML                          | Required               | Description                                                                                                                           | Default Value |
-| ------------------------------ | ----------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| MCP_ENABLED                    | mcp.enabled                   | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                      | false         |
-| MCP_SERVER_LISTEN_ADDR         | mcp.server.listen_addr        | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                    | localhost:5025 |
-| MCP_SERVER_BASE_URL            | mcp.server.base_url           | <Icon icon="square" /> | The base URL of the MCP server. This is the URL advertised to the LLM clients when SSE is used as primary transport.                  | -             |
-| MCP_ROUTER_URL                 | mcp.router_url                | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.  | -             |
-| MCP_STORAGE_PROVIDER_ID        | mcp.storage.provider_id       | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                         | -             |
-| MCP_GRAPH_NAME                 | mcp.graph_name                | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                    | mygraph       |
-| MCP_EXCLUDE_MUTATIONS          | mcp.exclude_mutations         | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                             | false         |
-| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | false         |
-| MCP_EXPOSE_SCHEMA              | mcp.expose_schema             | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | false         |
+| Environment Variable            | YAML                            | Required               | Description                                                                                                                                              | Default Value  |
+| ------------------------------- | ------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                         | false          |
+| MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                       | localhost:5025 |
+| MCP_SERVER_BASE_URL             | mcp.server.base_url             | <Icon icon="square" /> | The base URL of the MCP server. This is the URL advertised to the LLM clients when SSE is used as primary transport.                                     | -              |
+| MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.                     | -              |
+| MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                            | -              |
+| MCP_GRAPH_NAME                  | mcp.graph_name                  | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                                       | mygraph        |
+| MCP_EXCLUDE_MUTATIONS           | mcp.exclude_mutations           | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                                                | false          |
+| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | false          |
+| MCP_EXPOSE_SCHEMA               | mcp.expose_schema               | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | false          |
 
 Example YAML config:
 
@@ -276,9 +312,9 @@ mcp:
   enabled: true
   server:
     listen_addr: "localhost:5025"
-  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use when router is behind a proxy. Purely metadata for the AI model.
+  router_url: "https://your-public-router-url.example.com/graphql" # Optional: Use when router is behind a proxy. Purely metadata for the AI model.
   storage:
-    provider_id: "mcp"  # References a file_system provider defined below
+    provider_id: "mcp" # References a file_system provider defined below
   graph_name: "my-graph"
   exclude_mutations: true
   enable_arbitrary_operations: false
@@ -465,7 +501,7 @@ telemetry:
   tracing:
     enabled: true
     sampling_rate: 1
-    batch_timeout: '10s'
+    batch_timeout: "10s"
     export_graphql_variables: false
     with_new_root: false
 ```
@@ -597,7 +633,7 @@ telemetry:
 | -------------------------------- | --------------------- | --------------------------------------------- | ------------------------------------------------------------------------- | ---------------- |
 | PROMETHEUS_ENABLED               | enabled               | <Icon icon="square-check" iconType="solid" /> | Enables prometheus metrics support                                        | true             |
 | PROMETHEUS_HTTP_PATH             | path                  | <Icon icon="square" />                        | The HTTP path where metrics are exposed.                                  | "/metrics"       |
-| PROMETHEUS_LISTEN_ADDR           | listen_addr           | <Icon icon="square" />                        | The address to listen on for the prometheus metrics  endpoint.            | "127.0.0.1:8088" |
+| PROMETHEUS_LISTEN_ADDR           | listen_addr           | <Icon icon="square" />                        | The address to listen on for the prometheus metrics endpoint.             | "127.0.0.1:8088" |
 | PROMETHEUS_GRAPHQL_CACHE         | graphql_cache         | <Icon icon="square" />                        | Enable the collection of metrics for the GraphQL operation router caches. | false            |
 | PROMETHEUS_EXCLUDE_METRICS       | exclude_metrics       | <Icon icon="square" />                        |                                                                           |                  |
 | PROMETHEUS_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        |                                                                           |                  |
@@ -635,7 +671,7 @@ telemetry:
 | endpoint    | <Icon icon="square" /> |                                                                                                               |               |
 | path        | <Icon icon="square" /> | The path to which the metrics are exported. This is ignored when using 'grpc' as exporter and can be omitted. |               |
 | headers     | <Icon icon="square" /> |                                                                                                               |               |
-| temporality | <Icon icon="square" /> | Temporality defines the window that an aggregation is calculated over.    one of: delta, cumulative           |               |
+| temporality | <Icon icon="square" /> | Temporality defines the window that an aggregation is calculated over. one of: delta, cumulative              |               |
 
 ### Example YAML config:
 
@@ -688,8 +724,8 @@ telemetry:
 version: "1"
 
 graphql_metrics:
-    enabled: true
-    collector_endpoint: 'https://cosmo-metrics.wundergraph.com'
+  enabled: true
+  collector_endpoint: "https://cosmo-metrics.wundergraph.com"
 ```
 
 </CodeGroup>
@@ -784,7 +820,10 @@ Configure Header propagation rules for all Subgraphs or individual Subgraphs by 
 When `Cookie`is a propagated header, you may want to filter the keys that are forwarded to the subgraph from the client, you can do this via the `cookie_whitelist`option, which is a list of string cookie keys that will not be discarded. An empty value means allow all. If you'd like to block all cookies, disable the header propagation entirely.
 
 <Info>
-  The cookie whitelist can also affect custom modules that read request cookies, even if propagation is disabled for the `Cookie` header. This is because the whitelisting happens very early in the request lifecycle, before it reaches subgraphs or custom modules.
+  The cookie whitelist can also affect custom modules that read request cookies,
+  even if propagation is disabled for the `Cookie` header. This is because the
+  whitelisting happens very early in the request lifecycle, before it reaches
+  subgraphs or custom modules.
 </Info>
 
 **Example YAML config:**
@@ -984,7 +1023,9 @@ This provider allows you to load files from the local file system. This is parti
 | STORAGE_PROVIDER_FS_PATH | path | <Icon icon="square-check" iconType="solid" /> | The path on the file system where files should be loaded from |               |
 
 <Note>
-  The file system storage provider is **currently only supported by the MCP feature**. It cannot be used for persisted operations or execution configurations.
+  The file system storage provider is **currently only supported by the MCP
+  feature**. It cannot be used for persisted operations or execution
+  configurations.
 </Note>
 
 #### Redis Storage Provider
@@ -1241,12 +1282,12 @@ In addition to the general traffic shaping rules, we also allow users to set sub
 
 These rules apply to requests being made from clients to the Router.
 
-| Environment Variable | YAML                  | Required               | Description                                                                                                                                                                                                                                     | Default Value |
-| -------------------- | --------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-|                      | max_request_body_size | <Icon icon="square" /> |                                                                                                                                                                                                                                                 | 5mb           |
-| MAX_HEADER_BYTES     | max_header_bytes      | <Icon icon="square" /> | Minimum Router version: [0.156.0](https://github.com/wundergraph/cosmo/compare/router@0.155.0...router@0.156.0)    The maximum size of the request headers. Setting this to 0 uses the default value from the http standard lib, which is 1MiB. | 1mib          |
-|                      | decompression_enabled | <Icon icon="square" /> | When enabled, the router will check incoming requests for a 'Content-Encoding' header and decompress the body accordingly  Note: Currently only "gzip" is supported                                                                             | true          |
-| 5mb                  |                       |                        |                                                                                                                                                                                                                                                 |               |
+| Environment Variable | YAML                  | Required               | Description                                                                                                                                                                                                                                  | Default Value |
+| -------------------- | --------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|                      | max_request_body_size | <Icon icon="square" /> |                                                                                                                                                                                                                                              | 5mb           |
+| MAX_HEADER_BYTES     | max_header_bytes      | <Icon icon="square" /> | Minimum Router version: [0.156.0](https://github.com/wundergraph/cosmo/compare/router@0.155.0...router@0.156.0) The maximum size of the request headers. Setting this to 0 uses the default value from the http standard lib, which is 1MiB. | 1mib          |
+|                      | decompression_enabled | <Icon icon="square" /> | When enabled, the router will check incoming requests for a 'Content-Encoding' header and decompress the body accordingly Note: Currently only "gzip" is supported                                                                           | true          |
+| 5mb                  |                       |                        |                                                                                                                                                                                                                                              |               |
 
 ## WebSocket
 
@@ -1468,8 +1509,8 @@ authorization:
 version: "1"
 
 cdn:
-   url: https://cosmo-cdn.wundergraph.com
-   cache_size: 100MB
+  url: https://cosmo-cdn.wundergraph.com
+  cache_size: 100MB
 ```
 
 </CodeGroup>
@@ -1546,32 +1587,32 @@ events:
 
 Configure the GraphQL Execution Engine of the Router.
 
-|Environment Variable|YAML|Required|Description|Default Value|
-|---|---|---|---|---|
-|ENGINE\_ENABLE\_SINGLE\_FLIGHT|enable\_single\_flight| <Icon icon="square" /> |Deduplicate exactly the same in-flight origin request | true |
-|ENGINE\_ENABLE\_REQUEST\_TRACING|enable\_request\_tracing| <Icon icon="square" /> |Enable [Advanced Request Tracing (ART)](/router/advanced-request-tracing-art)This config is not correlated to OTEL tracing. | true |
-|ENGINE\_ENABLE\_EXECUTION\_PLAN\_CACHE\_RESPONSE\_HEADER|enable\_execution\_plan\_cache\_response\_header| <Icon icon="square" /> |Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS" | false |
-|ENGINE\_MAX\_CONCURRENT\_RESOLVERS|max\_concurrent\_resolvers| <Icon icon="square" /> |Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router. | 32 |
-|ENGINE\_ENABLE\_NET\_POLL|enable\_net\_poll| <Icon icon="square" /> |Enables the more efficient poll implementation for all WebSocket implementations (client, server) of the router. This is only available on Linux and MacOS. On Windows or when the host system is limited, the default synchronous implementation is used. | true |
-|ENGINE\_WEBSOCKET\_CLIENT\_POLL\_TIMEOUT|websocket\_client\_poll\_timeout| <Icon icon="square" /> |The timeout for the poll loop of the WebSocket client implementation. The period is specified as a string with a number and a unit | 1s |
-|ENGINE\_WEBSOCKET\_CLIENT\_CONN\_BUFFER\_SIZE|websocket\_client\_conn\_buffer\_size| <Icon icon="square" /> |The buffer size for the poll buffer of the WebSocket client implementation. The buffer size determines how many connections can be handled in one loop. | 128 |
-|ENGINE\_WEBSOCKET\_CLIENT\_READ\_TIMEOUT|websocket\_client\_read\_timeout| <Icon icon="square" /> |The timeout for the websocket read of the WebSocket client implementation. | 5s |
-|ENGINE\_WEBSOCKET\_CLIENT\_WRITE\_TIMEOUT|websocket\_client\_write\_timeout| <Icon icon="square" /> |The timeout for the websocket write of the WebSocket client implementation. | 10s |
-|ENGINE\_WEBSOCKET\_CLIENT\_PING\_INTERVAL|websocket\_client\_ping\_interval| <Icon icon="square" /> |The Websocket client ping interval to the subgraph. Defines how often the router will ping the subgraph to signal that the connection is still alive. Timeout needs to be coordinated with the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 15s |
-|ENGINE\_WEBSOCKET\_CLIENT\_PING\_TIMEOUT|websocket\_client\_ping\_timeout| <Icon icon="square" /> |The Websocket client ping timeout to the subgraph. Defines how long the router will wait for a ping response from the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 30s |
-|ENGINE\_WEBSOCKET\_CLIENT\_FRAME\_TIMEOUT|websocket\_client\_frame\_timeout| <Icon icon="square" /> |The Websocket client frame timeout to the subgraph. Defines how long the router will wait for a frame response from the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 100ms |
-|ENGINE\_EXECUTION\_PLAN\_CACHE\_SIZE|execution\_plan\_cache\_size| <Icon icon="square" /> |Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency. | 1024 |
-|ENGINE\_MINIFY\_SUBGRAPH\_OPERATIONS|minify\_subgraph\_operations| <Icon icon="square" /> |Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times. | false |
-|ENGINE\_ENABLE\_PERSISTED\_OPERATIONS\_CACHE|enable\_persisted\_operations\_cache| <Icon icon="square" /> |Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance. | true |
-|ENGINE\_ENABLE\_NORMALIZATION\_CACHE|enable\_normalization\_cache| <Icon icon="square" /> |Enable the normalization cache. The normalization cache is used to cache normalized operations to improve performance. | true |
-|ENGINE\_NORMALIZATION\_CACHE\_SIZE|normalization\_cache\_size| <Icon icon="square" /> |The size of the normalization cache. | 1024 |
-|ENGINE\_PARSEKIT\_POOL\_SIZE|parsekit\_pool\_size| <Icon icon="square" /> |The size of the ParseKit pool. The ParseKit pool provides re-usable Resources for parsing, normalizing, validating and planning GraphQL Operations. Setting the pool size to a value much higher than the number of CPU Threads available will not improve performance, but only increase memory usage. | 8 |
-|ENGINE\_RESOLVER\_MAX\_RECYCLABLE\_PARSER\_SIZE|resolver\_max\_recyclable\_parser\_size| <Icon icon="square" /> |Limits the size of the Parser that can be recycled back into the Pool. If set to 0, no limit is applied. This helps keep the Heap size more maintainable if you regularly perform large queries. | 32768 |
-|ENGINE\_ENABLE\_VALIDATION\_CACHE|enable\_validation\_cache| <Icon icon="square" /> |Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations. | true |
-|ENGINE\_VALIDATION\_CACHE\_SIZE|validation\_cache\_size| <Icon icon="square" /> |The size of the validation cache. | 1024 |
-|ENGINE\_DISABLE\_EXPOSING\_VARIABLES\_CONTENT\_ON\_VALIDATION\_ERROR|disable\_exposing\_variables\_content\_on\_validation\_error| <Icon icon="square" /> |Disables exposing the variables content in the error response. This is useful to avoid leaking sensitive information in the error response. | false |
-|ENGINE\_ENABLE\_SUBGRAPH\_FETCH\_OPERATION\_NAME|enable\_subgraph\_fetch\_operation\_name| <Icon icon="square" /> |Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $operationName\_\_$subgraphName\_\_$sequenceID. | true |
-|ENGINE\_SUBSCRIPTION\_FETCH\_TIMEOUT|subscription\_fetch\_timeout| <Icon icon="square" /> |The maximum time a subscription fetch can take before it is considered timed out. | 30s |
+| Environment Variable                                          | YAML                                                   | Required               | Description                                                                                                                                                                                                                                                                                                                                 | Default Value |
+| ------------------------------------------------------------- | ------------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| ENGINE_ENABLE_SINGLE_FLIGHT                                   | enable_single_flight                                   | <Icon icon="square" /> | Deduplicate exactly the same in-flight origin request                                                                                                                                                                                                                                                                                       | true          |
+| ENGINE_ENABLE_REQUEST_TRACING                                 | enable_request_tracing                                 | <Icon icon="square" /> | Enable [Advanced Request Tracing (ART)](/router/advanced-request-tracing-art)This config is not correlated to OTEL tracing.                                                                                                                                                                                                                 | true          |
+| ENGINE_ENABLE_EXECUTION_PLAN_CACHE_RESPONSE_HEADER            | enable_execution_plan_cache_response_header            | <Icon icon="square" /> | Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS"                                                                                                                                                                                                         | false         |
+| ENGINE_MAX_CONCURRENT_RESOLVERS                               | max_concurrent_resolvers                               | <Icon icon="square" /> | Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router.                                                                                                                                                                                         | 32            |
+| ENGINE_ENABLE_NET_POLL                                        | enable_net_poll                                        | <Icon icon="square" /> | Enables the more efficient poll implementation for all WebSocket implementations (client, server) of the router. This is only available on Linux and MacOS. On Windows or when the host system is limited, the default synchronous implementation is used.                                                                                  | true          |
+| ENGINE_WEBSOCKET_CLIENT_POLL_TIMEOUT                          | websocket_client_poll_timeout                          | <Icon icon="square" /> | The timeout for the poll loop of the WebSocket client implementation. The period is specified as a string with a number and a unit                                                                                                                                                                                                          | 1s            |
+| ENGINE_WEBSOCKET_CLIENT_CONN_BUFFER_SIZE                      | websocket_client_conn_buffer_size                      | <Icon icon="square" /> | The buffer size for the poll buffer of the WebSocket client implementation. The buffer size determines how many connections can be handled in one loop.                                                                                                                                                                                     | 128           |
+| ENGINE_WEBSOCKET_CLIENT_READ_TIMEOUT                          | websocket_client_read_timeout                          | <Icon icon="square" /> | The timeout for the websocket read of the WebSocket client implementation.                                                                                                                                                                                                                                                                  | 5s            |
+| ENGINE_WEBSOCKET_CLIENT_WRITE_TIMEOUT                         | websocket_client_write_timeout                         | <Icon icon="square" /> | The timeout for the websocket write of the WebSocket client implementation.                                                                                                                                                                                                                                                                 | 10s           |
+| ENGINE_WEBSOCKET_CLIENT_PING_INTERVAL                         | websocket_client_ping_interval                         | <Icon icon="square" /> | The Websocket client ping interval to the subgraph. Defines how often the router will ping the subgraph to signal that the connection is still alive. Timeout needs to be coordinated with the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 15s           |
+| ENGINE_WEBSOCKET_CLIENT_PING_TIMEOUT                          | websocket_client_ping_timeout                          | <Icon icon="square" /> | The Websocket client ping timeout to the subgraph. Defines how long the router will wait for a ping response from the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                                                                          | 30s           |
+| ENGINE_WEBSOCKET_CLIENT_FRAME_TIMEOUT                         | websocket_client_frame_timeout                         | <Icon icon="square" /> | The Websocket client frame timeout to the subgraph. Defines how long the router will wait for a frame response from the subgraph. The timeout is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                                                                        | 100ms         |
+| ENGINE_EXECUTION_PLAN_CACHE_SIZE                              | execution_plan_cache_size                              | <Icon icon="square" /> | Define how many GraphQL Operations should be stored in the execution plan cache. A low number will lead to more frequent cache misses, which will lead to increased latency.                                                                                                                                                                | 1024          |
+| ENGINE_MINIFY_SUBGRAPH_OPERATIONS                             | minify_subgraph_operations                             | <Icon icon="square" /> | Minify the subgraph operations. If the value is true, GraphQL Operations get minified after planning. This reduces the amount of GraphQL AST nodes the Subgraph has to parse, which ultimately saves CPU time and memory, resulting in faster response times.                                                                               | false         |
+| ENGINE_ENABLE_PERSISTED_OPERATIONS_CACHE                      | enable_persisted_operations_cache                      | <Icon icon="square" /> | Enable the persisted operations cache. The persisted operations cache is used to cache normalized persisted operations to improve performance.                                                                                                                                                                                              | true          |
+| ENGINE_ENABLE_NORMALIZATION_CACHE                             | enable_normalization_cache                             | <Icon icon="square" /> | Enable the normalization cache. The normalization cache is used to cache normalized operations to improve performance.                                                                                                                                                                                                                      | true          |
+| ENGINE_NORMALIZATION_CACHE_SIZE                               | normalization_cache_size                               | <Icon icon="square" /> | The size of the normalization cache.                                                                                                                                                                                                                                                                                                        | 1024          |
+| ENGINE_PARSEKIT_POOL_SIZE                                     | parsekit_pool_size                                     | <Icon icon="square" /> | The size of the ParseKit pool. The ParseKit pool provides re-usable Resources for parsing, normalizing, validating and planning GraphQL Operations. Setting the pool size to a value much higher than the number of CPU Threads available will not improve performance, but only increase memory usage.                                     | 8             |
+| ENGINE_RESOLVER_MAX_RECYCLABLE_PARSER_SIZE                    | resolver_max_recyclable_parser_size                    | <Icon icon="square" /> | Limits the size of the Parser that can be recycled back into the Pool. If set to 0, no limit is applied. This helps keep the Heap size more maintainable if you regularly perform large queries.                                                                                                                                            | 32768         |
+| ENGINE_ENABLE_VALIDATION_CACHE                                | enable_validation_cache                                | <Icon icon="square" /> | Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations.                                                                                                                                                                                                                                | true          |
+| ENGINE_VALIDATION_CACHE_SIZE                                  | validation_cache_size                                  | <Icon icon="square" /> | The size of the validation cache.                                                                                                                                                                                                                                                                                                           | 1024          |
+| ENGINE_DISABLE_EXPOSING_VARIABLES_CONTENT_ON_VALIDATION_ERROR | disable_exposing_variables_content_on_validation_error | <Icon icon="square" /> | Disables exposing the variables content in the error response. This is useful to avoid leaking sensitive information in the error response.                                                                                                                                                                                                 | false         |
+| ENGINE_ENABLE_SUBGRAPH_FETCH_OPERATION_NAME                   | enable_subgraph_fetch_operation_name                   | <Icon icon="square" /> | Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $operationName\_\_$subgraphName\_\_$sequenceID.                                                                                                       | true          |
+| ENGINE_SUBSCRIPTION_FETCH_TIMEOUT                             | subscription_fetch_timeout                             | <Icon icon="square" /> | The maximum time a subscription fetch can take before it is considered timed out.                                                                                                                                                                                                                                                           | 30s           |
 
 ### Example YAML config:
 
@@ -1579,31 +1620,32 @@ Configure the GraphQL Execution Engine of the Router.
   ```yaml config.yaml
   version: "1"
 
-  engine:
-    enable_single_flight: true
-    enable_request_tracing: true
-    enable_execution_plan_cache_response_header: false
-    max_concurrent_resolvers: 32
-    enable_websocket_epoll_kqueue: true
-    epoll_kqueue_poll_timeout: "1s"
-    epoll_kqueue_conn_buffer_size: 128
-    websocket_client_read_timeout: "1s"
-    websocket_client_write_timeout: "5s"
-    websocket_client_ping_interval: "15s"
-    websocket_client_ping_timeout: "30s"
-    websocket_client_frame_timeout: "100ms"
-    execution_plan_cache_size: 10000
-    minify_subgraph_operations: true
-    enable_persisted_operations_cache: true
-    enable_normalization_cache: true
-    normalization_cache_size: 1024
-    parsekit_pool_size: 8
-    enable_validation_cache: true
-    validation_cache_size: 1024
-    disable_exposing_variables_content_on_validation_error: false
-    enable_subgraph_fetch_operation_name: true
-    subscription_fetch_timeout: 30s
-  ```
+engine:
+enable_single_flight: true
+enable_request_tracing: true
+enable_execution_plan_cache_response_header: false
+max_concurrent_resolvers: 32
+enable_websocket_epoll_kqueue: true
+epoll_kqueue_poll_timeout: "1s"
+epoll_kqueue_conn_buffer_size: 128
+websocket_client_read_timeout: "1s"
+websocket_client_write_timeout: "5s"
+websocket_client_ping_interval: "15s"
+websocket_client_ping_timeout: "30s"
+websocket_client_frame_timeout: "100ms"
+execution_plan_cache_size: 10000
+minify_subgraph_operations: true
+enable_persisted_operations_cache: true
+enable_normalization_cache: true
+normalization_cache_size: 1024
+parsekit_pool_size: 8
+enable_validation_cache: true
+validation_cache_size: 1024
+disable_exposing_variables_content_on_validation_error: false
+enable_subgraph_fetch_operation_name: true
+subscription_fetch_timeout: 30s
+
+````
 </CodeGroup>
 
 ### Debug Configuration
@@ -1634,23 +1676,23 @@ Configure the GraphQL Execution Engine of the Router.
 version: "1"
 
 engine:
-  debug:
-    print_operation_transformations: false
-    print_operation_enable_ast_refs: false
-    print_planning_paths: false
-    print_query_plans: false
-    print_node_suggestions: false
-    configuration_visitor: false
-    planning_visitor: false
-    datasource_visitor: false
-    report_websocket_connections: false
-    report_memory_usage: false
-    enable_resolver_debugging: false
-    enable_persisted_operations_cache_response_header: false
-    enable_normalization_cache_response_header: false
-    always_include_query_plan: false
-    always_skip_loader: false
-```
+debug:
+  print_operation_transformations: false
+  print_operation_enable_ast_refs: false
+  print_planning_paths: false
+  print_query_plans: false
+  print_node_suggestions: false
+  configuration_visitor: false
+  planning_visitor: false
+  datasource_visitor: false
+  report_websocket_connections: false
+  report_memory_usage: false
+  enable_resolver_debugging: false
+  enable_persisted_operations_cache_response_header: false
+  enable_normalization_cache_response_header: false
+  always_include_query_plan: false
+  always_skip_loader: false
+````
 
 </CodeGroup>
 
@@ -1659,7 +1701,10 @@ engine:
 Configures a rate limiter on the outgoing subgraphs requests. When enabled, a rate of 10 req/s with a burst of 10 requests is configured.
 
 <Info>
-  The rate limiter requires Redis version 3.2 or newer since it relies on [replicate_commands](https://redis.io/commands/eval#replicating-commands-instead-of-scripts) feature. ElastiCache for Redis only works in non-clustered mode. You can enable a failover instance to achieve high availability.
+  The rate limiter requires Redis version 3.2 or newer since it relies on
+  [replicate_commands](https://redis.io/commands/eval#replicating-commands-instead-of-scripts)
+  feature. ElastiCache for Redis only works in non-clustered mode. You can
+  enable a failover instance to achieve high availability.
 </Info>
 
 ### Key Suffix Expression
@@ -1760,16 +1805,16 @@ The configuration for the subgraph error propagation. Errors can be exposed to t
 version: "1"
 
 subgraph_error_propagation:
-    enabled: true
-    propagate_status_codes: false
-    mode: "wrapped"
-    rewrite_paths: true
-    omit_locations: true
-    omit_extensions: false
-    default_extension_code: DOWNSTREAM_SERVICE_ERROR
-    attach_service_name: true
-    allowed_extension_fields:
-      - "code"
+  enabled: true
+  propagate_status_codes: false
+  mode: "wrapped"
+  rewrite_paths: true
+  omit_locations: true
+  omit_extensions: false
+  default_extension_code: DOWNSTREAM_SERVICE_ERROR
+  attach_service_name: true
+  allowed_extension_fields:
+    - "code"
 ```
 
 ## Security
@@ -1796,37 +1841,39 @@ The configuration for the security. The security is used to configure the securi
 version: "1"
 
 security:
-    block_mutations:
-      enabled: false
-      condition: "request.header.Get('x-block-mutation') == 'yes'"
-    block_subscriptions:
-      enabled: false
-    block_non_persisted_operations:
-      enabled: false
-    complexity_calculation_cache: # This is for a local in-memory cache, to persist the calculation results
+  block_mutations:
+    enabled: false
+    condition: "request.header.Get('x-block-mutation') == 'yes'"
+  block_subscriptions:
+    enabled: false
+  block_non_persisted_operations:
+    enabled: false
+  complexity_calculation_cache: # This is for a local in-memory cache, to persist the calculation results
+    enabled: true
+    size: 1024
+  complexity_limits:
+    depth: # the equivalent of `security.depth_limit` prevoiusly
       enabled: true
-      size: 1024
-    complexity_limits:
-        depth: # the equivalent of `security.depth_limit` prevoiusly
-          enabled: true
-          limit: 7
-          ignore_persisted_operations: true
-        total_fields:
-          enabled: true
-          limit: 128
-          ignore_persisted_operations: true
-        root_fields:
-          enabled: true
-          limit: 3
-          ignore_persisted_operations: true
-        root_field_aliases:
-          enabled: false
-          limit: 3
-          ignore_persisted_operations: true
+      limit: 7
+      ignore_persisted_operations: true
+    total_fields:
+      enabled: true
+      limit: 128
+      ignore_persisted_operations: true
+    root_fields:
+      enabled: true
+      limit: 3
+      ignore_persisted_operations: true
+    root_field_aliases:
+      enabled: false
+      limit: 3
+      ignore_persisted_operations: true
 ```
 
 <Warning>
-  Query Depth is now deprecated. We recommend using the `security.complexity_calculation_cache` and `security.complexity_limits` configurations instead, which provide that functionality.
+  Query Depth is now deprecated. We recommend using the
+  `security.complexity_calculation_cache` and `security.complexity_limits`
+  configurations instead, which provide that functionality.
 </Warning>
 
 ### Complexity Calculation Cache
@@ -1871,9 +1918,9 @@ The configuration for file upload. Configure whether it should be enabled along 
 version: "1"
 
 file_upload:
-    enabled: true
-    max_file_size: 1GB
-    max_files: 2
+  enabled: true
+  max_file_size: 1GB
+  max_files: 2
 ```
 
 ## Client Header
@@ -1905,7 +1952,7 @@ This configuration is used to enable full compatibility with Apollo Federation, 
 
 ### Apollo Compatibility Value Completion
 
-Invalid \__typename values will be returned in extensions.valueCompletion instead of errors.
+Invalid \_\_typename values will be returned in extensions.valueCompletion instead of errors.
 
 ### Apollo Compatibility Truncate Floats
 
@@ -1944,25 +1991,27 @@ Produces the same error status as Apollo when validation fails. **Error status**
 version: "1"
 
 apollo_compatibility_flags:
-    enable_all: false
-    value_completion:
-        enabled: true
-    truncate_floats:
-        enabled: false
-    suppress_fetch_errors:
-        enabled: true
-    replace_undefined_op_field_errors:
-        enabled: true
-    replace_invalid_var_errors:
-        enabled: true
-    replace_validation_error_status:
-        enabled: false
+  enable_all: false
+  value_completion:
+    enabled: true
+  truncate_floats:
+    enabled: false
+  suppress_fetch_errors:
+    enabled: true
+  replace_undefined_op_field_errors:
+    enabled: true
+  replace_invalid_var_errors:
+    enabled: true
+  replace_validation_error_status:
+    enabled: false
 ```
 
 ## Apollo Router Compatibility Flags
 
 <Info>
-  Apollo Router Compatibility Flags _can_ be enabled alongside Apollo Compatibility Flags, but some will override their counterpart's functionality. This means you can safely use `enable_all: true` alongside these flags.
+  Apollo Router Compatibility Flags _can_ be enabled alongside Apollo
+  Compatibility Flags, but some will override their counterpart's functionality.
+  This means you can safely use `enable_all: true` alongside these flags.
 </Info>
 
 ### Apollo Router Compatibility Replace Invalid Var Errors
@@ -1981,8 +2030,8 @@ Extension code: "VALIDATION_INVALID_TYPE_VARIABLE"
 version: "1"
 
 apollo_router_compatibility_flags:
-    replace_invalid_var_errors:
-        enabled: true
+  replace_invalid_var_errors:
+    enabled: true
 ```
 
 ## Cache warmer
