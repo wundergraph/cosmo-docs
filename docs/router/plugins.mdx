@@ -196,17 +196,18 @@ plugins:
 When you initialize a plugin using `wgc plugin init`, it creates a directory structure like this:
 
 ```text Directory Structure
-my-plugin/
-├── README.md                     # Documentation and getting started guide
-├── go.mod                        # Go module definition
-├── src/                          # Source code for your plugin
-│   ├── schema.graphql            # GraphQL schema defining your subgraph
-│   ├── main.go                   # Main implementation file for your plugin
-│   └── main_test.go              # Test file for your plugin
-└── generated/                    # Generated files, do not edit
-    ├── mapping.json              # GraphQL to gRPC mapping
-    ├── service.proto             # Protocol Buffers definition
-    └── service.proto.lock.json   # Lock file for Proto generation
+plugins/
+└── my-plugin/
+    ├── README.md                     # Documentation and getting started guide
+    ├── go.mod                        # Go module definition
+    ├── src/                          # Source code for your plugin
+    │   ├── schema.graphql            # GraphQL schema defining your subgraph
+    │   ├── main.go                   # Main implementation file for your plugin
+    │   └── main_test.go              # Test file for your plugin
+    └── generated/                    # Generated files, do not edit
+        ├── mapping.json              # GraphQL to gRPC mapping
+        ├── service.proto             # Protocol Buffers definition
+        └── service.proto.lock.json   # Lock file for Proto generation
 ```
 
 For more details on the directory structure and build process, see the [`wgc plugin init`](/cli/plugin/init) documentation.
