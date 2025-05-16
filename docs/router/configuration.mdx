@@ -760,7 +760,7 @@ cache_control_policy:
 
 Configure your custom Modules. More information on this feature can be found here: [Custom Modules](/router/custom-modules)
 
-Example YAML config:
+### Example YAML config:
 
 <CodeGroup>
 
@@ -772,6 +772,29 @@ modules:
     # Arbitrary values, unmarshalled by the module
     value: 1
 ```
+
+</CodeGroup>
+
+## gRPC Plugins
+
+The configuration for the router gRPC plugins. To learn more about the gRPC plugins, see the [gRPC plugins documentation](/router/plugins).
+
+| Environment Variable | YAML    | Required               | Description                                                                         | Default Value |
+| -------------------- | ------- | ---------------------- | ----------------------------------------------------------------------------------- | ------------- |
+| PLUGINS_ENABLED      | enabled | <Icon icon="square" /> | Enable the router plugins. If the value is true, the router plugins are enabled.    | false         |
+| PLUGINS_PATH         | path    | <Icon icon="square" /> | The path to the plugins directory. The plugins directory is used to load the plugins.| plugins       |
+
+### Example YAML config:
+
+<CodeGroup>
+
+    ```yaml config.yaml
+    version: "1"
+
+    plugins:
+    enabled: true
+    path: "plugins"
+    ```
 
 </CodeGroup>
 
