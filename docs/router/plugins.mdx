@@ -91,8 +91,8 @@ The gRPC plugin architecture works by:
 1. **Plugin Registration**: Plugins are registered with the Cosmo Router at startup
 2. **Schema Integration**: The plugin's schema is integrated into the federated graph
 3. **Request Handling**: When the router receives a GraphQL request, it routes relevant parts to the appropriate plugins
-4. **Cross-Process Communication**: Plugins run in separate processes and communicate with the router via gRPC
-5. **Response Assembly**: The router assembles the complete response from all resolvers
+4. **Inter-Process Communication**: Plugins run in separate processes and communicate with the router via gRPC
+5. **Response Assembly**: The router assembles the complete response from all plugins and regular subgraphs
 
 ## Use Cases
 
@@ -108,7 +108,6 @@ gRPC plugins are ideal for:
 While powerful, gRPC plugins have some considerations:
 
 - **Language Support**: Currently, only Go is supported for plugin development
-- **Process Isolation**: Plugins run in separate processes thanks to HashiCorp go-plugins, providing stability and fault isolation
 - **Deployment Coupling**: Plugins must be deployed with the router rather than independently
 
 ## Bootstrapping a gRPC Plugin
@@ -211,6 +210,51 @@ plugins/
 ```
 
 For more details on the directory structure and build process, see the [`wgc router plugin init`](/cli/plugin/init) documentation.
+
+## Deployment Considerations
+
+When deploying gRPC plugins with your Cosmo Router, keep these important considerations in mind:
+
+### Platform Compatibility
+
+Plugins must be compiled for the same target platform as your router. This means:
+
+- If your router runs on Linux AMD64, your plugins must be built for Linux AMD64
+- If deploying to multiple architectures, plugins must be cross-compiled for each target platform
+
+### Docker Integration
+
+For containerized deployments:
+
+1. Plugins must be embedded into the same Docker image as the router
+2. The router's configuration file must correctly reference the plugins' path within the container
+
+Example Dockerfile:
+
+```dockerfile
+FROM ghcr.io/wundergraph/cosmo/router:latest
+
+# Copy the router configuration
+COPY config.yaml /app/config.yaml
+COPY config.json /app/config.json
+
+# Copy the plugins to the container
+COPY ./plugins /app/plugins
+
+# Set the working directory
+WORKDIR /app
+
+# The entrypoint is already set in the base image
+```
+
+### Future Enhancements
+
+We're actively working on enhancing plugin deployment with:
+
+- **Remote gRPC Plugins**: Support for plugins running as separate services, enabling independent scaling and deployment
+- **Cosmo Cloud Integration**: Native integration with Cosmo Cloud allowing you to push plugins directly to the platform without the need to re-deploy the router
+
+These capabilities will further simplify the management and deployment of plugins in production environments.
 
 ## Conclusion
 
