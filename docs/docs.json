@@ -215,17 +215,17 @@
                   "cli/router/compatibility-version",
                   "cli/router/compatibility-version/list"
                 ]
+              },
+              {
+                "group": "Plugin",
+                "icon": "plug",
+                "pages": [
+                  "cli/router/plugin",
+                  "cli/router/plugin/init",
+                  "cli/router/plugin/build",
+                  "cli/router/plugin/test"
+                ]
               }
-            ]
-          },
-          {
-            "group": "Plugin",
-            "icon": "plug",
-            "pages": [
-              "cli/plugin",
-              "cli/plugin/init",
-              "cli/plugin/build",
-              "cli/plugin/test"
             ]
           },
           {

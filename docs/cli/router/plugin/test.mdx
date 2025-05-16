@@ -4,14 +4,14 @@ description: 'Run tests for a gRPC router plugin'
 icon: 'vial'
 ---
 
-# wgc plugin test
+# wgc router plugin test
 
 The `test` command runs tests for your gRPC router plugin to verify its functionality.
 
 ## Usage
 
 ```bash
-wgc plugin test [options] [directory]
+wgc router plugin test [options] [directory]
 ```
 
 ## Arguments
@@ -46,7 +46,7 @@ Testing your plugin is an important step to ensure that your resolvers work corr
 
 ## Test File
 
-When you initialize a new plugin with `wgc plugin init`, a test file is automatically created at `src/main_test.go`. This file includes a basic test setup that you can expand with your own test cases.
+When you initialize a new plugin with `wgc router plugin init`, a test file is automatically created at `src/main_test.go`. This file includes a basic test setup that you can expand with your own test cases.
 
 The default test file tests the plugin's ability to handle basic GraphQL queries. You should add additional tests to cover your custom resolver logic.
 
@@ -55,7 +55,7 @@ The default test file tests the plugin's ability to handle basic GraphQL queries
 ### Run tests for a plugin
 
 ```bash
-wgc plugin test ./my-plugin
+wgc router plugin test ./my-plugin
 ```
 
 ## Best Practices

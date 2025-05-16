@@ -4,14 +4,14 @@ description: 'Scaffold a new gRPC router plugin'
 icon: 'file-circle-plus'
 ---
 
-# wgc plugin init
+# wgc router plugin init
 
 The `init` command scaffolds a new gRPC router plugin project with all the necessary files and directory structure.
 
 ## Usage
 
 ```bash
-wgc plugin init [options] <name>
+wgc router plugin init [options] <n>
 ```
 
 ## Arguments
@@ -67,13 +67,13 @@ During later build steps, additional files will be generated:
 ### Basic usage
 
 ```bash
-wgc plugin init users
+wgc router plugin init users
 ```
 
 ### Specify a custom directory
 
 ```bash
-wgc plugin init users -d ./plugins
+wgc router plugin init users -d ./plugins
 ```
 
 ## Next Steps
@@ -81,9 +81,9 @@ wgc plugin init users -d ./plugins
 After initializing your plugin, you should:
 
 1. Customize the GraphQL schema in `src/schema.graphql`
-2. Generate the Go code with `wgc plugin build --generate-only ./my-plugin`
+2. Generate the Go code with `wgc router plugin build --generate-only ./my-plugin`
 3. Implement your resolvers in `src/main.go`
-4. Build your plugin with `wgc plugin build ./my-plugin`
-5. Test your plugin with `wgc plugin test ./my-plugin`
+4. Build your plugin with `wgc router plugin build ./my-plugin`
+5. Test your plugin with `wgc router plugin test ./my-plugin`
 
 For more information on these steps, see the [build](./build) and [test](./test) command documentation. 
