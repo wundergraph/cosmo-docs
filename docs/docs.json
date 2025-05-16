@@ -215,6 +215,16 @@
                   "cli/router/compatibility-version",
                   "cli/router/compatibility-version/list"
                 ]
+              },
+              {
+                "group": "Plugin",
+                "icon": "plug",
+                "pages": [
+                  "cli/router/plugin",
+                  "cli/router/plugin/init",
+                  "cli/router/plugin/build",
+                  "cli/router/plugin/test"
+                ]
               }
             ]
           },
@@ -380,6 +390,7 @@
           },
           "router/mcp",
           "router/custom-modules",
+          "router/plugins",
           "router/authentication-and-authorization",
           {
             "group": "Subscriptions",
