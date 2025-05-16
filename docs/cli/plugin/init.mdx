@@ -45,13 +45,13 @@ After initialization, your plugin directory will have the following structure:
 
 ```
 my-plugin/
-├── README.md                      # Documentation and getting started guide
-├── go.mod                         # Go module definition
-├── src/
+├── README.md                     # Documentation and getting started guide
+├── go.mod                        # Go module definition
+├── src/                          # Source code for your plugin
 │   ├── schema.graphql            # GraphQL schema defining your subgraph
 │   ├── main.go                   # Main implementation file for your plugin
 │   └── main_test.go              # Test file for your plugin
-└── generated/
+└── generated/                    # Generated files, do not edit
     ├── mapping.json              # GraphQL to gRPC mapping
     ├── service.proto             # Protocol Buffers definition
     └── service.proto.lock.json   # Lock file for Proto generation

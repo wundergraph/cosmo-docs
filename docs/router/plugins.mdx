@@ -1,12 +1,12 @@
 ---
 title: 'gRPC Plugins'
-description: 'Bridge any service into your GraphQL federation with secure, performant gRPC plugins — simplifying architecture while enabling type-safe integration of REST, databases, and legacy systems'
+description: 'Bridge any service into your GraphQL federation with secure, performant gRPC plugins simplifying architecture while enabling type-safe integration of REST, databases, and legacy systems'
 icon: "plug"
 ---
 
 ## Introduction
 
-The Cosmo Router supports extending its functionality with gRPC plugins, allowing you to implement subgraphs directly within the router process. This architecture provides significant performance benefits by eliminating network hops while maintaining clean separation of concerns.
+The Cosmo Router supports extending its functionality with gRPC plugins, allowing you to implement subgraphs directly within the router process. This architecture provides significant performance benefits by reducing network hops while maintaining clean separation of concerns.
 
 <Frame type="color">
   <div className="flex gap-3 items-center">
@@ -30,7 +30,7 @@ gRPC plugins implement the GraphQL resolvers while providing:
 
 <CardGroup cols={2}>
   <Card title="Higher Performance" icon="bolt">
-    Eliminate network hops by running resolvers in-process with the router
+    Reduce network hops by running resolvers inter-process with the router
   </Card>
   <Card title="Lower Latency" icon="gauge-high">
     Reduce end-to-end request time with direct resolver calls
@@ -47,7 +47,7 @@ The plugin architecture is built on HashiCorp's battle-tested [go-plugin framewo
 
 ## Motivation
 
-The biggest pain point in adopting GraphQL isn't GraphQL itself—it's the steep learning curve and fragmented subgraph tooling across languages and platforms.
+The biggest pain point in adopting GraphQL isn't GraphQL itself it's the steep learning curve and fragmented subgraph tooling across languages and platforms.
 
 <CardGroup cols={1}>
   <Card title="Simplify GraphQL Implementation" icon="wand-magic-sparkles">
@@ -119,7 +119,7 @@ Cosmo provides a set of CLI tools to simplify the process of creating, building,
 
 Before using the plugin CLI tools, make sure you have:
 - [WunderGraph Cosmo CLI](/cli) installed
-- Go installed for Go-based plugins
+- The go compiler, protobuf compiler, and protoc plugins are installed automatically by the CLI. However, you can install them manually if you prefer.
 
 ### Creating and Building Plugins
 
@@ -197,13 +197,13 @@ When you initialize a plugin using `wgc plugin init`, it creates a directory str
 
 ```text Directory Structure
 my-plugin/
-├── README.md                      # Documentation and getting started guide
-├── go.mod                         # Go module definition
-├── src/
+├── README.md                     # Documentation and getting started guide
+├── go.mod                        # Go module definition
+├── src/                          # Source code for your plugin
 │   ├── schema.graphql            # GraphQL schema defining your subgraph
 │   ├── main.go                   # Main implementation file for your plugin
 │   └── main_test.go              # Test file for your plugin
-└── generated/
+└── generated/                    # Generated files, do not edit
     ├── mapping.json              # GraphQL to gRPC mapping
     ├── service.proto             # Protocol Buffers definition
     └── service.proto.lock.json   # Lock file for Proto generation
