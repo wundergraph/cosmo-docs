@@ -158,12 +158,12 @@ router_config_path: ""
 
 </CodeGroup>
 
-## Hot config reloading
+## Config watcher hot reloading
 
 The router is capable of reloading itself using an updated config without a full process restart. You can trigger a reload in one of two ways:
 
 - Sending a `SIGHUP` signal to the router process.
-- Configuring the `watch_config` section to automatically reload the configuration at regular intervals.
+- Configuring the `watch_config` section to automatically check the configuration for changes at regular intervals.
 
 ```yaml config.yaml
 watch_config:
@@ -184,10 +184,13 @@ watch_config:
 | WATCH_CONFIG_STARTUP_DELAY_ENABLED | watch_config.startup_delay.enabled | <Icon icon="square" /> | Enable a random delay before the first configuration check to avoid thundering herd problems in clusters. | false         |
 | WATCH_CONFIG_STARTUP_DELAY_MAXIMUM | watch_config.startup_delay.maximum | <Icon icon="square" /> | The maximum random delay before the first configuration check.                                            | 10s           |
 
-Hot reloading has some limitations:
+<Note>
+  Hot reloading has some limitations:
 
-- Changes to the `watch_config` section are not hot-reloaded.
-- Changes to flags and environment variables are not possible.
+    - Changes to the `watch_config` section are not hot-reloaded.
+    - Changes to flags and environment variables are not possible.
+    - `watch_config` based reloads are based on the filesystem's modification time, edits that somehow circumvent this mechanism will not trigger a reload.
+</Note>
 
 ## Access Logs
 
