@@ -15,44 +15,44 @@ icon: "user-shield"
     Click on **Create App Integration**.
   </Step>
   <Step>
-    A dialog appears, select OIDC - OpenID Connect as the sign-in method.
+    A dialog appears, select **OIDC - OpenID Connect** as the sign-in method.
   </Step>
   <Step>
-    Now select the type of application and click on **Next.**
+    For the application type, select **Web Application** and click on **Next**.
 
 <Frame>
-  <img src="/images/studio/sso/image-1.png" />
+  <img src="/images/studio/sso/create-app-integration.png" />
 </Frame>
 </Step>
 <Step>
-  Now give the app a name and scroll down to **Assignments.**
+  Now give the app a name.
 
 <Frame>
-  <img src="/images/studio/sso/image-2.png" />
+  <img src="/images/studio/sso/integration-name.png" />
 </Frame>
 </Step>
 <Step>
   For **Grant Type,** keep the defaults.
 </Step>
 <Step>
-  For **Assignments,** select one of the options based on your choice and then click on **Save.**
+  Scroll down to the **Assignments** section and select one of the options based on your choice and then click on **Save.**
 
   <Frame>
-    <img src="/images/studio/sso/image-3.png" />
+    <img src="/images/studio/sso/integration-assignments.png" />
   </Frame>
 </Step>
 <Step>
   Copy the **Client ID** and **Client Secret.**
 
   <Frame>
-    <img src="/images/studio/sso/image-4.png" />
+    <img src="/images/studio/sso/copy-client-credentials.png" />
   </Frame>
 </Step>
 <Step>
-  Navigate to Security -> API.
+  Navigate to **Security** -> **API**.
 
   <Frame>
-    <img src="/images/studio/sso/image-5.png" />
+    <img src="/images/studio/sso/api-menu.png" />
   </Frame>
 </Step>
 <Step>
@@ -62,7 +62,7 @@ icon: "user-shield"
   Copy the **Metadata URI.**
 
   <Frame>
-    <img src="/images/studio/sso/image-6.png" />
+    <img src="/images/studio/sso/metadata-uri.png" />
   </Frame>
 </Step>
 
@@ -70,28 +70,28 @@ icon: "user-shield"
   Navigate to the settings page on Cosmo.
 
   <Frame>
-    <img src="/images/studio/sso/image-7.png" />
+    <img src="/images/studio/sso/connect_oidc.png" />
   </Frame>
 </Step>
 <Step>
   Give the connection a name, paste the **Metadata URI** copied before, into the  **Discovery Endpoint,**&#x61;nd paste the **Client ID** and  **Client secret**copied before into the **Client ID** and  **Client Secret fields respectively,**&#x61;nd then click on **Connect.**
 
   <Frame>
-    <img src="/images/studio/sso/image-8.png" />
+    <img src="/images/studio/sso/connect-oidc-dialog.png" />
   </Frame>
 </Step>
 <Step>
   Configure the mapping between the roles in Cosmo and the user groups in Okta. The field **Group in the provider** can be populated with the name of the group or a regex to match the user groups. Once all the mappers are configured, click on **Save**.
 
   <Frame>
-    <img src="/images/studio/sso/image-9.png" />
+    <img src="/images/studio/sso/map-oidc-groups.png" />
   </Frame>
 </Step>
 <Step>
   Copy the sign-in and sign-out redirect URIs displayed in the dialog.
 
   <Frame>
-    <img src="/images/studio/sso/image-10.png" />
+    <img src="/images/studio/sso/connect-oidc-success.png" />
   </Frame>
 </Step>
 <Step>
@@ -106,7 +106,7 @@ icon: "user-shield"
   Navigate to Security-> API, and click on the **default** auth server. Navigate to the **claims** tab and then click on **Add Claim.**
 
   <Frame>
-    <img src="/images/studio/sso/image-12.png" />
+    <img src="/images/studio/sso/add-claims-tab.png" />
   </Frame>
 </Step>
 <Step>
