@@ -231,6 +231,8 @@ For containerized deployments:
 
 Example Dockerfile:
 
+This is an example Dockerfile that embeds the plugins into the router image. You can use volume mounts to avoid building specific docker images for each plugin.
+
 ```dockerfile
 FROM ghcr.io/wundergraph/cosmo/router:latest
 
