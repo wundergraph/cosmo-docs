@@ -1,0 +1,70 @@
+---
+title: 'Test'
+description: 'Run tests for a gRPC router plugin'
+icon: 'vial'
+---
+
+# wgc router plugin test
+
+The `test` command runs tests for your gRPC router plugin to verify its functionality.
+
+## Usage
+
+```bash
+wgc router plugin test [options] [directory]
+```
+
+## Arguments
+
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `directory` | Directory of the plugin | `.` (current directory) |
+
+## Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--skip-tools-installation` | Skip tool installation | `false` |
+| `--force-tools-installation` | Force tools installation regardless of version check or confirmation | `false` |
+
+## Description
+
+This command runs the tests for your plugin. For Go plugins, it executes the Go test runner against the test files in your source directory.
+
+<Tip>
+The test command will automatically check for and install the necessary toolchain (like protoc, protoc-gen-go, etc.) when required tools can't be found on your system. You can control this behavior with the `--skip-tools-installation` and `--force-tools-installation` flags.
+</Tip>
+
+The test command will:
+
+1. Check and install required tools if needed
+2. Run Go tests in the `src` directory
+3. Report the test results
+
+Testing your plugin is an important step to ensure that your resolvers work correctly before deploying the plugin to your router.
+
+## Test File
+
+When you initialize a new plugin with `wgc router plugin init`, a test file is automatically created at `src/main_test.go`. This file includes a basic test setup that you can expand with your own test cases.
+
+The default test file tests the plugin's ability to handle basic GraphQL queries. You should add additional tests to cover your custom resolver logic.
+
+## Examples
+
+### Run tests for a plugin
+
+```bash
+wgc router plugin test ./my-plugin
+```
+
+## Best Practices
+
+When writing tests for your gRPC plugin:
+
+1. **Test all resolvers**: Make sure to create test cases for all your GraphQL resolvers
+2. **Test edge cases**: Include tests for error conditions and edge cases
+3. **Mock dependencies**: If your plugin interacts with external systems, use mocks in your tests
+4. **Test arguments**: Verify that your resolvers correctly handle different argument values
+5. **Benchmark performance**: Add benchmarks for performance-critical resolvers
+
+By thoroughly testing your plugin, you can ensure it behaves correctly when integrated with the Cosmo Router. 

@@ -1,0 +1,89 @@
+---
+title: 'Init'
+description: 'Scaffold a new gRPC router plugin'
+icon: 'file-circle-plus'
+---
+
+# wgc router plugin init
+
+The `init` command scaffolds a new gRPC router plugin project with all the necessary files and directory structure.
+
+## Usage
+
+```bash
+wgc router plugin init [options] <name>
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `name`   | Name of the plugin |
+
+## Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-d, --directory <directory>` | Directory to create the plugin in | `.` (current directory) |
+| `-l, --language <language>` | Programming language to use for the plugin | `go` |
+
+## Description
+
+This command creates a new plugin directory with the specified name and scaffolds the basic plugin structure including:
+
+- A GraphQL schema file (`src/schema.graphql`)
+- Go implementation files (`src/main.go`, `src/main_test.go`)
+- Generated protocol files (`generated/service.proto`)
+- Go module configuration (`go.mod`)
+- Documentation (`README.md`)
+
+The scaffolded plugin includes a simple working example that you can customize according to your needs.
+
+## Directory Structure
+
+After initialization, your plugin directory will have the following structure:
+
+```
+my-plugin/
+├── README.md                     # Documentation and getting started guide
+├── go.mod                        # Go module definition
+├── src/                          # Source code for your plugin
+│   ├── schema.graphql            # GraphQL schema defining your subgraph
+│   ├── main.go                   # Main implementation file for your plugin
+│   └── main_test.go              # Test file for your plugin
+└── generated/                    # Generated files, do not edit
+    ├── mapping.json              # GraphQL to gRPC mapping
+    ├── service.proto             # Protocol Buffers definition
+    └── service.proto.lock.json   # Lock file for Proto generation
+```
+
+During later build steps, additional files will be generated:
+
+- `generated/`: Contains generated Go code based on your schema
+- `bin/`: Contains compiled binaries for your plugin
+
+## Examples
+
+### Basic usage
+
+```bash
+wgc router plugin init users
+```
+
+### Specify a custom directory
+
+```bash
+wgc router plugin init users -d ./plugins
+```
+
+## Next Steps
+
+After initializing your plugin, you should:
+
+1. Customize the GraphQL schema in `src/schema.graphql`
+2. Generate the Go code with `wgc router plugin build --generate-only ./my-plugin`
+3. Implement your resolvers in `src/main.go`
+4. Build your plugin with `wgc router plugin build ./my-plugin`
+5. Test your plugin with `wgc router plugin test ./my-plugin`
+
+For more information on these steps, see the [build](./build) and [test](./test) command documentation. 
