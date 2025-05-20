@@ -10,7 +10,7 @@ The Cosmo Router supports extending the GraphQL Federation Supergraph with gRPC 
 This allows you to extend your Schema with non-GraphQL services like REST or SOAP APIs,
 gRPC services, databases, and legacy systems.
 
-The Cosmo cli (wgc) generates a strongly-typed proto definition for your plugin.
+The Cosmo cli ([wgc](/cli)) generates a strongly-typed proto definition for your plugin.
 Together with the built-in testing framework,
 gRPC plugins are purpose-built to leverage LLMs to generate adapter code between your GraphQL Schema and the underlying data source.
 
@@ -19,10 +19,22 @@ including hot-reloading plugins without any service interruption.
 There's no need to deploy "Subgraph" services just to bring an existing API into your Supergraph.
 
 The workflow is simple:
-1. Define a regular Subgraph Schema like you're used to
-2. Use wgc to generate a proto definition for your plugin
-3. Implement the plugin in any language that supports gRPC
-4. Hook up the plugin to your Router
+
+<Steps>
+  <Step title="Define a Subgraph Schema">
+    Define a regular Subgraph Schema like you're used to
+  </Step>
+  <Step title="Generate a proto definition">
+    Use wgc to generate a proto definition for your plugin
+  </Step>
+  <Step title="Implement the plugin">
+    Implement the plugin in any language that supports gRPC
+  </Step>
+  <Step title="Connect to your Router">
+    Hook up the plugin to your Router
+  </Step>
+</Steps>
+
 <Info>gRPC plugins are currently in beta. The API may change in future releases.</Info>
 
 ## Demo and Example
