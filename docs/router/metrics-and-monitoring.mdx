@@ -169,9 +169,39 @@ Few attributes can configured through the route configuration:
 
 Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts. If not specified, a random unique ID is used.
 
+### Connection Metrics
+
+We also provide lower level metrics which helps track connection and pool metrics. This can be enabled for Open Telemetry or Prometheus via
+
+<CodeGroup>
+  ```bash config.yaml
+telemetry:
+  metrics:
+    otlp:
+      connection_stats: true
+    prometheus:
+      connection_stats: true
+  ```
+</CodeGroup>
+
+#### Dimensions
+We use the following standard dimensions
+
+* `subgraph`: The name of the subgraph, this is because we keep a connection pool per subgraph. And users can customize the number of max connections per subgraph. And also as it is possible also for a host to be shared across subgraphs.
+
+* `host`: The host, which is what Go internally uses to track connection pools (Go sets the max connections per host). This dimension is not available for `router.http.client.connection.max` as it reflects configuration values only without the context of a `host`.
+
+#### Attributes
+
+* `router.http.client.connection.max`: Static configuration values with a subgrpah dimension.
+
+* `router.http.client.connection.active`: The number of connections active for every `subgraph-host` configuration. `active` means that the connection has been initizlied by doing a DNS lookup, TLS handshake and dialing the host.
+
+* `router.http.client.connection.acquire_duration`: The duration that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
+
 ## Custom Attributes
 
-You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](/router/open-telemetry/global-custom-attributes) section.
+You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](/router/open-telemetry/custom-attributes) section.
 
 ## Subgraph errors
 

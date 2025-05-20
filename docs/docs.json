@@ -417,8 +417,7 @@
             "icon": "binary-circle-check",
             "pages": [
               "router/open-telemetry",
-              "router/open-telemetry/global-custom-attributes",
-              "router/open-telemetry/custom-metric-attributes",
+              "router/open-telemetry/custom-attributes",
               "router/open-telemetry/prometheus-otlp-ingestion",
               "router/open-telemetry/setup-opentelemetry-collector"
             ]

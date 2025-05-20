@@ -97,7 +97,7 @@ request.header.Get('x-block-mutation') == 'yes'
 
 ### **Body Object**
 
-The body object holds information related to the request body. However, if used in telemetry attribute expressions, it will be empty because the router hasn’t read the body at that stage of processing yet.
+The body object holds information related to the request body. However, if used in telemetry attribute expressions, it will be empty because the router hasn't read the body at that stage of processing yet.
 
 To optimize performance, the raw request body (`raw.body`) is only included in the expression context if at least one expression explicitly references it.
 
@@ -130,11 +130,39 @@ The `auth` object contains authentication-related information for the request. I
 ```bash
 'read:miscellaneous' in request.auth.scopes
 ```
-
----
-
 ```
 request.auth.isAuthenticated
+```
+
+### **Subgraph Object**
+
+The Subgraph object provides information about the current subgraph being accessed in the request. Please note that any expression that uses the subgraph object will only have correct values set in the lifecycle of a subgraph request.
+
+It contains the following properties:
+
+#### Properties
+
+- `subgraph.id` (string): The unique identifier of the subgraph
+- `subgraph.name` (string): The name of the subgraph
+- `subgraph.request` (SubgraphRequest): Contains information about the subgraph request
+
+#### SubgraphRequest Properties
+
+- `subgraph.request.error` (error): Any error that occurred during the subgraph request
+- `subgraph.request.clientTrace` (ClientTrace): Contains tracing information about the client connection
+
+#### ClientTrace Properties
+
+- `subgraph.request.clientTrace.connAcquireDuration` (float64): The duration in seconds it took to acquire the connection to the subgraph
+
+This object is available in template expressions and can be accessed using the `subgraph` identifier. For example, you can access the subgraph name using `subgraph.name` or check for errors using `subgraph.request.error`.
+
+#### Example expressions
+
+```bash
+subgraph.name == 'products'
+subgraph.request.error != nil
+subgraph.request.clientTrace.connAcquireDuration > 1.0
 ```
 
 ### Additional Notes
