@@ -229,10 +229,31 @@ access_logs:
 In the above example, if `request.error`is present, the expression will return the error to the access logger to be printed. However if the `request.error`is nil, the expression will instead will return the value of the header `x-header` .
 
 The response type of the expression is validated upon startup. You should ensure that the expression returns a value. Additionally the following are illegal return types
-
 * Channels
-
 * Functions
+
+<Warning>
+ Note that while `subgraph` attributes can be accessed in the request logger, it will always have "zero" values.
+</Warning>
+
+##### Subgraph Access Log Expressions
+
+<Info>
+  Available since Router [VERSION](https://github.com/wundergraph/cosmo/releases)
+</Info>
+
+```yaml
+access_logs:
+  subgraphs:
+    enabled: true
+    fields:
+      - key: "sg_name"
+        value_from: 
+          expression: "subgraph.name"
+```
+
+In addition to the router access logger, you can also add attributes to the subgraph access logger, this is usesful when you want to log anything related to the `subgraph` expression context object.
+
 
 You can find more information about expressions and the fields accessible for expressions [here](/router/configuration/template-expressions).
 
