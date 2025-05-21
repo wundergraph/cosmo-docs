@@ -27,6 +27,10 @@ terraform {
     }
   }
 }
+
+provider "cosmo" {
+  api_key = var.api_key
+}
 ```
 
 You can find complete examples in the [examples](https://github.com/wundergraph/terraform-provider-cosmo/tree/main/examples) directory.
