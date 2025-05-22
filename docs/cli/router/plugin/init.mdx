@@ -24,12 +24,14 @@ wgc router plugin init [options] <name>
 
 | Option | Description | Default |
 |--------|-------------|---------|
+| `-p, --project <project>` | The name of the project | `cosmo` |
 | `-d, --directory <directory>` | Directory to create the plugin in | `.` (current directory) |
 | `-l, --language <language>` | Programming language to use for the plugin | `go` |
+| `--only-plugin` | Creates only a plugin without bootstrapping a full router project | `false` |
 
 ## Description
 
-This command creates a new plugin directory with the specified name and scaffolds the basic plugin structure including:
+This command creates a new plugin directory with the specified name and scaffolds the basic plugin structure, including:
 
 - A GraphQL schema file (`src/schema.graphql`)
 - Go implementation files (`src/main.go`, `src/main_test.go`)
@@ -37,30 +39,44 @@ This command creates a new plugin directory with the specified name and scaffold
 - Go module configuration (`go.mod`)
 - Documentation (`README.md`)
 
-The scaffolded plugin includes a simple working example that you can customize according to your needs.
+The scaffolded plugin includes a hello world example that you can customize according to your needs.
 
 ## Directory Structure
 
-After initialization, your plugin directory will have the following structure:
+After initialization, your project directory will have the following structure:
 
 ```
 my-plugin/
-├── README.md                     # Documentation and getting started guide
-├── go.mod                        # Go module definition
-├── src/                          # Source code for your plugin
-│   ├── schema.graphql            # GraphQL schema defining your subgraph
-│   ├── main.go                   # Main implementation file for your plugin
-│   └── main_test.go              # Test file for your plugin
-└── generated/                    # Generated files, do not edit
-    ├── mapping.json              # GraphQL to gRPC mapping
-    ├── service.proto             # Protocol Buffers definition
-    └── service.proto.lock.json   # Lock file for Proto generation
+├── cosmo/                        # Root project directory
+│   ├── README.md                 # Project documentation
+│   ├── Makefile                 # Makefile for your plugin
+│   ├── config.yaml              # Router configuration
+│   └── graph.yaml               # Supergraph configuration
+│
+└── plugins/                      # Plugins directory
+    └── my-plugin/               # Your plugin directory
+        ├── .cursor              # Cursor rules
+        ├── README.md            # Documentation and getting started guide
+        ├── Makefile            # Automation scripts
+        ├── go.mod              # Go module definition
+        ├── go.sum              # Go module sum
+        │
+        ├── src/                # Source code directory
+        │   ├── main.go         # Main implementation file
+        │   └── main_test.go    # Test file
+        │
+        └── generated/          # Generated files (do not edit)
+            ├── mapping.json    # GraphQL to gRPC mapping
+            ├── service.proto   # Protocol Buffers definition
+            └── service.proto.lock.json  # Lock file for Proto generation
 ```
 
 During later build steps, additional files will be generated:
 
 - `generated/`: Contains generated Go code based on your schema
 - `bin/`: Contains compiled binaries for your plugin
+
+You can also generate only the plugin without bootstrapping a full router project by using the `--only-plugin` flag. This is useful if you want to create a plugin in an existing router project.
 
 ## Examples
 
@@ -81,9 +97,10 @@ wgc router plugin init users -d ./plugins
 After initializing your plugin, you should:
 
 1. Customize the GraphQL schema in `src/schema.graphql`
-2. Generate the Go code with `wgc router plugin build --generate-only ./my-plugin`
+2. Generate the Go code with `make generate`
 3. Implement your resolvers in `src/main.go`
-4. Build your plugin with `wgc router plugin build ./my-plugin`
-5. Test your plugin with `wgc router plugin test ./my-plugin`
+4. Implement your tests in `src/main_test.go` and run them with `make test`
+5. Build your plugin with `make build`
+
 
 For more information on these steps, see the [build](./build) and [test](./test) command documentation. 
