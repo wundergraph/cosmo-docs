@@ -1,0 +1,115 @@
+---
+title: 'Debug'
+description: 'Debug router plugins using various IDEs and tools'
+icon: 'bug'
+---
+
+# Debugging Router Plugins
+
+When developing router plugins, you might need to debug your code to understand its behavior or fix issues. This guide explains how to build plugins in debug mode and attach debuggers using different tools.
+
+## Building for Debug
+
+To build your plugin with debug information, use the `--debug` flag with the build command:
+
+```bash
+wgc router plugin build --debug ./my-plugin
+```
+
+This will compile the plugin with debug symbols and without optimizations, making it suitable for debugging.
+
+## Debugging with Delve
+
+[Delve](https://github.com/go-delve/delve) is a debugger for Go programs. To debug your plugin with Delve:
+
+1. First, find the process ID (PID) of your router that's running the plugin:
+```bash
+# The process name follows the pattern: <os>_<arch>
+# For example: darwin_arm64, linux_amd64, etc.
+ps aux | grep "$(go env GOOS)_$(go env GOARCH)"
+```
+
+2. Attach Delve to the process:
+```bash
+dlv attach <PID>
+```
+
+3. Set breakpoints in your plugin code:
+```
+(dlv) break src/main.go:42
+```
+
+4. Use Delve commands to debug:
+- `continue` (or `c`): Continue execution
+- `next` (or `n`): Step over
+- `step` (or `s`): Step into
+- `print` (or `p`): Print variable values
+- `vars`: List local variables
+
+## Debugging with GoLand
+
+To debug your plugin in GoLand:
+
+1. Build the plugin with debug mode enabled
+2. In GoLand, go to Run → Attach to Process
+3. Find and select the router process running your plugin
+4. Set breakpoints in your plugin code by clicking the gutter
+5. Use the debug toolbar to:
+   - Step Over (F8)
+   - Step Into (F7)
+   - Resume Program (F9)
+   - View variables in the Debug tool window
+
+## Debugging with VS Code
+
+To debug your plugin in VS Code:
+
+1. Install the Go extension for VS Code
+2. Create a `.vscode/launch.json` file with this configuration:
+3. After running the router, press F5 or click Run → Start Debugging
+4. Select the router process when prompted. The process name follows the pattern: os_arch
+5. Set breakpoints by clicking the gutter
+6. Use the debug toolbar or keyboard shortcuts:
+   - F5: Continue
+   - F10: Step Over
+   - F11: Step Into
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Router Process",
+            "type": "go",
+            "request": "attach",
+            "mode": "local",
+            "processId": "${command:pickProcess}"
+        }
+    ]
+}
+```
+3. Start debugging:
+   - Press F5 or click Run → Start Debugging
+   - Select the router process when prompted
+   - Set breakpoints by clicking the gutter
+   - Use the debug toolbar or keyboard shortcuts:
+     - F5: Continue
+     - F10: Step Over
+     - F11: Step Into
+
+## Tips for Effective Debugging
+
+1. **Log Points**: Consider adding log points instead of breakpoints for less intrusive debugging
+2. **Conditional Breakpoints**: Use conditional breakpoints to break only when specific conditions are met
+3. **Watch Expressions**: Set watch expressions to monitor variable values during execution
+
+## Troubleshooting
+
+- If you can't attach to the process, ensure you have the necessary permissions
+- For production environments, make sure to rebuild without the `--debug` flag
+- When debugging fails to hit breakpoints, verify the source code paths match
+- If symbols are missing, confirm you built with the `--debug` flag
+
+<Note>
+Debugging in production environments is not recommended as it can impact performance. Always use debug builds in development environments only.
+</Note> 
+
