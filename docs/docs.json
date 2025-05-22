@@ -390,7 +390,14 @@
           },
           "router/mcp",
           "router/custom-modules",
-          "router/plugins",
+          {
+            "group": "Plugins",
+            "icon": "plug",
+            "pages": [
+              "router/plugins",
+              "router/plugins/debug"
+            ]
+          },
           "router/authentication-and-authorization",
           {
             "group": "Subscriptions",

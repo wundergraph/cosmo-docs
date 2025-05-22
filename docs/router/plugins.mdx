@@ -21,18 +21,18 @@ There's no need to deploy "Subgraph" services just to bring an existing API into
 The workflow is simple:
 
 <Steps>
-  <Step title="Define a Subgraph Schema">
-    Define a regular Subgraph Schema like you're used to
-  </Step>
-  <Step title="Generate a proto definition">
-    Use wgc to generate a proto definition for your plugin
-  </Step>
-  <Step title="Implement the plugin">
-    Implement the plugin in any language that supports gRPC
-  </Step>
-  <Step title="Connect to your Router">
-    Hook up the plugin to your Router
-  </Step>
+    <Step title="Define a Subgraph Schema">
+        Define a regular Subgraph Schema like you're used to
+    </Step>
+    <Step title="Generate a proto definition">
+        Use wgc to generate a proto definition for your plugin
+    </Step>
+    <Step title="Implement the plugin">
+        Implement the plugin in any language that supports gRPC
+    </Step>
+    <Step title="Connect to your Router">
+        Hook up the plugin to your Router
+    </Step>
 </Steps>
 
 <Info>gRPC plugins are currently in beta. The API may change in future releases.</Info>
@@ -70,52 +70,52 @@ LLM coding assistants can quickly iterate on the generated code and ensure it's 
 Our goal is to allow you to one-shot generate an adapter for an existing system with a single prompt.
 
 <CardGroup cols={1}>
-  <Card title="Simplify GraphQL Implementation" icon="wand-magic-sparkles">
-    While everyone understands the value of "one schema, one query," building and maintaining production-grade subgraphs across diverse environments remains challenging. Spec support, runtime performance, and type safety depend on your subgraph framework quality.
-  </Card>
+    <Card title="Simplify GraphQL Implementation" icon="wand-magic-sparkles">
+        While everyone understands the value of "one schema, one query," building and maintaining production-grade subgraphs across diverse environments remains challenging. Spec support, runtime performance, and type safety depend on your subgraph framework quality.
+    </Card>
 
-  <Card title="Design with GraphQL, Implement with gRPC" icon="code">
-    Our approach combines GraphQL's schema-first flexibility with gRPC's performance and type safety.
-    Using the same plugin system that powers HashiCorp Vault and Terraform,
-    you can develop subgraphs in any language and run them directly in the Cosmo Router.
-  </Card>
+    <Card title="Design with GraphQL, Implement with gRPC" icon="code">
+        Our approach combines GraphQL's schema-first flexibility with gRPC's performance and type safety.
+        Using the same plugin system that powers HashiCorp Vault and Terraform,
+        you can develop subgraphs in any language and run them directly in the Cosmo Router.
+    </Card>
 
-  <Card title="Proto-Based Code Generation" icon="bolt">
-    The strict typing and automatic code generation from Protocol Buffers (proto) definitions provides an immense productivity boost,
-    especially in the era of generative AI.
-    The generated proto-based gRPC code creates a strongly-typed foundation that AI tools can more effectively understand,
-    extend, and modify, reducing development time and errors while ensuring consistent API implementation.
-  </Card>
+    <Card title="Proto-Based Code Generation" icon="bolt">
+        The strict typing and automatic code generation from Protocol Buffers (proto) definitions provides an immense productivity boost,
+        especially in the era of generative AI.
+        The generated proto-based gRPC code creates a strongly-typed foundation that AI tools can more effectively understand,
+        extend, and modify, reducing development time and errors while ensuring consistent API implementation.
+    </Card>
 
-  <Card title="Strongly-Typed Subgraphs" icon="shield-check">
-    It's impossible to know if a Subgraph Framework properly implemented the GraphQL Federation contract.
-    With gRPC plugins, there's no way to get around the proto definition.
-    If the implementation compiles against the proto definition, you know it's correct.
-    This eliminates a whole class of issues around Subgraph Implementation Quality.
-  </Card>
+    <Card title="Strongly-Typed Subgraphs" icon="shield-check">
+        It's impossible to know if a Subgraph Framework properly implemented the GraphQL Federation contract.
+        With gRPC plugins, there's no way to get around the proto definition.
+        If the implementation compiles against the proto definition, you know it's correct.
+        This eliminates a whole class of issues around Subgraph Implementation Quality.
+    </Card>
 
-  <Card title="Apollo Federation Subgraph Interoperability" icon="merge">
-    gRPC plugins are 100% compatible with existing Apollo Federation Subgraph Implementations.
-    This means you can use gRPC plugins alongside existing Apollo Federation Subgraphs.
-  </Card>
+    <Card title="Apollo Federation Subgraph Interoperability" icon="merge">
+        gRPC plugins are 100% compatible with existing Apollo Federation Subgraph Implementations.
+        This means you can use gRPC plugins alongside existing Apollo Federation Subgraphs.
+    </Card>
 
-  <Card title="No N+1 Problems" icon="layer-group">
-    Declarative approaches like Apollo Connectors suffer from N+1 problems and make it impossible to batch origin requests.
-    gRPC plugins leverage Cosmo Router's DataLoader capabilities which batches requests by default.
-  </Card>
+    <Card title="No N+1 Problems" icon="layer-group">
+        Declarative approaches like Apollo Connectors suffer from N+1 problems and make it impossible to batch origin requests.
+        gRPC plugins leverage Cosmo Router's DataLoader capabilities which batches requests by default.
+    </Card>
 
-  <Card title="No Subgraph Framework Lag" icon="chevrons-right">
-    When new features are added to the Apollo Federation Subgraph Specification,
-    it can take months for all Subgraph Implementations to catch up.
-    gRPC plugins handle all Federation related logic within the Router,
-    only exposing rpc methods for queries, mutations, and entity lookups.
-    As a result, you can always immediately take advantage of the latest features in any language that supports gRPC.
-  </Card>
+    <Card title="No Subgraph Framework Lag" icon="chevrons-right">
+        When new features are added to the Apollo Federation Subgraph Specification,
+        it can take months for all Subgraph Implementations to catch up.
+        gRPC plugins handle all Federation related logic within the Router,
+        only exposing rpc methods for queries, mutations, and entity lookups.
+        As a result, you can always immediately take advantage of the latest features in any language that supports gRPC.
+    </Card>
 
-  <Card title="Breaking free from Apollo" icon="lock">
-    Apollo being the maintainer of the majority of Subgraph Framework implementations limits the speed of innovation.
-    With gRPC plugins, we're able to break free from Apollo's constraints and innovate at a much faster pace.
-  </Card>
+    <Card title="Breaking free from Apollo" icon="lock">
+        Apollo being the maintainer of the majority of Subgraph Framework implementations limits the speed of innovation.
+        With gRPC plugins, we're able to break free from Apollo's constraints and innovate at a much faster pace.
+    </Card>
 </CardGroup>
 
 ### Benefits Over Traditional Subgraphs
@@ -123,20 +123,20 @@ Our goal is to allow you to one-shot generate an adapter for an existing system 
 When compared to traditional standalone subgraphs, gRPC plugins offer substantial technical advantages:
 
 <CardGroup cols={2}>
-  <Card title="Simplified Architecture" icon="cloud-arrow-up">
-    Maintain fewer components with unified deployment and monitoring. You can run multiple plugins on the same Router.
-  </Card>
-  <Card title="Performance" icon="rocket">
-    Achieve significantly lower latency with direct gRPC-based communication. The network and GraphQL framework overhead is eliminated.
-  </Card>
-  <Card title="Enhanced Developer Experience" icon="code">
-    Work with consistent tooling and deployment patterns across all Subgraphs.
-    If your team knows how to work with gRPC, they know how to build Subgraphs.
-  </Card>
-  <Card title="Seamless Integration" icon="bridge">
-    Connect to legacy systems, databases, and APIs without intermediate GraphQL services.
-    The plugin can be written in any language that supports gRPC.
-  </Card>
+    <Card title="Simplified Architecture" icon="cloud-arrow-up">
+        Maintain fewer components with unified deployment and monitoring. You can run multiple plugins on the same Router.
+    </Card>
+    <Card title="Performance" icon="rocket">
+        Achieve significantly lower latency with direct gRPC-based communication. The network and GraphQL framework overhead is eliminated.
+    </Card>
+    <Card title="Enhanced Developer Experience" icon="code">
+        Work with consistent tooling and deployment patterns across all Subgraphs.
+        If your team knows how to work with gRPC, they know how to build Subgraphs.
+    </Card>
+    <Card title="Seamless Integration" icon="bridge">
+        Connect to legacy systems, databases, and APIs without intermediate GraphQL services.
+        The plugin can be written in any language that supports gRPC.
+    </Card>
 </CardGroup>
 
 This architecture gives you a unified development experience with consistent tooling across all your subgraphs while enabling seamless integration with your existing infrastructure.
@@ -244,22 +244,7 @@ plugins:
 
 ### Plugin Directory Structure
 
-When you initialize a plugin using `wgc router plugin init`, it creates a directory structure like this:
-
-```text Directory Structure
-plugins/
-└── my-plugin/
-    ├── README.md                     # Documentation and getting started guide
-    ├── go.mod                        # Go module definition
-    ├── src/                          # Source code for your plugin
-    │   ├── schema.graphql            # GraphQL schema defining your subgraph
-    │   ├── main.go                   # Main implementation file for your plugin
-    │   └── main_test.go              # Test file for your plugin
-    └── generated/                    # Generated files, do not edit
-        ├── mapping.json              # GraphQL to gRPC mapping
-        ├── service.proto             # Protocol Buffers definition
-        └── service.proto.lock.json   # Lock file for Proto generation
-```
+When you initialize a plugin using `wgc router plugin init`, it creates a complete router project with a hello world plugin.
 
 For more details on the directory structure and build process, see the [`wgc router plugin init`](/cli/plugin/init) documentation.
 
