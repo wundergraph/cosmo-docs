@@ -1642,29 +1642,29 @@ Configure the GraphQL Execution Engine of the Router.
   version: "1"
 
 engine:
-enable_single_flight: true
-enable_request_tracing: true
-enable_execution_plan_cache_response_header: false
-max_concurrent_resolvers: 32
-enable_websocket_epoll_kqueue: true
-epoll_kqueue_poll_timeout: "1s"
-epoll_kqueue_conn_buffer_size: 128
-websocket_client_read_timeout: "1s"
-websocket_client_write_timeout: "5s"
-websocket_client_ping_interval: "15s"
-websocket_client_ping_timeout: "30s"
-websocket_client_frame_timeout: "100ms"
-execution_plan_cache_size: 10000
-minify_subgraph_operations: true
-enable_persisted_operations_cache: true
-enable_normalization_cache: true
-normalization_cache_size: 1024
-parsekit_pool_size: 8
-enable_validation_cache: true
-validation_cache_size: 1024
-disable_exposing_variables_content_on_validation_error: false
-enable_subgraph_fetch_operation_name: true
-subscription_fetch_timeout: 30s
+	enable_single_flight: true
+	enable_request_tracing: true
+	enable_execution_plan_cache_response_header: false
+	max_concurrent_resolvers: 32
+	enable_websocket_epoll_kqueue: true
+	epoll_kqueue_poll_timeout: "1s"
+	epoll_kqueue_conn_buffer_size: 128
+	websocket_client_read_timeout: "1s"
+	websocket_client_write_timeout: "5s"
+	websocket_client_ping_interval: "15s"
+	websocket_client_ping_timeout: "30s"
+	websocket_client_frame_timeout: "100ms"
+	execution_plan_cache_size: 10000
+	minify_subgraph_operations: true
+	enable_persisted_operations_cache: true
+	enable_normalization_cache: true
+	normalization_cache_size: 1024
+	parsekit_pool_size: 8
+	enable_validation_cache: true
+	validation_cache_size: 1024
+	disable_exposing_variables_content_on_validation_error: false
+	enable_subgraph_fetch_operation_name: true
+	subscription_fetch_timeout: 30s
 
 ````
 </CodeGroup>
@@ -1697,22 +1697,22 @@ subscription_fetch_timeout: 30s
 version: "1"
 
 engine:
-debug:
-  print_operation_transformations: false
-  print_operation_enable_ast_refs: false
-  print_planning_paths: false
-  print_query_plans: false
-  print_node_suggestions: false
-  configuration_visitor: false
-  planning_visitor: false
-  datasource_visitor: false
-  report_websocket_connections: false
-  report_memory_usage: false
-  enable_resolver_debugging: false
-  enable_persisted_operations_cache_response_header: false
-  enable_normalization_cache_response_header: false
-  always_include_query_plan: false
-  always_skip_loader: false
+  debug:
+    print_operation_transformations: false
+    print_operation_enable_ast_refs: false
+    print_planning_paths: false
+    print_query_plans: false
+    print_node_suggestions: false
+    configuration_visitor: false
+    planning_visitor: false
+    datasource_visitor: false
+    report_websocket_connections: false
+    report_memory_usage: false
+    enable_resolver_debugging: false
+    enable_persisted_operations_cache_response_header: false
+    enable_normalization_cache_response_header: false
+    always_include_query_plan: false
+    always_skip_loader: false
 ````
 
 </CodeGroup>
