@@ -77,7 +77,7 @@ We collect the following metrics to gain useful insights into the router's runti
 
 * `process.runtime.go.mem.heap_released`: Bytes of idle spans whose physical memory has been returned to the OS
 
-* **process.runtime.go.mem.heap\_sys**: Bytes of heap memory obtained from the OS
+* `process.runtime.go.mem.heap_sys`: Bytes of heap memory obtained from the OS
 
 * `process.runtime.go.mem.live_objects`: Number of live objects is the number of cumulative Mallocs - Frees
 
@@ -123,7 +123,7 @@ All metrics are tracked along different dimensions. A dimension is an attribute 
 
 **Error identification**
 
-You can use the `router.http.requests.error`  ****metric to track errors across router and subgraph requests. In addition to that, you can also use the `router.http.requests`  ****metric to identify errors. We attach the following fields:
+You can use the `router.http.requests.error` metric to track errors across router and subgraph requests. In addition to that, you can also use the `router.http.requests` metric to identify errors. We attach the following fields:
 
 * `wg.request.error`: Identify if an error occurred. This applies to a request that didn't result in a successful HTTP or GraphQL response. Only set when it is `true`. Be aware that a Status-Code `200` can still be an error in GraphQL.
 
@@ -169,9 +169,39 @@ Few attributes can configured through the route configuration:
 
 Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts. If not specified, a random unique ID is used.
 
+### Connection Metrics
+
+We also provide lower level metrics which helps track connection and pool metrics. By utilizing these metrics users can figure out when the router's connection pool is full and when connections are misbehaving by for example observing spikes in time to acquire connections. This can be enabled for Open Telemetry or Prometheus via
+
+<CodeGroup>
+  ```bash config.yaml
+telemetry:
+  metrics:
+    otlp:
+      connection_stats: true
+    prometheus:
+      connection_stats: true
+  ```
+</CodeGroup>
+
+#### Dimensions
+We use the following standard dimensions
+
+* `subgraph`: The name of the subgraph, this is because we keep a connection pool per subgraph. And users can customize the number of max connections per subgraph. And also as it is possible also for a host to be shared across subgraphs.
+
+* `host`: The host, which is what Go internally uses to track connection pools (Go sets the max connections per host). This dimension is not available for `router.http.client.connection.max` as it reflects configuration values only without the context of a `host`.
+
+#### Attributes
+
+* `router.http.client.connection.max`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
+
+* `router.http.client.connection.active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it’s less common, multiple subgraphs can share the same host, which is why both dimensions are included.
+
+* `router.http.client.connection.acquire_duration`: The duration in ms that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
+
 ## Custom Attributes
 
-You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](/router/open-telemetry/global-custom-attributes) section.
+You can also add custom attributes to OTEL and Prometheus. Please refer to the [Custom Attributes](/router/open-telemetry/custom-attributes) section.
 
 ## Subgraph errors
 
@@ -292,6 +322,33 @@ Here you can see a few example queries to query useful information about your cl
     ```
     sum by (wg_subgraph_name, le) (rate(router_http_requests_error_total[5m]))
     ```
+  </Tab>
+
+  <Tab title="Connection">
+       If you have enabled `connection_stats` you  can use the following queries to get useful information about your connection pool.
+       We use `server_address`, `server_port` and `subgraph` as dimensions. The `subgraph` dimension is used because it is possible for two subgraphs to have the same host and port in the routing url.
+
+       #### Get Number Of Unused Connections In Pool
+       An important caveat is that if you have a non global [`max_conns_per_host`](/router/configuration#traffic-shaping) for a subgraph, you must apply the correct labels on `router_http_client_max_connections` to get the correct value.
+       ```
+       router_http_client_max_connections - on() group_left router_http_client_active_connections{server_address="192.1.2.5",server_port="4001"}
+       ```
+
+       #### Check if the connection pool is not exhausted for the last N minutes
+       ```
+      (
+        max_over_time(router_http_client_max_connections[2m])
+        - on() group_left
+        min_over_time(router_http_client_active_connections{server_address="192.1.2.5", server_port="4001"}[2m])
+      ) == 0
+      ```
+
+       #### Identify slow connection acquisitions
+       You can combine the above metric with outliers in durations to acquire connections. Since this is a histogram, you can filter by buckets (buckets are broken down by "ms"). We also have the `reused` dimension, which points to connections that already have been established. It is worth noting this dimension when observing timings, as `reused` true connections will most likely be faster than its `reused` false connection equivalent.
+       In the below example, we find connections that took less than 25ms to acquire (using the 25ms bucket).
+       ```
+       router_http_client_connection_acquire_duration_bucket{wg_http_client_reused_connection="true",le="25.0"}
+       ```
   </Tab>
 </Tabs>
 

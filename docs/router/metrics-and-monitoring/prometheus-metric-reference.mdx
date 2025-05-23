@@ -87,6 +87,33 @@ telemetry:
 
   * **Improvement Areas:** Low cache request stats highlight the need for potential optimization or caching strategy updates.
 
+### Connection Metrics
+
+These metrics provide lower level metrics which helps track connection and pool metrics. By utilizing these metrics users can figure out when the router's connection pool is full and when connections are misbehaving by for example observing spikes in time to acquire connections.
+
+#### Enable Connection Metrics
+
+Depending on your setup you can enable connection metrics for Prometheus in the router configuration
+
+```bash
+telemetry:
+  metrics:
+    prometheus:
+      connection_stats: true
+```
+
+#### Metrics
+
+* `router_http_client_connection_max`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
+
+* `router_http_client_connection_active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it’s less common, multiple subgraphs can share the same host, which is why both dimensions are included.
+
+* `router_http_client_connection_acquire_duration`: The duration in ms that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
+
+#### Examples
+
+You can find more examples here under [`Connection`](/router/metrics-and-monitoring#example-prometheus-queries)
+
 ### Go Runtime Metrics
 
 These metrics help monitor application memory usage, concurrency, and garbage collection efficiency:

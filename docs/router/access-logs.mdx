@@ -212,7 +212,9 @@ Here are the fields that are specifically added in error cases:
 
 #### Expression Fields
 
-Available since Router [0.186.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.186.0)
+<Info>
+  Available since Router [0.186.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.186.0)
+</Info>
 
 Sometimes the provided custom fields are not enough, and you would like more control over what is logged. In these cases you can use template expression fields. The value retruned from the expression will be logged.
 
@@ -229,10 +231,31 @@ access_logs:
 In the above example, if `request.error`is present, the expression will return the error to the access logger to be printed. However if the `request.error`is nil, the expression will instead will return the value of the header `x-header` .
 
 The response type of the expression is validated upon startup. You should ensure that the expression returns a value. Additionally the following are illegal return types
-
 * Channels
-
 * Functions
+
+<Warning>
+ Note that while `subgraph` attributes can be accessed in the request logger, it will always have "zero" values.
+</Warning>
+
+##### Subgraph Access Log Expressions
+
+<Info>
+  Available since Router [0.214.1](https://github.com/wundergraph/cosmo/releases/tag/router%400.214.1)
+</Info>
+
+```yaml
+access_logs:
+  subgraphs:
+    enabled: true
+    fields:
+      - key: "sg_name"
+        value_from: 
+          expression: "string(subgraph.request.clientTrace.connAcquireDuration)"
+```
+
+In addition to the router access logger, you can also add attributes to the subgraph access logger, this is useful when you want to log anything related to the `subgraph` expression context object.
+
 
 You can find more information about expressions and the fields accessible for expressions [here](/router/configuration/template-expressions).
 
