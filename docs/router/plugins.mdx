@@ -195,9 +195,9 @@ wgc router plugin init hello-world
 make
 
 # 3️⃣ Customize the schema and implementation to your needs
-# Edit `./plugins/hello-world/src/schema.graphql` and `./plugins/hello-world/src/main.go`
+# Edit `./plugins/hello-world/src/schema.graphql`
 
-# 4️⃣ Generate the Go code for your plugin
+# 4️⃣ Generate the Go code for your plugin to implement the resolvers
 cd plugins/hello-world && make generate
 
 # 5️⃣ Now you can implement your gRPC resolvers in `./plugins/hello-world/src/main.go`
