@@ -176,11 +176,11 @@ However, you can install them manually if you prefer.
 
 The Cosmo CLI provides the following commands for working with plugins:
 
-- **[`wgc router plugin init`](/cli/plugin/init)**: Scaffolds a new gRPC plugin project
-- **[`wgc router plugin build`](/cli/plugin/build)**: Generates code and builds the plugin
-- **[`wgc router plugin test`](/cli/plugin/test)**: Runs tests for your plugin
+- **[`wgc router plugin init`](/cli/router/plugin/init)**: Scaffolds a new gRPC plugin project
+- **[`wgc router plugin build`](/cli/router/plugin/build)**: Generates code and builds the plugin
+- **[`wgc router plugin test`](/cli/router/plugin/test)**: Runs tests for your plugin
 
-For detailed documentation on each command, visit the [CLI Plugin Commands](/cli/plugin) section.
+For detailed documentation on each command, visit the [CLI Plugin Commands](/cli/router/plugin) section.
 
 ### Typical Workflow
 
@@ -213,7 +213,11 @@ Every plugin comes with a `Makefile` that provides a set of commands to build, t
 
 When you initialize a plugin using `wgc router plugin init`, it creates a complete router project with a hello world plugin.
 
-For more details on the directory structure and build process, see the [`wgc router plugin init`](/cli/plugin/init) documentation.
+For more details on the directory structure and build process, see the [`wgc router plugin init`](/cli/router/plugin/init) documentation.
+
+## Debugging Plugins
+
+Please refer to the [Debugging Plugins](/router/plugins/debugging) documentation for more details.
 
 ## Deployment Considerations
 

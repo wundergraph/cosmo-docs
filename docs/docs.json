@@ -395,7 +395,7 @@
             "icon": "plug",
             "pages": [
               "router/plugins",
-              "router/plugins/debug"
+              "router/plugins/debugging"
             ]
           },
           "router/authentication-and-authorization",

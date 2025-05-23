@@ -1,12 +1,24 @@
 ---
-title: 'Debug'
+title: 'Debugging'
 description: 'Debug router plugins using various IDEs and tools'
 icon: 'bug'
 ---
 
-# Debugging Router Plugins
+# Debugging Plugins
 
 When developing router plugins, you might need to debug your code to understand its behavior or fix issues. This guide explains how to build plugins in debug mode and attach debuggers using different tools.
+
+## Design Philosophy
+
+When designing the router plugin system, we prioritized providing an excellent developer experience (DX). One of the key reasons we chose a native plugin approach over a scripting solution was the superior debugging capabilities and IDE support. 
+
+Plugins allow developers to:
+- Use full-featured debugging tools
+- Benefit from IDE features like code completion and type checking
+- Leverage existing Go tooling and workflows
+- Get immediate feedback during development
+
+These advantages significantly improve the development process compared to scripting approaches, which often lack comprehensive debugging support and IDE integration.
 
 ## Building for Debug
 
@@ -67,7 +79,7 @@ To debug your plugin in VS Code:
 1. Install the Go extension for VS Code
 2. Create a `.vscode/launch.json` file with this configuration:
 3. After running the router, press F5 or click Run → Start Debugging
-4. Select the router process when prompted. The process name follows the pattern: os_arch
+4. Select the router process when prompted. The process name follows the pattern: `os_arch`
 5. Set breakpoints by clicking the gutter
 6. Use the debug toolbar or keyboard shortcuts:
    - F5: Continue
@@ -89,7 +101,7 @@ To debug your plugin in VS Code:
 ```
 3. Start debugging:
    - Press F5 or click Run → Start Debugging
-   - Select the router process when prompted
+   - Select the router process when prompted (the process name follows the pattern: `os_arch`)
    - Set breakpoints by clicking the gutter
    - Use the debug toolbar or keyboard shortcuts:
      - F5: Continue
