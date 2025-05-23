@@ -326,7 +326,7 @@ Here you can see a few example queries to query useful information about your cl
 
   <Tab title="Connection">
        If you have enabled `connection_stats` you  can use the following queries to get useful information about your connection pool.
-       We use `server_address`, `server_port` and `subgraph` as dimensions. The `subgraph` dimension is used because it is possible for two subgraphs have the same host and port in the routing url.
+       We use `server_address`, `server_port` and `subgraph` as dimensions. The `subgraph` dimension is used because it is possible for two subgraphs to have the same host and port in the routing url.
 
        #### Get Number Of Unused Connections In Pool
        An important caveat is that if you have a non global [`max_conns_per_host`](/router/configuration#traffic-shaping) for a subgraph, you must apply the correct labels on `router_http_client_max_connections` to get the correct value.
@@ -344,7 +344,7 @@ Here you can see a few example queries to query useful information about your cl
       ```
 
        #### Identify slow connection acquisitions
-       You can combine the above metric with outliers in durations to acquire connections. Since this is a histogram, you can filter by buckets (buckets are broken down by "ms"). We also have the `reused` dimension, which points to connections that already have been established. It is worth noting this dimension when observing timings, as `reused` true connections will most likely be faster than it's `reused` false connection equivalent.
+       You can combine the above metric with outliers in durations to acquire connections. Since this is a histogram, you can filter by buckets (buckets are broken down by "ms"). We also have the `reused` dimension, which points to connections that already have been established. It is worth noting this dimension when observing timings, as `reused` true connections will most likely be faster than its `reused` false connection equivalent.
        In the below example, we find connections that took less than 25ms to acquire (using the 25ms bucket).
        ```
        router_http_client_connection_acquire_duration_bucket{wg_http_client_reused_connection="true",le="25.0"}
