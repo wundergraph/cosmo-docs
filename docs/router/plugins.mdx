@@ -187,21 +187,24 @@ For detailed documentation on each command, visit the [CLI Plugin Commands](/cli
 Here's a simplified workflow for creating a gRPC plugin and configuring the router to use it:
 
 ```bash
-# Initialize a new plugin
-wgc router plugin init users -d ./plugins
+# 1️⃣ Initialize a full router project with a plugin
+wgc router plugin init hello-world
 
-# Customize the schema and implementation
-# Edit `./plugins/users/src/schema.graphql` and `./plugins/users/src/main.go`
+# 2️⃣ Go to the project directory "cosmo" (default)
+# Build, compose and start the router. Navigate to http://localhost:3010
+make
 
-# Generate the artifacts and Go code only.
-wgc router plugin build --generate-only ./plugins/users
-# Now you can implement your gRPC resolvers.
+# 3️⃣ Customize the schema and implementation to your needs
+# Edit `./plugins/hello-world/src/schema.graphql`
 
-# Build the plugin. This will generate the Go code and compile the plugin.
-wgc router plugin build ./plugins/users
+# 4️⃣ Generate the Go code for your plugin to implement the resolvers
+cd plugins/hello-world && make generate
 
-# Test the plugin. Every boilerplate plugin should have a test file.
-wgc router plugin test ./plugins/users
+# 5️⃣ Now you can implement your gRPC resolvers in `./plugins/hello-world/src/main.go`
+
+# ⭐ Regenerate the code, build the plugin and serve the latest config.
+# Navigate to http://localhost:3010 again to query your supergraph
+make
 ```
 
 Next, you need to define your `graph.yaml` file that references your plugin:
