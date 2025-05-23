@@ -249,7 +249,7 @@ access_logs:
     fields:
       - key: "sg_name"
         value_from: 
-          expression: "subgraph.name"
+          expression: "string(subgraph.request.clientTrace.connAcquireDuration)"
 ```
 
 In addition to the router access logger, you can also add attributes to the subgraph access logger, this is useful when you want to log anything related to the `subgraph` expression context object.
