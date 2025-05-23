@@ -197,7 +197,7 @@ We use the following standard dimensions
 
 * `router.http.client.connection.active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it’s less common, multiple subgraphs can share the same host, which is why both dimensions are included.
 
-* `router.http.client.connection.acquire_duration`: The duration that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
+* `router.http.client.connection.acquire_duration`: The duration in ms that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
 
 ## Custom Attributes
 
