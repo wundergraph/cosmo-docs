@@ -321,9 +321,9 @@ The MCP server respects the "Authorization" header from MCP clients and forwards
 
 The authentication header can be configured in various AI tools and environments:
 
-#### Claude Desktop
+#### Cursor & Claude Desktop
 
-Configure Claude to use your MCP server with authentication by using the `mcp-remote` command.
+Configure Cursor and Claude Desktop to use your MCP server with authentication by using the `mcp-remote` command.
 
 <Note>
   Cursor and Claude Desktop (Windows) have a bug where spaces inside args aren't
@@ -341,10 +341,10 @@ Configure Claude to use your MCP server with authentication by using the `mcp-re
         "mcp-remote",
         "http://localhost:5025/mcp",
         "--header",
-        "Authorization:${AUTH_HEADER}"
+        "Authorization:${AUTH_HEADER}" // note no spaces around ':'
       ],
       "env": {
-        "AUTH_HEADER": "Bearer <your-api-key>"
+        "AUTH_HEADER": "Bearer <your-api-key>" // spaces OK in env vars
       }
     }
   }
