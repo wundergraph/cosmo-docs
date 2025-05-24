@@ -1,6 +1,6 @@
 ---
-title: 'MCP Gateway'
-description: 'Securely connect your GraphQL API with AI models like ChatGPT and Claude using the Model Context Protocol (MCP). Enable AI assistants to discover and interact with your data through controlled, operation-level access.'
+title: "MCP Gateway"
+description: "Securely connect your GraphQL API with AI models like ChatGPT and Claude using the Model Context Protocol (MCP). Enable AI assistants to discover and interact with your data through controlled, operation-level access."
 icon: "robot"
 ---
 
@@ -18,7 +18,10 @@ The Model Context Protocol (MCP) server in WunderGraph Cosmo Router enables seam
 
 MCP (Model Context Protocol) is a protocol designed to help AI models interact with your APIs by providing context, schema information, and a standardized interface. The Cosmo Router implements an MCP server that exposes your GraphQL operations as tools that AI models can use.
 
-<Info>MCP enables AI models to understand and interact with your GraphQL API without requiring custom integration code for each model.</Info>
+<Info>
+  MCP enables AI models to understand and interact with your GraphQL API without
+  requiring custom integration code for each model.
+</Info>
 
 The Cosmo MCP Server builds on top of the concept of persisted operations (also known as persisted queries or trusted documents). Instead of allowing AI models to execute arbitrary GraphQL operations, it exposes a predefined set of validated and approved operations. This provides a secure and controlled way for AI systems to interact with your data while maintaining tight control over what operations can be executed.
 
@@ -26,16 +29,20 @@ Here's what enabling MCP in your Cosmo Router provides:
 
 <CardGroup cols={2}>
   <Card title="API Discovery" icon="magnifying-glass">
-    Make your GraphQL API automatically discoverable by AI models like OpenAI, Claude, and Cursor
+    Make your GraphQL API automatically discoverable by AI models like OpenAI,
+    Claude, and Cursor
   </Card>
   <Card title="Rich Metadata" icon="tag">
-    Provide detailed schema information and input requirements for each operation
+    Provide detailed schema information and input requirements for each
+    operation
   </Card>
   <Card title="Secure Access" icon="shield-check">
-    Enable controlled, precise access to your data with operation-level granularity
+    Enable controlled, precise access to your data with operation-level
+    granularity
   </Card>
   <Card title="AI Empowerment" icon="robot">
-    Empower AI assistants to work with your application's data through a standardized interface
+    Empower AI assistants to work with your application's data through a
+    standardized interface
   </Card>
 </CardGroup>
 
@@ -58,7 +65,10 @@ But what does this mean in practice? How do these technical benefits translate t
 
 When a major financial services company integrated AI assistants into their customer support workflow, they faced a critical challenge: how could they let AI access transaction data without exposing sensitive financial information or risking regulatory non-compliance?
 
-<Info>Without proper data boundaries, AI models might inadvertently access or expose sensitive customer information, creating security and compliance risks.</Info>
+<Info>
+  Without proper data boundaries, AI models might inadvertently access or expose
+  sensitive customer information, creating security and compliance risks.
+</Info>
 
 The stakes were high - a single data breach could cost millions in damages and regulatory fines. Their initial attempts using traditional REST APIs led to three significant problems:
 
@@ -130,10 +140,15 @@ The MCP server provides several tools out of the box to help AI models discover 
 
 <CardGroup cols={2}>
   <Card title="get_operation_info" icon="circle-info">
-    Retrieves detailed information about a specific GraphQL operation, including its input schema, query structure, and execution guidance. AI models use this to understand how to properly call an operation in real-world scenarios.
+    Retrieves detailed information about a specific GraphQL operation, including
+    its input schema, query structure, and execution guidance. AI models use
+    this to understand how to properly call an operation in real-world
+    scenarios.
   </Card>
   <Card title="get_schema" icon="code">
-    Provides the full GraphQL schema as a string. This helps AI models understand the entire API structure. This tool is only available if `expose_schema` is enabled.
+    Provides the full GraphQL schema as a string. This helps AI models
+    understand the entire API structure. This tool is only available if
+    `expose_schema` is enabled.
   </Card>
 </CardGroup>
 
@@ -166,9 +181,9 @@ mcp:
   enabled: true
   server:
     listen_addr: "localhost:5025"
-  router_url: "https://your-public-router-url.example.com/graphql"  # Optional: Use when router is behind a proxy
+  router_url: "https://your-public-router-url.example.com/graphql" # Optional: Use when router is behind a proxy
   storage:
-    provider_id: "mcp"  # References a file_system provider defined below
+    provider_id: "mcp" # References a file_system provider defined below
   graph_name: "my-graph"
   exclude_mutations: true
   enable_arbitrary_operations: false
@@ -183,17 +198,17 @@ storage_providers:
 
 ### Configuration Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `enabled` | Enable or disable the MCP server | `false` |
-| `server.listen_addr` | The address and port where the MCP server will listen for requests | `localhost:5025` |
-| `server.base_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.  | - |
-| `router_url` | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. | `http://{listen_addr}{graphql_path}` |
-| `storage.provider_id` | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported. | - |
-| `graph_name` | The name of the graph to be used by the MCP server | `mygraph` |
-| `exclude_mutations` | Whether to exclude mutation operations from being exposed | `false` |
-| `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |
-| `expose_schema` | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false` |
+| Option                        | Description                                                                                                                                              | Default                              |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `enabled`                     | Enable or disable the MCP server                                                                                                                         | `false`                              |
+| `server.listen_addr`          | The address and port where the MCP server will listen for requests                                                                                       | `localhost:5025`                     |
+| `server.base_url`             | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.                     | -                                    |
+| `router_url`                  | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy.                                                   | `http://{listen_addr}{graphql_path}` |
+| `storage.provider_id`         | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                            | -                                    |
+| `graph_name`                  | The name of the graph to be used by the MCP server                                                                                                       | `mygraph`                            |
+| `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`                              |
+| `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`                              |
+| `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`                              |
 
 ## Storage Providers
 
@@ -270,6 +285,7 @@ my-router-project/
 ```
 
 The important points:
+
 - The path in your `storage_providers.file_system.path` should point to the operations directory
 - All `.graphql` files in this directory (and subdirectories) will be loaded
 - Each file should contain a single named GraphQL operation
@@ -295,7 +311,11 @@ Operations are converted to snake_case for tool naming consistency.
 
 The MCP server respects the "Authorization" header from MCP clients and forwards them to the router. This allows you to leverage all the authentication and authorization capabilities of your Cosmo Router when AI models interact with your GraphQL API.
 
-<Info>By passing authentication headers from AI tools to your GraphQL API, you can maintain consistent security across all API consumers while giving AI models appropriate access to your data.</Info>
+<Info>
+  By passing authentication headers from AI tools to your GraphQL API, you can
+  maintain consistent security across all API consumers while giving AI models
+  appropriate access to your data.
+</Info>
 
 ### Configuration
 
@@ -303,7 +323,13 @@ The authentication header can be configured in various AI tools and environments
 
 #### Claude Desktop
 
-Configure Claude to use your MCP server with authentication by using the `mcp-remote` command:
+Configure Claude to use your MCP server with authentication by using the `mcp-remote` command.
+
+<Note>
+  Cursor and Claude Desktop (Windows) have a bug where spaces inside args aren't
+  escaped when it invokes npx, which ends up mangling these values. You can work
+  around it by interpolating the value into the command using the `env` key.
+</Note>
 
 ```json
 {
@@ -311,17 +337,21 @@ Configure Claude to use your MCP server with authentication by using the `mcp-re
     "mygraph": {
       "command": "npx",
       "args": [
+        "-y",
         "mcp-remote",
         "http://localhost:5025/mcp",
         "--header",
-        "Authorization: Bearer YOUR_API_KEY",
-      ]
+        "Authorization:${AUTH_HEADER}"
+      ],
+      "env": {
+        "AUTH_HEADER": "Bearer <your-api-key>"
+      }
     }
   }
 }
 ```
 
-#### VS Code (Preview)
+#### VS Code
 
 In VS Code, you can configure the MCP extension with authentication headers in your `settings.json`:
 
