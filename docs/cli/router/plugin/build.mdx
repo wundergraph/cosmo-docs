@@ -43,13 +43,20 @@ This command performs several steps to build your plugin:
 
 If you only want to generate code but not compile the binary (useful when you're updating your GraphQL schema), you can use the `--generate-only` flag.
 
-<Tip>
-The build command will automatically check for and install the necessary toolchain (like protoc, protoc-gen-go, etc.) when required tools can't be found on your system. You can control this behavior with the `--skip-tools-installation` and `--force-tools-installation` flags.
+## Required Tools
+
+The build command will automatically check for and install the necessary toolchain (like protoc, protoc-gen-go, etc.) when required tools can't be found in the right version on your system. You can control this behavior with the `--skip-tools-installation` and `--force-tools-installation` flags.
 
 For debugging your plugin, use the `--debug` flag to build with debug symbols. This enables debugging with tools like Delve, GoLand, or VS Code. See the [debugging guide](./debug) for detailed instructions.
 
-**Platform Compatibility**: The target platform for your plugin must match the platform where the Cosmo Router is running. For example, if your router runs on a Linux AMD64 server, your plugin must be built for `linux-amd64`. When no platform is specified, the command uses your local machine's platform (the host platform) by default.
-</Tip>
+You can also install the dependencies manually and use an IDE with Go support. The following table shows the current versions and download links for the required tools:
+
+| Tool | Version | Installation Link |
+|------|---------|---------------|
+| Go | >=1.22.0 (Last 2 versions) | [Releases](https://go.dev/doc/install) |
+| Protocol Buffers (protoc) | ^29.3 | [Releases](https://protobuf.dev/installation/) |
+| protoc-gen-go | ^1.34.2 | [GitHub Releases](https://github.com/protocolbuffers/protobuf-go/releases) |
+| protoc-gen-go-grpc | ^1.5.1 | [GitHub Releases](https://github.com/grpc/grpc-go/releases) |
 
 ## Examples
 

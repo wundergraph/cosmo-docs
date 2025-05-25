@@ -20,6 +20,20 @@ Plugins allow developers to:
 
 These advantages significantly improve the development process compared to scripting approaches, which often lack comprehensive debugging support and IDE integration.
 
+## Required Tools
+
+The cli command will automatically check for and install the necessary toolchain (like protoc, protoc-gen-go, etc.) when required tools can't be found in the right version on your system.
+
+However, for the best experience, we recommend installing the tools manually. The following table shows the current versions and download links for the required tools:
+
+| Tool | Version | Installation Link |
+|------|---------|---------------|
+| Go | >=1.22.0 (Last 2 versions) | [Releases](https://go.dev/doc/install) |
+| Protocol Buffers (protoc) | ^29.3 | [Releases](https://protobuf.dev/installation/) |
+| protoc-gen-go | ^1.34.2 | [GitHub Releases](https://github.com/protocolbuffers/protobuf-go/releases) |
+| protoc-gen-go-grpc | ^1.5.1 | [GitHub Releases](https://github.com/grpc/grpc-go/releases) |
+
+
 ## Building for Debug
 
 To build your plugin with debug information, use the `--debug` flag with the build command:
