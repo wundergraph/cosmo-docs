@@ -1,0 +1,83 @@
+---
+title: "Group Rules"
+description: "Configure the resources accessible to your groups."
+icon: "database"
+---
+
+A **group rule** defines the roles and associated resources that determine what group members and API keys can access, as well as the level of permissions granted.
+
+<Frame>
+    <img src="/images/studio/group-rules.png" />
+</Frame>
+
+## Roles
+
+<Note>
+    If a role is assigned to a single resource and that resource is deleted, the role will default to granting access to all resources in the organization.
+</Note>
+
+You can assign multiple roles to a group using the `Add rule` button. If no group rules are configured, group members will not have access to any resources.
+
+<Frame caption="Role selector">
+    <img src="/images/studio/group-role-selector.png" />
+</Frame>
+
+Each role can be added only once per group. After assigning a role, you may associate it with multiple resources, but you cannot create additional rules for the same role.
+
+Roles in Cosmo are categorized into the following groups:
+
+### Organization Roles
+
+These roles apply at the organization level and cannot be limited to specific resources:
+
+1. **Admin** — Full permissions to create and manage all services.
+2. **Developer** — Read and write access to all organizational objects.
+3. **API Key Manager** — Permissions to create, modify, and delete API keys.
+4. **Viewer** — Read-only access to all organizational objects.
+
+### Namespace Roles
+
+1. **Admin** — Read and write access to assigned namespaces.
+2. **Viewer** — Read-only access to assigned namespaces.
+
+If no resources are assigned, the group is granted access to all namespaces in the organization. Groups with the **Admin** role will also be able to create new namespaces.
+
+### Graph Roles
+
+1. **Admin** — Read and write access to assigned graphs.
+2. **Viewer** — Read-only access to assigned graphs.
+
+Graph resources can be assigned in one of two ways:
+
+- **Namespace**: Grants access to all graphs within the selected namespace, including permission to create new graphs.
+- **Specific graphs**: Limits access to only the selected graphs.
+
+If no graphs are explicitly assigned, the group will have access to all graphs in the organization. Groups with the **Admin** role will also be able to create new graphs.
+
+<Frame caption="Graph resource selector">
+    <img src="/images/studio/group-graph-resource-selector.png" />
+</Frame>
+
+### Subgraph Roles
+
+1. **Admin** — Read and write access to assigned subgraphs.
+2. **Publisher** — Read and write access to assigned subgraphs, but cannot create new ones.
+
+Subgraph resources can be assigned similarly:
+
+- **Namespace**: Grants access to all subgraphs within the selected namespace, including permission to create new subgraphs.
+- **Specific subgraphs**: Restricts access to only the selected subgraphs.
+
+If no subgraph resources are assigned, the group will have access to all subgraphs in the organization.
+
+## Resources
+
+<Frame caption="Graph resource selector">
+    <img src="/images/studio/update-group-screen.png" />
+</Frame>
+
+Resources represent the entities available within your organization, including but not limited to:
+
+- Namespaces
+- Federated Graphs
+- Subgraphs
