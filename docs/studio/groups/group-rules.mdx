@@ -6,15 +6,15 @@ icon: "database"
 
 A **group rule** defines the roles and associated resources that determine what group members and API keys can access, as well as the level of permissions granted.
 
-<Frame>
+<Frame caption="Group with no rules">
     <img src="/images/studio/group-rules.png" />
 </Frame>
 
-## Roles
+When a group rule doesn't have any explicit resources, the group will always have access to all resources within the organization.
 
-<Note>
-    If a role is assigned to a single resource and that resource is deleted, the role will default to granting access to all resources in the organization.
-</Note>
+In the same way, if a group is limited to a single resource and that resource is deleted from the organization, the group will fallback to having access to all resources within the organization.
+
+## Roles
 
 You can assign multiple roles to a group using the `Add rule` button. If no group rules are configured, group members will not have access to any resources.
 
@@ -24,7 +24,21 @@ You can assign multiple roles to a group using the `Add rule` button. If no grou
 
 Each role can be added only once per group. After assigning a role, you may associate it with multiple resources, but you cannot create additional rules for the same role.
 
-Roles in Cosmo are categorized into the following groups:
+The order in which the roles are assigned to the role doesn't have any effect when performing checks. For example, given the following group:
+
+<Frame>
+    <img src="/images/studio/group-example1.png" />
+</Frame>
+
+The members for this group will have **Admin** access to the `default` namespace and **Viewer** to the `test` and any other namespace that may exist in the organization.
+
+If the namespace `default` is deleted, the **Admin** would take priority as the limitation no-longer exists.
+
+With this in mind, members of the following example will have **Organization Admin** access to all resources.
+
+<Frame>
+    <img src="/images/studio/group-example2.png"/>
+</Frame>
 
 ### Organization Roles
 
@@ -34,6 +48,8 @@ These roles apply at the organization level and cannot be limited to specific re
 2. **Developer** — Read and write access to all organizational objects.
 3. **API Key Manager** — Permissions to create, modify, and delete API keys.
 4. **Viewer** — Read-only access to all organizational objects.
+
+An organization **Developer** have access to manage namespaces, create and publish graphs while an **Admin** is able to perform these operations on top of managing the organization settings.
 
 ### Namespace Roles
 
