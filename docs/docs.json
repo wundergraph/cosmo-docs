@@ -345,6 +345,14 @@
           "studio/cluster-management",
           "studio/rbac",
           {
+            "group": "Groups",
+            "icon": "users-rectangle",
+            "pages": [
+              "studio/groups",
+              "studio/groups/group-rules"
+            ]
+          },
+          {
             "group": "SSO",
             "icon": "building-lock",
             "pages": [
