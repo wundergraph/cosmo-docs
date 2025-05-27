@@ -12,7 +12,11 @@ A **group rule** defines the roles and associated resources that determine what 
 
 When a group rule doesn't have any explicit resources, the group will always have access to all resources within the organization.
 
-In the same way, if a group is limited to a single resource and that resource is deleted from the organization, the group will fallback to having access to all resources within the organization.
+In the same way, if a rule is limited to a single resource and that resource is deleted from the organization, the rule will fallback to having access to all resources within the organization.
+
+<Note>
+    Unlike limiting resources, if a group doesn't have any rule assigned, this will result in the group effectively not having access to any resource.
+</Note>
 
 ## Roles
 
