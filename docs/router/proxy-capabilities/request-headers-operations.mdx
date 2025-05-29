@@ -25,7 +25,7 @@ headers:
         matching: (?i)^X-Custom-.*
 
       - op: "propagate"
-        matching: ^(Header-.*|Key)$
+        matching: ^(Header-1|Key)$
         negate_match: true         # Ensure that all headers except the Header-1 and Key are propagated
 
       # Sets the value when the header was not set
