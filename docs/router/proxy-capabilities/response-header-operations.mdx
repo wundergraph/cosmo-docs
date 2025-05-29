@@ -45,7 +45,7 @@ headers:
 
       - op: "propagate"
         matching: ^(Header-1|Key)$
-        negative_match: true       # Ensure that all headers except the Header-1 and Key are propagated
+        negate_match: true         # Ensure that all headers except the Header-1 and Key are propagated
         algorithm: "last_write"
 
       - op: "propagate"
