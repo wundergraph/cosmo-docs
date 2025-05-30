@@ -24,7 +24,7 @@ The Cosmo Router comes with subscription support out of the box without any limi
 * [**absinthe**](https://github.com/absinthe-graphql/absinthe_phoenix): Legacy transport for Clients that still use the Absinthe (Phoenix) protocol.
 
 <Frame caption="The Router connects your Clients and Subgraphs to establish a Real-time connection.">
-  <img src="/images/router/image-3.png" />
+  <img src="/images/router/subscriptions.png" />
 </Frame>
 
 These protocols are both supported between the client and the router as well as between the router and each subgraph. The supported transport depends on the support of your client or subgraph. By default, graphql-ws is used which is widely adopted. The protocol to be used to subscribe for each subgraph can be configured while registering the subgraph on the control plane. See [Create](/cli/subgraph/create) and [Update](/cli/subgraph/update) for more information.
