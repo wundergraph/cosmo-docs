@@ -1,6 +1,6 @@
 ---
 title: "Event-Driven Federated Subscriptions (EDFS)"
-description: "EDFS combines the power of GraphQL Federation and Event-Driven Architecture (Kafka, NATS) to update a user GraphQL Subscription after an event occurs in your system."
+description: "EDFS combines the power of GraphQL Federation and Event-Driven Architecture (Kafka, NATS, Redis) to update a user GraphQL Subscription after an event occurs in your system."
 icon: "circle-info"
 sidebarTitle: "Overview"
 ---
@@ -40,13 +40,16 @@ Furthermore, classic Subscriptions with Federation are quite expensive when it c
 
 Enter Event-Driven Federated Subscriptions, a simple way to scale Federated Subscriptions in a resource-efficient manner.
 
-EDFS supports two event providers:
+EDFS supports three event providers:
 
-<CardGroup cols="2">
+<CardGroup cols={3}>
   <Card title="Kafka" icon="sitemap" href="/router/event-driven-federated-subscriptions-edfs/kafka">
     
   </Card>
   <Card title="NATS" icon="puzzle-piece" href="/router/event-driven-federated-subscriptions-edfs/nats">
+    
+  </Card>
+  <Card title="Redis" icon="memory" href="/router/event-driven-federated-subscriptions-edfs/redis">
     
   </Card>
 </CardGroup>
