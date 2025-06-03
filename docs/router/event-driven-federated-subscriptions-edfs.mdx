@@ -89,6 +89,17 @@ directive @edfs__kafkaSubscribe(
   providerId: String! = "default"
 ) on FIELD_DEFINITION
 
+# Redis integration
+directive @edfs__redisPublish(
+  channel: String!,
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__redisSubscribe(
+  channels: [String!]!,
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
 # OpenFederation directive to filter subscription events
 directive @openfed__subscriptionFilter(
   condition: openfed__SubscriptionFilterCondition!
