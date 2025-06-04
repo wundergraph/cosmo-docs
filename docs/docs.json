@@ -518,7 +518,8 @@
                   "router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration"
                 ]
               },
-              "router/event-driven-federated-subscriptions-edfs/kafka"
+              "router/event-driven-federated-subscriptions-edfs/kafka",
+              "router/event-driven-federated-subscriptions-edfs/redis"
             ]
           },
           "router/compliance-and-data-management",
