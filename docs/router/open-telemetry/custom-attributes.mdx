@@ -88,8 +88,7 @@ Unlike previously in this case, any expression with `subgraph` in it, will only 
 You can find more information about expressions and the fields accessible for expressions [here](/router/configuration/template-expressions).
 
 <Warning>
-  At the moment we only allow string values being returned from expressions, if you have for example an integer value being returned from the expression you will need to cast it.
-  You can do this by using exprlang's `string` function.
+At the moment, we only allow expressions to return string values. If, for example, an expression returns an integer, you will need to cast it using exprlang’s string function.
 </Warning>
 
 # Metrics Only Attributes
