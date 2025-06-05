@@ -193,7 +193,10 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": ["cli/router/cache", "cli/router/cache/push"]
+                "pages": [
+                  "cli/router/cache",
+                  "cli/router/cache/push"
+                ]
               },
               {
                 "group": "Token",
@@ -241,7 +244,10 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": ["cli/operations", "cli/operations/push"]
+            "pages": [
+              "cli/operations",
+              "cli/operations/push"
+            ]
           },
           {
             "group": "Schema Contracts",
@@ -377,7 +383,10 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
+            "pages": [
+              "studio/policies",
+              "studio/lint-policy/linter-rules"
+            ]
           },
           "studio/graph-pruning",
           "studio/invitations"
@@ -407,6 +416,7 @@
             ]
           },
           "router/authentication-and-authorization",
+          "router/advanced-data-privacy",
           {
             "group": "Subscriptions",
             "icon": "webhook",
