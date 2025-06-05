@@ -1,6 +1,6 @@
 ---
 title: "MCP Gateway"
-description: "Securely connect your GraphQL API with AI models like ChatGPT and Claude using the Model Context Protocol (MCP). Enable AI assistants to discover and interact with your data through controlled, operation-level access."
+description: "Technical guide for using WunderGraph’s MCP Gateway to connect GraphQL APIs to AI models. Covers setup, configuration, and usage examples."
 icon: "robot"
 ---
 
@@ -8,7 +8,10 @@ icon: "robot"
 
 ## Introduction
 
-The Model Context Protocol (MCP) server in WunderGraph Cosmo Router enables seamless integration between your GraphQL API and AI models such as ChatGPT, Claude, and other Large Language Models (LLMs). This powerful feature allows AI agents to discover, understand, and interact with **any GraphQL API** in a structured and secure way.
+Looking for an introduction or product overview? [See the MCP Gateway overview](https://wundergraph.com/mcp-gateway)._
+
+
+WunderGraph’s MCP Gateway is a feature of the Cosmo Router that enables AI models to interact with your GraphQL APIs using a structured protocol. This guide explains how to configure and use MCP safely and effectively.
 
 <Frame>
   <img src="/images/router/mcp-architecture.png" />
@@ -25,7 +28,7 @@ MCP (Model Context Protocol) is a protocol designed to help AI models interact w
 
 The Cosmo MCP Server builds on top of the concept of persisted operations (also known as persisted queries or trusted documents). Instead of allowing AI models to execute arbitrary GraphQL operations, it exposes a predefined set of validated and approved operations. This provides a secure and controlled way for AI systems to interact with your data while maintaining tight control over what operations can be executed.
 
-Here's what enabling MCP in your Cosmo Router provides:
+## Capabilities Provided by MCP
 
 <CardGroup cols={2}>
   <Card title="API Discovery" icon="magnifying-glass">
@@ -61,16 +64,16 @@ The integration of GraphQL with MCP creates a uniquely powerful system for AI-AP
 
 But what does this mean in practice? How do these technical benefits translate to real-world solutions? To truly understand the transformative power of GraphQL with MCP, let's explore a common scenario that organizations face when integrating AI with their existing systems.
 
-## The GraphQL Advantage: Real Security for AI Integration
+## Case Study: Secure AI Integration in Financial Services
 
-When a major financial services company integrated AI assistants into their customer support workflow, they faced a critical challenge: how could they let AI access transaction data without exposing sensitive financial information or risking regulatory non-compliance?
+A large financial services company needed to integrate AI assistants into their support workflow—but faced a critical problem: how to allow access to transaction data without exposing sensitive financial details or breaching compliance.
 
 <Info>
   Without proper data boundaries, AI models might inadvertently access or expose
   sensitive customer information, creating security and compliance risks.
 </Info>
 
-The stakes were high - a single data breach could cost millions in damages and regulatory fines. Their initial attempts using traditional REST APIs led to three significant problems:
+Their existing REST APIs posed three major challenges:
 
 1. **Security vulnerabilities**: Their existing REST endpoints contained mixed sensitive and non-sensitive data, making them unusable for AI integration without major restructuring.
 
@@ -78,9 +81,9 @@ The stakes were high - a single data breach could cost millions in damages and r
 
 3. **Data governance issues**: Without granular control, they couldn't meet regulatory requirements for tracking and limiting what data AI systems could access.
 
-**The GraphQL + MCP solution changed everything.**
+### Using GraphQL and MCP to Define a Safe Access Layer
 
-Instead of rebuilding their API infrastructure, they defined specific GraphQL operations that precisely controlled what data the AI could see:
+The team adopted GraphQL with the Model Context Protocol (MCP) to expose only specific operations tailored for AI access:
 
 ```graphql
 # AI-safe transaction query with PII and financial details removed
@@ -99,21 +102,24 @@ query GetTransactionHistory($accountId: ID!, $last: Int!) {
 }
 ```
 
-This approach delivered immediate, tangible benefits:
+This allowed the company to:
 
-- **Compliance approval in weeks, not months**: Their compliance team could clearly verify exactly what data AI systems could access, accelerating approval.
+- Accelerate compliance review by clearly showing what data AI could access
+- Avoid duplicating APIs, using GraphQL’s type system and persisted operations
+- Enforce operational boundaries through schema validation and mutation exclusion
+- Scale safely by exposing new fields to AI only when explicitly approved
 
-- **95% reduction in security review time**: With GraphQL's schema enforcement, security teams had confidence that AI systems couldn't accidentally access unauthorized data.
+With this model in place, AI assistants could answer questions like “Did my payment to Amazon go through?” using only the approved fields and without touching full account numbers, balance history, or other restricted data.
 
-- **Zero API duplication**: They maintained a single source of truth in their API layer while creating different "views" for different consumers.
+### Outcome
+This approach helped the company:
 
-- **Future-proof integration**: As they added new data fields to their internal models, those fields remained invisible to AI until explicitly added to AI-accessible operations.
+- Achieve compliance sign-off in weeks instead of months
+- Reduce security review effort by 95%
+- Maintain a single source of truth for internal and AI clients
+- Future-proof their integration as the API evolved
 
-When customers ask questions like "Did my payment to Amazon go through?", the AI assistant can provide helpful answers by querying only transaction status and basic details - without ever seeing full account numbers, balance information, or other sensitive data.
-
-Meanwhile, the same underlying API serves their web and mobile applications with complete data access where appropriate.
-
-This level of surgical precision in data exposure is what makes GraphQL with MCP the gold standard for secure AI integration. No other approach offers this combination of security, flexibility, and developer productivity.
+By combining GraphQL and MCP, they enabled a secure, flexible interface for AI models without having to rewrite their backend.
 
 ## How It Works
 
