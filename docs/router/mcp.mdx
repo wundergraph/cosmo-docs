@@ -6,10 +6,7 @@ icon: "robot"
 
 # AI Integration with Model Context Protocol (MCP)
 
-## Introduction
-
-Looking for an introduction or product overview? [See the MCP Gateway overview](https://wundergraph.com/mcp-gateway)._
-
+For a high-level introduction, see the [MCP Gateway overview](https://wundergraph.com/mcp-gateway).
 
 WunderGraph’s MCP Gateway is a feature of the Cosmo Router that enables AI models to interact with your GraphQL APIs using a structured protocol. This guide explains how to configure and use MCP safely and effectively.
 
@@ -49,7 +46,7 @@ The Cosmo MCP Server builds on top of the concept of persisted operations (also 
   </Card>
 </CardGroup>
 
-## Why combining GraphQL + MCP is Revolutionary
+## Why Use GraphQL with MCP?
 
 The integration of GraphQL with MCP creates a uniquely powerful system for AI-API interactions:
 
@@ -64,7 +61,7 @@ The integration of GraphQL with MCP creates a uniquely powerful system for AI-AP
 
 But what does this mean in practice? How do these technical benefits translate to real-world solutions? To truly understand the transformative power of GraphQL with MCP, let's explore a common scenario that organizations face when integrating AI with their existing systems.
 
-## Case Study: Secure AI Integration in Financial Services
+## Real-World Example: AI Integration in Finance
 
 A large financial services company needed to integrate AI assistants into their support workflow—but faced a critical problem: how to allow access to transaction data without exposing sensitive financial details or breaching compliance.
 
@@ -168,6 +165,8 @@ The MCP server provides several tools out of the box to help AI models discover 
     For each GraphQL operation in your operations directory, the MCP server automatically generates a corresponding execution tool with the pattern `execute_operation_<operation_name>` (e.g., `execute_operation_get_users`).
   </Card>
 </CardGroup>
+
+## Tool Naming and Schema Generation
 
 The operation execution tools provide a structured and controlled way for AI models to interact with your API:
 
