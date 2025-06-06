@@ -10,7 +10,7 @@ Supported in both Federation v1 and v2, though usage and validation rules differ
 ## Overview
 
 The `@external` directive marks a field or type that is declared in this subgraph but resolved by another subgraph.
-It indicates that the field’s value is resolved by another subgraph, sometimes unconditionally and sometimes only in specific query paths.
+The field may be resolved unconditionally or only in specific query paths, such as when used with `@provides`.
 Subgraphs use `@external` to reference fields they don’t resolve directly—typically when using `@requires`, `@provides`, or to satisfy interface contracts.
 
 ```graphql
@@ -26,7 +26,7 @@ Federation v1 has looser validation rules, and `@external` may be required even 
 Fields in `@key(fields: ...)` must be marked `@external` if they are declared in the subgraph but resolved in another. This is especially true for entity extensions.
 
 **`@requires` and `@provides`**:
-All fields in these FieldSets must be marked `@external`, regardless of whether they are leaf or non-leaf fields.
+All fields in these field sets must be marked `@external`, regardless of whether they are leaf or non-leaf fields.
 
 **Validation**:
 In Federation v1, misconfigured `@external` fields are often silently removed during composition, with no visible error.
@@ -40,14 +40,15 @@ Federation v2 introduces stricter, more precise rules for `@external`.
 Fields in `@key(fields: ...)` do not need `@external` unless they cannot be resolved in the subgraph.
 
 **`@requires` and `@provides`**:
-Only leaf fields (or their ancestors within the same FieldSet)  that are declared in the subgraph but resolved in another must be marked `@external`.
+Only leaf fields, or parent fields explicitly listed in the same `@requires` or `@provides` field set string, must be marked `@external` if they are declared in the subgraph but resolved in another.
+A field set is the string argument passed to these directives, such as "user { email }".
 
 **Validation**:
 In Federation v2, `@external` is only valid if the field is:
-- Referenced in a `@key`, `@requires`, or `@provides` FieldSet.
+- Referenced in a `@key`, `@requires`, or `@provides` field set.
 - **OR** required to satisfy an interface.
 
-It must also have a matching non-`@external` definition in another subgraph. Otherwise, composition fails.
+It must also have a matching field in another subgraph that is not marked `@external`, known as a shared field instance. Otherwise, composition fails.
 
 WunderGraph Cosmo helps validate `@external` usage, especially in Federation v1 environments where misconfigurations can be harder to detect.
 
@@ -63,26 +64,25 @@ The `@external` directive:
 - Enables safe use in **directive arguments** like `@requires` and `@provides` without triggering composition errors.
 
 You can apply `@external` to:
-- **Individual fields** on an object.
-- An **entire object type**, which treats all of its fields as external.
+- **Individual field definitions** within an object.
+- An **entire object type**, which marks all of its fields as external.
 
 The key idea: `@external` marks a field that is defined in this subgraph but resolved in another.
 Whether and how the field resolves depends on the query path and the directives involved.
 
 ## When to Use
 
-Only use `@external` when:
-- The field is **unresolvable** from the current subgraph **and** the field is **referenced by**:
-    - `@key(fields: "...")` (in Federation v1 only)
-    - `@provides(fields: "...")`
-    - `@requires(fields: "...")`
-- **OR** the field is required to satisfy an **interface** implemented by the type
+Only use `@external` when the field is **unresolvable** from the current subgraph **and** the field is **referenced by**:
+  - `@key(fields: "...")` (in Federation v1 only)
+  - `@provides(fields: "...")`
+  - `@requires(fields: "...")`
+**OR** the field is required to satisfy an **interface** implemented by the type
 	- For example, a type may need to declare `@external` fields to fulfill an interface it implements from another subgraph.
 
-A valid `@external` field must have a matching, resolvable definition in another subgraph.
-This is known as a **shared field instance** and ensures that the field can be correctly composed and resolved across your federated graph.
+A valid `@external` field must have a matching, resolvable definition in another subgraph that is not marked `@external`.
+This creates a shared field instance—a field defined in one subgraph and referenced externally in another—that enables composition and cross-subgraph resolution.
 
-## Interpreting `@external`
+## What `@external` Means in Different Contexts
 The meaning of `@external` depends on context. It can indicate:
 
 | Meaning                      | Description                                                                      |
@@ -131,7 +131,7 @@ Applying `@external` to a type marks **all its fields** as externally defined.
 ## Edge Cases
 
 ### Legacy `@external` usage with `@key` on extensions (Federation v1)
-In Federation v1, an `@external`  field that is referenced by a `@key(fields: ...)` FieldSet on an extension definition must be explicitly marked.
+In Federation v1, an `@external`  field that is referenced by a `@key(fields: ...)` field set on an extension definition must be explicitly marked.
 This is considered legacy syntax, and the field is always resolvable by that subgraph in V1 and V2.
 ```graphql
 # Subgraph A (Federation v1)
