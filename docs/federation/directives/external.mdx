@@ -11,7 +11,7 @@ Supported in both Federation v1 and v2, though usage and validation rules differ
 
 The `@external` directive marks a field or type that is declared in this subgraph but resolved by another subgraph.
 The field may be resolved unconditionally or only in specific query paths, such as when used with `@provides`.
-Subgraphs use `@external` to reference fields they don’t resolve directly—typically when using `@requires`, `@provides`, or to satisfy interface contracts.
+Subgraphs use `@external` to reference fields they don’t resolve directly—typically when using `@requires`, `@provides`, or to satisfy `interface` contracts.
 
 ```graphql
 directive @external on FIELD_DEFINITION | OBJECT
@@ -41,12 +41,12 @@ Fields in `@key(fields: ...)` do not need `@external` unless they cannot be reso
 
 **`@requires` and `@provides`**:
 Only leaf fields, or parent fields explicitly listed in the same `@requires` or `@provides` field set string, must be marked `@external` if they are declared in the subgraph but resolved in another.
-A field set is the string argument passed to these directives, such as "user { email }".
+A field set is the string argument passed to these directives, such as `"user { email }"`.
 
 **Validation**:
 In Federation v2, `@external` is only valid if the field is:
 - Referenced in a `@key`, `@requires`, or `@provides` field set.
-- **OR** required to satisfy an interface.
+- **OR** required to satisfy an `interface`.
 
 It must also have a matching field in another subgraph that is not marked `@external`, known as a shared field instance. Otherwise, composition fails.
 
@@ -76,7 +76,7 @@ Only use `@external` when the field is **unresolvable** from the current subgrap
   - `@key(fields: "...")` (in Federation v1 only)
   - `@provides(fields: "...")`
   - `@requires(fields: "...")`
-**OR** the field is required to satisfy an **interface** implemented by the type
+**OR** the field is required to satisfy an `interface` implemented by the type
 	- For example, a type may need to declare `@external` fields to fulfill an interface it implements from another subgraph.
 
 A valid `@external` field must have a matching, resolvable definition in another subgraph that is not marked `@external`.
@@ -89,7 +89,7 @@ The meaning of `@external` depends on context. It can indicate:
 | ---------------------------- | -------------------------------------------------------------------------------- |
 | **Unresolvable**             | The field cannot be resolved by the current subgraph                             |
 | **Conditionally resolvable** | The field is resolved only in certain paths (e.g., via `@provides`)              |
-| **Legacy `@key` usage (v1)** | The field is resolvable, but marked `@external` to satisfy a key on an extension |
+| **Legacy `@key` usage (v1)** | The field is resolvable, but marked `@external` to satisfy a `@key` on an extension |
 | **Interface satisfaction**   | The field is required to fulfill an interface but is resolved in a different subgraph    |
 
 These distinctions help explain why `@external` may appear in places that seem redundant or unnecessary, especially in Federation v1.
