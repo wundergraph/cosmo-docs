@@ -193,10 +193,7 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": [
-                  "cli/router/cache",
-                  "cli/router/cache/push"
-                ]
+                "pages": ["cli/router/cache", "cli/router/cache/push"]
               },
               {
                 "group": "Token",
@@ -244,10 +241,7 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": [
-              "cli/operations",
-              "cli/operations/push"
-            ]
+            "pages": ["cli/operations", "cli/operations/push"]
           },
           {
             "group": "Schema Contracts",
@@ -353,10 +347,7 @@
           {
             "group": "Groups",
             "icon": "users-rectangle",
-            "pages": [
-              "studio/groups",
-              "studio/groups/group-rules"
-            ]
+            "pages": ["studio/groups", "studio/groups/group-rules"]
           },
           {
             "group": "SSO",
@@ -383,10 +374,7 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": [
-              "studio/policies",
-              "studio/lint-policy/linter-rules"
-            ]
+            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
           },
           "studio/graph-pruning",
           "studio/invitations"
@@ -410,10 +398,7 @@
           {
             "group": "Plugins",
             "icon": "plug",
-            "pages": [
-              "router/plugins",
-              "router/plugins/debugging"
-            ]
+            "pages": ["router/plugins", "router/plugins/debugging"]
           },
           "router/authentication-and-authorization",
           "router/advanced-data-privacy",
@@ -626,7 +611,39 @@
       "discord": "https://wundergraph.com/discord",
       "github": "https://github.com/wundergraph",
       "youtube": "https://www.youtube.com/@wundergraph"
-    }
+    },
+    "links": [
+      {
+        "header": "Legal",
+        "items": [
+          {
+            "label": "Privacy Policy",
+            "href": "https://wundergraph.com/privacy-policy"
+          },
+          {
+            "label": "Cookie Policy",
+            "href": "https://wundergraph.com/cookies"
+          },
+          {
+            "label": "Website",
+            "href": "https://wundergraph.com/terms"
+          },
+          {
+            "label": "Cosmo Managed",
+            "href": "https://wundergraph.com/cosmo-managed-service-terms"
+          }
+        ]
+      },
+      {
+        "header": "Trust",
+        "items": [
+          {
+            "label": "Trust Center",
+            "href": "https://trust.wundergraph.com/"
+          }
+        ]
+      }
+    ]
   },
   "integrations": {
     "koala": {
