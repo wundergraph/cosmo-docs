@@ -1,0 +1,498 @@
+---
+title: "Federation Deployment Guide"
+description: "A comprehensive guide to deploying and managing federated GraphQL schemas with WunderGraph Cosmo across different environments."
+icon: "rocket"
+---
+## Overview
+
+This guide walks you through the complete deployment lifecycle of a federated GraphQL setup using WunderGraph Cosmo, covering everything from initial development to production deployment with advanced strategies like canary deployments.
+
+We will cover the following topics:
+
+<CardGroup cols={2}>
+  <Card title="Schema Validation" icon="shield-check">
+    Validate schema changes before they reach production with automated checks
+  </Card>
+    <Card title="Environment Management" icon="server">
+    Manage schemas across development, staging, and production environments
+  </Card>
+  <Card title="CI/CD Integration" icon="gear">
+    Integrate schema validation and deployment into your existing pipelines
+  </Card>
+  <Card title="Progressive Delivery" icon="chart-line">
+    Deploy safely using canary deployment strategies
+  </Card>
+</CardGroup>
+
+---
+
+## Core Components
+
+Before diving into deployment strategies, let's understand the key components that make up the WunderGraph Cosmo ecosystem:
+
+<AccordionGroup>
+  <Accordion title="Subgraph" icon="cube">
+    An independent GraphQL service representing a domain-specific part of your overall data graph. Each subgraph owns its schema and resolvers.
+  </Accordion>
+  
+  <Accordion title="Supergraph (Federated Graph)" icon="network-wired">
+    The unified GraphQL schema composed of all subgraphs, served by the router. This is what clients interact with.
+  </Accordion>
+  
+  <Accordion title="Cosmo Control Plane" icon="database">
+    The centralized schema registry that stores, manages, and tracks all GraphQL schema definitions. It's your single source of truth.
+  </Accordion>
+  
+  <Accordion title="Cosmo Router" icon="sitemap">
+    The GraphQL gateway that combines subgraph schemas into a supergraph and intelligently routes client queries. A federated graph is always served by a single router.
+  </Accordion>
+  
+  <Accordion title="WGC CLI" icon="terminal">
+    The command-line interface ([`wgc`](/cli)) for schema validation, publishing, and management operations.
+  </Accordion>
+</AccordionGroup>
+
+## Project Setup
+
+Proper organization structure is the foundation of successful federated GraphQL deployments. We recommend using **multiple namespaces** for complete resource isolation across environments.
+
+### Environment Isolation with Namespaces
+
+<Tabs>
+  <Tab title="Development">
+    ```
+    dev namespace
+    ├── Federated Graph
+    ├── Products Subgraph
+    ├── Users Subgraph
+    ├── Orders Subgraph
+    └── Reviews Subgraph
+    ```
+  </Tab>
+  <Tab title="Staging">
+    ```
+    stage namespace
+    ├── Federated Graph
+    ├── Products Subgraph
+    ├── Users Subgraph
+    ├── Orders Subgraph
+    └── Reviews Subgraph
+    ```
+  </Tab>
+  <Tab title="Production">
+    ```
+    prod namespace
+    ├── Federated Graph
+    ├── Products Subgraph
+    ├── Users Subgraph
+    ├── Orders Subgraph
+    └── Reviews Subgraph
+    ```
+  </Tab>
+</Tabs>
+
+Each namespace and all its resources are treated as **distinct, versioned entities** within the schema registry. This provides complete isolation between environments while maintaining consistent federation patterns.
+
+## End-to-End Deployment Workflow
+
+The deployment process follows a progressive approach through multiple environments, with validation at each stage.
+
+<Steps>
+  <Step title="Schema Validation">
+    Validate schema changes through automated CI checks on every pull request
+  </Step>
+  <Step title="Development Deployment">
+    Deploy to development environment and publish schema for integration testing
+  </Step>
+  <Step title="Production Release">
+    Deploy to production using progressive delivery strategies with monitoring
+  </Step>
+</Steps>
+
+## Phase 1 – Schema Validation
+
+Prevent failures by validating every schema modification before it reaches an environment.
+
+#### What Gets Validated
+
+<CardGroup cols={2}>
+  <Card title="Composition Validation" icon="cube">
+    **Prevents composition failures**
+    
+    Ensures your schema changes can successfully merge with all other subgraphs in your federated graph.
+  </Card>
+  
+  <Card title="Breaking Change Detection" icon="exclamation">
+    **Protects existing clients**
+    
+    Identifies schema changes that would break existing client queries, mutations, or subscriptions.
+  </Card>
+  
+  <Card title="Operations Analysis" icon="chart-bar">
+    **Smart safety checks**
+    
+    Analyzes real client usage data to determine if a "breaking" change is actually safe in practice.
+  </Card>
+  
+  <Card title="Schema Linting" icon="check">
+    **Enforces best practices**
+    
+    Validates your schema follows GraphQL federation principles and your organization's conventions.
+  </Card>
+</CardGroup>
+
+### The Critical Command
+
+The [`wgc subgraph check`](/cli/subgraph/check) command is your **primary defense against breaking changes**. This single command prevents costly production issues by catching problems before they reach your users.
+
+<Warning>
+**Never skip schema validation!** A failed check means your changes could break existing client applications or prevent successful schema composition.
+
+However, Cosmo provides an additional safeguard: it will never make a non-composable graph accessible to the router, ensuring your federation remains stable even if validation is bypassed.
+</Warning>
+
+<Steps>
+  <Step title="Schema Validation">
+    Run [`wgc subgraph check`](/cli/subgraph/check) against the target environment. This should be executed in your CI/CD pipeline before merging changes to your production branch.
+    ```bash
+    wgc subgraph check my-subgraph --schema ./schema.graphql --namespace stage
+    ```
+  </Step>
+  
+  <Step title="Sequential Promotion">
+    Promote through environments: `dev` → `stage` → `prod`
+    ```bash
+    # Promote to staging
+    wgc subgraph publish my-subgraph --namespace stage --schema ./schema.graphql
+    
+    # After validation, promote to production
+    wgc subgraph publish my-subgraph --namespace prod --schema ./schema.graphql
+    ```
+    
+    See the [`wgc subgraph publish`](/cli/subgraph/publish) CLI reference for all options.
+  </Step>
+  
+  <Step title="Verification">
+    Verify composition and client compatibility at each stage
+  </Step>
+</Steps>
+
+#### When to Run Schema Checks
+
+<Steps>
+  <Step title="Every Pull Request">
+    **Mandatory CI check** - Catch issues before code review
+    ```bash
+    wgc subgraph check my-subgraph --schema ./schema.graphql --namespace development
+    ```
+  </Step>
+  
+  <Step title="Before Production Deployment">
+    **Final safety check** - Last line of defense before going live
+    ```bash
+    wgc subgraph check my-subgraph --schema ./schema.graphql --namespace production
+    ```
+  </Step>
+</Steps>
+
+### Router Configuration Strategies
+
+We offer two different approaches to configure the router. Choose the one that best fits your infrastructure and security requirements.
+
+<CardGroup cols={2}>
+  <Card title="Dynamic Fetching" icon="download">
+    **Router fetches latest schema**
+    
+    The router automatically pulls the latest valid supergraph schema from the registry. Simple setup, hot-reloads.
+  </Card>
+  
+  <Card title="CI-Built Configuration" icon="gear">
+    **Pre-built configuration**
+    
+    Use [`wgc router fetch`](/cli/router/fetch) in CI to build the config and package it into the Docker image. Ideal for air-gapped environments.
+  </Card>
+</CardGroup>
+
+#### Dynamic Fetching Approach
+
+This approach leverages the router to fetch the latest schema from Cosmo CDN (Content Delivery Network).
+
+**Benefits:**
+
+- The router automatically fetches the latest schema from CDN. If the CDN is not available, the router will use the last known valid configuration.
+- Subgraphs can be deployed independently of the router. The schema registry ensures that only the latest valid composition is made available to the router.
+- Couples subgraph deployment with the schema artifact, making it easier to perform rollbacks and track changes.
+
+**Drawbacks:**
+
+- Subgraph schema must be made accessible to the router (e.g., by embedding it into the subgraph container image)
+
+The following steps describe how to deploy a subgraph using this approach.
+
+<Steps>
+  <Step title="Deploy Subgraph">
+    Deploy your subgraph application to the target environment. The subgraph schema can be embedded into the subgraph container image to simplify the publishing process.
+  </Step>
+  <Step title="Publish Schema">
+    Run [`wgc subgraph publish`](/cli/subgraph/publish) after successful deployment to update the control plane. The deployment order is not critical because the schema registry ensures that only the latest valid composition is made available to the router.
+  </Step>
+  <Step title="Router Updates">
+    Router automatically fetches and applies the new schema from the CDN. The reload of the router configuration is done gracefully.
+  </Step>
+</Steps>
+
+#### CI-Built Configuration Approach
+
+This approach requires that subgraphs have been previously published to the control plane.
+
+**Benefits:**
+
+- Router does not depend on the CDN to fetch the latest configuration. This is ideal for air-gapped environments.
+- No need to embed the schema into the subgraph container image.
+
+**Drawbacks:**
+
+- The router needs to be deployed for every subgraph change.
+- Rolling back a subgraph requires redeploying the router.
+- More error-prone to manage because when the config is fetched, you need to ensure that your subgraphs reflect the latest configuration.
+
+The following steps describe how to deploy a subgraph using this approach.
+
+<Steps>
+  <Step title="Publish Subgraph">
+    Publish subgraph schema to the control plane.
+  </Step>
+  <Step title="Deploy Subgraph">
+    Deploy the subgraph service version to the target environment.
+  </Step>
+  <Step title="Download Router Execution Configuration">
+    Use [`wgc router fetch`](/cli/router/fetch) to download the latest valid router execution configuration from the CDN
+    ```bash
+    # Build configuration in CI pipeline
+    wgc router compose my-graph --namespace production -o config.json
+
+    # In your Dockerfile, copy the configuration to the router image
+    COPY config.json /app/config/
+    ```
+  </Step>
+  <Step title="Deploy Router">
+    Deploy the router to the target environment. The router will use the pre-built configuration and authenticate with the control plane. 
+    Configure the router to use the execution configuration file:
+    ```bash
+    # Router uses the pre-built configuration but still needs authentication for metrics
+    EXECUTION_CONFIG_FILE_PATH=./config.json
+    ```
+
+    <Warning>
+      Ensure you pass the config path, otherwise the router will fetch the latest configuration from the CDN.
+    </Warning>
+  </Step>
+</Steps>
+
+---
+
+## Phase 2 – Development Deployment
+
+Deploy your subgraph to the development environment and publish the schema for integration testing.
+
+### Deployment Strategy
+
+<Warning>
+**Critical Timing**: Always deploy your subgraph code first, verify it's healthy, then publish the schema. This ensures your resolvers are ready to handle the new schema.
+</Warning>
+
+Implement automated CI/CD pipelines to ensure consistent deployments across your team. The following example demonstrates a deployment pipeline that deploys the subgraph to the development environment, verifies service health, and publishes the schema to the control plane.
+
+```yaml Development Deployment Pipeline
+name: Deploy to Development
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f k8s/development/
+          kubectl rollout status deployment/my-products-subgraph-dev --timeout=300s
+      
+      - name: Verify Health
+        run: |
+          curl -f http://my-products-subgraph-dev.internal/health
+      
+      - name: Publish Schema
+        run: |
+          npm install -g wgc@latest
+          wgc subgraph publish my-products-subgraph \
+            --schema ./schema.graphql \
+            --namespace development
+        env:
+          COSMO_API_KEY: ${{ secrets.COSMO_API_KEY }}
+```
+
+Once the schema is published, the router will automatically fetch the updated schema from the CDN and reload its configuration.
+
+### Advanced: Feature Flags
+
+[Feature flags](/concepts/feature-flags) provide an additional layer of deployment control by allowing you to toggle schema changes at runtime without redeploying your infrastructure. A good example is to preview subgraph changes through a shared router instance in development.
+
+For more information, see the [Feature Flags guide](/concepts/feature-flags) and [gradual rollout tutorial](/tutorial/gradual-and-experimental-feature-rollout-with-feature-flags).
+
+## Phase 3 – Production Deployment
+
+Deploy to production using progressive delivery strategies to minimize risk and ensure reliability.
+
+### Progressive Delivery with Argo Rollouts
+
+While there are many progressive delivery solutions available, we use Argo Rollouts as an example because it provides excellent primitives for canary deployments, automated analysis, and rollback capabilities.
+
+For this pattern to work, the subgraph schema must be embedded into the subgraph container image. This allows the `postPromotionAnalysis` job to access the schema file and publish it to the Cosmo Control Plane after successful deployment.
+
+This strategy is not suitable for releasing breaking changes. In general, you should avoid breaking your production graph (e.g., by removing / renaming a field or changing a type). Fields should be marked as `deprecated` instead. Always use the `wgc subgraph check` command to validate your schema changes before deploying to production. The output of the check command will help you understand the impact of your changes and decide if you can release them safely. In Cosmo Studio, you can get a comprehensive overview of your last checks.
+
+<Tabs>
+  <Tab title="Analysis Template Resource">
+    ```yaml
+    # This resource defines the reusable job for publishing the subgraph schema.
+    # It is defined once and can be referenced by multiple Rollouts.
+    apiVersion: argoproj.io/v1alpha1
+    kind: AnalysisTemplate
+    metadata:
+      name: publish-subgraph-schema
+    spec:
+      # This argument will be supplied by the Rollout during the analysis run.
+      args:
+        - name: image-tag
+        - name: namespace
+        - name: subgraph-name
+      jobs:
+        - name: publish-schema
+          template:
+            spec:
+              containers:
+                - name: publisher
+                  # The image uses the specific tag of the version that was just promoted.
+                  image: {{args.image}}
+                  command: ["/bin/sh", "-c"]
+                  args:
+                    - |
+                      # Best Practice: The 'wgc' CLI should be pre-installed in the Docker image.
+                      # This command assumes 'wgc' is already in the PATH.
+                      wgc subgraph publish {{args.subgraph-name}} \
+                        --namespace {{args.namespace}} \
+                        --schema /path/to/my/schema.graphql
+                  env:
+                    - name: COSMO_API_KEY
+                      valueFrom:
+                        secretKeyRef:
+                          name: cosmo-secrets
+                          key: COSMO_API_KEY
+              restartPolicy: Never
+          backoffLimit: 1
+    ```
+  </Tab>
+  
+  <Tab title="Rollout Resource">
+    ```yaml
+    # This is the Rollout resource that orchestrates the deployment.
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    metadata:
+      name: my-products-subgraph
+    spec:
+      # REQUIRED: This selector links the Rollout to the pods it manages.
+      selector:
+        matchLabels:
+          app: my-products-subgraph
+      replicas: 5
+      strategy:
+        canary:
+          steps:
+          - setWeight: 20
+          - pause: { duration: 1m }
+          - setWeight: 50
+          - pause: { duration: 1m }
+          # The final step promotes the canary to 100% traffic.
+          - setWeight: 100
+          # This hook runs AFTER the rollout is fully promoted to 100%.
+          postPromotionAnalysis:
+            templates:
+              # Reference the AnalysisTemplate defined above.
+              - templateName: publish-subgraph-schema
+            args:
+              # Pass the information to the AnalysisTemplate.
+              - name: image
+                value: "{{.spec.template.spec.containers[0].image}}"
+              - name: namespace
+                value: production
+              - name: subgraph-name
+                value: my-products-subgraph
+      template:
+        metadata:
+          # REQUIRED: Pod labels must match the selector.
+          labels:
+            app: my-products-subgraph
+        spec:
+          containers:
+          - name: app
+            image: my-products-subgraph:1.2.0
+            ports:
+            - containerPort: 8080
+    ```
+  </Tab>
+</Tabs>
+
+This configuration automatically:
+- Deploys to 20% of traffic initially
+- Monitors success metrics during each phase
+- Automatically promotes or rolls back based on analysis results
+- Provides full observability throughout the rollout process
+
+The `postPromotionAnalysis` job uses [`wgc subgraph publish`](/cli/subgraph/publish) to update the schema after successful deployment. This triggers the router to fetch the updated schema from the CDN and reload its configuration.
+The schema transition is performed gracefully by the router.
+
+### Rollback Strategy
+
+If the promotion fails, Argo Rollouts will automatically roll back to the previous stable version, which also rolls back the subgraph schema.
+
+---
+
+## Best Practices
+
+<Check>
+Follow these practices for reliable, scalable GraphQL federation deployments:
+</Check>
+
+<CardGroup cols={2}>
+  <Card title="Schema Registry as Source of Truth" icon="database">
+    Use Cosmo Control Plane as the single source of truth for all schema definitions across environments
+  </Card>
+  
+  <Card title="Environment Isolation" icon="shield">
+    Maintain separate federated graphs or namespaces for dev, staging, and production environments
+  </Card>
+  
+  <Card title="Automated Validation" icon="check">
+    Run `wgc subgraph check` on every pull request and before production deployments
+  </Card>
+  
+  <Card title="Code-First Deployment" icon="code">
+    Always deploy application code first, verify health, then publish schema changes
+  </Card>
+  
+  <Card title="Progressive Delivery" icon="arrow-up">
+    Use canary deployments for production with comprehensive monitoring
+  </Card>
+  
+  <Card title="Observability First" icon="chart-bar">
+    Leverage Cosmo's analytics, metrics, and tracing for informed deployment decisions
+  </Card>
+</CardGroup>
+
+## Summary
+
+Congratulations on completing the federation deployment guide! You've walked through the entire lifecycle of a federated GraphQL setup, from local validation to progressive delivery in production. This structured approach, centered around the Cosmo platform, is key to managing a supergraph at scale with confidence.
