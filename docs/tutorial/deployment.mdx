@@ -220,12 +220,12 @@ This approach leverages the router to fetch the latest schema from Cosmo CDN (Co
 **Benefits:**
 
 - The router automatically fetches the latest schema from CDN. If the CDN is not available, the router will use the last known valid configuration.
-- Subgraphs can be deployed independently of the router. The schema registry ensures that only the latest valid composition is made available to the router.
+- Subgraphs can be deployed without a redeploy of the router. The schema registry ensures that only the latest valid composition is made available to the router.
 - Couples subgraph deployment with the schema artifact, making it easier to perform rollbacks and track changes.
 
 **Drawbacks:**
 
-- Subgraph schema must be made accessible to the router (e.g., by embedding it into the subgraph container image)
+- Subgraph schema must be made accessible to the subgraph for post-promotion step (e.g., by embedding it into the subgraph container image)
 
 The following steps describe how to deploy a subgraph using this approach.
 
