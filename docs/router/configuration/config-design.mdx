@@ -1,0 +1,202 @@
+---
+title: "Config Design"
+description: "Designing and structuring configuration files"
+icon: "brackets-curly"
+---
+
+## Config Design Overview
+
+This section gives an overview on the config merging functionality of the router, and gives guidance on how you could utilize it to structure your configs.
+
+### Configuration Merging
+
+The router allows users to load multiple configurations at once. User's can pass the list of configurations by
+* Passing a comma separated string using the "CONFIG_PATH" environment variable or by setting "CONFIG_PATH" in the .env file
+Example
+```bash
+CONFIG_PATH=base.config.yaml,dev.config.yaml
+```
+
+* Use CLI arguments with `config` when starting the router
+```bash
+# Pass params individually
+./router --config base.config.yaml --config dev.config.yaml
+
+# Pass params as a comma separated list
+./router --config base.config.yaml,dev.config.yaml
+```
+
+## Environment Variables
+We load environment variables and apply them before applying the values from the actual yaml configurations. As such any values from environment variables can be overriden by the yaml configurations.
+
+Additionally users have the option of specifying a base `.env` file as well as an override environment file by specifying a `OVERRIDE_ENV`. The values from the `OVERRIDE_ENV` will override values from the base `.env` file (if present).
+
+#### How Merging Works
+All specified YAML files are validated individually against the router's configuration schema (TODO: Add Link) before attempting to be merged into one. 
+
+The highest priority is given to the last configuration in the list of config files to merge. This means that the last configuration's values will always be guaranteed to be present in the merged yaml. The merge algorithm works by iterating through the keys of the yaml of every configuration, while iterating it simply overrides the previous value if the key already exists, if not it adds it as a new key.
+
+After merging we also validate once again, this is as certain validations can be bypassed by merging, like for example cases where only one value out of multiple can be present in the configuration.
+
+Let's take a simple example of merging below
+
+**base.yaml**
+```yaml
+listen_addr: 127.0.0.1:3007
+poll_interval: 17s
+```
+
+**dev.yaml**
+```yaml
+listen_addr: listen.address:3007
+readiness_check_path: /health/ready/check
+```
+
+The final output will be
+```yaml
+listen_addr: listen.address:3007
+poll_interval: 17s
+readiness_check_path: /health/ready/check
+```
+
+As described earlier, since the final config file has priority, `listen_addr` is overwritten, but `poll_interval` is carreid forward to the final yaml since it is not overwridden. If we were to add another file  after **dev.yaml** with the following contents
+
+```yaml
+listen_addr: new.address:3007
+readiness_check_path: /health/ready/check
+```
+
+The final output will now contan `new.address:3007` instead of `listen.address:3007`
+```yaml
+listen_addr: new.address:3007
+poll_interval: 17s
+readiness_check_path: /health/ready/check
+```
+
+We described overwridding is based on keys, this is important especially when considering lists in the YAML configuration. If you specify a list of elements in the first configuration for the same key, and another set of values for the same key in a later configuration. The *elements in the list will not be merged but instead will be overriden*, this can be surprising especially if the list element contains a `key` attribute.
+
+Let's look at the following example
+
+**base.yaml**
+```yaml
+telemetry:
+  attributes:
+    - key: content_type
+      default: 'no-content-type-found'
+      value_from:
+        request_header: content-type`
+```
+
+**dev.yaml**
+```yaml
+listen_addr: 127.0.0.1:3007
+
+telemetry:
+  attributes:
+    - key: operation_sha
+      default: 'no_sha'
+      value_from:
+        context_field: operation_sha256`
+    - key: operation_validation_time
+      default: 'no_validation_time'
+      value_from:
+        context_field: operation_validation_time`
+```
+
+In this case we do not merge the two lists and override the `base.yaml` list with the `dev.yaml` list. The output will be the following.
+
+```yaml
+listen_addr: 127.0.0.1:3007
+
+telemetry:
+  attributes:
+    - key: operation_sha
+      default: 'no_sha'
+      value_from:
+        context_field: operation_sha256`
+    - key: operation_validation_time
+      default: 'no_validation_time'
+      value_from:
+        context_field: operation_validation_time`
+```
+
+## Hot Config Reloading
+In case hot config reloading is enabled (TODO: Add Link) all configuration files will be watched for changes, each time a single configuration changes we will reprocess all configurations and rebuild the final merged configuration.
+
+
+## Designing Configurations
+Before the possibility of merging configurations, users had to use one configuration file, which could result in configuration bload with huge config files.
+
+Using configuration merging you can now split configurations into manageable chunks.
+
+Let's take the following folder example structure
+
+```
+config/
+  base.config.yaml
+  dev/
+    dev.config.yaml
+  staging/
+    stage.config.yaml
+  production/
+    prod.config.yaml
+```
+
+The above structure shows how configurations could be split by reusability, instead of being split by the configuration values itself (i.e. putting telemetry related configurations into a `telemetry.config.yaml` file). This allows users to provide environment specific overrides while maintaining a shared configuration. Previously users will need to duplicate the configuration across dev, staging and production configs, which requires a change to dev needs to be manually updated in stage and prod configs.
+
+You could use the following environment variables per environment
+```bash
+# for dev
+CONFIG_PATH=base.config.yaml,./dev/dev.config.yaml
+
+# for staging
+CONFIG_PATH=base.config.yaml,./staging/stage.config.yaml
+
+# for prod
+CONFIG_PATH=base.config.yaml,./production/prod.config.yaml
+```
+
+In addition to using the power of merging to override defaults, you can use it to also separate out configs into multiple chunks, such as the following.
+
+```
+  config/
+    rate_limit.yaml
+    telemetry.yaml
+    prod/
+      telemetry.yaml
+      tracing.yaml
+      metrics.yaml
+```
+
+You can use the above configs using the following environment variable for example
+
+```bash
+# for prod
+CONFIG_PATH=rate_limit.yaml,telemetry.yaml,./prod/telemetry.yaml,./prod/tracing.yaml,./prod/metrics.yaml
+```
+
+Do note that if you include a rate limiting related attribute defined in `rate_limit.yaml` in `telemetry.yaml` it will override the attribute from `rate_limit.yaml`, if using this approach, you should ensure that attributes don't unwantedly get duplicated.
+
+We earlier mentioned how we can have `.env` and also an `override .env` file. We can combine it with the above YAML configuration structure. For example. We could have the following structure
+
+```
+config/
+  base.config.yaml
+  .env
+  dev/
+    .env.dev
+    dev.config.yaml
+  staging/
+    .env.stage
+    stage.config.yaml
+  production/
+    .env.prod
+    prod.config.yaml
+```
+
+When loading staging we will also need to ensure that we set the following environment variable
+```bash
+# Load the staging environment variables
+OVERRIDE_ENV=./staging/.env.stage
+```
+
