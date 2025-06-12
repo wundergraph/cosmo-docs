@@ -37,8 +37,20 @@ The router supports two types of environment variable usage:
 
 Environment variables have the lowest precedence in the configuration hierarchy:
 - They are loaded first
-- Can be overridden by YAML configurations
-- YAML configurations have higher precedence
+- YAML configurations are loaded after environment variables and will override any matching values
+
+For example:
+```bash
+# Environment variable
+READINESS_CHECK_PATH=/path1
+```
+
+```yaml
+# config.yaml
+READINESS_CHECK_PATH: /updatedPath
+```
+
+In this case, the final value used will be `/updatedPath` because the YAML configuration overrides the environment variable.
 
 You have two options for environment files:
 - A base `.env` file for your common settings
@@ -60,18 +72,12 @@ ${ENVAR}
 This allows you to do for example the following
 ```yaml
 readiness_check_path: /${READINESS_PATH}/${SUFFIX_URL}
-
-#OR 
-
-readiness_check_path: ${READINESS_CHECK_PATH}
 ```
 
 With the following environment variables
 ```bash
 READINESS_PATH=ready
 SUFFIX_URL=check
-
-READINESS_CHECK_PATH=/ready/check
 ```
 
 Which will result in 
