@@ -28,13 +28,76 @@ CONFIG_PATH=base.config.yaml,dev.config.yaml
 
 ### Environment Variables
 
-We load environment variables first, before applying the values from your YAML configurations. This means that any values you set in environment variables can be overridden by your YAML configurations if needed.
+The router supports two types of environment variable usage:
+
+1. Direct environment variable settings
+2. Environment variable interpolation in YAML configurations
+
+#### Environment Variable Precedence
+
+Environment variables have the lowest precedence in the configuration hierarchy:
+- They are loaded first
+- Can be overridden by YAML configurations
+- YAML configurations have higher precedence
 
 You have two options for environment files:
 - A base `.env` file for your common settings
 - An override environment file using `OVERRIDE_ENV` for environment-specific settings
 
 The values from your `OVERRIDE_ENV` file will take precedence over the base `.env` file (if you have one).
+
+<Warning>
+All configuration values do not have an environment var assigned to it. If you require to set something by env vars, but it does not exist, do not hesitate to get in touch with us.
+</Warning>
+
+### Environment Variable Interpolation
+
+We also allow the interpolation / expanding of environment variables in YAML's by using the following syntax
+```bash
+${ENVAR}
+```
+
+This allows you to do for example the following
+```yaml
+readiness_check_path: /${READINESS_PATH}/${SUFFIX_URL}
+
+#OR 
+
+readiness_check_path: ${READINESS_CHECK_PATH}
+```
+
+With the following environment variables
+```bash
+READINESS_PATH=ready
+SUFFIX_URL=check
+
+READINESS_CHECK_PATH=/ready/check
+```
+
+Which will result in 
+
+```yaml
+readiness_check_path: /ready/check
+```
+
+<Warning>
+When using environment variable interpolation, make sure the environment variables are set before the router starts. If an environment variable is not set, the interpolation will result in no value.
+</Warning>
+
+#### Understanding Environment Variable Interpolation
+
+Environment variable interpolation provides a way to use environment variables as the source of truth in your configuration. This is particularly useful for:
+
+- Path configurations that might change between environments
+- Sensitive values that should be managed through environment variables
+- Values that need to be dynamically set during deployment
+
+For example, if you have a default environment variable like `READINESS_CHECK_PATH`, you can:
+1. Use it directly in your YAML through interpolation (`${READINESS_CHECK_PATH}`)
+2. Change its value through environment variables without modifying the YAML
+3. Maintain consistency across different environments
+
+This approach is especially valuable when you want to ensure that certain values are always controlled by environment variables rather than being overridden by YAML configurations.
 
 #### How Merging Works
 
@@ -126,9 +189,73 @@ telemetry:
         context_field: operation_validation_time
 ```
 
+Likewise another caveat is that you should keep in mind validation rules when attempting to design configurations so that it can be merged. Let's take a look at the following example.
+
+**base.config.yaml**
+```yaml
+execution_config:
+  file:
+    path: execution_config.json
+    watch: true
+    watch_interval: 5s
+```
+
+**dev.config.yaml**
+```yaml
+execution_config:
+  file:
+    path: execution_config.json
+    watch: false
+```
+
+In this example, we run into a validation issue after merging. The JSON schema requires that `watch_interval` cannot be present when `watch` is `false`. While each individual configuration file is valid, the merged result becomes invalid because `watch_interval` from the base config remains even though `watch` is set to `false` in the dev config.
+
+To handle this scenario, you have two options:
+
+1. **Recommended Approach**: Set `watch: false` as the default in your base configuration and explicitly enable it where needed:
+```yaml
+# base.config.yaml
+execution_config:
+  file:
+    path: execution_config.json
+    watch: false
+
+# dev.config.yaml
+execution_config:
+  file:
+    path: execution_config.json
+    watch: true
+    watch_interval: 5s
+```
+
+2. **Alternative Approach**: Create separate configurations for different watch settings:
+```yaml
+# base.config.yaml
+execution_config:
+  file:
+    path: execution_config.json
+
+# watch-enabled.config.yaml
+execution_config:
+  file:
+    watch: true
+    watch_interval: 5s
+
+# watch-disabled.config.yaml
+execution_config:
+  file:
+    watch: false
+```
+
+The first approach is generally recommended as it makes the configuration intent clearer and reduces the number of configuration files you need to manage.
+
 ### Hot Config Reloading
 
 When you enable [hot config reloading](/router/configuration#config-watcher-hot-reloading), we'll watch all your configuration files for changes. Whenever any configuration changes, we'll reprocess everything and rebuild your final merged configuration.
+
+<Warning>
+The router does not support reloading of .env files at this moment, and any .env change will require you to restart the router.
+</Warning>
 
 ## Designing Configurations
 
