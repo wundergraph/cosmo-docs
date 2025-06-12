@@ -530,7 +530,7 @@ This automatic rollback mechanism protects your federation from broken deploymen
 </Tip>
 
 <Info>
-**Timing Consideration**: When using dynamic configuration, allow at least 20 seconds for the initial canary evaluation. The router polls for schema updates every 10 seconds by default ([configurable via `poll_interval`](/router/configuration#router)), so you need to account for this delay when the new schema is published.
+**Timing Consideration**: When using dynamic configuration, allow at least 20 seconds for the initial canary evaluation. The router polls for schema updates every 10 seconds by default ([configurable via `poll_interval`](/router/configuration#router)), so you need to account for this delay when the new schema is published. The example respects this already.
 </Info>
 
 ---
