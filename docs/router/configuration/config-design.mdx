@@ -47,10 +47,14 @@ READINESS_CHECK_PATH=/path1
 
 ```yaml
 # config.yaml
-READINESS_CHECK_PATH: /updatedPath
+readiness_check_path: /updatedPath
 ```
 
-In this case, the final value used will be `/updatedPath` because the YAML configuration overrides the environment variable.
+In this case, the final value used will be `/updatedPath` because the YAML configuration overrides the environment variable. Even if the YAML configuration value is empty, as long as it's specified the environment variable will be overridden, for example
+```yaml
+# config.yaml
+readiness_check_path: ""
+```
 
 You have two options for environment files:
 - A base `.env` file for your common settings
@@ -59,7 +63,7 @@ You have two options for environment files:
 The values from your `OVERRIDE_ENV` file will take precedence over the base `.env` file (if you have one).
 
 <Warning>
-All configuration values do not have an environment var assigned to it. If you require to set something by env vars, but it does not exist, do not hesitate to get in touch with us.
+Not all configuration values have corresponding environment variables. If you need to configure a value via environment variables but it’s not currently supported, do not hesitate to reach out to us.
 </Warning>
 
 ### Environment Variable Interpolation
@@ -153,7 +157,42 @@ readiness_check_path: /health/ready/check
 
 > **Important Note**: When dealing with lists in your YAML configurations, the entire list gets replaced rather than merged. This is especially important to remember when your list elements have a `key` attribute.
 
-Here's an example to show what we mean:
+Here's an example using a simple array
+
+**base.yaml**
+```yaml
+cors:
+  allow_headers:
+    - header1
+    - header2
+```
+
+<Note>
+Simple scalar values can also be represented as the folloiwing in YAML, they are technically the same as the above syntax.
+```
+allow_headers: ["header1", "header2"]
+```
+</Note>
+
+**dev.yaml**
+```yaml
+cors:
+  allow_headers:
+    - overrideHeader1
+    - overrideHeader2
+
+```
+
+The resulting YAML would be 
+
+```yaml
+cors:
+  allow_headers:
+    - overrideHeader1
+    - overrideHeader2
+```
+
+Lists can also contain complex types, for example:
 
 **base.yaml**
 ```yaml
