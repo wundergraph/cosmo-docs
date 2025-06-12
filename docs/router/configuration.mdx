@@ -1970,25 +1970,3 @@ cache_warmup:
   source:
     path: "./cache-warmer/operations"
 ```
-
-## Multiple Config Files
-
-The router supports loading multiple configuration files simultaneously, allowing you to split your configurations into smaller, more manageable pieces. This feature is particularly useful for organizing environment-specific settings or separating concerns.
-
-You can specify multiple configuration files in two ways:
-
-1. Using a comma-separated list in the `CONFIG_PATH` environment variable:
-```bash
-CONFIG_PATH=base.config.yaml,dev.config.yaml
-```
-
-2. Using the `--config` flag multiple times or with a comma-separated list:
-```bash
-# Individual files
-./router --config base.config.yaml --config dev.config.yaml
-
-# Comma-separated list
-./router --config base.config.yaml,dev.config.yaml
-```
-
-For detailed information about configuration merging and best practices for structuring your configs, see our [Configuration Design](/router/configuration/config-design) guide.
