@@ -517,7 +517,7 @@ Here's a production-ready canary setup:
 
 ### Automated Rollback
 
-If the `postPromotionAnalysis` step fails (for example, if schema publishing fails due to composition errors), Argo Rollouts will automatically roll back the deployment to the previous stable version. This ensures that:
+If the `postPromotionAnalysis` step fails (for example, the health check or publish step fails), Argo Rollouts will automatically roll back the deployment to the previous stable version. This ensures that:
 
 - Your subgraph code reverts to the last known good version
 - The supergraph schema remains consistent and valid
