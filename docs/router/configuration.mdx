@@ -16,7 +16,7 @@ The router provides three different ways of customization:
   to avoid storing secrets on the file system.
 </Info>
 
-## Config file
+## Config File
 
 For convenience, you can create a `config.yaml` to specify all router options. Start the router in the same directory or pass the path to the file as a `CONFIG_PATH` environment variable.
 
@@ -33,6 +33,10 @@ graph:
   be overwritten. That means, you can see the config file as a single source of
   truth.
 </Note>
+
+### Multiple Config Files
+
+The router allows you to have multiple configuration files, enabling you to override and separate configurations into more manageable chunks. When specifying configuration files, you can simply provide a comma-separated list of file names. You can read more about this [here](/router/configuration/config-design).
 
 ### Expand Environment Variables
 

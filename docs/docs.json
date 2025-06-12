@@ -390,6 +390,7 @@
             "icon": "sliders-up",
             "pages": [
               "router/configuration",
+              "router/configuration/config-design",
               "router/configuration/template-expressions"
             ]
           },
