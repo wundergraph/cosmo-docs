@@ -1,6 +1,6 @@
 ---
-title: "Safe Federated GraphQL Deployment"
-description: "A practical guide to safely deploying and managing subgraphs in a federated GraphQL architecture with WunderGraph Cosmo."
+title: "Deploy GraphQL Federation with Confidence"
+description: "Complete guide to deploying federated GraphQL - from schema validation and basic deployments to advanced canary strategies and production monitoring."
 icon: "rocket"
 ---
 
@@ -243,12 +243,7 @@ The router needs to know about your schema changes. You have two main approaches
 
 ### Dynamic Configuration (Recommended)
 
-This is the simpler approach for most teams:
-
-```yaml
-# Router environment variables
-GRAPH_API_TOKEN: "your-cosmo-token"
-```
+This is the simpler approach for most teams.
 
 **How it works:**
 1. You deploy your subgraph and publish the schema
@@ -263,7 +258,7 @@ GRAPH_API_TOKEN: "your-cosmo-token"
 - ✅ Automatic rollback to last valid good configuration
 - ✅ Encourage atomic deployments (Coupling schema with subgraph deployment)
 - ❌ Requires internet connectivity to Cosmo CDN
-- ❌ Schema must be accessible to subgraph for embedding (if using post-deployment publishing)
+- ❌ Schema must be accessible to the subgraph for embedding (if using post-deployment publishing)
 
 ### Static Configuration (Advanced)
 
@@ -278,7 +273,7 @@ When you need full control:
       --namespace production \
       --output router-config.json
     
-    # Build router image with embedded config
+    # Build router image with the embedded config
     docker build \
       --build-arg CONFIG_FILE=router-config.json \
       -t my-router:${{ github.sha }} .
@@ -297,12 +292,12 @@ ENV EXECUTION_CONFIG_FILE_PATH=/app/config.json
 **Trade-offs:**
 - ✅ No dependency on CDN at runtime
 - ✅ Perfect for air-gapped environments  
-- ❌ Must redeploy router for every schema change
+- ❌ Must redeploy the router for every schema change
 - ❌ More complex rollback procedures
 
 ---
 
-All following examples in this guide follow the **dynamic configuration approach** for simplicity. If you're using static configuration, you'll need to modify the examples to include router config building and deployment steps.
+All subsequent examples in this guide follow the **dynamic configuration approach** for simplicity. If you're using static configuration, you'll need to modify the examples to include router config building and deployment steps.
 
 ## Automated CI/CD Integration
 
@@ -360,7 +355,7 @@ jobs:
 
 **Promote through environments in order:**
 
-Remember: Always deploy your service code first, verify it's healthy, then publish the schema.
+Remember: Always deploy your service code first, verify that it's healthy, then publish the schema.
 
 ```bash
 # Development first
@@ -391,9 +386,9 @@ Once you've mastered basic deployments, canary releases let you deploy with even
 
 ### Understanding Canary in Federation
 
-A canary deployment in federated GraphQL is more complex than typical services because:
+A canary deployment in federated GraphQL is more complex than with typical services because:
 
-- **Schema dependencies**: Your new subgraph version may require other subgraphs to form a valid composition. This is a classic chicken and egg problem but it is safely solved with Cosmo because the schema registry ensures that only the latest valid composition is made available to the router. However, you need to be aware of the dependencies between subgraphs and ensure that all subgraphs are deployed to resolve the composition.
+- **Schema dependencies**: Your new subgraph version may require other subgraphs to form a valid composition. This is a classic chicken-and-egg problem, but it is safely solved with Cosmo because the schema registry ensures that only the latest valid composition is made available to the router. However, you need to be aware of the dependencies between subgraphs and ensure that all subgraphs are deployed to resolve the composition.
 
 ### Safe Canary Strategy
 
@@ -413,7 +408,7 @@ Canary Environment (10% traffic)
 
 **Benefits:**
 - Complete isolation between subgraph versions
-- Easy rollback by routing traffic away from canary environment or rolling entire subgraph back to the previous version
+- Easy rollback by routing traffic away from canary environment or rolling the entire subgraph back to the previous version
 - Test new subgraph versions without affecting the entire federation
 
 ### Implementing with Argo Rollouts

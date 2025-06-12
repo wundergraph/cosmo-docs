@@ -40,7 +40,7 @@
             "icon": "newspaper",
             "pages": [
               "tutorial",
-              "tutorial/safe-federated-graphql-deployment",
+              "tutorial/deploy-federated-graphql-with-confidence",
               "tutorial/from-zero-to-federation-in-5-steps-using-cosmo",
               "tutorial/mastering-local-development-for-graphql-federation",
               "tutorial/composing-graphs",
