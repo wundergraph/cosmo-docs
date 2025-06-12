@@ -114,7 +114,7 @@ wgc subgraph check my-products-subgraph \
 <Warning>
 **Failed validation = Don't deploy**
 
-If `wgc subgraph check` fails, fix the issues before proceeding. A failed check means your changes could break the entire graph or existing client applications.
+If `wgc subgraph check` fails, fix the issues before proceeding. A failed check means your changes could break the entire graph or existing client applications. In rare cases, you can overwrite the check in the Cosmo Studio to proceed with the deployment. This can be useful when removing unused fields or types.
 </Warning>
 
 ### Environment Isolation
@@ -192,7 +192,7 @@ Let's walk through a basic deployment that follows safety best practices.
     **Only after the service is running**
     
     ```bash
-    # Verify service health first
+    # Verify service health first.
     curl -f http://my-products-subgraph-dev.internal/health
     
     # Then publish the schema
@@ -302,7 +302,7 @@ ENV EXECUTION_CONFIG_FILE_PATH=/app/config.json
 
 ---
 
-All examples in this guide follow the **dynamic configuration approach** for simplicity. If you're using static configuration, you'll need to modify the examples to include router config building and deployment steps.
+All following examples in this guide follow the **dynamic configuration approach** for simplicity. If you're using static configuration, you'll need to modify the examples to include router config building and deployment steps.
 
 ## Automated CI/CD Integration
 
@@ -393,9 +393,7 @@ Once you've mastered basic deployments, canary releases let you deploy with even
 
 A canary deployment in federated GraphQL is more complex than typical services because:
 
-- **Schema dependencies**: Your new subgraph version may require other subgraphs to be updated as well
-- **Coordinated updates**: Both subgraph and router may need updates
-- **Rollback complexity**: Schema rollbacks affect the entire graph
+- **Schema dependencies**: Your new subgraph version may require other subgraphs to form a valid composition. This is a classic chicken and egg problem but it is safely solved with Cosmo because the schema registry ensures that only the latest valid composition is made available to the router. However, you need to be aware of the dependencies between subgraphs and ensure that all subgraphs are deployed to resolve the composition.
 
 ### Safe Canary Strategy
 
@@ -415,7 +413,7 @@ Canary Environment (10% traffic)
 
 **Benefits:**
 - Complete isolation between subgraph versions
-- Easy rollback by routing traffic away from canary environment or rolling back to the previous version
+- Easy rollback by routing traffic away from canary environment or rolling entire subgraph back to the previous version
 - Test new subgraph versions without affecting the entire federation
 
 ### Implementing with Argo Rollouts
@@ -526,6 +524,10 @@ If the `postPromotionAnalysis` step fails (for example, if schema publishing fai
 - Client applications continue to work without interruption
 
 This automatic rollback mechanism protects your federation from broken deployments while maintaining the integrity of your overall graph.
+
+<Tip>
+**Manual Validation Control**: You can configure the rollout to pause at any step and perform complex health checks before proceeding. Use `kubectl argo rollouts promote my-products-subgraph` to continue with the post-promotion analysis. This gives you full control over when traffic shifts to the new version.
+</Tip>
 
 <Info>
 **Timing Consideration**: When using dynamic configuration, allow at least 20 seconds for the initial canary evaluation. The router polls for schema updates every 10 seconds by default ([configurable via `poll_interval`](/router/configuration#router)), so you need to account for this delay when the new schema is published.
