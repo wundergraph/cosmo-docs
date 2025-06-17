@@ -402,6 +402,14 @@
             "icon": "plug",
             "pages": ["router/plugins", "router/plugins/debugging"]
           },
+          {
+            "group": "gRPC Services",
+            "icon": "network-wired",
+            "pages": [
+              "router/grpc-services",
+              "router/grpc-services/quickstart"
+            ]
+          },
           "router/authentication-and-authorization",
           "router/advanced-data-privacy",
           {
