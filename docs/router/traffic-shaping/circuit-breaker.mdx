@@ -1,0 +1,76 @@
+---
+title: "Circuit Breaker"
+description: "Configure circuit breakers to protect your subgraphs from cascading failures."
+icon: "plug-circle-bolt"
+---
+
+A **circuit breaker** is a reliability pattern that helps prevent cascading failures in distributed systems. When a subgraph starts failing, the circuit breaker can automatically stop sending requests to it for a period of time, allowing the subgraph to recover and protecting your router from repeatedly calling the subgraph when the subgraph is in an unhealthy state. This allows the router to respond much faster to the caller when the subgraph is unhealthy.
+
+
+## Example YAML configuration
+
+```yaml
+traffic_shaping:
+  all:
+    circuit_breaker:
+      enabled: true
+      request_threshold: 20
+      error_threshold_percentage: 50
+      sleep_window: 30s
+      half_open_attempts: 5
+      required_successful: 3
+      rolling_duration: 60s
+      num_buckets: 10
+  subgraphs:
+    employees:
+      circuit_breaker:
+        enabled: true
+        request_threshold: 70
+        ...
+```
+
+## Configuration
+
+### Base options
+
+* `enabled` (`boolean`): Enable the circuit breaker. If set to `true`, the circuit breaker will monitor requests and errors to subgraphs and open the circuit when thresholds are exceeded.
+
+* `request_threshold` (`integer`): The minimum number of requests required before the circuit breaker will start evaluating whether to open the circuit. This prevents the circuit breaker from triggering on low-traffic endpoints.
+
+* `error_threshold_percentage` (`integer`): The percentage of failed requests (within the rolling window) that will trigger the circuit breaker to open. For example, if set to `50`, and more than 50% of requests fail, the circuit will open.
+
+* `sleep_window` (`string`, duration): After the circuit breaker is open, this is how long it will wait before allowing a limited number of test requests (half-open state). Example: `30s`.
+
+* `half_open_attempts` (`integer`): The number of test requests allowed through when the circuit is half-open. If these requests succeed, the circuit will close; if they fail, the circuit will open again.
+
+* `required_successful` (`integer`): The number of successful requests required during the half-open state to close the circuit and resume normal operation.
+
+* `rolling_duration` (`string`, duration): The time window over which request and error counts are measured. Example: `60s`.
+
+* `num_buckets` (`integer`): The number of buckets used to store request statistics within the rolling window. More buckets provide finer granularity but use more memory.
+
+**All**
+
+Users can specify one circuit breaker configuration, which will be applied for all subgraphs.
+
+**Subgraph**
+
+Users can specify an override configurations for a subgraph, even disabling the circuig breaker for a particular subgraph.
+
+## How it works
+
+Each subgraph and feature flag (base graph included) will have it's own circuit breaker. As we use multiple circuit breakers, this allows us to independently open a circuit breaker on a failing subgraph, without inadvertently failinh other subgraphs. In case you have specified only a base circuit breaker configuration, we still copy this configuration over for every subgraph and feature flag combination present.
+
+We separate out feature flags, as they can have their own routing url as well as other configuration changes, that can cause failures only in the feature flag graph.
+
+When a circuit exists, the circuit breaker monitors requests to its subgraph. If the number of requests exceeds `request_threshold` and the percentage of errors exceeds `error_threshold_percentage` within the `rolling_duration`, the circuit opens and requests are immediately failed for `sleep_window`. After this period, a limited number of requests (`half_open_attempts`) are allowed through. If `required_successful` of these succeed, the circuit closes; otherwise, it reopens.
+
+## Retries
+
+The circuit breaker interacts with the retry mechanism in the router, thus in the case of 5 retries for example, the 3rd retry could result in a "circuit open" error. This means that when the "circuit open" error is detected, retries will stop attempting to make any requests further.
+
+## Monitoring
+
+You can find more information on monitoring your circuit breakers [here](/router/metrics-and-monitoring#circuit-breaker-specific-metrics)
+
+
