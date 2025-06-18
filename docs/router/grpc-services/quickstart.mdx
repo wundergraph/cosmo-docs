@@ -149,12 +149,13 @@ Depending on the language you are using, you might need to adjust the options. T
 ### Step 3: Create a Compose Configuration
 
 Create a `compose.yaml` file to configure your gRPC service integration:
+Make sure to use a valid gRPC URL for the client to connect to. See [gRPC URL Format](https://github.com/grpc/grpc/blob/master/doc/naming.md) for more information.
 
 ```yaml
 version: 1
 subgraphs:
   - name: projects
-    routing_url: http://localhost:4011
+    routing_url: dns:///localhost:4011
     grpc:
       schema_file: ./schema.graphql
       proto_file: ./generated/service.proto

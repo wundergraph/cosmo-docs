@@ -125,6 +125,61 @@ The integration of gRPC services into GraphQL Federation follows this pattern:
 
 This architecture enables you to maintain your existing gRPC services unchanged while providing a unified GraphQL interface to your clients.
 
+## Limitations
+
+While gRPC services provide powerful integration capabilities, there are some current limitations to be aware of when planning your implementation.
+
+### gRPC Features
+
+<CardGroup cols={2}>
+  <Card title="Transport Layer Security" icon="shield-xmark">
+    TLS encryption is not yet supported for gRPC service connections. All communication currently uses unencrypted connections.
+  </Card>
+  <Card title="Connection Configuration" icon="gear">
+    Advanced gRPC configuration options such as retry policies and custom timeout settings are not yet available.
+  </Card>
+</CardGroup>
+
+### Federation Features
+
+<CardGroup cols={2}>
+  <Card title="Multi Key Entity Lookups" icon="key">
+    Federation entity lookups with multiple keys and nested keys are not currently supported, limiting complex entity relationships.
+  </Card>
+  <Card title="@requires Directive" icon="link">
+    The `@requires` directive for field dependencies across services is not yet implemented for gRPC services.
+  </Card>
+</CardGroup>
+
+### GraphQL Features
+
+<CardGroup cols={2}>
+  <Card title="Operation Types" icon="bolt">
+    Only Query and Mutation operations are supported. Subscriptions are not available for gRPC services.
+  </Card>
+  <Card title="Custom Scalars" icon="code">
+    Custom scalar type conversion is limited to fixed mappings. Dynamic scalar conversion is not supported.
+  </Card>
+  <Card title="Advanced Schema Features" icon="diagram-project">
+    Field resolvers, GraphQL interfaces, and union types are not currently supported in gRPC service schemas.
+  </Card>
+  <Card title="Nested Lists" icon="list-tree">
+    Nested lists are not currently supported in the router.
+  </Card>
+</CardGroup>
+
+### Roadmap
+
+We're actively working on addressing these limitations. Future releases will include:
+
+- TLS support for secure gRPC connections
+- Advanced gRPC configuration options
+- Enhanced Federation feature support
+- Subscription support for real-time data
+- Expanded GraphQL schema feature compatibility
+
+For the most up-to-date information on feature availability and roadmap, please check our [GitHub repository](https://github.com/wundergraph/cosmo).
+
 ## Next Steps
 
 - [Quickstart](/router/grpc-services/quickstart)
