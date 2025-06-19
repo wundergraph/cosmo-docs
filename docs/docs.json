@@ -218,13 +218,21 @@
                 ]
               },
               {
-                "group": "Plugin",
+                "group": "gRPC Plugin",
                 "icon": "plug",
                 "pages": [
-                  "cli/router/plugin",
-                  "cli/router/plugin/init",
-                  "cli/router/plugin/build",
-                  "cli/router/plugin/test"
+                  "cli/router/grpc-plugin",
+                  "cli/router/grpc-plugin/init",
+                  "cli/router/grpc-plugin/build",
+                  "cli/router/grpc-plugin/test"
+                ]
+              },
+              {
+                "group": "gRPC Service",
+                "icon": "network-wired",
+                "pages": [
+                  "cli/router/grpc-service",
+                  "cli/router/grpc-service/generate"
                 ]
               }
             ]
@@ -398,16 +406,14 @@
           "router/mcp",
           "router/custom-modules",
           {
-            "group": "Plugins",
-            "icon": "plug",
-            "pages": ["router/plugins", "router/plugins/debugging"]
-          },
-          {
-            "group": "gRPC Services",
+            "group": "gRPC",
             "icon": "network-wired",
             "pages": [
-              "router/grpc-services",
-              "router/grpc-services/quickstart"
+              "router/gRPC/concepts",
+              "router/gRPC/grpc-services",
+              "router/gRPC/grpc-plugins",
+              "router/gRPC/service-quickstart",
+              "router/gRPC/debugging"
             ]
           },
           "router/authentication-and-authorization",

@@ -1,6 +1,7 @@
 ---
 title: "Quickstart"
 description: "Quickstart for integrating gRPC services into your router."
+sidebarTitle: gRPC Service Quickstart
 icon: network-wired
 ---
 
@@ -167,7 +168,7 @@ subgraphs:
 Use the compose file to generate the router configuration:
 
 ```bash
-wgc router compose -i ./compose.yaml -o ./config.json
+wgc router compose -i ./compose.yaml -o ./router.json
 ```
 
 This creates a `config.json` file that the Cosmo Router will use to understand how to communicate with your gRPC service.
@@ -337,9 +338,33 @@ func (p *ProjectsServiceServer) QueryListProjects(context.Context, *service.Quer
 </Tabs>
 
 
-### Step 6: Test Your Integration
+### Step 6: Run the Router
 
-Finally, start the Cosmo Router with your configuration and query your gRPC service through GraphQL:
+Create a `config.yaml` file in the same directory as your router binary.
+
+<CodeGroup>
+  ```yaml config.yaml
+  dev_mode: true
+  execution_config:
+    file:
+      # Path to the previous generated file
+      path: "router.json" # or EXECUTION_CONFIG_FILE_PATH
+      watch: true # EXECUTION_CONFIG_FILE_WATCH
+  graph:
+     # Result of `wgc router token create`. Can be omitted for local testing.
+     token: "" # GRAPH_API_TOKEN
+  ```
+</CodeGroup>
+
+Finally, run the router 
+
+```bash
+./router
+```
+
+### Step 7: Test Your Integration
+
+You can now go to [`localhost:3002`](http://localhost:3002) . You will see a playground and you're ready to test your changes.
 
 ```graphql
 query {

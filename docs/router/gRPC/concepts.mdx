@@ -1,0 +1,209 @@
+---
+title: "Concepts"
+icon: "lightbulb"
+sidebarTitle: Concepts
+description: 'Core concepts for gRPC integration in Cosmo Router'
+---
+
+## Introduction
+
+The Cosmo Router supports integration with gRPC through a schema-first approach. You define a GraphQL schema that represents the interface to your gRPC implementation, and the Cosmo tooling generates the corresponding Protocol Buffer definitions and mappings that enable the router to establish communication.
+
+This approach allows you to bridge any service - whether it's gRPC, REST, SOAP, or legacy systems - into your GraphQL Federation Supergraph by creating a protocol translation layer. The router handles the communication with your implementations based on the generated mappings, making it easy to modernize your architecture while preserving existing investments.
+
+
+## What is gRPC?
+
+gRPC is a modern, open-source, high-performance RPC framework that enables communication between services using a lightweight binary protocol. It provides a robust foundation for building distributed systems and is widely adopted in the industry.
+
+Key characteristics include:
+* **Language and platform agnostic** - allows you to define service interfaces in a language-neutral way
+* **Protocol Buffers** - uses protobuf as the interface definition language for type-safe communication
+* **High performance** - binary protocol enables efficient data serialization and transmission
+* **Industry standard** - widely adopted across microservices architectures
+
+You can find more information about gRPC [here](https://grpc.io/docs/what-is-grpc/introduction/).
+
+## What is gRPC Integration in Cosmo?
+
+gRPC integration in Cosmo allows you to incorporate gRPC-based functionality into your GraphQL Federation through a code generation workflow:
+
+- **Schema-driven integration** where you define GraphQL schemas that represent your gRPC interfaces
+- **Automatic protobuf generation** from your GraphQL schema definitions
+- **Router-managed communication** where the Cosmo Router handles gRPC communication
+- **Protocol translation** between GraphQL requests and gRPC calls
+- **Type-safe mappings** ensuring consistency between GraphQL and protobuf definitions
+- **Flexible deployment models** supporting both local and remote gRPC implementations
+
+## Core Workflow
+
+<Steps>
+  <Step title="Define GraphQL Schema">
+    Create a GraphQL schema that represents the interface to your gRPC implementation. This schema defines the types, queries, mutations, and inputs that will be exposed through your GraphQL API.
+  </Step>
+  <Step title="Generate Protobuf Files">
+    Use the Cosmo CLI to automatically generate protobuf service definitions and mapping configurations from your GraphQL schema. This creates the bridge between GraphQL and gRPC protocols.
+  </Step>
+  <Step title="Implement gRPC Logic">
+    Build your gRPC implementation using the generated protobuf definitions. This implements the business logic for your GraphQL operations.
+  </Step>
+  <Step title="Configure Router">
+    Configure the Cosmo Router to understand how to communicate with your gRPC implementation.
+  </Step>
+  <Step title="Deploy and Test">
+    Deploy your setup and test the integration by making GraphQL queries that are translated to gRPC calls.
+  </Step>
+</Steps>
+
+## Motivation
+
+Many companies see the value of GraphQL Federation but are hesitant to adopt it because they have existing systems that are incompatible, like legacy systems, REST APIs, SOAP, etc.
+
+gRPC integration solves this problem by making it easy to generate adapters between your Supergraph and existing systems. The system is designed with modern development tools in mind - define a GraphQL schema, provide an OpenAPI document, a SOAP WSDL, or even just some curl commands, and AI coding assistants can generate adapter code and tests in minutes.
+
+Thanks to the strongly-typed proto definition and built-in tooling, development becomes faster and more reliable.
+
+## Core Benefits
+
+<CardGroup cols={2}>
+    <Card title="Simplify GraphQL Implementation" icon="wand-magic-sparkles">
+        While everyone understands the value of "one schema, one query," building and maintaining production-grade subgraphs across diverse environments remains challenging. Spec support, runtime performance, and type safety depend on your implementation quality.
+    </Card>
+
+    <Card title="Design with GraphQL, Implement with gRPC" icon="code">
+        Our approach combines GraphQL's schema-first flexibility with gRPC's performance and type safety. You can develop implementations in any language that supports gRPC while maintaining GraphQL's benefits.
+    </Card>
+
+    <Card title="Proto-Based Code Generation" icon="bolt">
+        The strict typing and automatic code generation from Protocol Buffers (proto) definitions provides an immense productivity boost, especially in the era of generative AI. The generated proto-based gRPC code creates a strongly-typed foundation that AI tools can effectively understand and extend.
+    </Card>
+
+    <Card title="Strongly-Typed Integration" icon="shield-check">
+        With gRPC integration, there's no way to get around the proto definition. If the implementation compiles against the proto definition, you know it's correct. This eliminates a whole class of integration issues.
+    </Card>
+
+    <Card title="Apollo Federation Compatibility" icon="merge">
+        gRPC implementations are 100% compatible with existing Apollo Federation Subgraph implementations. You can use gRPC alongside existing subgraphs seamlessly.
+    </Card>
+
+    <Card title="No N+1 Problems" icon="layer-group">
+        gRPC implementations leverage Cosmo Router's DataLoader capabilities which batch requests by default, avoiding common performance pitfalls.
+    </Card>
+
+    <Card title="No Framework Lag" icon="chevrons-right">
+        When new features are added to the GraphQL Federation specification, gRPC implementations can immediately take advantage of them since federation logic is handled within the Router.
+    </Card>
+    <Card title="LLM-Friendly" icon="robot">
+        gRPC integration is a great fit for LLM-based applications. From a generated proto definition, an LLM can generate a gRPC service implementation in any supported language.
+    </Card>
+</CardGroup>
+
+## Benefits Over Traditional REST Integration
+
+When compared to integrating REST APIs into GraphQL Federation, gRPC offers several advantages:
+
+<CardGroup cols={2}>
+    <Card title="Efficient Communication" icon="bolt">
+        Binary protocol and HTTP/2 multiplexing provide better performance than traditional REST over HTTP/1.1, especially for high-frequency communication.
+    </Card>
+    <Card title="Automatic Code Generation" icon="wand-magic-sparkles">
+        Generate protobuf definitions and mappings directly from your GraphQL schema, reducing development time and ensuring consistency.
+    </Card>
+    <Card title="Streaming Support" icon="water">
+        Native support for streaming data enables real-time capabilities and efficient handling of large datasets.
+    </Card>
+    <Card title="Contract-First Development" icon="file-contract">
+        GraphQL schemas serve as the single source of truth for service contracts, with protobuf definitions generated automatically to ensure compatibility.
+    </Card>
+</CardGroup>
+
+<Warning>
+    Streaming support is currently not yet supported for gRPC services in the router.
+</Warning>
+
+## Architecture Overview
+
+gRPC integration into GraphQL Federation follows this pattern:
+
+1. **Schema Definition**: You define GraphQL schemas that represent your gRPC interfaces
+2. **Code Generation**: Cosmo tooling generates protobuf definitions and mappings from your GraphQL schemas
+3. **Router Configuration**: The router is configured with the generated mappings to understand how to communicate with your gRPC implementations
+4. **Request Processing**: When GraphQL queries are received, the router translates relevant portions into gRPC calls
+5. **Protocol Translation**: The router handles the translation between GraphQL and gRPC protocols
+6. **Response Assembly**: Results from gRPC calls are translated back to GraphQL and assembled into the final response
+
+## Implementation Options
+
+Cosmo provides two main approaches for gRPC integration:
+
+### gRPC Plugins
+- **Local execution**: Run as separate processes managed by the router
+- **Simplified deployment**: Deployed alongside the router
+- **Lower latency**: Direct inter-process communication
+- **Currently Go-only**: Implementation language is limited to Go
+
+### gRPC Services  
+- **Remote execution**: Run as independent services anywhere in your infrastructure
+- **Language flexibility**: Implement in any language that supports gRPC
+- **Independent scaling**: Scale services based on their specific requirements
+- **Distributed architecture**: Services can be deployed across different environments
+
+## Limitations
+
+As the development of gRPC services is still ongoing, there are some current limitations:
+
+### gRPC Features
+
+<CardGroup cols={2}>
+  <Card title="Transport Layer Security" icon="shield-xmark">
+    TLS encryption is not yet supported for gRPC service connections. All communication currently uses unencrypted connections.
+  </Card>
+  <Card title="Connection Configuration" icon="gear">
+    Advanced gRPC configuration options such as retry policies and custom timeout settings are not yet available.
+  </Card>
+</CardGroup>
+
+### Federation Features
+
+<CardGroup cols={2}>
+  <Card title="Multi Key Entity Lookups" icon="key">
+    Federation entity lookups with multiple keys and nested keys are not currently supported, limiting complex entity relationships.
+  </Card>
+  <Card title="@requires Directive" icon="link">
+    The `@requires` directive for field dependencies across services is not yet implemented for gRPC services.
+  </Card>
+</CardGroup>
+
+### GraphQL Features
+
+<CardGroup cols={2}>
+  <Card title="Operation Types" icon="bolt">
+    Only Query and Mutation operations are supported. Subscriptions are not available for gRPC services.
+  </Card>
+  <Card title="Custom Scalars" icon="code">
+    Custom scalar type conversion is limited to fixed mappings. Dynamic scalar conversion is not supported.
+  </Card>
+  <Card title="Advanced Schema Features" icon="diagram-project">
+    Field resolvers, GraphQL interfaces, and union types are not currently supported in gRPC service schemas.
+  </Card>
+  <Card title="Nested Lists" icon="list-tree">
+    Nested lists are not currently supported in the router.
+  </Card>
+</CardGroup>
+
+## Roadmap
+
+We're actively working on addressing these limitations. Future releases will include:
+- <Icon icon="shield-check" /> TLS support for secure connections
+- <Icon icon="gear" /> Advanced gRPC configuration options
+- <Icon icon="link" /> Enhanced Federation feature support
+- <Icon icon="water" /> Subscription support for real-time data 
+- <Icon icon="diagram-project" /> Expanded GraphQL schema feature compatibility
+
+For the most up-to-date information, check our [GitHub repository](https://github.com/wundergraph/cosmo).
+
+## Next Steps
+
+- [gRPC Services](/router/grpc/grpc-services) - Learn about gRPC services
+- [gRPC Plugins](/router/grpc/grpc-plugins) - Learn about gRPC plugins
+- [Service Quickstart](/router/grpc/service-quickstart) - Get started with your first gRPC service
