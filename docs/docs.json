@@ -49,7 +49,8 @@
               "tutorial/using-persisted-operations",
               "tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry",
               "tutorial/supergraph-previews-for-every-pull-request",
-              "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags"
+              "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags",
+              "tutorial/grpc-service-quickstart"
             ]
           }
         ]
@@ -412,7 +413,6 @@
               "router/gRPC/concepts",
               "router/gRPC/grpc-services",
               "router/gRPC/grpc-plugins",
-              "router/gRPC/service-quickstart",
               "router/gRPC/debugging"
             ]
           },

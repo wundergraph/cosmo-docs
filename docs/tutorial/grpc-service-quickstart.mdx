@@ -2,14 +2,14 @@
 title: "Quickstart"
 description: "Quickstart for integrating gRPC services into your router."
 sidebarTitle: Bootstrap a simple gRPC service
-icon: network-wired
+icon: server
 ---
 
-## Integrating a gRPC Service
+## Bootstrapping a simple gRPC service
 
 This guide will walk you through the process of integrating a gRPC service into your router.
 
-## Minimum Version Requirements
+## Prerequisites
 
 - [Cosmo CLI](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.82.0) // TODO add proper version.
 - [Cosmo Router](https://github.com/wundergraph/cosmo/releases/tag/router%400.222.1) // TOOD add router version.
@@ -61,7 +61,11 @@ enum ProjectStatus {
 Use the Cosmo CLI to generate the protobuf definitions and mappings from your GraphQL schema:
 
 ```bash
-wgc router grpc-service generate Projects -p playground -i ./schema.graphql -o .
+wgc router grpc-service \
+  generate \
+  -p playground \
+  -i ./schema.graphql \
+  Projects
 ```
 
 This command will create:
@@ -389,6 +393,10 @@ query {
 
 That's it! Your gRPC service is now integrated into your router and can be queried alongside other subgraphs in your supergraph.
 
+## Further Information
 
+- [gRPC Service Concepts](/router/gRPC/concepts)
+- [gRPC Plugins](/router/gRPC/grpc-plugins)
+- [gRPC Service Federation](/router/gRPC/grpc-services)
 
 
