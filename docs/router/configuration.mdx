@@ -93,8 +93,7 @@ The following sections describe each configuration in detail with all available 
 <Info>
   Intervals, timeouts, and delays are specified in Go [duration](https://pkg.go.dev/maze.io/x/duration#ParseDuration) syntax e.g 1s, 5m or 1h.
 
-Sizes can be specified in 2MB, 1mib.
-
+  Sizes can be specified in 2MB, 1mib.
 </Info>
 
 | Environment Variable             | YAML                             | Required                                      | Description                                                                                                                                                                                        | Default Value                    |
@@ -171,10 +170,9 @@ watch_config:
 <Note>
   Hot reloading has some limitations:
 
-    - Changes to the `watch_config` section are not hot-reloaded.
-    - Changes to flags and environment variables are not possible.
-    - `watch_config` based reloads are based on the filesystem's modification time, edits that somehow circumvent this mechanism will not trigger a reload.
-
+  - Changes to the `watch_config` section are not hot-reloaded.
+  - Changes to flags and environment variables are not possible.
+  - `watch_config` based reloads are based on the filesystem's modification time, edits that somehow circumvent this mechanism will not trigger a reload.
 </Note>
 
 ## Access Logs
@@ -269,17 +267,17 @@ graph:
 
 The Model Context Protocol (MCP) server allows AI models to discover and interact with your GraphQL API in a secure way.
 
-| Environment Variable            | YAML                            | Required               | Description                                                                                                                                              | Default Value  |
-| ------------------------------- | ------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                         | false          |
-| MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                       | localhost:5025 |
-| MCP_SERVER_BASE_URL             | mcp.server.base_url             | <Icon icon="square" /> | The base URL of the MCP server. This is the URL advertised to the LLM clients when SSE is used as primary transport.                                     | -              |
-| MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.                     | -              |
-| MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                            | -              |
-| MCP_GRAPH_NAME                  | mcp.graph_name                  | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                                       | mygraph        |
-| MCP_EXCLUDE_MUTATIONS           | mcp.exclude_mutations           | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                                                | false          |
-| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | false          |
-| MCP_EXPOSE_SCHEMA               | mcp.expose_schema               | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | false          |
+| Environment Variable            | YAML                            | Required               | Description                                                                                                                                                  | Default Value  |
+| ------------------------------- | ------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                             | false          |
+| MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                           | localhost:5025 |
+| MCP_SERVER_BASE_URL             | mcp.server.base_url             | <Icon icon="square" /> | The base URL of the MCP server. This is the URL advertised to the LLM clients when SSE is used as primary transport.                                         | -              |
+| MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.                         | -              |
+| MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                                | -              |
+| MCP_GRAPH_NAME                  | mcp.graph_name                  | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                                           | mygraph        |
+| MCP_EXCLUDE_MUTATIONS           | mcp.exclude_mutations           | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                                                    | false          |
+| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning> | false          |
+| MCP_EXPOSE_SCHEMA               | mcp.expose_schema               | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning>                    | false          |
 
 Example YAML config:
 
@@ -1457,16 +1455,20 @@ events:
 
 ### Kafka Provider
 
-| Environment Variable | YAML                               | Required                                      | Description                                                                                          | Default Value |
-| -------------------- | ---------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- |
-|                      | id                                 | <Icon icon="square-check" iconType="solid" /> | The ID of the provider. This have to match with the ID specified in the subgraph schema.             | []            |
-|                      | brokers                            | <Icon icon="square-check" iconType="solid" /> | A list of broker URLs.                                                                               |               |
-|                      | authentication                     | <Icon icon="square" />                        | Authentication settings                                                                              |               |
-|                      | authentication.sasl_plain          | <Icon icon="square" />                        | SASL/Plain Authentication method                                                                     |               |
-|                      | authentication.sasl_plain.username | <Icon icon="square" />                        | SASL/Plain Username                                                                                  |               |
-|                      | authentication.sasl_plain.password | <Icon icon="square" />                        | SASL/Plain Password                                                                                  |               |
-|                      | tls                                | <Icon icon="square" />                        | TLS configuration for the Kafka provider. If enabled, it uses SystemCertPool for RootCAs by default. |               |
-|                      | tls.enabled                        | <Icon icon="square" />                        | Enable the TLS.                                                                                      |               |
+| Environment Variable | YAML                                | Required                                      | Description                                                                                          | Default Value |
+| -------------------- | ----------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- |
+|                      | id                                  | <Icon icon="square-check" iconType="solid" /> | The ID of the provider. This have to match with the ID specified in the subgraph schema.             | []            |
+|                      | brokers                             | <Icon icon="square-check" iconType="solid" /> | A list of broker URLs.                                                                               |               |
+|                      | authentication                      | <Icon icon="square" />                        | Authentication settings                                                                              |               |
+|                      | authentication.sasl_plain           | <Icon icon="square" />                        | SASL/Plain Authentication method                                                                     |               |
+|                      | authentication.sasl_plain.username  | <Icon icon="square" />                        | SASL/Plain Username                                                                                  |               |
+|                      | authentication.sasl_plain.password  | <Icon icon="square" />                        | SASL/Plain Password                                                                                  |               |
+|                      | authentication.sasl_scram           | <Icon icon="square" />                                              | SASL/SCRAM Authentication method                                                                     |               |
+|                      | authentication.sasl_scram.username  | <Icon icon="square" />                                               | SASL/SCRAM Username                                                                                  |               |
+|                      | authentication.sasl_scram.password  | <Icon icon="square" />                                              | SASL/SCRAM Password                                                                                  |               |
+|                      | authentication.sasl_scram.mechanism | <Icon icon="square" />                                              | SASL/SCRAM Mechanism, could be `SCRAM-SHA-256` of `SCRAM-SHA-512`                                    |               |
+|                      | tls                                 | <Icon icon="square" />                        | TLS configuration for the Kafka provider. If enabled, it uses SystemCertPool for RootCAs by default. |               |
+|                      | tls.enabled                         | <Icon icon="square" />                        | Enable the TLS.                                                                                      |               |
 
 ### Nats Provider
 
@@ -1498,7 +1500,7 @@ Configure the GraphQL Execution Engine of the Router.
 | ENGINE_ENABLE_VALIDATION_CACHE                                | enable_validation_cache                                | <Icon icon="square" /> | Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations.                                                                                                                                                                                                                                | true          |
 | ENGINE_VALIDATION_CACHE_SIZE                                  | validation_cache_size                                  | <Icon icon="square" /> | The size of the validation cache.                                                                                                                                                                                                                                                                                                           | 1024          |
 | ENGINE_DISABLE_EXPOSING_VARIABLES_CONTENT_ON_VALIDATION_ERROR | disable_exposing_variables_content_on_validation_error | <Icon icon="square" /> | Disables exposing the variables content in the error response. This is useful to avoid leaking sensitive information in the error response.                                                                                                                                                                                                 | false         |
-| ENGINE_ENABLE_SUBGRAPH_FETCH_OPERATION_NAME                   | enable_subgraph_fetch_operation_name                   | <Icon icon="square" /> | Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $operationName\_\_$subgraphName\_\_$sequenceID.                                                                                                       | true          |
+| ENGINE_ENABLE_SUBGRAPH_FETCH_OPERATION_NAME                   | enable_subgraph_fetch_operation_name                   | <Icon icon="square" /> | Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: $operationName\_\_$subgraphName_\_\$sequenceID.                                                                                                       | true          |
 | ENGINE_SUBSCRIPTION_FETCH_TIMEOUT                             | subscription_fetch_timeout                             | <Icon icon="square" /> | The maximum time a subscription fetch can take before it is considered timed out.                                                                                                                                                                                                                                                           | 30s           |
 
 ### Example YAML config:
@@ -1832,7 +1834,7 @@ This configuration is used to enable full compatibility with Apollo Federation, 
 
 ### Apollo Compatibility Value Completion
 
-Invalid \_\_typename values will be returned in extensions.valueCompletion instead of errors.
+Invalid \__typename values will be returned in extensions.valueCompletion instead of errors.
 
 ### Apollo Compatibility Truncate Floats
 
