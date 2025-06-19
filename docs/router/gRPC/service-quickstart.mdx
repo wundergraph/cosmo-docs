@@ -61,7 +61,7 @@ enum ProjectStatus {
 Use the Cosmo CLI to generate the protobuf definitions and mappings from your GraphQL schema:
 
 ```bash
-wgc grpc generate Projects -p playground -i ./schema.graphql -o .
+wgc router grpc-service generate Projects -p playground -i ./schema.graphql -o .
 ```
 
 This command will create:
@@ -145,7 +145,7 @@ enum ProjectStatus {
 }
 ```
 
-Depending on the language you are using, you might need to adjust the options. The package name needs to be the same as the one you used in the `wgc grpc generate` command.
+Depending on the language you are using, you might need to adjust the options. The package name needs to be the same as the one you used in the `wgc router grpc-service generate` command.
 
 ### Step 3: Create a Compose Configuration
 
