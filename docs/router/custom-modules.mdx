@@ -130,7 +130,10 @@ In Middleware, you can access some stats about the query plan that will be used 
 
 ```go
 func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
-	qps := ctx.Operation().QueryPlanStats()
+	qps, err := ctx.Operation().QueryPlanStats()
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Printf("subgraphs contacted: %v\n", qps.SubgraphFetches)
 	fmt.Printf("total subgraphs contacted: %d\n", qps.TotalSubgraphFetches)
@@ -180,7 +183,7 @@ func (m MyModule) OnOriginRequest(request *http.Request, ctx core.RequestContext
 
 <Info>
   A more complex example including tests is accessible at
-  [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom)
+  https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom
 </Info>
 
 ## Access authentication information
@@ -189,7 +192,7 @@ Authentication information, including claims and the provider that authenticated
 
 <Info>
   For a full example, please check out
-  [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
+  https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt
 </Info>
 
 ## Change Authentication Information
@@ -327,7 +330,7 @@ Due to the circumstance that modules are pure Go code, we can leverage all tooli
 
 <Steps>
   <Step>
-    Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure
+    Clone _the_ [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure
     you checkout on the latest [router
     tag](https://github.com/wundergraph/cosmo/tags).
   </Step>
@@ -335,13 +338,12 @@ Due to the circumstance that modules are pure Go code, we can leverage all tooli
     Navigate to the router
     [directory](https://github.com/wundergraph/cosmo/tree/main/router)
   </Step>
-  <Step>Copy `.env.example` to `.env` and fill in all required values.</Step>
   <Step>
     Run `go run cmd/custom/main.go` to start your router or use your IDE to
     start the debug mode.
   </Step>
   <Step>
-    Open [http://localhost:3002](http://localhost:3002) to test your module
+    Open http://localhost:3002 to test your module
     code.
   </Step>
 </Steps>
