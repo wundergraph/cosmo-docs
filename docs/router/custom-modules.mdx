@@ -5,36 +5,38 @@ icon: "cubes"
 ---
 
 <Info>
-	In order to complete this section you need to have Golang 1.20 (or higher) and docker installed.
+  In order to complete this section you need to have Golang 1.20 (or higher) and
+  docker installed.
 </Info>
 
 The Cosmo Router can be easily extended by providing custom modules. Modules are pure Go code and can implement one or multiple interfaces. The following interfaces are provided:
 
-* `core.RouterOnRequestHandler` Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
-
-* `core.RouterMiddlewareHandler` Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
-
-* `core.EnginePreOriginHandler` Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
-
-* `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
-
-* `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
-
-* `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
+- `core.RouterOnRequestHandler` Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
+- `core.RouterMiddlewareHandler` Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
+- `core.EnginePreOriginHandler` Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
+- `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
+- `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
+- `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
 
 <Info>
-	`*OriginHandler` handlers are called concurrently when your GraphQL operation results in multiple subgraph requests. Due to that circumstance, you should handle the initial router request/response objects `ctx.Request()` and `ctx.ResponseWriter()` as read-only objects. Any modification without protecting them from concurrent writes, e.g., by a mutex, results in a race condition.
+  `*OriginHandler` handlers are called concurrently when your GraphQL operation
+  results in multiple subgraph requests. Due to that circumstance, you should
+  handle the initial router request/response objects `ctx.Request()` and
+  `ctx.ResponseWriter()` as read-only objects. Any modification without
+  protecting them from concurrent writes, e.g., by a mutex, results in a race
+  condition.
 </Info>
 
 <Info>
-	`RouterOnRequestHander` is only available since Router [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
+  `RouterOnRequestHander` is only available since Router
+  [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 </Info>
 
 ## Example
 
 The example below shows how to implement a custom middleware that has access to the GraphQL operation information.
 
-```js
+```go
 package module
 
 import (
@@ -93,7 +95,7 @@ var (
 
 When loading multiple modules, the order is not inherently guaranteed. To ensure a specific loading order, you can use the `Priority` option. Modules with lower priority numbers are loaded first. Below is an example configuration:
 
-```js
+```go
 core.ModuleInfo{
 	// This is the ID of your module, it must be unique
 	ID: "myModule",
@@ -112,7 +114,7 @@ In this example, the module `myModule` has a priority of 1, meaning it will be l
 
 During the client request, you have access to the actual GraphQL operation. Simply call:
 
-```js
+```go
 // ctx core.RequestContext
 
 operation := ctx.Operation()
@@ -122,11 +124,34 @@ c.OperationHash() // 81671788718
 c.Content() // query MyOperation { ... }
 ```
 
+## Access query plan information
+
+In Middleware, you can access some stats about the query plan that will be used for the operation.
+
+```go
+func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	qps := ctx.Operation().QueryPlanStats()
+
+	fmt.Printf("subgraphs contacted: %v\n", qps.SubgraphFetches)
+	fmt.Printf("total subgraphs contacted: %d\n", qps.TotalSubgraphFetches)
+
+	// Call the next handler in the chain or return early by calling w.Write()
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+QueryPlanStats includes the following info:
+
+- Total count of subgraph fetches
+- A map of subgraph names to the number of times they will be fetched
+
+Middleware is executed before any of the fetches are made, so you can use this information as a heuristic cost for rate limiting, etc.
+
 ## Access Request Context
 
 In every handler, you can add/remove, or modify response headers. We also provide a convenient, safe way to share data across handlers.
 
-```js
+```go
 // ctx core.RequestContext
 
 // Sets a custom header on the final response
@@ -144,7 +169,7 @@ ctx.Set("myKey", "myValue")
 
 Through the request context you can retrieve the active subgraph for the current request. This can be done in the OnOriginRequest hook as show below
 
-```js
+```go
 func (m MyModule) OnOriginRequest(request *http.Request, ctx core.RequestContext) (*http.Request, *http.Response) {
 	subgraph := ctx.ActiveSubgraph(request)
 	subgraph.Name // Subgraph name
@@ -154,7 +179,8 @@ func (m MyModule) OnOriginRequest(request *http.Request, ctx core.RequestContext
 ```
 
 <Info>
-	A more complex example including tests is accessible at [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom)
+  A more complex example including tests is accessible at
+  [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom)
 </Info>
 
 ## Access authentication information
@@ -162,14 +188,15 @@ func (m MyModule) OnOriginRequest(request *http.Request, ctx core.RequestContext
 Authentication information, including claims and the provider that authenticated the request, can be accessed through `core.RequestContext.Authentication()`
 
 <Info>
-For a full example, please check out [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
+  For a full example, please check out
+  [https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt](https://github.com/wundergraph/cosmo/tree/main/router/cmd/custom-jwt)
 </Info>
 
 ## Change Authentication Information
 
 Above, we showed how to access Authentication information. There can be cases where your authentication could depend partly on another system, and you want to set elements for use with other directives, such as [@requiresScopes](/federation/directives/requiresscopes). In order to do that, you can use `auth.SetScopes()` to manually change the authentication's scopes.
 
-```js
+```go
 func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler) {
 	auth := ctx.Authentication()
 	if auth != nil {
@@ -184,7 +211,7 @@ func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler)
 
 `.SetScopes()` overwrites the existing scopes. If you'd like to append/preserve the built-in scopes, you can first use `auth.Claims()` to get the existing scopes, and incorporate that into the updates scopes.
 
-```js
+```go
 func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler) {
 	auth := ctx.Authentication()
 	if auth != nil {
@@ -201,7 +228,7 @@ func (m *SetScopesModule) Middleware(ctx core.RequestContext, next http.Handler)
 
 If you have to set the authentication scopes, but the authentication could be not set, you can call the method `ctx.SetAuthenticationScopes(scopes []string)` that, if the Authentication is not set, it will initialize it with an empty object and set the scopes. If the authentication is already set, it will just override the scopes.
 
-```js
+```go
 func (m *SetScopesModule) Middleware(core.RequestContext, next http.Handler) {
 	// Initialize the scopes
 	customScopes := []string{"scope1", "scope2"}
@@ -219,7 +246,7 @@ The scopes will be available to subsequent custom modules, just like when using 
 
 In the previous section, the `Middleware` runs after the authentication of the request. However, sometimes you might want to run authentication related logic before the authentication actually happens. For example, let's say that your client sends the `Authorization` header without the `Bearer` part in the header and you want to add `Bearer` to the header, for this you can use the `RouterOnRequestHandler` hook.
 
-```js
+```go
 func (m *SetScopesModule) RouterOnRequest(ctx core.RequestContext, next http.Handler) {
     authHeader := ctx.Request().Header.Get("Authorization")
 
@@ -235,7 +262,7 @@ func (m *SetScopesModule) RouterOnRequest(ctx core.RequestContext, next http.Han
 
 Please always use `core.WriteResponseError` to return an error. It ensures that the request is properly tracked for tracing and metrics.
 
-```js
+```go
 func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
     // Exit early
     core.WriteResponseError(ctx, fmt.Errorf("my custom error: %w", err))
@@ -248,7 +275,7 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
 
 The current module handler allow to intercept and modify request / response subgraphs.
 
-```js
+```
 Incoming client request
     │
     └─▶ core.RouterOnRequestHandler (Early return, Custom Authentication Logic)
@@ -268,7 +295,7 @@ Incoming client request
 
 If you need to pass external configuration values to your module, you can do so easily by annotating the fields in your module struct. Fields must start with an uppercase letter to make them accessible.
 
-```js
+```go
 const myModuleID = "myModule"
 
 type MyModule struct {
@@ -286,36 +313,37 @@ type MyModule struct {
 
 Based on the example above we will populate the field `Value` with the value `1`. You can also validate your config in the `core.Provisioner` handler.
 
-<CodeGroup>
-  ```bash config.yaml
-  version: '1'
+```bash config.yaml
+version: '1'
 
-  modules:
-    myModule: # Id of your module
-      Value: 1
-  ```
-</CodeGroup>
+modules:
+  myModule: # Id of your module
+    Value: 1
+```
 
 ## Development
 
 Due to the circumstance that modules are pure Go code, we can leverage all tooling. If you have VSCode or Goland you can easily debug and profile your code. Let's make it running locally first:
 
 <Steps>
-	<Step>
-		Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure you checkout on the latest [router tag](https://github.com/wundergraph/cosmo/tags).
-	</Step>
-	<Step>
-		Navigate to the router [directory](https://github.com/wundergraph/cosmo/tree/main/router)
-	</Step>
-	<Step>
-		Copy `.env.example` to `.env` and fill in all required values.
-	</Step>
-	<Step>
-		Run `go run cmd/custom/main.go` to start your router or use your IDE to start the debug mode.
-	</Step>
-	<Step>
-		Open [http://localhost:3002](http://localhost:3002) to test your module code.
-	</Step>
+  <Step>
+    Clone *the* [Cosmo Repository](https://github.com/wundergraph/cosmo). Ensure
+    you checkout on the latest [router
+    tag](https://github.com/wundergraph/cosmo/tags).
+  </Step>
+  <Step>
+    Navigate to the router
+    [directory](https://github.com/wundergraph/cosmo/tree/main/router)
+  </Step>
+  <Step>Copy `.env.example` to `.env` and fill in all required values.</Step>
+  <Step>
+    Run `go run cmd/custom/main.go` to start your router or use your IDE to
+    start the debug mode.
+  </Step>
+  <Step>
+    Open [http://localhost:3002](http://localhost:3002) to test your module
+    code.
+  </Step>
 </Steps>
 
 ## Build your own Router Image
@@ -345,7 +373,8 @@ docker run \
 Please ensure that you checkout on an official [router tag](https://github.com/wundergraph/cosmo/tags) when extending the router, and only upgrade if necessary. This way, you can avoid any surprises. For every release, we provide detailed release notes that should provide you with a good overview of whether an upgrade is worthwhile.
 
 <Info>
-	Please inform us if you have more advanced use cases that cannot be accommodated with the current feature set.
+  Please inform us if you have more advanced use cases that cannot be
+  accommodated with the current feature set.
 </Info>
 
 ### Future Plans
