@@ -148,62 +148,74 @@ Cosmo provides two main approaches for gRPC integration:
 - **Independent scaling**: Scale services based on their specific requirements
 - **Distributed architecture**: Services can be deployed across different environments
 
-## Limitations
 
-As the development of gRPC services is still ongoing, there are some current limitations:
+## Choosing Between gRPC Services and Plugins
 
-### gRPC Features
+When implementing gRPC integration in your GraphQL Federation, you have two main options: **gRPC Services** and **gRPC Plugins**. Each approach has distinct advantages that make them suitable for different scenarios.
 
-<CardGroup cols={2}>
-  <Card title="Transport Layer Security" icon="shield-xmark">
-    TLS encryption is not yet supported for gRPC service connections. All communication currently uses unencrypted connections.
-  </Card>
-  <Card title="Connection Configuration" icon="gear">
-    Advanced gRPC configuration options such as retry policies and custom timeout settings are not yet available.
-  </Card>
-</CardGroup>
-
-### Federation Features
+### When to Choose gRPC Services
 
 <CardGroup cols={2}>
-  <Card title="Multi Key Entity Lookups" icon="key">
-    Federation entity lookups with multiple keys and nested keys are not currently supported, limiting complex entity relationships.
-  </Card>
-  <Card title="@requires Directive" icon="link">
-    The `@requires` directive for field dependencies across services is not yet implemented for gRPC services.
-  </Card>
+    <Card title="Language Flexibility" icon="globe">
+        Implement services in any language that supports gRPC - Python, Java, C#, Node.js, Rust, and many others.
+    </Card>
+    <Card title="Team Independence" icon="users">
+        Different teams can own and operate their services independently with their preferred technologies.
+    </Card>
+    <Card title="Independent Scaling" icon="arrows-split-up-and-left">
+        Scale services based on their specific load patterns and resource requirements.
+    </Card>
+    <Card title="Distributed Architecture" icon="network-wired">
+        Deploy services across different environments, datacenters, or cloud regions.
+    </Card>
+    <Card title="Microservices Pattern" icon="building">
+        Maintain existing microservices architecture and deployment practices.
+    </Card>
+    <Card title="Independent Release Cycles" icon="clock">
+        Services can have different release schedules and deployment pipelines.
+    </Card>
 </CardGroup>
 
-### GraphQL Features
+### When to Choose gRPC Plugins
 
 <CardGroup cols={2}>
-  <Card title="Operation Types" icon="bolt">
-    Only Query and Mutation operations are supported. Subscriptions are not available for gRPC services.
-  </Card>
-  <Card title="Custom Scalars" icon="code">
-    Custom scalar type conversion is limited to fixed mappings. Dynamic scalar conversion is not supported.
-  </Card>
-  <Card title="Advanced Schema Features" icon="diagram-project">
-    Field resolvers, GraphQL interfaces, and union types are not currently supported in gRPC service schemas.
-  </Card>
-  <Card title="Nested Lists" icon="list-tree">
-    Nested lists are not currently supported in the router.
-  </Card>
+    <Card title="Simple Deployment" icon="rocket">
+        Deploy plugins alongside the router with minimal infrastructure complexity.
+    </Card>
+    <Card title="High Performance" icon="bolt">
+        Achieve lower latency through direct inter-process communication.
+    </Card>
+    <Card title="Go Development" icon="laptop-code">
+        Leverage Go's performance and ecosystem for plugin development.
+    </Card>
+    <Card title="Unified Operations" icon="arrows-rotate">
+        Manage deployment, monitoring, and lifecycle in a unified manner.
+    </Card>
 </CardGroup>
+
+### Decision Matrix
+
+| Factor | gRPC Services | gRPC Plugins |
+|--------|---------------|--------------|
+| **Language Support** | Any gRPC language | Go only (More coming soon) |
+| **Deployment Model** | Distributed microservices | Co-located with router |
+| **Team Autonomy** | High - independent ownership | Low - router-dependent |
+| **Performance** | Network latency overhead | Minimal latency |
+| **Scaling** | Independent per service | Coupled to router |
+| **Operational Complexity** | Higher - distributed ops | Lower - unified ops |
+
 
 ## Roadmap
 
 We're actively working on addressing these limitations. Future releases will include:
-- <Icon icon="shield-check" /> TLS support for secure connections
-- <Icon icon="gear" /> Advanced gRPC configuration options
 - <Icon icon="link" /> Enhanced Federation feature support
 - <Icon icon="water" /> Subscription support for real-time data 
-- <Icon icon="diagram-project" /> Expanded GraphQL schema feature compatibility
+- <Icon icon="radar" /> Deep integration with the cosmo observability stack
 
 For the most up-to-date information, check our [GitHub repository](https://github.com/wundergraph/cosmo).
 
 ## Next Steps
 
-- [gRPC Services](/router/grpc/grpc-services) - Learn about gRPC services
-- [gRPC Plugins](/router/grpc/grpc-plugins) - Learn about gRPC plugins
+- [gRPC Services](/router/gRPC/grpc-services) - Learn about gRPC services
+- [gRPC Plugins](/router/gRPC/grpc-plugins) - Learn about gRPC plugins
 - [gRPC Tutorial](/tutorial/grpc-service-quickstart) - Get started with your first gRPC service
