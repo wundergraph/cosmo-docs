@@ -4,14 +4,14 @@ description: 'Build a gRPC router plugin'
 icon: 'hammer'
 ---
 
-# wgc router plugin build
+# wgc router grpc-plugin build
 
 The `build` command generates gRPC code based on your GraphQL schema and compiles your plugin into platform-specific binaries.
 
 ## Usage
 
 ```bash
-wgc router plugin build [options] [directory]
+wgc router grpc-plugin build [options] [directory]
 ```
 
 ## Arguments
@@ -63,25 +63,25 @@ You can also install the dependencies manually and use an IDE with Go support. T
 ### Build for the current platform
 
 ```bash
-wgc router plugin build ./my-plugin
+wgc router grpc-plugin build ./my-plugin
 ```
 
 ### Generate code only
 
 ```bash
-wgc router plugin build --generate-only ./my-plugin
+wgc router grpc-plugin build --generate-only ./my-plugin
 ```
 
 ### Build for multiple platforms
 
 ```bash
-wgc router plugin build --platform darwin-arm64 linux-amd64 ./my-plugin
+wgc router grpc-plugin build --platform darwin-arm64 linux-amd64 ./my-plugin
 ```
 
 ### Build for all supported platforms
 
 ```bash
-wgc router plugin build --all-platforms ./my-plugin
+wgc router grpc-plugin build --all-platforms ./my-plugin
 ```
 
 ## Supported Platforms
