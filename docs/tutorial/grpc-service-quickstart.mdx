@@ -259,8 +259,11 @@ func (p *ProjectsServiceServer) QueryListProjects(context.Context, *service.Quer
 ```
   </Tab>
   <Tab title="Typescript code example">
+  
+  Create two files: `connect.ts` and `index.ts`.
+
     <CodeGroup>
-        ```ts server.ts
+        ```ts connect.ts
         import type { ConnectRouter } from "@connectrpc/connect";
         import { ProjectsService, ProjectStatus, Project } from "../gen/service_pb";
 
