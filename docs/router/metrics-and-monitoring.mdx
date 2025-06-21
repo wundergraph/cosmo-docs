@@ -49,6 +49,13 @@ Additionally, we expose the following metric:
   * `wg_router_version`: The version of the router that is running
   * `wg_feature_flag`: (Optional) The name of the feature flag if this is a feature flag configuration
 
+#### Circuit Breaker specific metrics
+
+We currently support two attributes for monitoring circuit breakers. All the below mentioned metrics have the `wg_subgraph` and `wg_feature_flag` dimensions.
+
+* `router.circuit_breaker.state`: This indicates the current state of a circuit, `0` represents not opened, and `1` represents opened.
+* `router.circuit_breaker.short_circuits`: This indicates how many requests for this circuit have failed without even being processed, because the circuit was open.
+
 #### GraphQL specific metrics
 
 `router.graphql.operation.planning_time`: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.

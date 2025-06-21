@@ -1,0 +1,61 @@
+---
+title: "Circuit Breaker"
+description: "Configure circuit breakers to protect your subgraphs from cascading failures."
+icon: "plug-circle-bolt"
+---
+
+A **circuit breaker** is a reliability pattern that helps prevent cascading failures in distributed systems. When a subgraph or upstream service starts failing, the circuit breaker can automatically stop sending requests to it for a period of time, allowing the subgraph to recover and protecting your router from repeatedly calling the subgraph when it is unhealthy. This allows the router to respond much faster to callers and maintain overall system stability during partial outages.
+
+## Example YAML configuration
+
+```yaml
+traffic_shaping:
+  all:
+    circuit_breaker:
+      enabled: true
+      request_threshold: 20           # Minimum requests before evaluation
+      error_threshold_percentage: 50  # Percentage of errors to open the circuit
+      sleep_window: 30s               # How long to wait before half-open state
+      half_open_attempts: 5           # Test requests in half-open state
+      required_successful: 3          # Successes to close the circuit
+      rolling_duration: 60s           # Time window for counting errors and requests
+      num_buckets: 10                 # Granularity of rolling window
+  subgraphs:
+    employees:
+      circuit_breaker:
+        enabled: false  # Disable circuit breaker for this subgraph
+```
+
+## Configuration
+
+### Options
+
+* `enabled` (`boolean`): Enable the circuit breaker for the target (all subgraphs or a specific subgraph).
+* `request_threshold` (`integer`): Minimum number of requests before the circuit breaker evaluates error rates.
+* `error_threshold_percentage` (`integer`): Percentage of failed requests (in the rolling window) to open the circuit.
+* `sleep_window` (`string`, duration): How long the circuit remains open before allowing test requests (e.g., `"30s"`).
+* `half_open_attempts` (`integer`): Number of test requests allowed in the half-open state.
+* `required_successful` (`integer`): Number of successful test requests required to close the circuit.
+* `rolling_duration` (`string`, duration): Time window for measuring requests and errors (e.g., `"60s"`).
+* `num_buckets` (`integer`): Number of buckets for statistics in the rolling window (higher = finer granularity).
+
+### Scope: All vs. Subgraph
+
+- **All**: Specify a circuit breaker under `all` to apply the same configuration to every subgraph by default.
+- **Subgraph**: You can override or disable the circuit breaker for a specific subgraph by adding a `circuit_breaker` block under `subgraphs:<subgraph_name>:`.
+
+## How it works
+
+Each subgraph (and feature flag variant) has its own independent circuit breaker. If the number of requests exceeds `request_threshold` and the error rate exceeds `error_threshold_percentage` within `rolling_duration`, the circuit opens and requests are immediately failed for `sleep_window`. After this period, a limited number of requests (`half_open_attempts`) are allowed through. If at least `required_successful` of these succeed, the circuit closes; otherwise, it reopens.
+
+Feature flags are treated separately, as they may have their own routing URLs and configuration, which can cause failures isolated to the feature-flagged graph.
+
+## Retries
+
+The circuit breaker interacts with the router's retry mechanism. For example, if you have 5 retries configured, a retry may encounter a "circuit open" error. When this happens, no further retries are attempted for that request.
+
+## Monitoring
+
+See [circuit breaker-specific metrics](/router/metrics-and-monitoring#circuit-breaker-specific-metrics) for details on how to monitor circuit breaker state and activity in your router.
+
+
