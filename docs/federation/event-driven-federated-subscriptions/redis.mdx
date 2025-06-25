@@ -9,7 +9,7 @@ icon: "sitemap"
   The `providerId` argument, including the default value "default", _must_ correspond to an equivalent property in _events.providers.redis_ entry of the router config.yml.
 </Note>
 
-### @edfs_kafkaPublish
+### @edfs_redisPublish
 
 ```js
 directive @edfs__redisPublish(
@@ -42,7 +42,7 @@ directive @edfs__redisSubscribe(
 | providerId    | String\!     | The provider ID, which identifies the connection in the router config.yaml. <br />If unsupplied, the provider ID "default" will be used.                                                                                                    |
 
 <CardGroup cols={2}>
-  <Card title="Kafka" icon="sitemap" horizontal href="/router/event-driven-federated-subscriptions-edfs/kafka">
+  <Card title="Redis" icon="sitemap" horizontal href="/router/event-driven-federated-subscriptions-edfs/redis">
     
   </Card>
 </CardGroup>
