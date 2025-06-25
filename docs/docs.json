@@ -97,6 +97,7 @@
               "federation/event-driven-federated-subscriptions",
               "federation/event-driven-federated-subscriptions/nats",
               "federation/event-driven-federated-subscriptions/kafka",
+              "federation/event-driven-federated-subscriptions/redis",
               "federation/event-driven-federated-subscriptions/composition-rules"
             ]
           }
