@@ -136,7 +136,7 @@ gRPC integration into GraphQL Federation follows this pattern:
 
 Cosmo provides two main approaches for gRPC integration:
 
-### gRPC Plugins
+### Router Plugins
 - **Local execution**: Run as separate processes managed by the router
 - **Simplified deployment**: Deployed alongside the router
 - **Lower latency**: Direct inter-process communication
@@ -151,7 +151,7 @@ Cosmo provides two main approaches for gRPC integration:
 
 ## Choosing Between gRPC Services and Plugins
 
-When implementing gRPC integration in your GraphQL Federation, you have two main options: **gRPC Services** and **gRPC Plugins**. Each approach has distinct advantages that make them suitable for different scenarios.
+When implementing gRPC integration in your GraphQL Federation, you have two main options: **gRPC Services** and **Router Plugins**. Each approach has distinct advantages that make them suitable for different scenarios.
 
 ### When to Choose gRPC Services
 
@@ -176,7 +176,7 @@ When implementing gRPC integration in your GraphQL Federation, you have two main
     </Card>
 </CardGroup>
 
-### When to Choose gRPC Plugins
+### When to Choose Router Plugins
 
 <CardGroup cols={2}>
     <Card title="Simple Deployment" icon="rocket">
@@ -195,7 +195,7 @@ When implementing gRPC integration in your GraphQL Federation, you have two main
 
 ### Decision Matrix
 
-| Factor | gRPC Services | gRPC Plugins |
+| Factor | gRPC Services | Router Plugins |
 |--------|---------------|--------------|
 | **Language Support** | Any gRPC language | Go only (More coming soon) |
 | **Deployment Model** | Distributed microservices | Co-located with router |
@@ -217,5 +217,5 @@ For the most up-to-date information, check our [GitHub repository](https://githu
 ## Next Steps
 
 - [gRPC Services](/router/gRPC/grpc-services) - Learn about gRPC services
-- [gRPC Plugins](/router/gRPC/grpc-plugins) - Learn about gRPC plugins
+- [Router Plugins](/router/gRPC/plugins) - Learn about Router plugins
 - [gRPC Tutorial](/tutorial/grpc-service-quickstart) - Get started with your first gRPC service

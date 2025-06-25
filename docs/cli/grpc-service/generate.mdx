@@ -5,7 +5,7 @@ sidebarTitle: Generate
 description: "Generate a protobuf definition for a gRPC service from a GraphQL schema"
 ---
 
-# wgc router grpc-service generate
+# wgc grpc-service generate
 
 The `generate` command generates a protobuf definition and mapping file for a gRPC service from a GraphQL schema,
 which can be used to implement a gRPC service and can be used for the composition.
@@ -13,7 +13,7 @@ which can be used to implement a gRPC service and can be used for the compositio
 ## Usage
 
 ```bash
-wgc router grpc-service generate [options] [service-name]
+wgc grpc-service generate [options] [service-name]
 ```
 
 ## Arguments
@@ -40,19 +40,19 @@ This command generates a protobuf definition for a gRPC service from a GraphQL s
 ### Generate a protobuf definition for a gRPC service from a GraphQL schema
 
 ```bash
-wgc router grpc-service generate -i ./schema.graphql -o ./service MyService
+wgc grpc-service generate -i ./schema.graphql -o ./service MyService
 ```
 
 ### Define a custom package name
 
 ```bash
-wgc router grpc-service generate -i ./schema.graphql -o ./service MyService --package-name my.custom.package
+wgc grpc-service generate -i ./schema.graphql -o ./service MyService --package-name my.custom.package
 ```
 
 ### Define a custom go package name
 
 ```bash
-wgc router grpc-service generate -i ./schema.graphql -o ./service MyService --go-package github.com/wundergraph/cosmo/service/my-service
+wgc grpc-service generate -i ./schema.graphql -o ./service MyService --go-package github.com/wundergraph/cosmo/service/my-service
 ```
 
 ## Output

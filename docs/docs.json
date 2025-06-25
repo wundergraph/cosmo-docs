@@ -195,7 +195,10 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": ["cli/router/cache", "cli/router/cache/push"]
+                "pages": [
+                  "cli/router/cache",
+                  "cli/router/cache/push"
+                ]
               },
               {
                 "group": "Token",
@@ -219,23 +222,23 @@
                 ]
               },
               {
-                "group": "gRPC Plugin",
+                "group": "Router Plugin",
                 "icon": "plug",
                 "pages": [
-                  "cli/router/grpc-plugin",
-                  "cli/router/grpc-plugin/init",
-                  "cli/router/grpc-plugin/build",
-                  "cli/router/grpc-plugin/test"
-                ]
-              },
-              {
-                "group": "gRPC Service",
-                "icon": "network-wired",
-                "pages": [
-                  "cli/router/grpc-service",
-                  "cli/router/grpc-service/generate"
+                  "cli/router/plugin",
+                  "cli/router/plugin/init",
+                  "cli/router/plugin/build",
+                  "cli/router/plugin/test"
                 ]
               }
+            ]
+          },
+          {
+            "group": "gRPC Service",
+            "icon": "network-wired",
+            "pages": [
+              "cli/grpc-service",
+              "cli/grpc-service/generate"
             ]
           },
           {
@@ -251,7 +254,10 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": ["cli/operations", "cli/operations/push"]
+            "pages": [
+              "cli/operations",
+              "cli/operations/push"
+            ]
           },
           {
             "group": "Schema Contracts",
@@ -357,7 +363,10 @@
           {
             "group": "Groups",
             "icon": "users-rectangle",
-            "pages": ["studio/groups", "studio/groups/group-rules"]
+            "pages": [
+              "studio/groups",
+              "studio/groups/group-rules"
+            ]
           },
           {
             "group": "SSO",
@@ -384,7 +393,10 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
+            "pages": [
+              "studio/policies",
+              "studio/lint-policy/linter-rules"
+            ]
           },
           "studio/graph-pruning",
           "studio/invitations"
@@ -412,7 +424,7 @@
             "pages": [
               "router/gRPC/concepts",
               "router/gRPC/grpc-services",
-              "router/gRPC/grpc-plugins",
+              "router/gRPC/plugins",
               "router/gRPC/debugging"
             ]
           },

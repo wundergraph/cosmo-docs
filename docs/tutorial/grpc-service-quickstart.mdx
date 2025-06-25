@@ -7,8 +7,8 @@ icon: server
 
 ## Prerequisites
 
-- [Cosmo CLI](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.82.0) // TODO add proper version.
-- [Cosmo Router](https://github.com/wundergraph/cosmo/releases/tag/router%400.222.1) // TOOD add router version.
+- [Cosmo CLI](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.85.0) 
+- [Cosmo Router](https://github.com/wundergraph/cosmo/releases/tag/router%400.225.0) 
 
 ### Step 1: Create a GraphQL Schema
 
@@ -57,7 +57,7 @@ enum ProjectStatus {
 Use the Cosmo CLI to generate the protobuf definitions and mappings from your GraphQL schema:
 
 ```bash
-wgc router grpc-service \
+wgc grpc-service \
   generate \
   -p playground \
   -i ./schema.graphql \
@@ -145,7 +145,7 @@ enum ProjectStatus {
 }
 ```
 
-Depending on the language you are using, you might need to adjust the options. The package name needs to be the same as the one you used in the `wgc router grpc-service generate` command.
+Depending on the language you are using, you might need to adjust the options. The package name needs to be the same as the one you used in the `wgc grpc-service generate` command.
 
 ### Step 3: Create a Compose Configuration
 
@@ -395,7 +395,7 @@ That's it! Your gRPC service is now integrated into your router and can be queri
 ## Further Information
 
 - [gRPC Service Concepts](/router/gRPC/concepts)
-- [gRPC Plugins](/router/gRPC/grpc-plugins)
+- [Plugins](/router/gRPC/plugins)
 - [gRPC Service Federation](/router/gRPC/grpc-services)
 
 

@@ -7,7 +7,7 @@ icon: server
 
 ## Introduction
 
-gRPC services in Cosmo are independent, remotely deployed services that communicate with the Cosmo Router over the network using gRPC protocol. Unlike gRPC plugins that run as local processes managed by the router, gRPC services operate as standalone microservices that can be deployed anywhere in your infrastructure.
+gRPC services in Cosmo are independent, remotely deployed services that communicate with the Cosmo Router over the network using gRPC protocol. Unlike router plugins that run as local processes managed by the router, gRPC services operate as standalone microservices that can be deployed anywhere in your infrastructure.
 
 This approach is ideal for distributed architectures where services are owned by different teams, require independent scaling, or need to be implemented in languages other than Go.
 
@@ -23,13 +23,13 @@ gRPC services are standalone microservices that expose their functionality throu
 - **Scale independently** based on their specific requirements
 - **Support any gRPC language** - Python, Java, C#, Node.js, Rust, and many others
 
-The key distinction from gRPC plugins is that services are:
+The key distinction from router plugins is that services are:
 - **Remotely deployed** rather than co-located with the router
 - **Network-based** communication instead of inter-process communication
 - **Independently managed** with separate deployment pipelines
 - **Service-oriented** following microservices architecture patterns
 
-## Key Differences from gRPC Plugins
+## Key Differences from router plugins
 
 <CardGroup cols={2}>
     <Card title="Remote Deployment" icon="cloud">
@@ -37,7 +37,7 @@ The key distinction from gRPC plugins is that services are:
     </Card>
     
     <Card title="Language Agnostic" icon="globe">
-        While gRPC plugins currently only support Go, gRPC services can be implemented in any language that supports gRPC - Python, Java, C#, Node.js, Rust, and many others.
+        While router plugins currently only support Go, gRPC services can be implemented in any language that supports gRPC - Python, Java, C#, Node.js, Rust, and many others.
     </Card>
     
     <Card title="Independent Scaling" icon="arrows-split-up-and-left">
@@ -67,7 +67,7 @@ The key distinction from gRPC plugins is that services are:
 - <Icon icon="building" /> You want to maintain existing microservices architecture
 - <Icon icon="clock" /> Services have different release cycles
 
-**Choose gRPC Plugins when:**
+**Choose router plugins when:**
 - <Icon icon="rocket" /> You want the simplest possible deployment model
 - <Icon icon="bolt" /> Performance is critical (lower latency with local communication)
 - <Icon icon="laptop-code" /> You're comfortable with Go development
