@@ -16,11 +16,9 @@ The router provides three different ways of customization:
   to avoid storing secrets on the file system.
 </Info>
 
-## Config file
+## Config File
 
 For convenience, you can create a `config.yaml` to specify all router options. Start the router in the same directory or pass the path to the file as a `CONFIG_PATH` environment variable.
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -29,8 +27,6 @@ graph:
   token: "${GRAPH_API_TOKEN}"
 ```
 
-</CodeGroup>
-
 <Note>
   Values specified in the config file have **precedence** over Environment
   variables. This also includes empty values so only specify values that should
@@ -38,19 +34,19 @@ graph:
   truth.
 </Note>
 
+### Multiple Config Files
+
+The router allows you to have multiple configuration files, enabling you to override and separate configurations into more manageable chunks. When specifying configuration files, you can simply provide a comma-separated list of file names. You can read more about this [here](/router/configuration/config-design).
+
 ### Expand Environment Variables
 
 You can expand environment variables in the file like this:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
 
 log_level: "${LOG_LEVEL}"
 ```
-
-</CodeGroup>
 
 This will replace the value of the environment variable `LOG_LEVEL` with the value of the key `log_level` in your config file. For numeric values, ensure quotes are omitted.
 
@@ -72,25 +68,17 @@ Some options require the router to validate them. This requires starting the rou
 
 As the next step, add the following line to the head of your `config.yaml`file. This line informs your IDE, to download the correct JSON schema file to validate the config file.
 
-<CodeGroup>
-
 ```yaml config.yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/main/router/pkg/config/config.schema.json
 
 version: "1"
 ```
 
-</CodeGroup>
-
 If you want to pin to a specific router version use the following URL:
-
-<CodeGroup>
 
 ```yaml config.yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/wundergraph/cosmo/router%400.67.0/router/pkg/config/config.schema.json
 ```
-
-</CodeGroup>
 
 Now, you should get auto-completion <Icon icon="star" />.
 
@@ -134,8 +122,6 @@ The following sections describe each configuration in detail with all available 
 
 ### Example configuration:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -154,8 +140,6 @@ readiness_check_path: "/health/ready"
 liveness_check_path: "/health/live"
 router_config_path: ""
 ```
-
-</CodeGroup>
 
 ## Config watcher hot reloading
 
@@ -226,8 +210,6 @@ For a detailed example, please refer to the [Access Logs](/router/access-logs) s
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -262,8 +244,6 @@ access_logs:
           context_field: operation_name
 ```
 
-</CodeGroup>
-
 ## Telemetry
 
 ## Graph
@@ -276,16 +256,12 @@ Overall configuration for the Graph that's configured for this Router.
 
 Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
 graph:
   token: "<your-graph-token>"
 ```
-
-</CodeGroup>
 
 ## MCP (Model Context Protocol)
 
@@ -304,8 +280,6 @@ The Model Context Protocol (MCP) server allows AI models to discover and interac
 | MCP_EXPOSE_SCHEMA               | mcp.expose_schema               | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning>                    | false          |
 
 Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -329,8 +303,6 @@ storage_providers:
       path: "operations" # Relative to the router binary
 ```
 
-</CodeGroup>
-
 For more details on how to use the MCP server, see the [MCP Integration documentation](/router/mcp).
 
 ## TLS
@@ -347,8 +319,6 @@ The Router supports TLS and mTLS for secure communication with your clients and 
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -359,8 +329,6 @@ tls:
     cert_file: ../your/cert.pem
 ```
 
-</CodeGroup>
-
 ### Client Authentication
 
 | Environment Variable      | YAML      | Required               | Description                                                                                            | Default Value |
@@ -369,8 +337,6 @@ tls:
 | TLS_CLIENT_AUTH_REQUIRED  | required  | <Icon icon="square" /> | Enforces a valid client certificate to establish a connection.                                         | false         |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -385,8 +351,6 @@ tls:
       cert_file: ../your/cert.pem
 ```
 
-</CodeGroup>
-
 ## Compliance
 
 The configuration for the compliance. Includes for example the configuration for the anonymization of the IP addresses.
@@ -400,8 +364,6 @@ The configuration for the compliance. Includes for example the configuration for
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```bash config.yaml
 version: "1"
 
@@ -411,8 +373,6 @@ compliance:
     method: redact # hash or redact
 ```
 
-</CodeGroup>
-
 ## Cluster
 
 | Environment Variable | YAML | Required               | Description                                                                    | Default Value |
@@ -421,8 +381,6 @@ compliance:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```bash config.yaml
 version: "1"
 
@@ -430,8 +388,6 @@ version: "1"
 cluster:
   name: "us-central1-cosmo-cloud "
 ```
-
-</CodeGroup>
 
 ## Telemetry
 
@@ -448,8 +404,6 @@ cluster:
 |                        | attributes.value_from.request_header | <Icon icon="square" />                        | The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used. Don't forget to add the header to your CORS settings. |               |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -473,8 +427,6 @@ telemetry:
         request_header: "x-service"
 ```
 
-</CodeGroup>
-
 ## Tracing
 
 | Environment Variable             | YAML                     | Required                                      | Description                                                                                                                                                                                                                                                                          | Default Value |
@@ -487,8 +439,6 @@ telemetry:
 |                                  | with_new_root            | <Icon icon="square" />                        | Starts the root span always at the router.                                                                                                                                                                                                                                           | false         |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -508,8 +458,6 @@ telemetry:
     with_new_root: false
 ```
 
-</CodeGroup>
-
 ### Exporters
 
 | Environment Variable | YAML     | Required               | Description       | Default Value |
@@ -521,8 +469,6 @@ telemetry:
 |                      | headers  | <Icon icon="square" /> |                   |               |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -541,8 +487,6 @@ telemetry:
         export_timeout: 30s
 ```
 
-</CodeGroup>
-
 ### Propagation
 
 | Environment Variable | YAML          | Required               | Description                      | Default Value |
@@ -554,8 +498,6 @@ telemetry:
 |                      | datadog       | <Icon icon="square" /> | Enable Datadog trace propagation | false         |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -576,8 +518,6 @@ telemetry:
       # https://docs.datadoghq.com/tracing/trace_collection/trace_context_propagation/?tab=java#datadog-format
       datadog: false
 ```
-
-</CodeGroup>
 
 ## Metrics
 
@@ -604,8 +544,6 @@ telemetry:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 # See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
 telemetry:
@@ -627,8 +565,6 @@ telemetry:
           context_field: graphql_error_codes
 ```
 
-</CodeGroup>
-
 ### Prometheus
 
 | Environment Variable             | YAML                  | Required                                      | Description                                                               | Default Value    |
@@ -642,8 +578,6 @@ telemetry:
 | PROMETHEUS_EXCLUDE_SCOPE_INFO    | exclude_scope_info    | <Icon icon="square" />                        | Exclude scope info from Prometheus metrics.                               | false            |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -662,8 +596,6 @@ telemetry:
       exclude_scope_info: false
 ```
 
-</CodeGroup>
-
 ### Exporter
 
 | YAML        | Required               | Description                                                                                                   | Default Value |
@@ -676,8 +608,6 @@ telemetry:
 | temporality | <Icon icon="square" /> | Temporality defines the window that an aggregation is calculated over. one of: delta, cumulative              |               |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -709,8 +639,6 @@ telemetry:
       exclude_metric_labels: []
 ```
 
-</CodeGroup>
-
 ## GraphQL Metrics
 
 | Environment Variable               | YAML               | Required                                      | Description      | Default Value                         |
@@ -720,8 +648,6 @@ telemetry:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -729,8 +655,6 @@ graphql_metrics:
   enabled: true
   collector_endpoint: "https://cosmo-metrics.wundergraph.com"
 ```
-
-</CodeGroup>
 
 ## CORS
 
@@ -744,8 +668,6 @@ graphql_metrics:
 | CORS_MAX_AGE           | max_age           | <Icon icon="square" /> |                                                                                                                                              | 5m                                   |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -764,8 +686,6 @@ cors:
   max_age: 5m
 ```
 
-</CodeGroup>
-
 ## Cache Control Policy
 
 Configure your cache control policy. More information on this feature can be found here: [#cache-control-policy](/router/proxy-capabilities#cache-control-policy)
@@ -776,8 +696,6 @@ Configure your cache control policy. More information on this feature can be fou
 | CACHE_CONTROL_POLICY_VALUE   | value   | <Icon icon="square" /> | The default value for the cache control policy. It will be applied to all requests, unless a subgraph has a more strict one |               |
 
 ### Example YAML Config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -792,15 +710,11 @@ cache_control_policy:
       value: "no-cache"
 ```
 
-</CodeGroup>
-
 ## Custom Modules
 
 Configure your custom Modules. More information on this feature can be found here: [Custom Modules](/router/custom-modules)
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -811,11 +725,9 @@ modules:
     value: 1
 ```
 
-</CodeGroup>
+## Router Plugins
 
-## gRPC Plugins
-
-The configuration for the router gRPC plugins. To learn more about the gRPC plugins, see the [gRPC plugins documentation](/router/plugins).
+The configuration for the router plugins. To learn more about the plugins, see the [plugins documentation](/router/plugins).
 
 | Environment Variable | YAML    | Required               | Description                                                                           | Default Value |
 | -------------------- | ------- | ---------------------- | ------------------------------------------------------------------------------------- | ------------- |
@@ -875,8 +787,6 @@ Apply to requests/responses to/from "all" Subgraphs. These will be applied globa
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -898,14 +808,10 @@ headers:
         named: "X-Custom-Header"
 ```
 
-</CodeGroup>
-
 #### Header Rule Example Using Template Expression:
 
 This example sets the `X-User-ID` header based on the `sub` claim from the JWT token, if the user is authenticated.
 Learn more about [template expressions](/router/configuration/template-expressions).
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -918,8 +824,6 @@ headers:
         # Sets the header only if the user is authenticated
         expression: "request.auth.isAuthenticated ? request.auth.claims.sub : ''"
 ```
-
-</CodeGroup>
 
 ### Request Header Rule
 
@@ -938,8 +842,6 @@ Apply to requests to specific Subgraphs.
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -956,8 +858,6 @@ headers:
           value: "my-secret-value"
 ```
 
-</CodeGroup>
-
 ### Response Header Rule
 
 These rules can be applied to all responses, as well as just to specific subgraphs, and used to manipulate and propagate response headers from subgraphs to the client. By configuring the rule, users can define how headers should be handled when multiple subgraphs provide conflicting values for a specific header.
@@ -972,8 +872,6 @@ These rules can be applied to all responses, as well as just to specific subgrap
 |                      | rename    | <Icon icon="square" />                        | renames the header's key to the provided value                   |               |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -995,15 +893,11 @@ headers:
           value: "my-user-value"
 ```
 
-</CodeGroup>
-
 ## Storage Providers
 
 Storage providers allow you to configure different backends for persisted operations, router execution config and MCP operations.
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -1029,8 +923,6 @@ storage_providers:
     - id: "cdn-provider"
       url: "https://cosmo-cdn.wundergraph.com"
 ```
-
-</CodeGroup>
 
 ### Storage Provider Types
 
@@ -1088,8 +980,6 @@ The configuration for the persisted operations allows you to maintain a fixed se
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1103,8 +993,6 @@ storage:
   provider_id: s3
   object_prefix: wundergraph
 ```
-
-</CodeGroup>
 
 ### Persisted Operations Configuration Options
 
@@ -1129,8 +1017,6 @@ It defaults to using a local cache (with the size defined in `cache.size`), but 
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1143,8 +1029,6 @@ storage:
   provider_id: "my_redis"
   object_prefix: cosmo_apq
 ```
-
-</CodeGroup>
 
 ### Configuration Options
 
@@ -1355,8 +1239,6 @@ Configure how to extract client info from the initial WebSocket payload. This al
 
 ### Example WebSocket YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1400,8 +1282,6 @@ websocket:
         # to enable Subgraph authentication, we can export the value into a Header
         header_key: "Authorization"
 ```
-
-</CodeGroup>
 
 ## Authentication
 
@@ -1476,8 +1356,6 @@ authentication:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1492,8 +1370,6 @@ authentication:
         header_value_prefix: Bearer # Optional
 ```
 
-</CodeGroup>
-
 ## Authorization
 
 | Environment Variable             | YAML                             | Required               | Description                                                                                                                                                                                                                          | Default Value |
@@ -1503,8 +1379,6 @@ authentication:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1512,8 +1386,6 @@ authorization:
   require_authentication: false
   reject_operation_if_unauthorized: false
 ```
-
-</CodeGroup>
 
 ## CDN
 
@@ -1524,8 +1396,6 @@ authorization:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1534,15 +1404,11 @@ cdn:
   cache_size: 100MB
 ```
 
-</CodeGroup>
-
 ## Events
 
 The Events section lets you define Event Sources for [Event-Driven Federated Subscriptions (EDFS)](/router/event-driven-federated-subscriptions-edfs).
 
 We support NATS, Kafka and Redis as event bus provider.
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -1573,8 +1439,6 @@ events:
           - "localhost:9092"
 ```
 
-</CodeGroup>
-
 ### Provider
 
 | Environment Variable | YAML      | Required                                      | Description                | Default Value |
@@ -1595,16 +1459,20 @@ events:
 
 ### Kafka Provider
 
-| Environment Variable | YAML                               | Required                                      | Description                                                                                          | Default Value |
-| -------------------- | ---------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- |
-|                      | id                                 | <Icon icon="square-check" iconType="solid" /> | The ID of the provider. This have to match with the ID specified in the subgraph schema.             | []            |
-|                      | brokers                            | <Icon icon="square-check" iconType="solid" /> | A list of broker URLs.                                                                               |               |
-|                      | authentication                     | <Icon icon="square" />                        | Authentication settings                                                                              |               |
-|                      | authentication.sasl_plain          | <Icon icon="square" />                        | SASL/Plain Authentication method                                                                     |               |
-|                      | authentication.sasl_plain.username | <Icon icon="square" />                        | SASL/Plain Username                                                                                  |               |
-|                      | authentication.sasl_plain.password | <Icon icon="square" />                        | SASL/Plain Password                                                                                  |               |
-|                      | tls                                | <Icon icon="square" />                        | TLS configuration for the Kafka provider. If enabled, it uses SystemCertPool for RootCAs by default. |               |
-|                      | tls.enabled                        | <Icon icon="square" />                        | Enable the TLS.                                                                                      |               |
+| Environment Variable | YAML                                | Required                                      | Description                                                                                          | Default Value |
+| -------------------- | ----------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- |
+|                      | id                                  | <Icon icon="square-check" iconType="solid" /> | The ID of the provider. This have to match with the ID specified in the subgraph schema.             | []            |
+|                      | brokers                             | <Icon icon="square-check" iconType="solid" /> | A list of broker URLs.                                                                               |               |
+|                      | authentication                      | <Icon icon="square" />                        | Authentication settings                                                                              |               |
+|                      | authentication.sasl_plain           | <Icon icon="square" />                        | SASL/Plain Authentication method                                                                     |               |
+|                      | authentication.sasl_plain.username  | <Icon icon="square" />                        | SASL/Plain Username                                                                                  |               |
+|                      | authentication.sasl_plain.password  | <Icon icon="square" />                        | SASL/Plain Password                                                                                  |               |
+|                      | authentication.sasl_scram           | <Icon icon="square" />                                              | SASL/SCRAM Authentication method                                                                     |               |
+|                      | authentication.sasl_scram.username  | <Icon icon="square" />                                               | SASL/SCRAM Username                                                                                  |               |
+|                      | authentication.sasl_scram.password  | <Icon icon="square" />                                              | SASL/SCRAM Password                                                                                  |               |
+|                      | authentication.sasl_scram.mechanism | <Icon icon="square" />                                              | SASL/SCRAM Mechanism, could be `SCRAM-SHA-256` of `SCRAM-SHA-512`                                    |               |
+|                      | tls                                 | <Icon icon="square" />                        | TLS configuration for the Kafka provider. If enabled, it uses SystemCertPool for RootCAs by default. |               |
+|                      | tls.enabled                         | <Icon icon="square" />                        | Enable the TLS.                                                                                      |               |
 
 ### Redis Provider
 
@@ -1646,7 +1514,6 @@ Configure the GraphQL Execution Engine of the Router.
 
 ### Example YAML config:
 
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -1677,8 +1544,6 @@ engine:
   subscription_fetch_timeout: 30s
 ```
 
-</CodeGroup>
-
 ### Debug Configuration
 
 | Environment Variable                                           | YAML                                              | Required               | Description                                                                                                                                                    | Default Value |
@@ -1701,8 +1566,6 @@ engine:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -1724,8 +1587,6 @@ engine:
     always_include_query_plan: false
     always_skip_loader: false
 ```
-
-</CodeGroup>
 
 ## Rate Limiting
 
@@ -1993,9 +1854,17 @@ Truncate floats like 1.0 to 1, 2.0 to 2, etc.. Values like 1.1 or 2.2 will not b
 
 Suppresses fetch errors. When enabled, only the 'data' object is returned, suppressing errors. If disabled, fetch errors are included in the 'errors' array.
 
-### Apollo Compatibility Replace Undefined Op Field Errors
+### Apollo Compatibility Replace Undefined Op Field Errors (Deprecated)
+
+<Warning>
+  This flag is deprecated. Use `use_graphql_validation_failed_status` instead.
+</Warning>
 
 Produces the same error message as Apollo when an invalid operation field is included in an operation selection set. **Extension code**: "GRAPHQL_VALIDATION_FAILED" Status code: 400
+
+### Apollo Compatibility Use GraphQL Validation Failed Status
+
+Produces the same error message and status as Apollo when GraphQL validation fails. **Extension code**: "GRAPHQL_VALIDATION_FAILED" Status code: 400
 
 ### Apollo Compatibility Replace Invalid Var Errors
 
@@ -2011,10 +1880,11 @@ Produces the same error status as Apollo when validation fails. **Error status**
 | APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED                      | value_completion: enabled: \<bool\>                      | <Icon icon="square" /> | Enables value completion.                                                                                                                                                     | false         |
 | APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED                       | truncate_floats: enabled: \<bool\>                       | <Icon icon="square" /> | Enables truncate floats.                                                                                                                                                      | false         |
 | APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED                 | suppress_fetch_errors: enabled: \<bool\>                 | <Icon icon="square" /> | Enables suppress fetch errors.                                                                                                                                                | false         |
-| APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED     | replace_undefined_op_field_errors: enabled: \<bool\>     | <Icon icon="square" /> | Replaces undefined operation field errors.                                                                                                                                    | false         |
+| APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED     | replace_undefined_op_field_errors: enabled: \<bool\>     | <Icon icon="square" /> | (Deprecated) Replaces undefined operation field errors. Use use_graphql_validation_failed_status instead.                                                                     | false         |
 | APOLLO_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED            | replace_invalid_var_errors: enabled: \<bool\>            | <Icon icon="square" /> | Replaces invalid variable errors.                                                                                                                                             | false         |
-| APOLLO_COMPATIBILITY_REPLACE_VALIDATION_ERROR_STATUS_ENABLED       | replace_validation_error_status_enabled: \<bool\>        | <Icon icon="square" /> | Replaces validation error status with 400.                                                                                                                                    | false         |
+| APOLLO_COMPATIBILITY_REPLACE_VALIDATION_ERROR_STATUS_ENABLED       | replace_validation_error_status: enabled: \<bool\>       | <Icon icon="square" /> | Replaces validation error status with 400.                                                                                                                                    | false         |
 | APOLLO_COMPATIBILITY_SUBSCRIPTION_MULTIPART_PRINT_BOUNDARY_ENABLED | subscription_multipart_print_boundary: enabled: \<bool\> | <Icon icon="square" /> | Prints the multipart boundary right after the message in multipart subscriptions. Without this flag, the Apollo client wouldn't parse a message until the next one is pushed. | false         |
+| APOLLO_COMPATIBILITY_USE_GRAPHQL_VALIDATION_FAILED_STATUS_ENABLED  | use_graphql_validation_failed_status: enabled: \<bool\>  | <Icon icon="square" /> | Uses GraphQL validation failed status code and error format.                                                                                                                  | false         |
 
 ### Example YAML Configuration
 
@@ -2030,11 +1900,15 @@ apollo_compatibility_flags:
   suppress_fetch_errors:
     enabled: true
   replace_undefined_op_field_errors:
-    enabled: true
+    enabled: true # Deprecated, use use_graphql_validation_failed_status instead
   replace_invalid_var_errors:
     enabled: true
   replace_validation_error_status:
     enabled: false
+  subscription_multipart_print_boundary:
+    enabled: false
+  use_graphql_validation_failed_status:
+    enabled: true
 ```
 
 ## Apollo Router Compatibility Flags
@@ -2077,8 +1951,6 @@ apollo_router_compatibility_flags:
 
 ### Example YAML config:
 
-<CodeGroup>
-
 ```yaml config.yaml
 version: "1"
 
@@ -2089,8 +1961,6 @@ cache_warmup:
   timeout: 30s
 ```
 
-</CodeGroup>
-
 ### Source
 
 The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.
@@ -2100,8 +1970,6 @@ The source of the cache warmup items. Only one can be specified. If empty, the c
 |                      | path | <Icon icon="square" /> | The path to the directory containing the cache warmup items. |               |
 
 ### Example YAML config:
-
-<CodeGroup>
 
 ```yaml config.yaml
 version: "1"
@@ -2114,5 +1982,3 @@ cache_warmup:
   source:
     path: "./cache-warmer/operations"
 ```
-
-</CodeGroup>

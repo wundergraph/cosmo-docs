@@ -40,6 +40,7 @@
             "icon": "newspaper",
             "pages": [
               "tutorial",
+              "tutorial/deploy-federated-graphql-with-confidence",
               "tutorial/from-zero-to-federation-in-5-steps-using-cosmo",
               "tutorial/mastering-local-development-for-graphql-federation",
               "tutorial/composing-graphs",
@@ -48,7 +49,8 @@
               "tutorial/using-persisted-operations",
               "tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry",
               "tutorial/supergraph-previews-for-every-pull-request",
-              "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags"
+              "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags",
+              "tutorial/grpc-service-quickstart"
             ]
           }
         ]
@@ -193,7 +195,10 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": ["cli/router/cache", "cli/router/cache/push"]
+                "pages": [
+                  "cli/router/cache",
+                  "cli/router/cache/push"
+                ]
               },
               {
                 "group": "Token",
@@ -217,7 +222,7 @@
                 ]
               },
               {
-                "group": "Plugin",
+                "group": "Router Plugin",
                 "icon": "plug",
                 "pages": [
                   "cli/router/plugin",
@@ -226,6 +231,14 @@
                   "cli/router/plugin/test"
                 ]
               }
+            ]
+          },
+          {
+            "group": "gRPC Service",
+            "icon": "network-wired",
+            "pages": [
+              "cli/grpc-service",
+              "cli/grpc-service/generate"
             ]
           },
           {
@@ -241,7 +254,10 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": ["cli/operations", "cli/operations/push"]
+            "pages": [
+              "cli/operations",
+              "cli/operations/push"
+            ]
           },
           {
             "group": "Schema Contracts",
@@ -377,7 +393,10 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
+            "pages": [
+              "studio/policies",
+              "studio/lint-policy/linter-rules"
+            ]
           },
           "studio/graph-pruning",
           "studio/invitations"
@@ -393,20 +412,24 @@
             "icon": "sliders-up",
             "pages": [
               "router/configuration",
+              "router/configuration/config-design",
               "router/configuration/template-expressions"
             ]
           },
           "router/mcp",
           "router/custom-modules",
           {
-            "group": "Plugins",
-            "icon": "plug",
+            "group": "gRPC",
+            "icon": "network-wired",
             "pages": [
-              "router/plugins",
-              "router/plugins/debugging"
+              "router/gRPC/concepts",
+              "router/gRPC/grpc-services",
+              "router/gRPC/plugins",
+              "router/gRPC/debugging"
             ]
           },
           "router/authentication-and-authorization",
+          "router/advanced-data-privacy",
           {
             "group": "Subscriptions",
             "icon": "webhook",
@@ -617,7 +640,39 @@
       "discord": "https://wundergraph.com/discord",
       "github": "https://github.com/wundergraph",
       "youtube": "https://www.youtube.com/@wundergraph"
-    }
+    },
+    "links": [
+      {
+        "header": "Legal",
+        "items": [
+          {
+            "label": "Privacy Policy",
+            "href": "https://wundergraph.com/privacy-policy"
+          },
+          {
+            "label": "Cookie Policy",
+            "href": "https://wundergraph.com/cookies"
+          },
+          {
+            "label": "Website Terms",
+            "href": "https://wundergraph.com/terms"
+          },
+          {
+            "label": "Cosmo Managed Terms",
+            "href": "https://wundergraph.com/cosmo-managed-service-terms"
+          }
+        ]
+      },
+      {
+        "header": "Trust",
+        "items": [
+          {
+            "label": "Trust Center",
+            "href": "https://trust.wundergraph.com/"
+          }
+        ]
+      }
+    ]
   },
   "integrations": {
     "koala": {

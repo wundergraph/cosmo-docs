@@ -11,8 +11,14 @@ icon: "globe"
 </Info>
 
 <Note>
-  Please note that each attribute increases cardinality. Furthermore, attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider. You should only attach headers that have been sanitized by your infrastructure.
+  Attributes based on request header values may potentially leak sensitive information when stored on the telemetry storage provider. You should only attach headers that have been sanitized by your infrastructure.
 </Note>
+
+<Warning>
+  Each attribute increases the cardinality of a metric. Higher cardinality can be costly, as it increases the system’s memory usage and processing overhead.
+
+  To mitigate this, a limit of 2,000 unique combinations (variations) per metric is enforced. When this limit is exceeded, a new metric—without any attributes—is created and used instead. This approach helps maintain system stability and prevents excessive memory consumption.
+</Warning>
 
 There are scenarios where you may want to add additional attributes to your metrics and spans. One common use case is to add environment information, such as `env=prod`. We provide an easy way to achieve this by adding a few lines of configuration.
 
@@ -82,8 +88,7 @@ Unlike previously in this case, any expression with `subgraph` in it, will only 
 You can find more information about expressions and the fields accessible for expressions [here](/router/configuration/template-expressions).
 
 <Warning>
- At the moment we only allow string values being returned from expressions, if you have for example an integer value being returned from the expression you will need to cast it.
- You can do this by using exprlang's `string` function.
+At the moment, we only allow expressions to return string values. If, for example, an expression returns an integer, you will need to cast it using exprlang’s string function.
 </Warning>
 
 # Metrics Only Attributes
@@ -141,4 +146,3 @@ telemetry:
 The above configuration will ensure that the attribute `service` will only be attached to spans.
 
 For a complete list of available options, please refer to the relevant documentation [section](/router/configuration#telemetry).
-
