@@ -1,6 +1,6 @@
 ---
 title: "Event-Driven Federated Subscriptions (EDFS)"
-description: "EDFS combines the power of GraphQL Federation and Event-Driven Architecture (Kafka, NATS) to update a user GraphQL Subscription after an event occurs in your system."
+description: "EDFS combines the power of GraphQL Federation and Event-Driven Architecture (Kafka, NATS, Redis) to update a user GraphQL Subscription after an event occurs in your system."
 icon: "circle-info"
 sidebarTitle: "Overview"
 ---
@@ -40,13 +40,16 @@ Furthermore, classic Subscriptions with Federation are quite expensive when it c
 
 Enter Event-Driven Federated Subscriptions, a simple way to scale Federated Subscriptions in a resource-efficient manner.
 
-EDFS supports two event providers:
+EDFS supports three event providers:
 
-<CardGroup cols="2">
+<CardGroup cols={3}>
   <Card title="Kafka" icon="sitemap" href="/router/event-driven-federated-subscriptions-edfs/kafka">
     
   </Card>
   <Card title="NATS" icon="puzzle-piece" href="/router/event-driven-federated-subscriptions-edfs/nats">
+    
+  </Card>
+  <Card title="Redis" icon="memory" href="/router/event-driven-federated-subscriptions-edfs/redis">
     
   </Card>
 </CardGroup>
@@ -86,6 +89,17 @@ directive @edfs__kafkaSubscribe(
   providerId: String! = "default"
 ) on FIELD_DEFINITION
 
+# Redis integration
+directive @edfs__redisPublish(
+  channel: String!,
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
+directive @edfs__redisSubscribe(
+  channels: [String!]!,
+  providerId: String! = "default"
+) on FIELD_DEFINITION
+
 # OpenFederation directive to filter subscription events
 directive @openfed__subscriptionFilter(
   condition: openfed__SubscriptionFilterCondition!
@@ -96,9 +110,9 @@ Let's explain each directive in detail:
 
 The `@edfs__natsRequest` directive is a specific NATS directive to extend a Graph through an Event Source. It makes a request to a NATS subject and waits synchronously of the response. Under the hood it uses [Request/Reply ](https://docs.nats.io/nats-concepts/core-nats/reqreply)semantics from NATS.
 
-The `@edfs__natsPublish` and `@edfs__kafkaPublish` directive allows you to publish an event through a Mutation.
+The `@edfs__natsPublish`, `@edfs__kafkaPublish`, and `@edfs__redisPublish ` directive allows you to publish an event through a Mutation.
 
-Using the `@edfs__natsSubscribe` and `@edfs__kafkaSubscribe` directives, you can create a Subscription to the corresponding message bus. By default, both provider implementations are stateless, meaning every client receives the same events in a broadcast fashion. This behavior can be adjusted. NATS allows you to create a [consumer group](https://docs.nats.io/nats-concepts/jetstream/consumers), resulting in multiple independent streams of the subject, where each client can consume events at their own pace.
+Using the `@edfs__natsSubscribe`, `@edfs__kafkaSubscribe` and `@edfs__redisSubscribe` directives, you can create a Subscription to the corresponding message bus. By default, all the provider implementations are stateless, meaning every client receives the same events in a broadcast fashion. This behavior can be adjusted. NATS allows you to create a [consumer group](https://docs.nats.io/nats-concepts/jetstream/consumers), resulting in multiple independent streams of the subject, where each client can consume events at their own pace.
 
 The `@openfed__subscriptionFilter` directive allows you to filter subscription messages based on specified conditions. For more information see [Subscription Filter](/router/event-driven-federated-subscriptions-edfs#subscription-filter).
 
@@ -106,7 +120,7 @@ An Event-Driven Subgraph does not need to be implemented. It is simply a Subgrap
 
 ## Prerequisites
 
-To use EDFS, you need to have an Event Source running and connected to the Router. Currently, we support NATS and Kafka. For simplicity, NATS is used to explain the examples.
+To use EDFS, you need to have an Event Source running and connected to the Router. Currently, we support NATS, Kafka, and Redis. For simplicity, NATS is used to explain the examples.
 
 To get started, run a NATS instance and add the following configuration to your `config.yaml` Router Configuration:
 
@@ -188,7 +202,7 @@ type Employee @key(fields: "id", resolvable: false) {
 
 #### The "subjects" Argument
 
-The subjects/topics argument of all events Directives allows you to use templating Syntax to use an argument to render the topic.
+The subjects/topics/channels argument of all events Directives allows you to use templating Syntax to use an argument to render the topic.
 
 Given the following Schema:
 
@@ -233,7 +247,7 @@ Once the initial result is coming back from the "Event Subgraph", the Router is 
 
 ### Publish
 
-The `@edfs_natsPublish` and `@edfs_kafkaPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `PublishEventResult` with one single field `success` of type `Boolean!`, indicating whether publishing the event was successful or not.
+The `@edfs_natsPublish`, `@edfs_kafkaPublish` and `@edfs__redisPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `PublishEventResult` with one single field `success` of type `Boolean!`, indicating whether publishing the event was successful or not.
 
 Given that we send the following Mutation:
 

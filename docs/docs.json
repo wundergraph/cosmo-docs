@@ -97,6 +97,7 @@
               "federation/event-driven-federated-subscriptions",
               "federation/event-driven-federated-subscriptions/nats",
               "federation/event-driven-federated-subscriptions/kafka",
+              "federation/event-driven-federated-subscriptions/redis",
               "federation/event-driven-federated-subscriptions/composition-rules"
             ]
           }
@@ -541,7 +542,8 @@
                   "router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration"
                 ]
               },
-              "router/event-driven-federated-subscriptions-edfs/kafka"
+              "router/event-driven-federated-subscriptions-edfs/kafka",
+              "router/event-driven-federated-subscriptions-edfs/redis"
             ]
           },
           "router/compliance-and-data-management",
