@@ -130,17 +130,12 @@ While using the `telemetry` configuration allows users to specify attributes whi
 In this case you can use trace only attributes.
 
 ```yaml
-cors:
-  allow_headers:
-    - "x-service"
-
 telemetry:
   trace:
     attributes:
       - key: service
-        default: "static"
         value_from:
-          request_header: "x-service"
+          expression: "request.url.method"
 ```
 
 The above configuration will ensure that the attribute `service` will only be attached to spans.
