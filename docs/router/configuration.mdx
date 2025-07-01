@@ -518,6 +518,30 @@ telemetry:
       # https://docs.datadoghq.com/tracing/trace_collection/trace_context_propagation/?tab=java#datadog-format
       datadog: false
 ```
+### Attributes
+
+| YAML                                 | Required               | Description                                                                                                                                                                                                  | Default Value                                                                                                |
+| ------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| attributes                           | <Icon icon="square" /> | The attributes to add for Tracing.                                                                                                                                                                           | []                                                                                                           |
+| attributes.key                       | <Icon icon="square" /> | The key of the field.                                                                                                                                                                                        |                                                                                                              |
+| attributes.value_from                | <Icon icon="square" /> | Defines a source for the field value.                                                                                                                                                                        |                                                                                                              |
+| attributes.value_from.expression     | <Icon icon="square" /> | The expression for the trace attribute.                                                                                                                                                                      |                                                                                                              |
+
+
+### Example YAML config:
+
+```yaml config.yaml
+version: "1"
+
+# See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
+telemetry:
+  # OpenTelemetry Tracing
+  tracing:
+    attributes:
+      - key: "x-new-attribute"
+        value_from:
+          expression: "request.url.method"
+```
 
 ## Metrics
 

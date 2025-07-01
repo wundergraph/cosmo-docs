@@ -123,24 +123,19 @@ Additionally, the unique list of subgraph error codes will be appended to all em
 # Tracing Only Attributes
 
 <Info>
-  **Available since Router version VERSION**.
+  **Available since Router version 0.213.0**.
 </Info>
 
 While using the `telemetry` configuration allows users to specify attributes which will be attached to both spans AND metrics, there may be cases users want to attach values to spans only.
 In this case you can use trace only attributes.
 
 ```yaml
-cors:
-  allow_headers:
-    - "x-service"
-
 telemetry:
   trace:
     attributes:
       - key: service
-        default: "static"
         value_from:
-          request_header: "x-service"
+          expression: "request.url.method"
 ```
 
 The above configuration will ensure that the attribute `service` will only be attached to spans.
