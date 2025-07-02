@@ -153,18 +153,18 @@ It contains the following properties:
 
 #### SubgraphRequest Properties
 
-- `subgraph.response.body` (SubgraphResponseBody): The subgraph request body as a string
+- `subgraph.response.body` (SubgraphResponseBody): The subgraph response body as a string
 
 
 ### Subgraph Response Body Object
 
 The subgraph body object holds information related to the response body of the subgraph. 
 
-To optimize performance, the raw request body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
+To optimize performance, the raw response body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
 
 **Available Fields**:
 
-- `response.body.raw`
+- `subgraph.response.body.raw`
 
 #### Example expressions
 
@@ -199,7 +199,7 @@ The `response` object is a read-only entity that provides details about the outg
 
 The body object holds information related to the response body. 
 
-To optimize performance, the raw request body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
+To optimize performance, the raw response body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
 
 **Available Fields**:
 
