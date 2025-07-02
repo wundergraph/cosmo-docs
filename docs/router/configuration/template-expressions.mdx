@@ -95,11 +95,11 @@ request.url.query.foo == 'bar' && request.method == 'POST'
 request.header.Get('x-block-mutation') == 'yes'
 ```
 
-### **Body Object**
+### Request Body Object
 
 The body object holds information related to the request body. However, if used in telemetry attribute expressions, it will be empty because the router hasn't read the body at that stage of processing yet.
 
-To optimize performance, the raw request body (`raw.body`) is only included in the expression context if at least one expression explicitly references it.
+To optimize performance, the raw request body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
 
 **Available Fields**:
 
@@ -151,6 +151,29 @@ It contains the following properties:
 - `subgraph.request.error` (error): Any error that occurred during the subgraph request
 - `subgraph.request.clientTrace` (ClientTrace): Contains tracing information about the client connection
 
+#### SubgraphRequest Properties
+
+- `subgraph.response.body` (SubgraphResponseBody): The subgraph request body as a string
+
+
+### Subgraph Response Body Object
+
+The subgraph body object holds information related to the response body of the subgraph. 
+
+To optimize performance, the raw request body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
+
+**Available Fields**:
+
+- `response.body.raw`
+
+#### Example expressions
+
+This example returns the raw subgraph response body only when an error occurs for the subgraph request.
+
+```
+subgraph.request.error != nil ? subgraph.response.body.raw : ''
+```
+
 #### ClientTrace Properties
 
 - `subgraph.request.clientTrace.connAcquireDuration` (float64): The duration in seconds it took to acquire the connection to the subgraph
@@ -163,6 +186,31 @@ This object is available in template expressions and can be accessed using the `
 subgraph.name == 'products'
 subgraph.request.error != nil
 subgraph.request.clientTrace.connAcquireDuration > 1.0
+```
+### **Response Object**
+
+The `response` object is a read-only entity that provides details about the outgoing response. It is accessible after the response has been processed by the router.
+
+**Available Fields**:
+
+- `response.body`
+
+### Response Body Object
+
+The body object holds information related to the response body. 
+
+To optimize performance, the raw request body (`body.raw`) is only included in the expression context if at least one expression explicitly references it.
+
+**Available Fields**:
+
+- `response.body.raw`
+
+#### Example expressions
+
+This example returns the raw response body only when an error occurs, which is useful for debugging when used in access log expressions.
+
+```
+request.error != nil ? response.body.raw : ''
 ```
 
 ### Additional Notes
