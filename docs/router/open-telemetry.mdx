@@ -64,7 +64,7 @@ High metric cardinality can lead to performance issues by consuming excessive re
 **Once the limit is reached, all further datapoints to a metric will be stored without attributes.**
 
 <Info>
-  The default OpenTelemetry Collector ingests requests up to 4 MB by default via gRPC. If you are experiencing high cardinality in your metrics, it's necessary to adjust the collector's gRPC limits to accommodate larger requests.
+  The default OpenTelemetry Collector ingests requests up to 4 MB by default via gRPC. If you are experiencing high cardinality in your metrics, it's necessary to adjust the collector's gRPC limits to accommodate larger requests by setting the `max_recv_msg_size_mib` property.  If you are using Datadog, this can be done by setting the `DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_GRPC_MAX_RECV_MSG_SIZE_MIB` agent environment variable.
 
   We recommend at least 12 MB
 </Info>
