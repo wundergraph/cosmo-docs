@@ -545,6 +545,18 @@ telemetry:
 
 ## Metrics
 
+| Environment Variable                 | YAML                         | Required               | Description                                                                                       | Default Value |
+| ------------------------------------ | ---------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------- | ------------- |
+| METRICS_EXPERIMENT_CARDINALITY_LIMIT | experiment_cardinality_limit | <Icon icon="square" /> | Sets a hard limit on the number of Metric Points that can be collected during a collection cycle. | 2000          |
+
+<Warning>
+The `experiment_cardinality_limit` option is experimental because it relies on experimental functionality in the OpenTelemetry SDK for Go. This feature helps prevent excessive memory usage by limiting the number of unique metric combinations (cardinality) that can be collected in a single collection cycle. 
+
+See the specification for more information: https://opentelemetry.io/docs/specs/otel/metrics/sdk/#cardinality-limits
+
+This option may change or be removed in future versions as the OpenTelemetry SDK stabilizes this functionality.
+</Warning>
+
 ### OTLP
 
 | Environment Variable               | YAML                  | Required                                      | Description                                                                                                                                               | Default Value |
@@ -572,6 +584,7 @@ telemetry:
 # See "https://cosmo-docs.wundergraph.com/router/metrics-and-monitoring" for more information
 telemetry:
   metrics:
+    experiment_cardinality_limit: 2000
     otlp:
       enabled: true
       router_runtime: true
