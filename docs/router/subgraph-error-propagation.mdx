@@ -164,3 +164,20 @@ subgraph_error_propagation:
   ]
 }
 ```
+
+## Fallback status code errors
+
+In cases where the router cannot parse a properly formed error from the subgraph response, e.g.
+
+- A proxy is returning a non-JSON response like HTML, or plain text.
+- A subgraph is returning JSON, but not valid GraphQL errors or data.
+
+The router falls back to an error based on the HTTP status code of the response. e.g.
+
+```json
+{
+  "message": "418: I'm a teapot"
+}
+```
+
+Extensions like `status_code` are preserved if enabled.
