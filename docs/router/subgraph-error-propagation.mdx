@@ -174,9 +174,15 @@ In cases where the router cannot parse a properly formed error from the subgraph
 
 The router falls back to an error based on the HTTP status code of the response. e.g.
 
+**Example Error Response**
+
 ```json
 {
-  "message": "418: I'm a teapot"
+  "errors": [
+    {
+      "message": "418: I'm a teapot",
+    }
+  ]
 }
 ```
 
