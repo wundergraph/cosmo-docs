@@ -1021,14 +1021,15 @@ The configuration for the persisted operations allows you to maintain a fixed se
 version: "1"
 
 persisted_operations:
-log_unknown: false
-safelist:
-  enabled: false
-cache:
-  size: 100MB
-storage:
-  provider_id: s3
-  object_prefix: wundergraph
+  disabled: false
+  log_unknown: false
+  safelist:
+    enabled: false
+  cache:
+    size: 100MB
+  storage:
+    provider_id: s3
+    object_prefix: wundergraph
 ```
 
 ### Persisted Operations Configuration Options
@@ -1038,6 +1039,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 | Environment Variable                       | YAML                                       | Required                                      | Description                                                                                                                                                                                            | Default Value |
 | ------------------------------------------ | ------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
 |                                            | persisted_operations                       | <Icon icon="square" />                        | The configuration for the persisted operations.                                                                                                                                                        |               |
+| PERSISTED_OPERATIONS_DISABLED              | persisted_operations.disabled              | <Icon icon="square" />                        | When set to `true`, all requests using persisted operations will be blocked and the router will return an error response.                                                                              | false         |
 |                                            | persisted_operations.cache                 | <Icon icon="square" />                        | LRU cache for persisted operations.                                                                                                                                                                    |               |
 | PERSISTED_OPERATIONS_CACHE_SIZE            | persisted_operations.cache.size            | <Icon icon="square" />                        | The size of the cache in SI unit.                                                                                                                                                                      | "100MB"       |
 |                                            | persisted_operations.storage               | <Icon icon="square" />                        | The storage provider for persisted operation. Only one provider can be active. When no provider is specified, the router will fallback to the Cosmo CDN provider to download the persisted operations. |               |
@@ -1058,13 +1060,13 @@ It defaults to using a local cache (with the size defined in `cache.size`), but 
 version: "1"
 
 automatic_persisted_queries:
-enabled: true
-cache:
-  size: 10MB # This is only relevant for an in-memory cache that we maintain
-  ttl: 900 # in seconds, set both for a local and a remote KV
-storage:
-  provider_id: "my_redis"
-  object_prefix: cosmo_apq
+  enabled: true
+  cache:
+    size: 10MB # This is only relevant for an in-memory cache that we maintain
+    ttl: 900 # in seconds, set both for a local and a remote KV
+  storage:
+    provider_id: "my_redis"
+    object_prefix: cosmo_apq
 ```
 
 ### Configuration Options
