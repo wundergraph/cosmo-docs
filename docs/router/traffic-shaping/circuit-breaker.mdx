@@ -156,16 +156,13 @@ traffic_shaping:
 
 ## Important Considerations
 
-### Retry Interaction
-
+**Retry Interaction**<br/>
 Circuit breakers work in conjunction with the router's retry mechanism, and their interaction is important to understand. When you have retries configured and a circuit opens during the retry attempts for a request, no further retries will be attempted for that specific request.
 
-### Multi-Window Recovery Scenarios
-
+**Multi-Window Recovery Scenarios**<br/>
 When you configure `half_open_attempts` to be less than `required_successful`, the recovery process will span multiple sleep windows. Consider an example where you have `half_open_attempts` set to 3, `required_successful` set to 5, and `sleep_window` set to 300 milliseconds. In this scenario, when the circuit enters the half-open state, it will allow 3 test requests to pass through. Even if all 3 requests succeed, the circuit still needs 2 more successful requests to meet the `required_successful` threshold. Since the half-open attempts are exhausted, the circuit remains half-open and waits for another sleep window to expire before allowing the next batch of test requests.
 
-### Timeout Behavior
-
+**Timeout Behavior**<br/>
 The `execution_timeout` serves as an internal timer specifically for circuit breaker error tracking. When a request exceeds this timeout, it gets marked as an error for circuit breaker statistical purposes. However, it's crucial to understand that the actual request might still succeed and return a response to the client before the circuit breaker trips. This separation allows the circuit breaker to track slow requests as potential indicators of service degradation.
 
 ## Monitoring and Observability
