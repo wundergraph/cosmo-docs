@@ -461,7 +461,8 @@
             "pages": [
               "router/traffic-shaping",
               "router/traffic-shaping/retry",
-              "router/traffic-shaping/timeout"
+              "router/traffic-shaping/timeout",
+              "router/traffic-shaping/circuit-breaker"
             ]
           },
           "router/storage-providers",
