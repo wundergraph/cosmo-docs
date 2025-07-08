@@ -16,19 +16,21 @@ Circuit breakers are created and managed based on unique URLs. Each unique full 
 
 ### Time-Based Sliding Window
 
-The circuit breaker uses a sophisticated time-based sliding window with buckets to track request statistics over time. When you configure the circuit breaker with `num_buckets` set to 5 and `rolling_duration` set to 60 seconds, the router creates 5 buckets of 12 seconds each (calculated as 60 divided by 5). This bucketing system allows for granular tracking of request patterns and outcomes.
+The circuit breaker uses a time-based sliding window with buckets to track request statistics over time. When you configure the circuit breaker with `num_buckets` set to 5 and `rolling_duration` set to 60 seconds, the router creates 5 buckets of 12 seconds each (calculated as 60 divided by 5). This bucketing system allows for granular tracking of request patterns and outcomes.
 
 When you make a request, the router records both the request itself and its outcome—whether it succeeded or failed—in the current time bucket. The circuit breaker then continuously evaluates error rates and request counts across all active buckets within the specified rolling duration.
 
 After 60 seconds have elapsed, the circuit breaker has collected a full window of data across all 5 buckets, as illustrated in the diagram below:
 
-<img src="./images/buckets-1.png" />
+<img src="./images/buckets-1.png" className="block dark:hidden" />
+<img src="./images/buckets-1-dark.png" className="hidden dark:block" />
 
 With this data collection system in place, the circuit breaker can answer critical questions about the health of your subgraphs. It can determine how many requests have failed versus succeeded, whether the minimum request threshold has been met, what the current error rate is, and most importantly, whether the circuit should open to protect the system from further failures.
 
 As time progresses, the sliding window continues to move forward. After another 12 seconds pass, you can see what happens in the next diagram:
 
-<img src="./images/buckets-2.png" />
+<img src="./images/buckets-2.png"  className="block dark:hidden" />
+<img src="./images/buckets-2-dark.png" className="hidden dark:block" />
 
 Notice how the oldest bucket gets discarded as new data comes in. The circuit breaker only keeps statistics for the most recent buckets within the rolling window, ensuring that decisions are based on current system behavior rather than stale historical data.
 
@@ -36,7 +38,8 @@ Notice how the oldest bucket gets discarded as new data comes in. The circuit br
 
 The circuit breaker operates in three distinct states, each serving a specific purpose in the failure detection and recovery process:
 
-<img src="./images/states.png" />
+<img src="./images/states.png" className="block dark:hidden" />
+<img src="./images/states-dark.png" className="hidden dark:block" />
 
 **Closed State (Normal Operation)**: In this state, the subgraph is considered healthy and functioning normally. All requests pass through to the subgraph without any interference from the circuit breaker. However, the circuit breaker continues to monitor error rates and request patterns in the background.
 
@@ -55,6 +58,8 @@ The circuit breaker's state transitions follow a carefully designed logic that b
 **Transition from Half-Open to Closed or Open**: From the half-open state, the circuit can transition in two directions. If the required number of successful requests (as defined by `required_successful`) are achieved during the testing phase, the circuit transitions back to closed, allowing normal traffic flow to resume. However, if any of the test requests fail, the circuit immediately returns to the open state and waits for another sleep window before attempting to test recovery again.
 
 ## Example YAML Configuration
+
+You can find information on each individual configuration option [here](/router/configuration#circuit-breaker)
 
 ```yaml
 traffic_shaping:
@@ -79,47 +84,6 @@ traffic_shaping:
         request_threshold: 30         # Override global setting
 ```
 
-## Configuration Options
-
-**`enabled`** (boolean) - default: `false`
-
-This setting controls whether the circuit breaker is active for the target scope, whether that's all subgraphs or a specific subgraph. When disabled, requests flow through normally without any circuit breaker intervention.
-
-**`request_threshold`** (integer) - default: `20`
-
-This setting defines the minimum number of requests that must be received before the circuit breaker will evaluate error rates for potential state transitions. This threshold is crucial for preventing the circuit from opening due to a few random failures when there isn't sufficient data to make a reliable decision about the subgraph's health. The circuit breaker needs adequate statistical data to distinguish between temporary glitches and genuine service degradation.
-
-**`error_threshold_percentage`** (integer) - default: `50`
-
-This represents the percentage of failed requests within the rolling window that will trigger the circuit to open. For example, with a 50% threshold and 100 total requests in the window, the circuit will open when 50 or more requests fail. This percentage-based approach allows the circuit breaker to adapt to different traffic volumes while maintaining consistent failure detection sensitivity.
-
-**`sleep_window`** (duration) - default: `5s`
-
-This setting determines how long the circuit will block all requests after transitioning to the open state. The sleep window serves a critical purpose: it gives the failing service time to recover without being overwhelmed by continued request attempts. The duration should be long enough to allow meaningful recovery but not so long that it unnecessarily impacts user experience during temporary outages.
-
-**`rolling_duration`** (duration) - default: `10s`
-
-This defines the time window for collecting error and request statistics. Only data from within this window influences circuit breaker decisions, ensuring that the circuit responds to current conditions rather than being influenced by historical problems that may have been resolved. For example, with a 60-second rolling duration, only the most recent 60 seconds of request data will be considered when evaluating whether to open or close the circuit.
-
-**`execution_timeout`** (duration) - default: `60s`
-
-This sets the maximum time allocated before marking a request as failed due to timeout. This timeout is specifically for circuit breaker error tracking and operates independently of any actual request timeouts that might be configured elsewhere in your system. It's important to understand that this is purely for circuit breaker bookkeeping—the actual request might still succeed and return a response even if it exceeds this timeout.
-
-**`half_open_attempts`** (integer) - default: `1`
-
-This controls how many test requests are allowed during the half-open state. This parameter represents a strategic trade-off: lower values lead to faster recovery decisions but provide less data for evaluation, while higher values give more confidence in the recovery assessment but slow down the return to normal operation.
-
-**`required_successful`** (integer) - default: `1`
-
-This specifies how many successful requests are needed to close the circuit from the half-open state. This setting works in conjunction with `half_open_attempts` to determine the recovery behavior. Higher values provide more confidence that the service has truly recovered but require more successful requests before normal operation resumes.
-
-**`num_buckets`** (integer) - default: `10`
-
-This determines the number of buckets used for statistics within the rolling window. More buckets provide finer-grained statistics and more precise error rate calculations, but they also consume more memory. The rolling duration must be evenly divisible by the number of buckets—if the modulo operation of `rolling_duration % num_buckets` is not zero, the router will return a configuration error.
-
-**`max_concurrent_requests`** (integer) - default: `-1`
-
-This controls the maximum number of concurrent requests that the circuit breaker will process simultaneously. When set to the default value of -1, there is no limit on concurrent requests. This setting can be useful for protecting downstream services from being overwhelmed even when the circuit is closed.
 
 ## Configuration Scopes
 
@@ -131,15 +95,16 @@ You can apply circuit breaker settings to all subgraphs by default using the `al
 traffic_shaping:
   all:
     circuit_breaker:
-      enabled: true
-      request_threshold: 20
-      error_threshold_percentage: 50
+      ...
 ```
 
 ### Subgraph-Specific Configuration
 
 Individual subgraphs can have their circuit breaker behavior customized or completely disabled by adding specific configuration blocks. This granular control allows you to tailor protection levels based on the reliability characteristics and criticality of different services:
 
+<Info>
+It is important to note that when you coinfigure a circuit breaker at the subgraph level, it will also result in the creation of a distinct subgraph transport with the default values (unless specified).
+</Info>
 
 ```yaml
 traffic_shaping:
@@ -150,8 +115,7 @@ traffic_shaping:
     another-service:
       circuit_breaker:
         enabled: true
-        request_threshold: 10   
-        sleep_window: 60s       
+        ...
 ```
 
 ## Important Considerations
@@ -164,6 +128,10 @@ When you configure `half_open_attempts` to be less than `required_successful`, t
 
 **Timeout Behavior**<br/>
 The `execution_timeout` serves as an internal timer specifically for circuit breaker error tracking. When a request exceeds this timeout, it gets marked as an error for circuit breaker statistical purposes. However, it's crucial to understand that the actual request might still succeed and return a response to the client before the circuit breaker trips. This separation allows the circuit breaker to track slow requests as potential indicators of service degradation.
+
+**Num Buckets and Rolling Duration**<br/>
+The rolling duration must be evenly divisible by the number of buckets—if the modulo operation of rolling_duration % num_buckets is not zero, the router will return a configuration error.
+
 
 ## Monitoring and Observability
 
