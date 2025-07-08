@@ -45,8 +45,6 @@ We support a Go Regex strings. You can test your Regex at [https://regex101.com/
 
 OpenTelemetry metrics use dots (`.`) as separators in metric names (e.g., `wg.operation.hash`, `router.http.request.duration`). When writing regular expressions to match these metric names, you must escape the dot character since it has special meaning in regex (matches any character).
 
-**Important:** In regex, a literal dot must be escaped as `\.`, but in YAML strings, backslashes themselves need escaping, so you end up with `\\.`.
-
 <Tip>
 Using single quotes in YAML prevents the need to double-escape backslashes, making your regex patterns more readable and less error-prone.
 </Tip>
