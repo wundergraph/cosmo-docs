@@ -92,6 +92,32 @@ Now, you should get auto-completion <Icon icon="star" />.
 
 Many configuration options can be set as environment variables. For a complete list of options, please look at the [Router](/router/configuration#router) config tables.
 
+## Regular Expressions
+
+Many configuration options support regular expressions (Go RE2 syntax). Test patterns at [regex101.com](https://regex101.com/) using the "Golang" flavor.
+
+<Warning>
+**Escape dots in metric names:** OpenTelemetry metrics contain dots that must be escaped in regex patterns:
+
+- **Incorrect:** `"wg.operation.hash"` (matches any character)
+- **Correct:** `"wg\\.operation\\.hash"` or `'^wg\.operation\.hash$'` (single quotes recommended)
+</Warning>
+
+**Common examples:**
+```yaml
+# Metric exclusion
+exclude_metrics:
+  - '^wg\.operation\.hash$'       # Exact match
+  - '^router\.http\.request\..*'  # Prefix match
+
+# Header matching  
+headers:
+  all:
+    request:
+      - op: "propagate"
+        matching: '(?i)^x-custom-.*'  # Case-insensitive prefix
+```
+
 ## Router
 
 The following sections describe each configuration in detail with all available options and their defaults.
