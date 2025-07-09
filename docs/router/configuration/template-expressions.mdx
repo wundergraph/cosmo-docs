@@ -153,7 +153,7 @@ It contains the following properties:
 
 #### SubgraphResponse Properties
 
-- `subgraph.response.body` (SubgraphResponseBody): The subgraph response body as a string
+- `subgraph.response.body` (SubgraphResponseBody)
 
 
 ### SubgraphResponseBody Object
@@ -164,7 +164,7 @@ To optimize performance, the raw response body (`body.raw`) is only included in 
 
 **Available Fields**:
 
-- `subgraph.response.body.raw`
+- `subgraph.response.body.raw` (string): The raw stringified representation of the subgraph response body
 
 <Note>
 This attribute will evaluate to `""` when used outside of `access_logs.subgraphs.fields` expressions. You can find more info about subgraph access log fields [here](/router/access-logs#subgraph-access-log-expressions).
@@ -198,7 +198,7 @@ The `response` object is a read-only entity that provides details about the outg
 
 **Available Fields**:
 
-- `response.body`
+- `response.body` (ResponseBody)
 
 ### ResponseBody Object
 
@@ -208,7 +208,7 @@ To optimize performance, the raw response body (`body.raw`) is only included in 
 
 **Available Fields**:
 
-- `response.body.raw`
+- `response.body.raw` (string): The raw stringified representation of the router response body
 
 <Note>
 This attribute will evaluate to `""` when used outside of `access_logs.router.fields` expressions. You can find more info about router access log fields [here](/router/access-logs#expression-fields).
