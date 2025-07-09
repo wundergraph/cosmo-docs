@@ -62,7 +62,8 @@ subgraph_error_propagation:
   propagate_status_codes: true
   omit_locations: true
   attach_service_name: true # Attach the service name to the error
-  allowed_extension_fields: # Propagate additional fields from subgraphs
+  allow_all_extension_fields: false # Allow all extension fields from subgraphs
+  allowed_extension_fields: # Allow specific extension fields from subgraphs
     - "code"
 ```
 
@@ -103,7 +104,7 @@ The **wrapped mode** is useful when you want to avoid exposing additional inform
 **Configuration**
 
 ```yaml
-subgraph_error_propagation:
+subgraph_error_propagation:π
   mode: wrapped
   omit_extensions: true
 ```
@@ -124,16 +125,24 @@ subgraph_error_propagation:
 
 The **pass-through **mode returns errors exactly as they are received from the subgraph, without modification. This mode is commonly used in the GraphQL ecosystem to provide more transparency in error responses. As described in the previous section, you can fine-tune what information is exposed by adjusting the configuration.
 
-### Propagate only selected fields
+### Propagate only selected error fields
 
-You can also fine tune which fields are propagated with `allowed_fields`. The following ones are always propagated
+You can also select which fields are propagated with `allowed_fields`. The following fields are always propagated:
 
 - `message`
 - `path`
 
-If `omit_extensions` is set to `true` (default is `false` ), `extensions` will not be propagated.
+If `omit_extensions` is set to `true` (default is `false`), `extensions` will not be propagated. This is useful in case you want to avoid leaking internal information to the client. Some users of GraphQL leverage the errors.extensions.code field to implement error handling logic in the client, in which case you might want to set this to false.
 
-If `omit_locations` is set to `true` (default is `false` ), `locations` will not be propagated.
+If `omit_locations` is set to `true` (default is `false`), `locations` will not be propagated. This is useful because the locations of a Subgraph error is internal to the Subgraph and not relevant to the client.
+
+### Propagate only selected error extension fields
+
+You can select which fields are propagated with `allowed_extension_fields`. The following fields are propagated by default:
+
+- `code`
+
+If `allow_all_extension_fields` is set to `true` (default is `false`), all extension fields will be propagated. `allow_all_extension_fields` takes precedence over `allowed_extension_fields`, but `omit_extensions` overrules both.
 
 **Configuration**
 
@@ -141,6 +150,7 @@ If `omit_locations` is set to `true` (default is `false` ), `locations` will not
 subgraph_error_propagation:
   mode: pass-through
   attach_service_name: true
+  allow_all_extension_fields: false
   allowed_extension_fields:
     - "code"
   allowed_fields:
