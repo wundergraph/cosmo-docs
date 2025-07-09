@@ -598,6 +598,8 @@ This option may change or be removed in future versions as the OpenTelemetry SDK
 | METRICS_OTLP_GRAPHQL_CACHE         | graphql_cache         | <Icon icon="square" />                        | Enable the collection of metrics for the GraphQL operation router caches.                                                                                 | false         |
 | METRICS_OTLP_EXCLUDE_METRICS       | exclude_metrics       | <Icon icon="square" />                        | The metrics to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions.       | []            |
 | METRICS_OTLP_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        | The metric labels to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions. | []            |
+| METRICS_OTLP_CONNECTION_STATS      | connection_stats      | <Icon icon="square" />                        | Enable connection metrics.                                                                                                                                | false         |
+| METRICS_OTLP_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Ensure that circuit breaker metrics are enabled for OTEL.                                                                                                 | false         |
 
 ### Attributes
 
@@ -642,9 +644,11 @@ telemetry:
 | PROMETHEUS_HTTP_PATH             | path                  | <Icon icon="square" />                        | The HTTP path where metrics are exposed.                                  | "/metrics"       |
 | PROMETHEUS_LISTEN_ADDR           | listen_addr           | <Icon icon="square" />                        | The address to listen on for the prometheus metrics endpoint.             | "127.0.0.1:8088" |
 | PROMETHEUS_GRAPHQL_CACHE         | graphql_cache         | <Icon icon="square" />                        | Enable the collection of metrics for the GraphQL operation router caches. | false            |
+| PROMETHEUS_CONNECTION_STATS      | connection_stats      | <Icon icon="square" />                        | Enable connection metrics.                                                | false            |
 | PROMETHEUS_EXCLUDE_METRICS       | exclude_metrics       | <Icon icon="square" />                        |                                                                           |                  |
 | PROMETHEUS_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        |                                                                           |                  |
 | PROMETHEUS_EXCLUDE_SCOPE_INFO    | exclude_scope_info    | <Icon icon="square" />                        | Exclude scope info from Prometheus metrics.                               | false            |
+| PROMETHEUS_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Enable the circuit breaker metrics for prometheus metric collection.      | false            |
 
 ### Example YAML config:
 
@@ -1196,6 +1200,19 @@ traffic_shaping:
       max_attempts: 5
       interval: 3s
       max_duration: 10s
+    # Circuit Breaker
+    circuit_breaker:
+      enabled: true
+      request_threshold: 20
+      error_threshold_percentage: 50
+      sleep_window: 30s
+      half_open_attempts: 5
+      required_successful: 3
+      rolling_duration: 60s
+      num_buckets: 10
+      execution_timeout: 60s
+      max_concurrent_requests: -1
+
   subgraphs: # allows you to create subgraph specific traffic shaping rules
     products: # Will only affect this subgraph, and override the options in "all" for that subgraph
       request_timeout: 60s
@@ -1208,6 +1225,9 @@ traffic_shaping:
       max_idle_conns: 1024
       max_conns_per_host: 100
       max_idle_conns_per_host: 20
+      # You can configure circuit breakers per subgraph, which includes the above configurations
+      circuit_breaker:
+        enabled: false
 ```
 
 ### Subgraph Request Rules
@@ -1217,6 +1237,7 @@ These rules apply to requests being made from the Router to all Subgraphs.
 | Environment Variable | YAML                      | Required                                      | Description                                                                         | Default Value |
 | -------------------- | ------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------- | ------------- |
 |                      | retry                     | <Icon icon="square" />                        | [#traffic-shaping-jitter-retry](/router/configuration#traffic-shaping-jitter-retry) |               |
+|                      | circuit_breaker           | <Icon icon="square" />                        | [#circuit-breaker](/router/configuration#circuit-breaker)                           |               |
 |                      | request_timeout           | <Icon icon="square-check" iconType="solid" /> |                                                                                     | 60s           |
 |                      | dial_timeout              | <Icon icon="square" />                        |                                                                                     | 30s           |
 |                      | response_header_timeout   | <Icon icon="square" />                        |                                                                                     | 0s            |
@@ -1243,6 +1264,23 @@ In addition to the general traffic shaping rules, we also allow users to set sub
 |                      | max_idle_conns            | <Icon icon="square" /> |             | 1024          |
 |                      | max_conns_per_host        | <Icon icon="square" /> |             | 100           |
 |                      | max_idle_conns_per_host   | <Icon icon="square" /> |             | 20            |
+
+### Circuit Breaker
+
+Configure circuit breaker either for all subgraphs, or per subgraph. More information on circuit breakers can be found [here](/router/traffic-shaping/circuit-breaker).
+
+| Environment Variable | YAML                       | Required                   | Description                                                                                                                                                                                                                                                                         | Default Value |
+| -------------------- | -------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|                      | enabled                    | <Icon icon="square" />     | Enable the circuit breaker for the target (all subgraphs or a specific subgraph).                                                                                                                                                                                                   | false         |
+|                      | error_threshold_percentage | <Icon icon="square" />  | This represents the percentage of failed requests within the rolling window that will trigger the circuit to open. For example, with a 50% threshold and 100 total requests in the window, the circuit will open when 50 or more requests fail.                                        | 50            |
+|                      | request_threshold          | <Icon icon="square" />     | Defines the minimum number of requests that must be received before the circuit breaker will evaluate error rates for potential state transitions.                                                                                                                                  | 20            |
+|                      | sleep_window               | <Icon icon="square" />     | This setting determines how long the circuit will block all requests after transitioning to the open state. The sleep window serves a critical purpose: it gives the failing service time to recover without being overwhelmed by continued request attempts.                       | 5s            |
+|                      | half_open_attempts         | <Icon icon="square" />     | Number of test requests allowed in the half-open state.                                                                                                                                                                                                                             | 1             |
+|                      | required_successful        | <Icon icon="square" />     | How many successful requests are needed to close the circuit from the half-open state. This setting works in conjunction with half_open_attempts to determine the recovery behavior.                                                                                                | 1             |
+|                      | rolling_duration           | <Icon icon="square" />     | The time window for collecting error and request statistics. Only data from within this window influences circuit breaker decisions, ensuring that the circuit responds to current conditions rather than being influenced by historical problems that may have been resolved.      | 10s           |
+|                      | num_buckets                | <Icon icon="square" />     | Number of buckets for statistics in the rolling window (higher = finer granularity).                                                                                                                                                                                                | 10            |
+|                      | execution_timeout          | <Icon icon="square" />     | The maximum time allocated before marking a request as failed due to timeout. This timeout is specifically for circuit breaker error tracking and operates independently of any actual request timeouts.                                                                            | 60s           |
+|                      | max_concurrent_requests    | <Icon icon="square" />     | This controls the maximum number of concurrent requests that the circuit breaker will process simultaneously. When set to the default value of -1, there is no limit on concurrent requests.                                                                                        | -1            |
 
 ### Jitter Retry
 

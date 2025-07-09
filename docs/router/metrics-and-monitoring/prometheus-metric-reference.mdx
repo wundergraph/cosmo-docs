@@ -43,6 +43,15 @@ These metrics ensure efficient request handling, operation planning, and system 
 
   * The value will always be 1.
 
+#### Circuit Breaker Metrics
+
+* `router_circuit_breaker_state`: Info metric that provides information on the current state of the circuit breaker.
+
+  * This indicates the current state of a circuit: `0` represents closed, and `1` represents open.
+
+* `router_circuit_breaker_short_circuits`: Metric for the number of short-circuited requests.
+
+  * This indicates how many requests for this circuit have failed without even being processed because the circuit was open.
 
 ### GraphQL Operation Cache Metrics
 
@@ -106,7 +115,7 @@ telemetry:
 
 * `router_http_client_connection_max`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
 
-* `router_http_client_connection_active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it’s less common, multiple subgraphs can share the same host, which is why both dimensions are included.
+* `router_http_client_connection_active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it's less common, multiple subgraphs can share the same host, which is why both dimensions are included.
 
 * `router_http_client_connection_acquire_duration`: The duration in ms that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
 
@@ -383,9 +392,51 @@ This means that we can assume for the last N (in this case 20) seconds that ther
 **Reason for Monitoring:**
 
 1. **Router Change Detection:** Monitoring whenever a new router execution configuration was pushed to the router.
-
 2. **Uptime Detection:** Whenever the router is running the `router_info` metric will be available. This can be used to detect whenever the router is down.
 
+## `router_circuit_breaker_state`
+
+**Description:**
+
+Indicates the current state of the circuit breaker for a subgraph. `0` means the circuit is closed (requests are allowed), and `1` means the circuit is open (requests are blocked). Includes the `wg_subgraph` and `wg_feature_flag` dimensions for granular monitoring.
+
+**Example PromQL Query:**
+
+```bash
+max by(wg_subgraph) (router_circuit_breaker_state)
+```
+
+**Reason for Monitoring:**
+
+- Alert when a subgraph's circuit breaker is open (value is `1`).
+- Track the health of subgraphs and feature-flagged variants.
+
+**Error Cases Addressed:**
+
+* Subgraph is unhealthy or experiencing repeated failures.
+* Circuit breaker is open for extended periods.
+
+## `router_circuit_breaker_short_circuits`
+
+**Description:**
+
+Counts how many requests have been immediately failed (short-circuited) because the circuit was open. Includes the `wg_subgraph` and `wg_feature_flag` dimensions for granular monitoring.
+
+**Example PromQL Query:**
+
+```bash
+increase(router_circuit_breaker_short_circuits[5m])
+```
+
+**Reason for Monitoring:**
+
+- Alert if many requests are being short-circuited, indicating persistent subgraph issues.
+- Understand the impact of circuit breaker activity on request flow over time.
+
+**Error Cases Addressed:**
+
+* High rate of short-circuited requests due to subgraph instability.
+* Circuit breaker is frequently protecting the system from cascading failures.
 
 ## `go_memstats_alloc_bytes`
 
