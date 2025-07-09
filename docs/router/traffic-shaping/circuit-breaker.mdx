@@ -57,6 +57,28 @@ The circuit breaker's state transitions follow a carefully designed logic that b
 
 **Transition from Half-Open to Closed or Open**: From the half-open state, the circuit can transition in two directions. If the required number of successful requests (as defined by `required_successful`) are achieved during the testing phase, the circuit transitions back to closed, allowing normal traffic flow to resume. However, if any of the test requests fail, the circuit immediately returns to the open state and waits for another sleep window before attempting to test recovery again.
 
+## Identifying Failures
+
+The Circuit Breaker internally relies on the Go's RoundTripper, which notably states the following [the following](https://github.com/golang/go/blob/8131635e5a9c7ae2fd2c083bed9e841d27226500/src/net/http/client.go#L120-L126)
+
+> RoundTrip should not attempt to interpret the response. In particular, RoundTrip must return err == nil if it obtained a response, regardless of the response's HTTP status code. A non-nil err should be reserved for failure to obtain a response.
+
+Which essentially means that whenever RoundTrip returns a response, it will never return an error. Thus in any situation where a response is received from the subgraph, the request will not be considered as a failure for the circuit breaker.
+
+Any cases where the RoundTrip returns an error, which is in general related to network failures will be considered as errors for the circuit breakers, some of the situations are listed, but not limited to:
+
+* Transport-level failures: network unreachable, DNS resolution, TCP dial failure.
+* TLS errors: handshake or verification issues.
+*	Early connection closure / Broken connections: issues reading from or writing to the stream.
+
+In addition the above the circuit breaker also considers execution timeouts (when the circuit breaker's execution timeout has been exceeded) as failures. This is independent from request cancellations / timeouts.
+
+However it should be noted that the following is not considered a failure for the circuit breaker
+
+* Request Cancellation / Timeout: When the request is either cancelled or timed out, this will not be recorded as a failure for the circuit breaker.
+
+
+
 ## Example YAML Configuration
 
 You can find information on each individual configuration option [here](/router/configuration#circuit-breaker)
