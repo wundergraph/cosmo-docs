@@ -57,6 +57,37 @@ The circuit breaker's state transitions follow a carefully designed logic that b
 
 **Transition from Half-Open to Closed or Open**: From the half-open state, the circuit can transition in two directions. If the required number of successful requests (as defined by `required_successful`) are achieved during the testing phase, the circuit transitions back to closed, allowing normal traffic flow to resume. However, if any of the test requests fail, the circuit immediately returns to the open state and waits for another sleep window before attempting to test recovery again.
 
+## Identifying Failures
+
+The circuit breaker determines what constitutes a failure based on Go's HTTP RoundTripper behavior and specific timeout conditions.
+
+### What Counts as a Failure
+
+The circuit breaker considers the following scenarios as failures:
+
+**Network-Level Failures**
+When Go's RoundTripper returns an error, the circuit breaker treats this as a failure. According to the [Go source](https://github.com/golang/go/blob/8131635e5a9c7ae2fd2c083bed9e841d27226500/src/net/http/client.go#L120-L126):
+
+> RoundTrip should not attempt to interpret the response. In particular, RoundTrip must return err == nil if it obtained a response, regardless of the response's HTTP status code. A non-nil err should be reserved for failure to obtain a response.
+
+This means that any situation where a response is received from the subgraph—regardless of HTTP status code—will not be considered a failure. However, network-level issues that prevent obtaining a response are counted as failures, including but not limited to:
+
+* **Connection failures**: DNS resolution errors, network unreachable, connection refused, connection timeout
+* **TLS/SSL errors**: certificate verification failures, handshake timeouts, protocol negotiation issues  
+* **Transport errors**: broken connections, premature connection closure, read/write timeouts during data transfer
+
+**Execution Timeouts**
+The circuit breaker also considers execution timeouts as failures. When a request exceeds the configured `execution_timeout`, it gets marked as an error for circuit breaker statistics. This timeout is independent from request cancellations or client-side timeouts.
+
+### What Does NOT Count as a Failure
+
+**HTTP Error Status Codes**
+Since the circuit breaker relies on Go's RoundTripper behavior, HTTP error responses (4xx, 5xx status codes) are not considered failures as long as a response is received. The circuit breaker focuses on connectivity and availability rather than application-level errors.
+
+**Request Cancellations and Timeouts**
+When a request is cancelled or times out due to client-side constraints, this will not be recorded as a failure for the circuit breaker. These scenarios are treated differently from execution timeouts, which are circuit breaker-specific.
+
+
 ## Example YAML Configuration
 
 You can find information on each individual configuration option [here](/router/configuration#circuit-breaker)
