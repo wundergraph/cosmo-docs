@@ -59,24 +59,33 @@ The circuit breaker's state transitions follow a carefully designed logic that b
 
 ## Identifying Failures
 
-The Circuit Breaker internally relies on the Go's RoundTripper, which notably states the following [the following](https://github.com/golang/go/blob/8131635e5a9c7ae2fd2c083bed9e841d27226500/src/net/http/client.go#L120-L126)
+The circuit breaker determines what constitutes a failure based on Go's HTTP RoundTripper behavior and specific timeout conditions.
+
+### What Counts as a Failure
+
+The circuit breaker considers the following scenarios as failures:
+
+**Network-Level Failures**
+When Go's RoundTripper returns an error, the circuit breaker treats this as a failure. According to the [Go source](https://github.com/golang/go/blob/8131635e5a9c7ae2fd2c083bed9e841d27226500/src/net/http/client.go#L120-L126):
 
 > RoundTrip should not attempt to interpret the response. In particular, RoundTrip must return err == nil if it obtained a response, regardless of the response's HTTP status code. A non-nil err should be reserved for failure to obtain a response.
 
-Which essentially means that whenever RoundTrip returns a response, it will never return an error. Thus in any situation where a response is received from the subgraph, the request will not be considered as a failure for the circuit breaker.
+This means that any situation where a response is received from the subgraph—regardless of HTTP status code—will not be considered a failure. However, network-level issues that prevent obtaining a response are counted as failures, including but not limited to:
 
-Any cases where the RoundTrip returns an error, which is in general related to network failures will be considered as errors for the circuit breakers, some of the situations are listed, but not limited to:
+* **Connection failures**: DNS resolution errors, network unreachable, connection refused, connection timeout
+* **TLS/SSL errors**: certificate verification failures, handshake timeouts, protocol negotiation issues  
+* **Transport errors**: broken connections, premature connection closure, read/write timeouts during data transfer
 
-* Transport-level failures: network unreachable, DNS resolution, TCP dial failure.
-* TLS errors: handshake or verification issues.
-*	Early connection closure / Broken connections: issues reading from or writing to the stream.
+**Execution Timeouts**
+The circuit breaker also considers execution timeouts as failures. When a request exceeds the configured `execution_timeout`, it gets marked as an error for circuit breaker statistics. This timeout is independent from request cancellations or client-side timeouts.
 
-In addition the above the circuit breaker also considers execution timeouts (when the circuit breaker's execution timeout has been exceeded) as failures. This is independent from request cancellations / timeouts.
+### What Does NOT Count as a Failure
 
-However it should be noted that the following is not considered a failure for the circuit breaker
+**HTTP Error Status Codes**
+Since the circuit breaker relies on Go's RoundTripper behavior, HTTP error responses (4xx, 5xx status codes) are not considered failures as long as a response is received. The circuit breaker focuses on connectivity and availability rather than application-level errors.
 
-* Request Cancellation / Timeout: When the request is either cancelled or timed out, this will not be recorded as a failure for the circuit breaker.
-
+**Request Cancellations and Timeouts**
+When a request is cancelled or times out due to client-side constraints, this will not be recorded as a failure for the circuit breaker. These scenarios are treated differently from execution timeouts, which are circuit breaker-specific.
 
 
 ## Example YAML Configuration
