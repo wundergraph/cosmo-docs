@@ -12,10 +12,10 @@ A **group rule** defines the roles and associated resources that determine what 
 
 When a group rule doesn't have any explicit resources, the group will always have access to all resources within the organization.
 
-In the same way, if a rule is limited to a single resource and that resource is deleted from the organization, the rule will fallback to having access to all resources within the organization.
+In the same way, if a rule is limited to a single resource and that resource is deleted from the organization, the rule will fall back to granting access to all resources in the organization.
 
 <Note>
-    Unlike limiting resources, if a group doesn't have any rule assigned, this will result in the group effectively not having access to any resource.
+    Unlike assigning specific resources, if a group doesn't have any rule assigned, this will result in the group effectively not having access to any resource.
 </Note>
 
 ## Roles
@@ -26,9 +26,9 @@ You can assign multiple roles to a group using the `Add rule` button. If no grou
     <img src="/images/studio/group-role-selector.png" />
 </Frame>
 
-Each role can be added only once per group. After assigning a role, you may associate it with multiple resources, but you cannot create additional rules for the same role.
+Each role type can only be added once per group. For example, you can assign the `Organization Admin` and `Organization Viewer` roles in the same group, but you cannot assign the same role type more than once. You could also add a `Graph Admin` role to that group, as long as each role type appears only once.
 
-The order in which the roles are assigned to the role doesn't have any effect when performing checks. For example, given the following group:
+The order in which roles are assigned does not affect how access checks are performed. For example, given the following group:
 
 <Frame>
     <img src="/images/studio/group-example1.png" />
@@ -36,7 +36,7 @@ The order in which the roles are assigned to the role doesn't have any effect wh
 
 The members for this group will have **Admin** access to the `default` namespace and **Viewer** to the `test` and any other namespace that may exist in the organization.
 
-If the namespace `default` is deleted, the **Admin** would take priority as the limitation no-longer exists.
+If the namespace `default` is deleted, the **Admin** role is no longer scoped and will apply to all resources.
 
 With this in mind, members of the following example will have **Organization Admin** access to all resources.
 
@@ -53,7 +53,7 @@ These roles apply at the organization level and cannot be limited to specific re
 3. **API Key Manager** — Permissions to create, modify, and delete API keys.
 4. **Viewer** — Read-only access to all organizational objects.
 
-An organization **Developer** have access to manage namespaces, create and publish graphs while an **Admin** is able to perform these operations on top of managing the organization settings.
+An organization **Developer** can manage namespaces and publish graphs. An **Admin** can do the same, plus manage organization-wide settings.
 
 ### Namespace Roles
 
@@ -96,7 +96,7 @@ If no subgraph resources are assigned, the group will have access to all subgrap
     <img src="/images/studio/update-group-screen.png" />
 </Frame>
 
-Resources represent the entities available within your organization, including but not limited to:
+Resources represent entities in your organization, including but not limited to:
 
 - Namespaces
 - Federated Graphs
