@@ -327,7 +327,7 @@
               "studio/playground/shared-playground-state"
             ]
           },
-          "studio/studio",
+          "studio/graph-documentation",
           "studio/compositions",
           {
             "group": "Analytics",
