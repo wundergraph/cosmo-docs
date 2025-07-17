@@ -1181,6 +1181,7 @@ traffic_shaping:
     max_request_body_size: 5MB
     max_header_bytes: 1MiB
     decompression_enabled: true
+    response_compression_min_size: 4KB
   all: # Rules are applied to all subgraph requests.
     # Subgraphs transport options
     request_timeout: 60s
@@ -1296,12 +1297,13 @@ Configure circuit breaker either for all subgraphs, or per subgraph. More inform
 
 These rules apply to requests being made from clients to the Router.
 
-| Environment Variable | YAML                  | Required               | Description                                                                                                                                                                                                                                  | Default Value |
-| -------------------- | --------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-|                      | max_request_body_size | <Icon icon="square" /> |                                                                                                                                                                                                                                              | 5mb           |
-| MAX_HEADER_BYTES     | max_header_bytes      | <Icon icon="square" /> | Minimum Router version: [0.156.0](https://github.com/wundergraph/cosmo/compare/router@0.155.0...router@0.156.0) The maximum size of the request headers. Setting this to 0 uses the default value from the http standard lib, which is 1MiB. | 1mib          |
-|                      | decompression_enabled | <Icon icon="square" /> | When enabled, the router will check incoming requests for a 'Content-Encoding' header and decompress the body accordingly Note: Currently only "gzip" is supported                                                                           | true          |
-| 5mb                  |                       |                        |                                                                                                                                                                                                                                              |               |
+| Environment Variable | YAML                          | Required               | Description                                                                                                                                                                                                                                  | Default Value |
+| -------------------- | ----------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|                      | max_request_body_size         | <Icon icon="square" /> |                                                                                                                                                                                                                                              | 5mb           |
+| MAX_HEADER_BYTES     | max_header_bytes              | <Icon icon="square" /> | Minimum Router version: [0.156.0](https://github.com/wundergraph/cosmo/compare/router@0.155.0...router@0.156.0) The maximum size of the request headers. Setting this to 0 uses the default value from the http standard lib, which is 1MiB. | 1mib          |
+|                      | decompression_enabled         | <Icon icon="square" /> | When enabled, the router will check incoming requests for a 'Content-Encoding' header and decompress the body accordingly Note: Currently only "gzip" is supported                                                                           | true          |
+|                      | response_compression_min_size | <Icon icon="square" /> | The minimum size of the response body in bytes to enable response compression. The size is specified as a string with a number and a unit, e.g. 10KB, 1MB, 1GB                                                                               | 4KB           |
+| 5mb                  |                               |                        |                                                                                                                                                                                                                                              |               |
 
 ## WebSocket
 
