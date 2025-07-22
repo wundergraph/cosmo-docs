@@ -29,10 +29,14 @@ npx wgc subgraph check <name> --delete
 ### Check how a new subgraph affects the federated graph
 
 ```bash
-# First create it
+# There are two ways to check the impact of a new subgraph:
+
+# 1. Create the subgraph and check the impact
 npx wgc subgraph create products --label team=A --routing-url http://localhost:4001/graphql
-# Check the impact
 npx wgc subgraph check <name> --schema schema.graphql
+
+# 2. Check the impact without creating the subgraph
+npx wgc subgraph check <name> --schema schema.graphql --label team=A
 ```
 
 ## Description
