@@ -8,15 +8,15 @@ description: "Set up authentication and authorization for incoming requests"
   Authorization directives can be used in your schema to define granular authorization rules on the field definition level. Documentation can be found at [@authenticated](/federation/directives/authenticated) and [@requiresScopes](/federation/directives/requiresscopes).
 </Info>
 
-Cosmo router supports authenticating incoming requests using [JWKS](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets) authentication. The JSON Web Key Set (JWKS) is a set of keys that contains the public keys used to verify any JSON Web Token (JWT) issued by the authorization server and signed using the RS256 [signing algorithm](https://auth0.com/docs/tokens/concepts/signing-algorithms).
+Cosmo router supports authenticating incoming requests using [JWKS](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets) authentication. The JSON Web Key Set (JWKS) is a set of keys that contains the public keys used to verify any JSON Web Token (JWT) issued by the authorization server and signed using a [signing algorithm](https://auth0.com/docs/tokens/concepts/signing-algorithms).
 
 To enable an authentication provider, add it to your configuration
 
-## Configuration in Router Version >= 0.168.1
+## Current Configuration
 
-In router version 0.169.0 and above, the configuration and behavior of authentication have been redesigned. Instead of specifying a configuration per JWKS endpoint, you can now list multiple endpoints where all header rules apply to. Each JWKS endpoint can optionally specify a whitelist of supported JWT algorithms.
+In the current router version, the configuration and behavior of authentication have been redesigned. Instead of specifying a configuration per JWKS endpoint, you can now list multiple endpoints where all header rules apply to. Each JWKS endpoint can optionally specify a whitelist of supported JWT algorithms.
 
-### New configuration
+### Configuration
 
 <CodeGroup>
   ```yaml config.yaml
@@ -25,12 +25,14 @@ In router version 0.169.0 and above, the configuration and behavior of authentic
       jwks:
         - url: https://example.com/.well-known/jwks.json
           refresh_interval: 1m
-          # Leaving algorithms empty will allow all supported algorithms from the config docs
-          algorithms: []
+          algorithms: ["RS256"]
         - url: https://example2.com/.well-known/jwks.json
           refresh_interval: 2m
           # optional list of allowed algorithms per JWKS
           algorithms: ["RS256", "EdDSA", "HS512"]
+        - algorithm: HS256
+          secret: <your_secret>
+          key_id: some-key-id
       header_name: Authorization # Optional, Authorization is the default value
       header_value_prefix: Bearer # Optional, Bearer is the default value
       header_sources:
@@ -42,7 +44,11 @@ In router version 0.169.0 and above, the configuration and behavior of authentic
   ```
 </CodeGroup>
 
-The new router configuration facilitates the setup of multiple JWKS (JSON Web Key Set) endpoints, each customizable with distinct retrieval settings. It allows specification of supported JWT (JSON Web Token) algorithms per endpoint. Centralizing header rules application across all keys from every JWKS endpoint simplifies management. This setup grants centralized control while offering flexibility in the retrieval and processing of keys.
+The router configuration facilitates the setup of multiple JWKS (JSON Web Key Set) endpoints, each customizable with distinct retrieval settings. It allows specification of supported JWT (JSON Web Token) algorithms per endpoint. It also allows the use of secrets for symmetric algorithms, as it would be a security risk to expose them over a JWKS endpoint. Centralizing header rules application across all keys from every JWKS endpoint simplifies management. This setup grants centralized control while offering flexibility in the retrieval and processing of keys.
+
+For more information on the attributes, visit the auth configuration parameter section page [here](/router/configuration#authentication).
+
+
 
 ## Old Router configuration (\< 0.168.1)
 
