@@ -34,6 +34,26 @@ access_logs:
       path: /var/log/gateway/access.log
 ```
 
+## Setting file permissions
+
+By default, the file will be created with permissions `0640`. You can change this by setting the `mode` field:
+
+```yaml
+access_logs:
+  output:
+    file:
+      mode: '0644'
+```
+
+<Info>
+  The <code>mode</code> uses Linux-style octal permissions. For example, <code>0644</code> means <code>-rw-r--r--</code>:
+  <ul>
+    <li>The first digit (<code>6</code>) is for the <strong>owner</strong> (read + write)</li>
+    <li>The second digit (<code>4</code>) is for the <strong>group</strong> (read only)</li>
+    <li>The third digit (<code>4</code>) is for <strong>others</strong> (read only)</li>
+  </ul>
+</Info>
+
 ## Default Log Fields
 
 The default log fields provide essential details about each HTTP request. These fields include:
