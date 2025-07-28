@@ -30,9 +30,9 @@ In the current router version, the configuration and behavior of authentication 
           refresh_interval: 2m
           # optional list of allowed algorithms per JWKS
           algorithms: ["RS256", "EdDSA", "HS512"]
-        - algorithm: HS256
+        - symmetric_algorithm: HS256
           secret: <your_secret>
-          key_id: some-key-id
+          header_key_id: some-key-id
       header_name: Authorization # Optional, Authorization is the default value
       header_value_prefix: Bearer # Optional, Bearer is the default value
       header_sources:
