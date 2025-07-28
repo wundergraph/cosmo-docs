@@ -1,0 +1,150 @@
+---
+title: "Publish"
+description: "Publishes a plugin subgraph on the control plane. If the plugin subgraph doesn't exist, it will be created and the Docker image will be built and pushed to the registry."
+icon: upload
+---
+
+## **Usage**
+
+```bash
+npx wgc router plugin publish <name> --schema [schemaFilePath] --go-module-path [path] --docker-file [dockerFilePath]
+```
+
+<Note>
+  **Publish** is an irreversible action. However, the change will only be
+  visible to the routers once the composition has been successful. Until then,
+  the routers will operate with the most recent valid composition. Please use
+  [subgraph check](/cli/subgraph/check) to understand the impact of your change.
+</Note>
+
+## **Description**
+
+The `npx wgc router plugin publish` command enables you to publish a plugin subgraph to the Cosmo platform. Publishing a plugin subgraph makes it available for use by federated graphs, allowing them to extend functionality through custom plugins. The command builds and pushes a Docker image containing your plugin to the registry, then publishes the subgraph schema to the control plane.
+
+The `<name>` argument specifies the name of the plugin subgraph, while the required options define the schema file, Go module path, and Docker configuration needed to build and deploy your plugin.
+
+## **Parameters**
+
+- `<name>`: The name of the plugin subgraph to publish. It is used to uniquely identify your plugin subgraph.
+
+## **Options**
+
+### **Required Options**
+
+- `--schema <path-to-schema>`: The schema file to upload to the plugin subgraph. This file should contain the complete GraphQL schema definition for your plugin.
+
+  - Example: `--schema ./plugin.graphql`
+
+- `--go-module-path <path>`: The path of the Go module, used for Go proto generation. This is required for building the plugin.
+
+  - Example: `--go-module-path github.com/myorg/myplugin`
+
+- `--docker-file <path-to-docker-file>`: The path to your Dockerfile that defines how to build the plugin container image.
+
+  - Example: `--docker-file ./Dockerfile`
+
+### **Optional Options**
+
+<Note>
+  If the plugin subgraph has already been created previously, the `label`
+  parameter will be ignored. Use [subgraph update](/cli/subgraph/update) to
+  update these values.
+</Note>
+
+- `-n, --namespace [string]`: The namespace of the plugin subgraph (Default: "default").
+
+- `--docker-context <docker-context>`: The path at which Docker should have context to build the image. Defaults to "." (current directory).
+
+  - Example: `--docker-context ./build-context`
+
+- `--proto-schema <path_to_proto_schema>`: The path to the proto schema file. Must be used together with `--proto-mapping` and `--proto-lock`.
+
+  - Example: `--proto-schema ./schema.proto`
+
+- `--proto-mapping <path_to_proto_mapping>`: The path to the proto mapping file. Must be used together with `--proto-schema` and `--proto-lock`.
+
+  - Example: `--proto-mapping ./mapping.json`
+
+- `--proto-lock <path_to_proto_lock>`: The path to the proto lock file. Must be used together with `--proto-schema` and `--proto-mapping`.
+
+  - Example: `--proto-lock ./proto.lock`
+
+<Note>
+  If any proto option is specified, all three must be provided:
+  `--proto-schema`, `--proto-mapping`, and `--proto-lock`.
+</Note>
+
+- `--platform [platforms...]`: The platforms used to build the Docker image. Pass multiple platforms separated by spaces. Supported formats: `linux/amd64`, `linux/arm64`, `darwin/amd64`, `darwin/arm64`, `windows/amd64`. Defaults to `linux/amd64`.
+
+  - Example: `--platform linux/amd64 linux/arm64`
+
+- `--label [labels...]`: Assign multiple labels to the new plugin subgraph. Labels are used to categorize and organize subgraphs based on specific criteria (e.g., team, department, project). The labels are passed in the format `<key>=<value>`.
+
+  - Example: `--label team=backend --label environment=production`
+
+<Note>
+  If you are *creating* a plugin subgraph for the first time with `router plugin publish`, the `label` parameter can be used to set labels. Note that a subgraph will only be considered for a federated graph composition if the subgraph's labels match the labels matcher of that federated graph.
+
+If you are not creating a plugin subgraph for the first time, the `label` parameter will be ignored. To update the labels of an existing plugin subgraph, use [subgraph update](/cli/subgraph/update).
+
+</Note>
+
+- `--fail-on-composition-error`: If set, the command will fail if the composition of the federated graph fails.
+
+- `--fail-on-admission-webhook-error`: If set, the command will fail if the admission webhook fails.
+
+- `--suppress-warnings`: This flag suppresses any warnings produced by composition.
+
+## **Examples**
+
+### Publish a plugin subgraph with required options
+
+```bash
+npx wgc router plugin publish projects \
+  --schema ./projects.graphql \
+  --go-module-path github.com/myorg/projects \
+  --docker-file ./Dockerfile
+```
+
+### **Create and publish a plugin subgraph with labels and multi-platform support**
+
+```bash
+npx wgc router plugin publish projects \
+  --schema ./projects.graphql \
+  --go-module-path github.com/myorg/projects \
+  --docker-file ./Dockerfile \
+  --label team=backend --label environment=production \
+  --platform linux/amd64 linux/arm64
+```
+
+### **Publish with proto files and custom Docker context**
+
+```bash
+npx wgc router plugin publish projects \
+  --schema ./projects.graphql \
+  --go-module-path github.com/myorg/projects \
+  --docker-file ./build/Dockerfile \
+  --docker-context ./build \
+  --proto-schema ./schema.proto \
+  --proto-mapping ./mapping.json \
+  --proto-lock ./proto.lock
+```
+
+## **Build Process**
+
+The publish command performs the following steps:
+
+1. **Validation**: Validates that all required files exist and proto options are properly configured
+2. **Image Build**: Builds the Docker image using `docker buildx build` with the specified platforms
+3. **Image Push**: Pushes the built image to the plugin registry
+4. **Schema Publish**: Publishes the GraphQL schema to the control plane
+
+## **Notes**
+
+- The `npx wgc router plugin publish` command interacts with the Cosmo platform's control plane to publish the specified plugin subgraph and builds a Docker image that gets pushed to the plugin registry.
+
+- Ensure that Docker is installed and running on your system, as the command builds and pushes Docker images as part of the publication process.
+
+- Double-check that all file paths provided for the various options point to the correct locations of the respective files.
+
+- If the build process fails at any step, the command will exit with an error and provide details about what went wrong.
