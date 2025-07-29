@@ -30,6 +30,9 @@ In the current router version, the configuration and behavior of authentication 
           refresh_interval: 2m
           # optional list of allowed algorithms per JWKS
           algorithms: ["RS256", "EdDSA", "HS512"]
+          audiences:
+            - http://aud1
+            - http://aud2
         - symmetric_algorithm: HS256
           secret: <your_secret>
           header_key_id: some-key-id
