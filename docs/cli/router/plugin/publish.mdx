@@ -7,7 +7,7 @@ icon: upload
 ## **Usage**
 
 ```bash
-npx wgc router plugin publish <name> --plugin [pluginDirectoryPath]
+npx wgc router plugin publish [directory]
 ```
 
 <Note>
@@ -25,17 +25,13 @@ npx wgc router plugin publish <name> --plugin [pluginDirectoryPath]
 
 The `npx wgc router plugin publish` command enables you to publish a plugin subgraph to the Cosmo platform. Publishing a plugin subgraph makes it available for use by federated graphs, allowing them to extend functionality through custom plugins. The command builds and pushes a Docker image containing your plugin to the registry, then publishes the subgraph schema to the control plane.
 
-The command expects a specific directory structure for your plugin and automatically locates the necessary files within the plugin directory. You should first run `npx wgc router plugin init <name>` to scaffold the proper directory structure.
+The command expects a specific directory structure for your plugin and automatically locates the necessary files within the plugin directory. The plugin name is derived from the directory name. You should first run `npx wgc router plugin init <name>` to scaffold the proper directory structure.
 
 ## **Parameters**
 
-- `<name>`: The name of the plugin subgraph to publish. It is used to uniquely identify your plugin subgraph.
+- `[directory]`: The path to the plugin directory (optional, defaults to current directory). The plugin name is automatically derived from the directory name.
 
 ## **Options**
-
-### **Required Options**
-
-- `--plugin <path-to-plugin-directory>`: The path to the plugin directory containing your plugin files.
 
 ### **Plugin Directory Structure**
 
@@ -80,17 +76,16 @@ If you are not creating a plugin subgraph for the first time, the `label` parame
 
 ## **Examples**
 
-### Publish a plugin subgraph with required options
+### Publish a plugin subgraph
 
 ```bash
-npx wgc router plugin publish projects --plugin ./my-plugin
+npx wgc router plugin publish ./plugins/my-plugin
 ```
 
 ### **Create and publish a plugin subgraph with labels and multi-platform support**
 
 ```bash
-npx wgc router plugin publish projects \
-  --plugin ./my-plugin \
+npx wgc router plugin publish ./plugins/my-plugin \
   --label team=backend --label environment=production \
   --platform linux/amd64 linux/arm64
 ```
@@ -98,8 +93,7 @@ npx wgc router plugin publish projects \
 ### **Publish with custom namespace**
 
 ```bash
-npx wgc router plugin publish projects \
-  --plugin ./my-plugin \
+npx wgc router plugin publish ./plugins/my-plugin \
   --namespace production
 ```
 
@@ -124,8 +118,14 @@ Here's the recommended workflow for developing and publishing a plugin:
 3. **Test your plugin locally**: Use the generated `Makefile` commands to build and test
 
 4. **Publish the plugin**:
+
    ```bash
-   npx wgc router plugin publish my-plugin --plugin ./plugins/my-plugin
+   # Option 1: Specify the directory path
+   npx wgc router plugin publish ./plugins/my-plugin
+
+   # Option 2: Run from within the plugin directory
+   cd ./plugins/my-plugin
+   npx wgc router plugin publish
    ```
 
 ## **Build Process**
@@ -155,5 +155,7 @@ The publish command performs the following steps:
   │   └── service.proto.lock.json
   └── Dockerfile
   ```
+
+- The plugin name is automatically derived from the directory name (e.g., if your plugin is in `./plugins/my-awesome-plugin`, the plugin name will be `my-awesome-plugin`).
 
 - If the build process fails at any step, the command will exit with an error and provide details about what went wrong.
