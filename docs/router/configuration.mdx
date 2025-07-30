@@ -1427,6 +1427,14 @@ This is useful when you have a symmetric key that you cannot expose through a JW
 | symmetric_algorithm                                                         |  <Icon icon="square-check" iconType="solid" /> | Specify which symmetric algorithm is used for signing, supported algorithms are "HS256", "HS384", "HS512"                                    |                     |
 
 
+#### Audience Validation
+In addition to the above JWKS configuration flavours, you can define a list of audiences of which one is required (if specified) with either options.
+
+| YAML                                                                        | Required                                       | Description                                                                                                        | Default Value    |
+| --------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | -----------------|
+| audiences                                                                   | <Icon icon="square" />                         | The allowed list of audiences, of which at least one audience is required in the token                             | []               |
+
+
 ### JWT
 
 | YAML                | Required               | Description                                                                                                                   | Default Value |
