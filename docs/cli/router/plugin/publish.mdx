@@ -7,8 +7,12 @@ icon: upload
 ## **Usage**
 
 ```bash
-npx wgc router plugin publish <name> --schema [schemaFilePath] --go-module-path [path] --docker-file [dockerFilePath]
+npx wgc router plugin publish <name> --plugin [pluginDirectoryPath]
 ```
+
+<Note>
+  **Prerequisites**: Before publishing, you must first scaffold your plugin using `npx wgc router plugin init <name>` to create the required directory structure and files.
+</Note>
 
 <Note>
   **Publish** is an irreversible action. However, the change will only be
@@ -21,7 +25,7 @@ npx wgc router plugin publish <name> --schema [schemaFilePath] --go-module-path 
 
 The `npx wgc router plugin publish` command enables you to publish a plugin subgraph to the Cosmo platform. Publishing a plugin subgraph makes it available for use by federated graphs, allowing them to extend functionality through custom plugins. The command builds and pushes a Docker image containing your plugin to the registry, then publishes the subgraph schema to the control plane.
 
-The `<name>` argument specifies the name of the plugin subgraph, while the required options define the schema file, Go module path, and Docker configuration needed to build and deploy your plugin.
+The command expects a specific directory structure for your plugin and automatically locates the necessary files within the plugin directory. You should first run `npx wgc router plugin init <name>` to scaffold the proper directory structure.
 
 ## **Parameters**
 
@@ -31,17 +35,17 @@ The `<name>` argument specifies the name of the plugin subgraph, while the requi
 
 ### **Required Options**
 
-- `--schema <path-to-schema>`: The schema file to upload to the plugin subgraph. This file should contain the complete GraphQL schema definition for your plugin.
+- `--plugin <path-to-plugin-directory>`: The path to the plugin directory containing your plugin files.
 
-  - Example: `--schema ./plugin.graphql`
+### **Plugin Directory Structure**
 
-- `--go-module-path <path>`: The path of the Go module, used for Go proto generation. This is required for building the plugin.
+The plugin directory must contain the following files in their expected locations (created automatically by `npx wgc router plugin init`):
 
-  - Example: `--go-module-path github.com/myorg/myplugin`
-
-- `--docker-file <path-to-docker-file>`: The path to your Dockerfile that defines how to build the plugin container image.
-
-  - Example: `--docker-file ./Dockerfile`
+- `src/schema.graphql`: The GraphQL schema definition for your plugin
+- `Dockerfile`: The Dockerfile that defines how to build the plugin container image
+- `generated/service.proto`: The protocol buffer schema file
+- `generated/mapping.json`: The protocol buffer mapping file
+- `generated/service.proto.lock.json`: The protocol buffer lock file
 
 ### **Optional Options**
 
@@ -52,27 +56,6 @@ The `<name>` argument specifies the name of the plugin subgraph, while the requi
 </Note>
 
 - `-n, --namespace [string]`: The namespace of the plugin subgraph (Default: "default").
-
-- `--docker-context <docker-context>`: The path at which Docker should have context to build the image. Defaults to "." (current directory).
-
-  - Example: `--docker-context ./build-context`
-
-- `--proto-schema <path_to_proto_schema>`: The path to the proto schema file. Must be used together with `--proto-mapping` and `--proto-lock`.
-
-  - Example: `--proto-schema ./schema.proto`
-
-- `--proto-mapping <path_to_proto_mapping>`: The path to the proto mapping file. Must be used together with `--proto-schema` and `--proto-lock`.
-
-  - Example: `--proto-mapping ./mapping.json`
-
-- `--proto-lock <path_to_proto_lock>`: The path to the proto lock file. Must be used together with `--proto-schema` and `--proto-mapping`.
-
-  - Example: `--proto-lock ./proto.lock`
-
-<Note>
-  If any proto option is specified, all three must be provided:
-  `--proto-schema`, `--proto-mapping`, and `--proto-lock`.
-</Note>
 
 - `--platform [platforms...]`: The platforms used to build the Docker image. Pass multiple platforms separated by spaces. Supported formats: `linux/amd64`, `linux/arm64`, `darwin/amd64`, `darwin/arm64`, `windows/amd64`. Defaults to `linux/amd64`.
 
@@ -100,41 +83,56 @@ If you are not creating a plugin subgraph for the first time, the `label` parame
 ### Publish a plugin subgraph with required options
 
 ```bash
-npx wgc router plugin publish projects \
-  --schema ./projects.graphql \
-  --go-module-path github.com/myorg/projects \
-  --docker-file ./Dockerfile
+npx wgc router plugin publish projects --plugin ./my-plugin
 ```
 
 ### **Create and publish a plugin subgraph with labels and multi-platform support**
 
 ```bash
 npx wgc router plugin publish projects \
-  --schema ./projects.graphql \
-  --go-module-path github.com/myorg/projects \
-  --docker-file ./Dockerfile \
+  --plugin ./my-plugin \
   --label team=backend --label environment=production \
   --platform linux/amd64 linux/arm64
 ```
 
-### **Publish with proto files and custom Docker context**
+### **Publish with custom namespace**
 
 ```bash
 npx wgc router plugin publish projects \
-  --schema ./projects.graphql \
-  --go-module-path github.com/myorg/projects \
-  --docker-file ./build/Dockerfile \
-  --docker-context ./build \
-  --proto-schema ./schema.proto \
-  --proto-mapping ./mapping.json \
-  --proto-lock ./proto.lock
+  --plugin ./my-plugin \
+  --namespace production
 ```
+
+## **Typical Workflow**
+
+Here's the recommended workflow for developing and publishing a plugin:
+
+1. **Initialize the plugin**:
+
+   ```bash
+   npx wgc router plugin init my-plugin
+   ```
+
+   This creates the plugin in the `plugins/my-plugin/` directory.
+
+2. **Develop your plugin**: Modify the generated files as needed:
+
+   - Edit `src/schema.graphql` to define your GraphQL schema
+   - Implement your plugin logic in `src/main.go`
+   - Update the `Dockerfile` if needed for custom build requirements
+
+3. **Test your plugin locally**: Use the generated `Makefile` commands to build and test
+
+4. **Publish the plugin**:
+   ```bash
+   npx wgc router plugin publish my-plugin --plugin ./plugins/my-plugin
+   ```
 
 ## **Build Process**
 
 The publish command performs the following steps:
 
-1. **Validation**: Validates that all required files exist and proto options are properly configured
+1. **Validation**: Validates that all required files exist in the plugin directory at their expected locations
 2. **Image Build**: Builds the Docker image using `docker buildx build` with the specified platforms
 3. **Image Push**: Pushes the built image to the plugin registry
 4. **Schema Publish**: Publishes the GraphQL schema to the control plane
@@ -145,6 +143,17 @@ The publish command performs the following steps:
 
 - Ensure that Docker is installed and running on your system, as the command builds and pushes Docker images as part of the publication process.
 
-- Double-check that all file paths provided for the various options point to the correct locations of the respective files.
+- The command expects a specific directory structure with files in predetermined locations. Make sure your plugin follows this structure (created by running `npx wgc router plugin init <name>`):
+
+  ```
+  my-plugin/
+  ├── src/
+  │   └── schema.graphql
+  ├── generated/
+  │   ├── service.proto
+  │   ├── mapping.json
+  │   └── service.proto.lock.json
+  └── Dockerfile
+  ```
 
 - If the build process fails at any step, the command will exit with an error and provide details about what went wrong.
