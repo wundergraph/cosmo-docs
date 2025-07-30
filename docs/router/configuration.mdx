@@ -1867,6 +1867,10 @@ The configuration for the security. The security is used to configure the securi
 | SECURITY_BLOCK_NON_PERSISTED_OPERATIONS_CONDITION | block_non_persisted_operations.condition | <Icon icon="square" /> | The [expression](/router/configuration/template-expressions) to evaluate if the operation should be blocked.                       |               |
 |                                                   | complexity_calculation_cache             | <Icon icon="square" /> | Complexity Cache configuration                                                                                                     |               |
 |                                                   | complexity_limits                        | <Icon icon="square" /> | Complexity limits configuration                                                                                                    |               |
+|                                                   | parser_limits.approximate_depth_limit    | <Icon icon="square" /> | The approximate cumulative depth limit of a query, including fragments. Set to 0 to disable.                                       | 100           |
+|                                                   | parser_limits.total_fields_limit         | <Icon icon="square" /> | The total number of fields the parser will allow. Set to 0 to disable.                                                             | 500           |
+| SECURITY_OPERATION_NAME_LENGTH_LIMIT              | operation_name_length_limit              | <Icon icon="square" /> | The maximum allowed length for the operation name. Set to 0 to disable.                                                            | 512           |
+
 
 ### Example YAML Configuration
 
@@ -1901,6 +1905,10 @@ security:
       enabled: false
       limit: 3
       ignore_persisted_operations: true
+  parser_limits:
+    approximate_depth_limit: 300
+    total_fields_limit: 700
+  operation_name_length_limit: 1024
 ```
 
 <Warning>
