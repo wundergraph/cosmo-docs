@@ -425,6 +425,8 @@
             "group": "gRPC",
             "icon": "network-wired",
             "pages": [
+              "router/gRPC/concepts",
+              "router/gRPC/grpc-services",
               {
                 "group": "Plugins",
                 "icon": "plug",
@@ -440,9 +442,7 @@
                     ]
                   }
                 ]
-              },
-              "router/gRPC/concepts",
-              "router/gRPC/grpc-services"
+              }
             ]
           },
           "router/authentication-and-authorization",
