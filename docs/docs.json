@@ -427,8 +427,22 @@
             "pages": [
               "router/gRPC/concepts",
               "router/gRPC/grpc-services",
-              "router/gRPC/plugins",
-              "router/gRPC/debugging"
+              {
+                "group": "Plugins",
+                "icon": "plug",
+                "pages": [
+                  "router/gRPC/plugins",
+                  "router/gRPC/plugins/debugging",
+                  {
+                    "group": "Library Features",
+                    "icon": "books",
+                    "pages": [
+                      "router/gRPC/plugins/library-features/http-client",
+                      "router/gRPC/plugins/library-features/telemetry"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           "router/authentication-and-authorization",
