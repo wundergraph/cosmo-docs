@@ -38,25 +38,56 @@ Additionally, when your plugin makes HTTP requests using the provided HTTP clien
 
 ### Working with traces
 
-Under the hood we use the opentelemetry-go library, which means the same can be used to work with traces. More information can be found in the [otel go docs](https://opentelemetry.io/docs/languages/go/). A few examples are as follows.
+Under the hood we use the opentelemetry-go library, which means the same can be used to work with traces. More information can be found in the [otel go docs](https://opentelemetry.io/docs/languages/go/). A few examples showing how to use open telemetry tracing in your plugin are as follows.
 
 #### Create a new trace
+Let's say you want to add more spans for the operation which filters projects by the passed in status.
+
 ```go
-tracer := otel.Tracer("inner-tracer")
-ctx, span := tracer.Start(ctx, customSpanName)
-span.SetAttributes(
-    customKey,
-    customValue,
-)
-defer span.End()
+func (p *ProjectsService) QueryProjectsByStatus(ctx context.Context, req *service.QueryProjectsByStatusRequest) (*service.QueryProjectsByStatusResponse, error) {
+	// Create a tracer from the inner global tracer
+	tracer := otel.Tracer("projects-service")
+	ctx, span := tracer.Start(ctx, "Query Projects By Status")
+	defer span.End()
+
+	// Add attributes to the span
+	span.SetAttributes(
+		attribute.Key("project.status`").Int(req.Status)
+	)
+
+	// Note that if you want to create a tracer derived from
+	// the above tracer, you will need to pass it down to where its needed
+	projects := getProjectsForStatus(ctx, req.Status)
+
+	return &service.QueryProjectsByStatusResponse{ProjectsByStatus: projects}, nil
+}
 ```
 
 #### Add attributes to the current trace
+Let's say inside the above called getProjectsForStatus function we want to add more attributes.
+
 ```go
-span := trace.SpanFromContext(ctx)
-span.SetAttributes(
-    semconv.HTTPClientIPKey.String("127.2.2.5"),
-)
+func getProjectsForStatus(ctx context.Context, status int) []*service.Project {
+	span := trace.SpanFromContext(ctx)
+	span.SetAttributes(
+		// You can use semconv to set standard attributes
+    	semconv.HTTPClientIPKey.String("127.2.2.5"),
+	)
+
+	projects := make([]*service.Project, 0)
+
+	for _, proj := range data.ServiceProjects {
+		if proj.Status == req.Status {
+			projects = append(projects, proj)
+		}
+	}
+
+	span.SetAttributes(
+		attribute.Key("slice.count`").Int(len(projects)
+	)
+
+	return projects
+}
 ```
 
 ### HTTP Client Traces
