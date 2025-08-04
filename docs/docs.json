@@ -431,7 +431,14 @@
                 "pages": [
                   "router/gRPC/plugins",
                   "router/gRPC/plugins/debugging",
-                  "router/gRPC/plugins/library"
+                  {
+                    "group": "Library Features",
+                    "icon": "books",
+                    "pages": [
+                      "router/gRPC/plugins/library-features/http-client",
+                      "router/gRPC/plugins/library-features/telemetry"
+                    ]
+                  }
                 ]
               },
               "router/gRPC/concepts",
