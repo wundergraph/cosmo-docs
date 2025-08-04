@@ -425,10 +425,17 @@
             "group": "gRPC",
             "icon": "network-wired",
             "pages": [
+              {
+                "group": "Plugins",
+                "icon": "plug",
+                "pages": [
+                  "router/gRPC/plugins",
+                  "router/gRPC/plugins/debugging",
+                  "router/gRPC/plugins/library"
+                ]
+              },
               "router/gRPC/concepts",
-              "router/gRPC/grpc-services",
-              "router/gRPC/plugins",
-              "router/gRPC/debugging"
+              "router/gRPC/grpc-services"
             ]
           },
           "router/authentication-and-authorization",

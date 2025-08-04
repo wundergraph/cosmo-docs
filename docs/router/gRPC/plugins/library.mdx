@@ -1,0 +1,231 @@
+---
+title: 'Support Utilities'
+description: 'The router plugin provides useful out of the box options that can be used in your plugins'
+sidebarTitle: Support Utilities
+icon: "books"
+---
+
+## Introduction
+
+When you set up a router plugin via `wgc router plugin init`, it utilizes the 'router-plugin' [library](https://github.com/wundergraph/cosmo/tree/main/router-plugin) that we provide. This allows users to bootstrap a plugin quickly and focus on writing business logic.
+
+In addition to any bootstrapping code that the library provides, we provide the following additional options we recommend using.
+
+
+## HTTP Client
+A developer-friendly HTTP client package for the Cosmo Router Plugin. This package provides a simple, flexible, and feature-rich HTTP client implementation with a modern approach using functional options and generics.
+
+### Features
+
+- Simple, fluent API for making HTTP requests
+- Function options pattern for configuration
+- Context support for cancellation and timeouts
+- Middleware support for request customization
+- Generic response handling
+- Built-in middleware implementations for common use cases
+- Comprehensive test coverage
+
+### Basic Usage
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/wundergraph/cosmo/router-plugin/httpclient"
+)
+
+func main() {
+	// Create HTTP client with configuration options
+	client := httpclient.New(
+		httpclient.WithBaseURL("https://api.example.com"),
+		httpclient.WithTimeout(10 * time.Second),
+		httpclient.WithHeader("Accept", "application/json"),
+	)
+
+	// Create a context
+	ctx := context.Background()
+
+	// Make a GET request
+	resp, err := client.Get(ctx, "/users/1")
+	if err != nil {
+		panic(err)
+	}
+
+	// Check if the request was successful
+	if !resp.IsSuccess() {
+		fmt.Printf("Request failed with status code: %d\n", resp.StatusCode)
+		return
+	}
+
+	// Parse the response into a struct using generics
+	type User struct {
+		ID    int    `json:"id"`
+		Name  string `json:"name"`
+		Email string `json:"email"`
+	}
+
+	user, err := httpclient.UnmarshalTo[User](resp)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("User: %s (Email: %s)\n", user.Name, user.Email)
+}
+```
+
+### Advanced Usage
+
+#### Middleware
+
+The client supports middleware for request customization:
+
+```go
+// Create a client with middleware
+client := httpclient.New(
+	httpclient.WithBaseURL("https://api.example.com"),
+	httpclient.WithMiddleware(httpclient.AuthBearerMiddleware("your-token")),
+	httpclient.WithMiddleware(httpclient.UserAgentMiddleware("MyApp/1.0")),
+    httpclient.WithTracing(),
+)
+```
+
+#### Request-specific options
+
+You can add headers or other options to specific requests:
+
+```go
+// Make a request with specific headers
+resp, err := client.Get(ctx, "/users/1", 
+	httpclient.WithRequestHeader("X-Request-ID", "12345"),
+)
+```
+
+#### POST requests with JSON body
+
+```go
+// Create request body
+newUser := struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}{
+	Name:  "John Doe",
+	Email: "john@example.com",
+}
+
+// Send POST request
+resp, err := client.Post(ctx, "/users", newUser)
+```
+
+### Middleware Implementations
+
+The package includes several built-in middleware implementations:
+
+- `AuthBearerMiddleware`: Adds a Bearer token to the Authorization header
+- `BasicAuthMiddleware`: Adds basic authentication to the request
+
+### Custom Middleware
+
+You can create your own middleware:
+
+```go
+// Create a custom middleware
+customMiddleware := func(req *http.Request) (*http.Request, error) {
+	// Customize the request
+	req.Header.Set("X-Custom-Header", "custom-value")
+	return req, nil
+}
+
+// Add the middleware to the client
+client := httpclient.New(
+	httpclient.WithMiddleware(customMiddleware),
+)
+```
+
+### Error Handling
+
+The client returns comprehensive errors that can be unwrapped:
+
+```go
+resp, err := client.Get(ctx, "/users/1")
+if err != nil {
+	// Check for specific error types
+	var urlErr *url.Error
+	if errors.As(err, &urlErr) {
+		fmt.Printf("URL error: %v\n", urlErr)
+	} else {
+		fmt.Printf("Other error: %v\n", err)
+	}
+	return
+}
+```
+
+### Inbuilt Tracing
+When using tracing alongside an http client, you can enable tracing using
+```go
+httpclient.WithTracing()
+```
+Which will create spans for your http calls. Note that in case of using retry, it will only create one span for the entire operation, and not per retry.
+
+### Response Helpers
+
+The `Response` type provides helper methods:
+
+- `Unmarshal(v interface{})`: Decodes the response body into a struct
+- `String()`: Returns the response body as a string
+- `IsSuccess()`: Returns true if the status code is in the 2xx range
+
+## Telemetry
+
+The router provides built-in telemetry support that extends to your plugins. This allows you to trace operations from the router through to your plugin code.
+
+To enable telemetry in your plugin, use the `WithTracing()` option when initializing:
+
+```go
+routerplugin.WithTracing()
+```
+
+Here's how to configure it during plugin initialization:
+
+```go
+pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
+    s.RegisterService(&projects.ProjectsService_ServiceDesc, &service.ProjectsService{
+        NextID: 1,
+    })
+    routerplugin.WithTracing()
+})
+```
+
+### How tracing works
+
+When your plugin starts up, the router shares its telemetry configuration with the plugin. This configuration includes crucial trace context such as the `traceparent` value.
+
+When you enable tracing in your plugin using `WithTracing()`, the plugin uses this shared configuration to set up its own tracing. This ensures that any operations performed by your plugin become part of the same distributed trace that originated from the router.
+
+Additionally, when your plugin makes HTTP requests using the provided HTTP client, the trace context is automatically propagated to downstream services. This creates an unbroken chain of tracing that spans from the initial router request, through your plugin, and into any external APIs you call.
+
+### Working with traces
+
+Under the hood we use the opentelemetry-go library, which means the same can be used to work with traces. More information can be found in the [otel go docs](https://opentelemetry.io/docs/languages/go/). A few examples are as follows.
+
+#### Create a new trace
+```go
+tracer := otel.Tracer("inner-tracer")
+ctx, span := tracer.Start(ctx, customSpanName)
+span.SetAttributes(
+    customKey,
+    customValue,
+)
+defer span.End()
+```
+
+#### Add attributes to the current trace
+```go
+span := trace.SpanFromContext(ctx)
+span.SetAttributes(
+    semconv.HTTPClientIPKey.String("127.2.2.5"),
+)
+```
