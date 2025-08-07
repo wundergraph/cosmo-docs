@@ -5,7 +5,7 @@ icon: "shield-plus"
 sidebarTitle: Sessions
 ---
 
-Each time a user logs in to Cosmo Studio, a new session is created. The created session have an idle timeout of 1 day, meaning that if there is no activity from the user for 1 day, the session will be terminated.
+When a user logs in to Cosmo Studio, a new session is created. The session is renewed every eight hours while the user is active and is terminated after 24 hours of inactivity.
 
 It is recommended to use Google or GitHub during sign in, as these services provide a extended security for user authentication. Organizations can also configure their preferred [Identity Provider](/studio/sso) when they want full control over their members.
 
