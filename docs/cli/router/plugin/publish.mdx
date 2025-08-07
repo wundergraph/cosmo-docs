@@ -50,7 +50,8 @@ The plugin directory must contain the following files in their expected location
   parameter will be ignored. Use [subgraph update](/cli/subgraph/update) to
   update these values.
 </Note>
-- `--name [string]`: The name of the plugin subgraph. If not provided, the name will be derived from the directory name.
+- `--name [string]`: The name of the plugin subgraph. If not provided, the name will
+be derived from the directory name.
 
 - `-n, --namespace [string]`: The namespace of the plugin subgraph (Default: "default").
 
@@ -89,6 +90,19 @@ npx wgc router plugin publish ./plugins/my-plugin
 npx wgc router plugin publish ./plugins/my-plugin \
   --label team=backend --label environment=production \
   --platform linux/amd64 linux/arm64
+```
+
+### **Publish with custom name**
+
+<Note>
+  If the plugin name is not provided, the name will be derived from the
+  directory name. This is mainly used to publish plugin feature subgraphs, as
+  the directory will still be the base subgraph.
+</Note>
+
+```bash
+npx wgc router plugin publish ./plugins/my-plugin \
+  --name my-custom-name
 ```
 
 ### **Publish with custom namespace**
