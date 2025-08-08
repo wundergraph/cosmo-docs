@@ -427,7 +427,7 @@
             "pages": [
               "router/gRPC/concepts",
               "router/gRPC/grpc-services",
-              "router/gRPC/limitations/",
+              "router/gRPC/features/",
               {
                 "group": "Plugins",
                 "icon": "plug",
