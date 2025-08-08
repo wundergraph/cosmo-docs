@@ -427,7 +427,7 @@
             "pages": [
               "router/gRPC/concepts",
               "router/gRPC/grpc-services",
-              "router/gRPC/features/",
+              "router/gRPC/graphql-support",
               {
                 "group": "Plugins",
                 "icon": "plug",
