@@ -1,0 +1,86 @@
+---
+title: 'Feature Support & Limitations'
+description: 'Current feature support and limitations for gRPC integration in Cosmo Router'
+icon: 'list-check'
+---
+
+## Overview
+
+This page provides a comprehensive overview of what's currently supported and what limitations exist when using gRPC integration (both plugins and services) with the Cosmo Router. We're actively working to expand support and address limitations.
+
+## Feature Support Overview
+
+This table provides a comprehensive overview of what's currently supported and what limitations exist when using gRPC integration with the Cosmo Router.
+
+| Feature | Status | Description |
+|---------|---------|-------------|
+| **Query Operations** | ✅ | Full support for all query patterns |
+| **Mutation Operations** | ✅ | Complete mutation functionality |
+| **Federation Entity Lookups (Single Key)** | ✅ | Standard entity resolution |
+| **Federation Entity Lookups (Multiple Keys)** | ✅ | Multi-key entity resolution |
+| **Federation Entity Lookups (Compound Keys)** | ✅ | Complex key combinations |
+| **Federation Entity Lookups (Nested Keys)** | ❌ | Complex nested key resolution not yet supported |
+| **@requires Directive** | ❌ | Field dependencies across services not implemented |
+| **Scalar Arguments** | ✅ | All standard scalars supported |
+| **Complex Input Types** | ✅ | Nested input structures |
+| **Nullable Scalar Types** | ✅ | Optional fields supported |
+| **Custom Scalar Conversion** | ❌ | Limited to fixed mappings only |
+| **Enum Values** | ✅ | Bidirectional mapping support |
+| **Interface Types** | ✅ | With implementing types |
+| **Union Types** | ✅ | With member types |
+| **Recursive Types** | ✅ | Self-referencing structures |
+| **Nested Object Types** | ✅ | Complex relationships |
+| **Lists** | ✅ | Nullable and non-nullable |
+| **Nested Lists** | ✅ | Multi-dimensional arrays |
+| **Complex List Structures** | ✅ | Lists of objects and interfaces |
+| **Nullable List Items** | ❌ | Not supported due to Protobuf constraints |
+| **Entity Definitions** | ✅ | Standard federation entities |
+| **Key Directives** | ✅ | Single and compound keys |
+| **External Fields** | ✅ | Cross-service field references |
+| **Field Resolvers** | ❌ | Custom field resolution not available |
+| **GraphQL Subscriptions** | ❌ | Real-time data subscriptions not yet supported |
+| **TLS Encryption** | ❌ | Not yet supported for gRPC connections |
+| **Advanced gRPC Configuration** | ❌ | Retry policies and custom timeouts unavailable |
+
+## 🔄 Roadmap
+
+We're actively working on addressing these limitations and expanding gRPC integration capabilities. Here are the features you can expect in upcoming releases:
+
+| Feature | Category | Description |
+|---------|----------|-------------|
+| **@requires Directive Support** | Federation | Field dependencies across services |
+| **Nested Key Entity Lookups** | Federation | Complex nested key resolution |
+| **Advanced Entity Relationships** | Federation | Enhanced entity relationship handling |
+| **Cross-service Field Dependencies** | Federation | Advanced field dependency management |
+| **Lazy Loading** | Performance | Lazy loading capabilities for better performance |
+| **GraphQL Subscriptions** | Real-time | Real-time data subscriptions |
+| **Event-driven Updates** | Real-time | Event-based data updates |
+| **TLS Support** | Security | Secure connections for gRPC |
+| **Advanced gRPC Configuration** | Configuration | Retry policies and custom timeouts |
+| **Enhanced Scalar Support** | Type System | Improved scalar type handling |
+| **Field Resolver Capabilities** | Type System | Custom field resolution support |
+| **Custom Type Mappings** | Type System | Advanced type mapping features |
+| **Dynamic Scalar Conversion** | Type System | Runtime scalar conversion |
+| **JSON Scalar Mappings** | Type System | JSON-based scalar handling |
+
+## Resources & Community
+
+For questions, updates, and community support:
+
+<CardGroup cols={2}>
+  <Card title="GitHub Repository" icon="github" href="https://github.com/wundergraph/cosmo">
+    ⭐ Star for updates and browse issues for the latest developments
+  </Card>
+  
+  <Card title="Release Notes" icon="rocket" href="https://github.com/wundergraph/cosmo/releases">
+    📢 Latest feature updates and changes in each release
+  </Card>
+  
+  <Card title="Discord Community" icon="comments" href="https://wundergraph.com/discord">
+    💬 Get help and join discussions with the community
+  </Card>
+  
+  <Card title="gRPC Concepts" icon="lightbulb" href="/router/grpc/concepts">
+    📚 Implementation patterns and guidance for gRPC integration
+  </Card>
+</CardGroup>
