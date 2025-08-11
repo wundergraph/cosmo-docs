@@ -4,23 +4,35 @@ description: "Learn how to use gRPC plugins with Cosmo & Cosmo Router"
 icon: plug
 ---
 
-So, you’ve decided to split up your monolithic API into multiple services. Your teams are growing too large to easily collaborate at scale on a single service, and the boundaries for which APIs each team is responsible for are becoming blurry. 
+## Prerequisites
 
-You need a solution that will allow your clients to retain a single point of access to all your company’s data, but split up the monolith into many services with clearly defined contracts.
+- [Cosmo CLI](/cli/intro) installed and configured
 
-*Enter stage left: GraphQL Federation*
+## Overview
 
-With this powerful tool, you will be able to compose many subgraphs that are independently developed and published into a supergraph containing all your data, including federated entities.
+This tutorial shows you how to create a gRPC plugin subgraph from scratch using the Cosmo CLI.
 
-You have a problem though, when you and your team began to scope out the work for splitting your monolith up into separate services, you found something shocking. 
+You'll start by initializing a new plugin, and we'll walk you through implementation and deployment.
 
-When broken down, almost 50% of your API endpoints were directly wrapping an external service provider like Stripe, OpenAI or your company’s legacy ERP system, services that could not feasibly be ported to GraphQL 1:1 and would require their own new wrappers in GraphQL subgraph frameworks to integrate with your new supergraph.
+Here's a short version of the steps for reference:
 
-Your team was prepared to port business logic from your main API to GraphQL in a few frameworks and languages based on team preference, but now it’s looking like you will need to develop and deploy a lot more subgraphs than you initially anticipated, as even these small wrappers still need the heavy base of a federation compatible subgraph framework. This increases complexity, limits programming language choices and creates more work for your company.
-
-*Enter stage right: GRPC Subgraphs*
-
-We’ve seen situations like this come up many times with our customers, and it’s lead us to build Cosmo Connect, the next generation platform for building subgraphs with GRPC.
+<Steps>
+  <Step title="Initialize Plugin">
+    Create a new gRPC plugin using `wgc router plugin init <name>` and define your GraphQL schema
+    
+    [→ Jump to initialization](#initialize-plugin)
+  </Step>
+  <Step title="Generate & Implement">
+    Generate Protobuf code with `wgc router plugin generate` and implement your resolvers in Go
+    
+    [→ Jump to implementation](#generate-and-implement)
+  </Step>
+  <Step title="Publish & Deploy">
+    Publish your plugin to Cosmo with `wgc router plugin publish` and test via GraphQL queries
+    
+    [→ Jump to deployment](#publish-and-deploy)
+  </Step>
+</Steps>
 
 ---
 
@@ -34,7 +46,9 @@ First off, let's get familiar with some terminology we use to describe different
 
 Now that we have that sorted, let’s move onto the good stuff.
 
-## Your first gRPC plugin
+## Initialize Plugin
+
+### Your first gRPC plugin
 
 gRPC plugins are the best way to get started with Cosmo Connect. They support all the same features as gRPC services, but you don’t have to create separate deployments, handle networking, or manage inter-service authentication.
 
@@ -129,6 +143,8 @@ type Query {
 For this example, we won’t wrap the entire SWAPI, only the `people` resource and its endpoints.
 
 This schema has a single type, “Person”, and a query to get all the people or a specific person by ID.
+
+## Generate and Implement
 
 Now we can use `wgc` again to generate the Protobuf representation of our subgraph and boilerplate code to implement it in Golang.
 
@@ -316,6 +332,8 @@ Finally, replace that `panic` with a return that matches the RPC’s return type
 }
 ```
 
+## Publish and Deploy
+
 Now, our plugin is in a semi-working state, and we can publish it to test it out as part of our federated graph.
 
 Using our CLI `wgc`, publish the plugin:
@@ -356,6 +374,9 @@ It should return something like:
 <Warning>
 If you get an error, check your router logs to see where it might be coming from. If you can’t solve it, a complete version of the plugin will be linked at the end of the tutorial for comparison.
 </Warning>
+
+
+### Updating the plugin
 
 Let’s quickly add the implementation for the `QueryPerson` RPC. It’s almost the same structure as the `QueryPeople` function, except it has an argument in the request.
 
@@ -445,8 +466,8 @@ This should return:
 
 Congratulations! You've created and updated your first plugin.  
 
-So, what’s next? 
+## What's next?
 
-Well, in our case, the SWAPI has much more information than just people. It also includes data about vehicles, planets, and species. 
+Well, in our case, the SWAPI has much more information than just people. It also includes data about vehicles, planets, and species. We could add these entities to our schema and resolve them using our plugin.
 
 In your case, you might add entity resolvers to your plugin’s GraphQL schema to see how federation works with gRPC, or create more plugins for other purposes. Plugins aren’t just for wrapping HTTP APIs either; you can use the full power of Go to query databases, implement business logic, or do anything else you need.
