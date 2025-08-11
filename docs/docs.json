@@ -362,6 +362,7 @@
           },
           "studio/graph-access-control",
           "studio/cluster-management",
+          "studio/sessions",
           "studio/rbac",
           {
             "group": "Groups",
