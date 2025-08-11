@@ -1,6 +1,6 @@
 ---
-title: "Building and deploying gRPC plugins"
-description: "Learn how to use gRPC plugins with Cosmo & Cosmo Router"
+title: "Using Cosmo Cloud gRPC plugins to quickly build and deploy a gRPC subgraph"
+description: "Learn how to use gRPC plugins with Cosmo Cloud & Cosmo Router"
 icon: plug
 ---
 
@@ -10,25 +10,32 @@ icon: plug
 
 ## Overview
 
-This tutorial shows you how to create a gRPC plugin subgraph from scratch using the Cosmo CLI.
+gRPC plugins are a powerful new way to write and deploy subgraphs without the need for a GraphQL server. You can use plugins to wrap legacy APIs, mock future subgraphs or fully implement new features. Plugins are written in Go and can be deployed and run automatically by the Cosmo Router.
 
-You'll start by initializing a new plugin, and we'll walk you through implementation and deployment.
+For this tutorial, we'll create a gRPC plugin called `starwars` that wraps a small portion of the REST API from [SWAPI](https://swapi.info/). 
+
+gRPC plugins support all the same features as gRPC services, but you don’t have to create separate deployments, handle networking, or manage inter-service authentication.
 
 Here's a short version of the steps for reference:
 
 <Steps>
-  <Step title="Initialize Plugin">
-    Create a new gRPC plugin using `wgc router plugin init <name>` and define your GraphQL schema
+  <Step title="Initialize a new plugin">
+    Create a new gRPC plugin using `wgc router plugin init <name>` and define your GraphQL schema.
     
     [→ Jump to initialization](#initialize-plugin)
   </Step>
+  <Step title="Design your schema">
+    Define your GraphQL schema that will be used to integrate your plugin into your federated graph.
+    
+    [→ Jump to schema design](#design-your-schema)
+  </Step>
   <Step title="Generate & Implement">
-    Generate Protobuf code with `wgc router plugin generate` and implement your resolvers in Go
+    Generate Protobuf code with `wgc router plugin generate` and implement your resolvers in Go.
     
     [→ Jump to implementation](#generate-and-implement)
   </Step>
   <Step title="Publish & Deploy">
-    Publish your plugin to Cosmo with `wgc router plugin publish` and test via GraphQL queries
+    Publish your plugin to Cosmo with `wgc router plugin publish` and test via GraphQL queries.
     
     [→ Jump to deployment](#publish-and-deploy)
   </Step>
@@ -46,18 +53,14 @@ First off, let's get familiar with some terminology we use to describe different
 
 Now that we have that sorted, let’s move onto the good stuff.
 
-## Initialize Plugin
+## Building Plugins
 
-### Your first gRPC plugin
-
-gRPC plugins are the best way to get started with Cosmo Connect. They support all the same features as gRPC services, but you don’t have to create separate deployments, handle networking, or manage inter-service authentication.
-
-For this tutorial, we'll create a gRPC plugin called `starwars` that wraps a small portion of the REST API from [SWAPI](https://swapi.info/). 
+###  Initialize Plugin
 
 You can create a gRPC plugin using our CLI tool, `wgc`:
 
 ```bash
-pnpm wgc router plugin init starwars
+wgc router plugin init starwars
 ```
 
 You should now have a directory containing a single plugin, `starwars`. We’ll go over what each file does soon.
@@ -67,12 +70,10 @@ starwars
 ├── Dockerfile
 ├── generated
 │   ├── mapping.json
-│   ├── service.pb.go
 │   ├── service.proto
-│   ├── service.proto.lock.json
-│   └── service_grpc.pb.go
+│   └── service.proto.lock.json
 ├── go.mod
-├── go.sum
+├── Makefile
 ├── README.md
 └── src
     ├── main.go
@@ -80,11 +81,13 @@ starwars
     └── schema.graphql
 ```
 
+### Design your schema
+
 The first thing we need to do is take a look at the GraphQL schema in `starwars/src/schema.graphql`. It doesn’t contain our schema yet, so we’ll start by defining our new service in GraphQL terms.
 
 When you open this file, it will have some placeholder schema inside. You can safely remove all of the content and replace it with the following:
 
-```
+```graphql src/schema.graphql
 type Person {
   """
   The name of this person
@@ -132,11 +135,6 @@ type Query {
   get all the people
   """
   people: [Person!]!
-
-  """
-  get a specific person
-  """
-  person(id: ID!): Person!
 }
 ```
 
@@ -144,7 +142,7 @@ For this example, we won’t wrap the entire SWAPI, only the `people` resource a
 
 This schema has a single type, “Person”, and a query to get all the people or a specific person by ID.
 
-## Generate and Implement
+### Generate and Implement
 
 Now we can use `wgc` again to generate the Protobuf representation of our subgraph and boilerplate code to implement it in Golang.
 
@@ -175,36 +173,21 @@ Now, let’s start implementing our resolvers. After generating, if you open `ma
 Here’s a starting point for implementing our new resolvers:
 
 ```go
-type StarwarsService struct {
-	service.UnimplementedStarwarsServiceServer
-}
+package main
 
-func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
-	panic("not implemented")
-}
+import (
+	"context"
+	"log"
+	"net/http"
+	"time"
 
-func (s *StarwarsService) QueryPerson(ctx context.Context, req *service.QueryPersonRequest) (*service.QueryPersonResponse, error) {
-	panic("not implemented")
-}
-```
+	service "github.com/wundergraph/cosmo/plugin/generated"
 
-If you ran this now, the plugin would just panic (exit ungracefully) when we tried to use either of our operations. Let’s fix that.
+	routerplugin "github.com/wundergraph/cosmo/router-plugin"
+	"google.golang.org/grpc"
+)
 
-First, let’s add an HTTP client to our service.
-
-In the `StarwarsService` struct, add a field of type `*http.Client`. This will hold a persistent HTTP client that our endpoints can use for the whole lifetime of the plugin process.
-
-```go
-type StarwarsService struct {
-	service.UnimplementedStarwarsServiceServer
-	client  *http.Client
-}
-```
-
-Now, let's add some configuration to our service. This is how you can apply different settings using the environment or a config file.
-
-```go
-const defaultBaseURL = "https://swapi.dev/api"
+const swapiBaseURL = "https://swapi.dev/api"
 
 func main() {
 	pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
@@ -212,7 +195,6 @@ func main() {
 			client: &http.Client{
 				Timeout: 30 * time.Second,
 			},
-			baseURL: defaultBaseURL,
 		})
 	})
 
@@ -222,15 +204,39 @@ func main() {
 
 	pl.Serve()
 }
+
+type StarwarsService struct {
+	service.UnimplementedStarwarsServiceServer
+
+	client *http.Client
+}
+
+func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
+	panic("not implemented")
+}
 ```
 
-We set a default URL to the public SWAPI instance and configure our HTTP client with a 30-second request timeout. It’s important to set this for HTTP clients in Go, since the default is unlimited and can lead to resource exhaustion from many pending requests.
+This updates the `main.go` that comes with the initial plugin template in a few ways:
 
+1. We removed resolvers for the old `QueryHello` RPC and a field `nextId` in the `StarwarsService` struct. We won't need it anymore.
+2. In the `StarwarsService` struct, we added a field of type `*http.Client`. 
+    - This will hold a persistent HTTP client that our endpoints can use for the whole lifetime of the plugin process.
+    - We set a 30-second request timeout. It’s important to set this for HTTP clients in Go because the default is unlimited and can lead to resource exhaustion from many pending requests.
+3. We add a constant `swapiBaseURL` that we'll later use to construct the URL for the SWAPI API endpoint.
+
+If you ran this now, the plugin would just panic (exit ungracefully) when we tried to use the `people` query. Let’s fix that.
+
+<Note>
 In the `main()` function, you can use `os.Getenv` or many available configuration libraries for Go to pull info from the environment to configure your service. A good one to start with is [caarlos0/env](https://github.com/caarlos0/env).
+</Note>
 
-Next, let’s create some types to help us work with SWAPI responses. 
+Next, let’s add a struct (Go's most primitive object type) to help us work with SWAPI responses. 
 
-```
+```go 
+package main
+
+...
+
 type SWAPIPerson struct {
 	Name      string `json:"name"`
 	Height    string `json:"height"`
@@ -241,61 +247,54 @@ type SWAPIPerson struct {
 	BirthYear string `json:"birth_year"`
 	Gender    string `json:"gender"`
 }
+
+func main() {
+	...
+}
 ```
 
 These types are very similar to those generated for our service, close enough that we could potentially use the generated types directly. But for this example, we’ll create a separate type to show what happens if you need more complex mapping from the wrapped API to your service.
 
-First, let’s implement the resolver for our `QueryPeople` RPC.
+Now, let’s implement the resolver for our `QueryPeople` RPC. Right now, your resolver should look like this:
 
-Right now, your resolver should look like this:
-
-```go
+```go main.go
 func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
 	panic("not implemented")
 }
 ```
 
-We'll start by querying the list of people from the SWAPI with an HTTP GET request to `{baseURL}/people/`.
+Here's an implemented version of the `QueryPeople` RPC resolver:
 
-In Go, it looks like this:
+```go main.go
+...
 
-```go
 func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s/people/", s.baseURL), nil)
+	// 1. Create a request to the SWAPI for people
+	httpReq, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s/people/", swapiBaseURL), nil)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
 	}
 
+	// 2. Send the request and handle the response
 	resp, err := s.client.Do(httpReq)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
 	}
 	defer resp.Body.Close()
-	
+
+	// 3. If the response status is not OK, return an error
 	if resp.StatusCode != http.StatusOK {
 		return nil, status.Errorf(codes.Internal, "failed to fetch people: SWAPI returned status %d", resp.StatusCode)
 	}
-	
-	panic("not implemented")
-}
-```
 
-We create a request and send it to the API URL specified in our service’s config.
-
-The errors here come from `google.golang.org/grpc/status` and `google.golang.org/grpc/codes`. They're an idiomatic way to return errors in a gRPC API.
-
-Next, let’s decode the response and transform it into the type our service returns:
-
-```go
-  ... http request ...
-
+	// 4. Decode the response body into a list of SWAPIPerson
 	var people []SWAPIPerson
 	if err := json.NewDecoder(resp.Body).Decode(&people); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to decode response: %v", err)
 	}
 
-	// Convert to proto format
-	protoPeople := make([]*service.Person, len(people))
+	// 5. Convert the []SWAPIPerson to []*service.Person (the type needed for our RPC's return type)
+	protoPeople := make([]*service.Person, len(people)) // You can pre-allocate the new slice to the exact length of the people slice, this won't work if you're filtering while iterating.
 	for i, person := range people {
 		protoPeople[i] = &service.Person{
 			Name:      person.Name,
@@ -308,29 +307,30 @@ Next, let’s decode the response and transform it into the type our service ret
 			Gender:    person.Gender,
 		}
 	}
-	
-	panic("not implemented")
-}
-```
 
-Here we use the `json` module to decode the response body into our response type. If something goes wrong, we return an error. Then we allocate a slice of `*service.Person` (the expected return type for this RPC, from the generated code) and map our “SWAPI People” to “Proto People”. 
-
-In a more complex program, this is where you would do any transformations needed to produce the expected response from your backend, database, or other source.
-
-<Tip>
-  This lets you write the GraphQL schema for your client‑facing federated graph in a way that fits that ecosystem, while handling translation from other formats in a fully featured language like Go.
-</Tip>
-
-Finally, replace that `panic` with a return that matches the RPC’s return type:
-
-```go
-	... everything else
-	
+	// 6. Return a response containing the converted people objects
 	return &service.QueryPeopleResponse{
 		People: protoPeople,
 	}, nil
 }
+
+...
 ```
+
+Lets go over it step by step:
+
+1. Start by setting up a request to fetch the list of people from the SWAPI with HTTP GET to `{swapiBaseURL}/people/`.
+2. Perform the request and handle any errors that may occur.
+3. Check the response status code and return an error if it's not 200 OK.
+4. Decode the JSON response into a slice of `SWAPIPerson` structs.
+5. Transform the slice of `SWAPIPerson` structs into a slice of `*service.Person` structs (this type comes from the generated code for your schema)
+    - In a more complex program, this is where you would do any transformations needed to produce the expected response from your backend, database, or other source.
+    - This method lets you write the GraphQL schema for your client‑facing federated graph in a way that fits that ecosystem, while handling translation from other formats in a fully featured language like Go.
+6. Finally, we return a response containing the converted people objects
+
+<Tip>
+The errors here come from `google.golang.org/grpc/status` and `google.golang.org/grpc/codes`. They're an idiomatic way to return errors in a gRPC API.
+</Tip>
 
 ## Publish and Deploy
 
@@ -341,6 +341,14 @@ Using our CLI `wgc`, publish the plugin:
 ```bash
 wgc router plugin publish ./starwars --label team=A
 ```
+
+<Accordion icon="circle-question-mark" title="How does deployment work?">
+    When you run the deploy command, your plugin is built and packaged using the `Dockerfile` in the plugin directory. We then send this image containing your plugin and any other files it may need off to our Cosmo Cloud Registry where it can be pulled by your routers.
+    
+    Importantly, the router does not run plugins using Docker or in a container, instead we unpack the final target of the image into a working directory and run the plugin directly. This means if your plugin depends on a system dependency, it must be present in your Router image, not the plugin image.
+</Accordion>
+
+Congratulations! You've created your first gRPC plugin.  
 
 You’ll see the output from a Docker build and push, followed by a successful completion.
 
@@ -372,102 +380,173 @@ It should return something like:
 ```
 
 <Warning>
-If you get an error, check your router logs to see where it might be coming from. If you can’t solve it, a complete version of the plugin will be linked at the end of the tutorial for comparison.
+If you get an error, check your router logs to see where it might be coming from. If you can’t solve it, a complete version of the plugin is linked in the [Appendix](#Appendix).
 </Warning>
-
 
 ### Updating the plugin
 
-Let’s quickly add the implementation for the `QueryPerson` RPC. It’s almost the same structure as the `QueryPeople` function, except it has an argument in the request.
+You can update the schema or the implementation of the plugin by modifying the `schema.graphql` file or the `main.go` file, respectively.
 
-In gRPC resolvers, you can access the request type via the `req` parameter. Its type is generated from the arguments on a GraphQL operation.
-
-```go
-func (s *StarwarsService) QueryPerson(ctx context.Context, req *service.QueryPersonRequest) (*service.QueryPersonResponse, error) {
-	if req.Id == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "person ID is required")
-	}
-
-	// Validate that ID is numeric
-	if _, err := strconv.Atoi(req.Id); err != nil {
-		return nil, status.Errorf(codes.InvalidArgument, "person ID must be numeric")
-	}
-
-	url := fmt.Sprintf("%s/people/%s/", s.baseURL, req.Id)
-
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create request: %v", err)
-	}
-
-	resp, err := s.client.Do(httpReq)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to fetch person: %v", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, status.Errorf(codes.NotFound, "person with ID %s not found", req.Id)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, status.Errorf(codes.Internal, "SWAPI returned status %d", resp.StatusCode)
-	}
-
-	var person SWAPIPerson
-	if err := json.NewDecoder(resp.Body).Decode(&person); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to decode response: %v", err)
-	}
-
-	return &service.QueryPersonResponse{
-		Person: &service.Person{
-			Name:      person.Name,
-			Height:    person.Height,
-			Mass:      person.Mass,
-			HairColor: person.HairColor,
-			SkinColor: person.SkinColor,
-			EyeColor:  person.EyeColor,
-			BirthYear: person.BirthYear,
-			Gender:    person.Gender,
-		},
-	}, nil
-}
-```
-
-Now we can publish again. You don’t need to generate unless you’ve changed your GraphQL schema:
-
-```bash
-wgc router plugin publish ./starwars --label team=A
-```
-
-Then you can see the working GraphQL query via the router:
-
-```graphql
-query Person {
-  person(id: 1) {
-    name
-    hair_color
-  }
-}
-```
-
-This should return:
-
-```json
-{
-  "data": {
-    "person": {
-      "name": "Luke Skywalker",
-      "hair_color": "blond"
-    }
-  }
-}
-```
-
-Congratulations! You've created and updated your first plugin.  
+If you update the schema, you need to regenerate the code by running `wgc router plugin generate`.
 
 ## What's next?
 
 Well, in our case, the SWAPI has much more information than just people. It also includes data about vehicles, planets, and species. We could add these entities to our schema and resolve them using our plugin.
 
 In your case, you might add entity resolvers to your plugin’s GraphQL schema to see how federation works with gRPC, or create more plugins for other purposes. Plugins aren’t just for wrapping HTTP APIs either; you can use the full power of Go to query databases, implement business logic, or do anything else you need.
+
+You can also implement tests for your plugin to ensure it works correctly, you can find an example test in the `src/main_test.go`, you can try updating it to work with the new schema.
+
+## Appendix
+
+<Accordion icon="code" title="Full plugin code">
+    ```graphql src/schema.graphql
+    type Person {
+      """
+      The name of this person
+      """
+      name: String!
+    
+      """
+      The height of the person in centimeters
+      """
+      height: String!
+    
+      """
+      The mass of the person in kilograms
+      """
+      mass: String!
+    
+      """
+      The hair color of this person. Will be "unknown" if not known or "n/a" if the person does not have hair
+      """
+      hair_color: String!
+    
+      """
+      The skin color of this person
+      """
+      skin_color: String!
+    
+      """
+      The eye color of this person. Will be "unknown" if not known or "n/a" if the person does not have an eye
+      """
+      eye_color: String!
+    
+      """
+      The birth year of the person, using BBY or ABY (Before/After Battle of Yavin)
+      """
+      birth_year: String!
+    
+      """
+      The gender of this person. Either "Male", "Female" or "unknown", "n/a" if no gender
+      """
+      gender: String!
+    }
+    
+    type Query {
+      """
+      get all the people
+      """
+      people: [Person!]!
+    }
+    ```
+    ```go main.go
+    package main
+        
+    import (
+    	"context"
+    	"encoding/json"
+    	"fmt"
+    	"log"
+    	"net/http"
+    	"time"
+        
+    	service "github.com/wundergraph/cosmo/plugin/generated"
+        
+    	routerplugin "github.com/wundergraph/cosmo/router-plugin"
+    	"google.golang.org/grpc"
+    	"google.golang.org/grpc/codes"
+    	"google.golang.org/grpc/status"
+    )
+        
+    const swapiBaseURL = "https://swapi.dev/api"
+        
+    type SWAPIPerson struct {
+    	Name      string `json:"name"`
+    	Height    string `json:"height"`
+    	Mass      string `json:"mass"`
+    	HairColor string `json:"hair_color"`
+    	SkinColor string `json:"skin_color"`
+    	EyeColor  string `json:"eye_color"`
+    	BirthYear string `json:"birth_year"`
+    	Gender    string `json:"gender"`
+    }
+        
+    func main() {
+    	pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
+    		s.RegisterService(&service.StarwarsService_ServiceDesc, &StarwarsService{
+    			client: &http.Client{
+    				Timeout: 30 * time.Second,
+    			},
+    		})
+    	})
+        
+    	if err != nil {
+    		log.Fatalf("failed to create router plugin: %v", err)
+    	}
+        
+    	pl.Serve()
+    }
+        
+    type StarwarsService struct {
+    	service.UnimplementedStarwarsServiceServer
+    	client *http.Client
+    }
+        
+    func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
+    	// 1. Create a request to the SWAPI for people
+    	httpReq, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s/people/", swapiBaseURL), nil)
+    	if err != nil {
+    		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
+    	}
+        
+    	// 2. Send the request and handle the response
+    	resp, err := s.client.Do(httpReq)
+    	if err != nil {
+    		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
+    	}
+    	defer resp.Body.Close()
+        
+    	// 3. If the response status is not OK, return an error
+    	if resp.StatusCode != http.StatusOK {
+    		return nil, status.Errorf(codes.Internal, "failed to fetch people: SWAPI returned status %d", resp.StatusCode)
+    	}
+        
+    	// 4. Decode the response body into a list of SWAPIPerson
+    	var people []SWAPIPerson
+    	if err := json.NewDecoder(resp.Body).Decode(&people); err != nil {
+    		return nil, status.Errorf(codes.Internal, "failed to decode response: %v", err)
+    	}
+        
+    	// 5. Convert the []SWAPIPerson to []*service.Person (the type needed for our RPC's return type)
+    	protoPeople := make([]*service.Person, len(people)) // You can pre-allocate the new slice to the exact length of the people slice, this won't work if you're filtering while iterating.
+    	for i, person := range people {
+    		protoPeople[i] = &service.Person{
+    			Name:      person.Name,
+    			Height:    person.Height,
+    			Mass:      person.Mass,
+    			HairColor: person.HairColor,
+    			SkinColor: person.SkinColor,
+    			EyeColor:  person.EyeColor,
+    			BirthYear: person.BirthYear,
+    			Gender:    person.Gender,
+    		}
+    	}
+        
+    	// 6. Return a response containing the converted people objects
+    	return &service.QueryPeopleResponse{
+    		People: protoPeople,
+    	}, nil
+    }
+    ```
+</Accordion>
