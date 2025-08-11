@@ -232,7 +232,7 @@ In the `main()` function, you can use `os.Getenv` or many available configuratio
 
 Next, let’s add a struct (Go's most primitive object type) to help us work with SWAPI responses. 
 
-```go 
+```go main.go
 package main
 
 ...
@@ -354,7 +354,7 @@ You’ll see the output from a Docker build and push, followed by a successful c
 
 If you have a router deployed serving your federated graph, you can now query `people` via GraphQL.
 
-```graphql
+```graphql graphql query
 query People {
   people {
     name
@@ -365,7 +365,7 @@ query People {
 
 It should return something like:
 
-```json
+```json json response
 {
   "data": {
     "people": [
@@ -450,7 +450,7 @@ You can also implement tests for your plugin to ensure it works correctly, you c
       people: [Person!]!
     }
     ```
-    ```go main.go
+    ```go src/main.go
     package main
         
     import (
