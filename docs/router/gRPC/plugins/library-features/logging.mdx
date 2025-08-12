@@ -12,20 +12,12 @@ The Cosmo Router plugin framework provides built-in logging capabilities that in
 
 Logging is configured when creating your plugin instance using one of the available logger options:
 
-### Console Logger
+### Standard Logger
 
-For human-readable console output during development:
-
-```go
-func WithConsoleLogger(level hclog.Level)
-```
-
-### JSON Logger
-
-For structured logging in production environments:
+For structured JSON logging (recommended for all environments):
 
 ```go
-func WithJSONLogger(level hclog.Level)
+func WithLogger(level hclog.Level)
 ```
 
 ### Custom Logger
@@ -77,7 +69,7 @@ Configure logging when creating your plugin instance by passing the logger optio
 
 <CodeGroup>
 
-```go main.go (JSON Logging)
+```go main.go (Standard Logger)
 package main
 
 import (
@@ -94,7 +86,7 @@ func main() {
 
     // Create plugin with JSON logging at Info level
     pl, err := routerplugin.NewRouterPlugin(registerFunc,
-        routerplugin.WithJSONLogger(hclog.Info),
+        routerplugin.WithLogger(hclog.Info),
     )
     if err != nil {
         panic(err)
@@ -105,7 +97,7 @@ func main() {
 }
 ```
 
-```go main.go (Console Logging)
+```go main.go (Custom Logger)
 package main
 
 import (
@@ -120,81 +112,16 @@ func main() {
 		})
 	}
 
-    // Create plugin with console logging at Debug level
-    pl, err := routerplugin.NewRouterPlugin(registerFunc,
-        routerplugin.WithConsoleLogger(hclog.Debug),
-    )
-    if err != nil {
-        panic(err)
-    }
-    
-    // Start the plugin
-    pl.Serve()
-}
-```
-
-```go main.go (Custom Console Logger)
-package main
-
-import (
-    "github.com/hashicorp/go-hclog"
-    "github.com/wundergraph/cosmo/router/pkg/routerplugin"
-)
-
-func main() {
-  	registerFunc := func(s *grpc.Server) {
-		s.RegisterService(&projects.ProjectsService_ServiceDesc, &service.ProjectsService{
-			NextID: 1,
-		})
-	}
-
-    // Create custom console logger with timestamps disabled
-    customLogger := hclog.New(&hclog.LoggerOptions{
-        Name:            "my-plugin",
-        Level:           hclog.Info,
-        IncludeLocation: true,
-        DisableTime:     true, // ⚠️ Important: Must be true for non-JSON logs
-        JSONFormat:      false,
-    })
-
-    // Create plugin with custom logger
-    pl, err := routerplugin.NewRouterPlugin(registerFunc,
-        routerplugin.WithCustomLogger(customLogger),
-    )
-    if err != nil {
-        panic(err)
-    }
-    
-    // Start the plugin
-    pl.Serve()
-}
-```
-
-```go main.go (Custom JSON Logger)
-package main
-
-import (
-    "github.com/hashicorp/go-hclog"
-    "github.com/wundergraph/cosmo/router/pkg/routerplugin"
-)
-
-func main() {
-  	registerFunc := func(s *grpc.Server) {
-		s.RegisterService(&projects.ProjectsService_ServiceDesc, &service.ProjectsService{
-			NextID: 1,
-		})
-	}
-
-    // Create custom JSON logger - timestamps can be enabled
+    // Create custom JSON logger
     customLogger := hclog.New(&hclog.LoggerOptions{
         Name:            "my-plugin", 
         Level:           hclog.Info,
         IncludeLocation: true,
-        DisableTime:     false, // ✅ JSON logs can include timestamps
-        JSONFormat:      true,  // ✅ JSON format uses structured parsing
+        DisableTime:     false, // JSON logs can include timestamps
+        JSONFormat:      true,  // JSON format for structured logging
     })
 
-    // Create plugin with custom JSON logger
+    // Create plugin with custom logger
     pl, err := routerplugin.NewRouterPlugin(registerFunc,
         routerplugin.WithCustomLogger(customLogger),
     )
@@ -330,7 +257,7 @@ logger.Error("DB error", "err", err, "tbl", "projects")
 
 ## Environment-Specific Configuration
 
-Consider different logging configurations for different environments:
+Consider different log levels for different environments:
 
 ```go
 func getLogLevel() hclog.Level {
@@ -347,18 +274,10 @@ func getLogLevel() hclog.Level {
     }
 }
 
-func getLoggerOption() routerplugin.Option {
-    env := os.Getenv("ENVIRONMENT")
-    level := getLogLevel()
-    
-    if env == "development" {
-        return routerplugin.WithConsoleLogger(level)
-    }
-    return routerplugin.WithJSONLogger(level)
-}
-
 // Usage
-pl, err := routerplugin.NewRouterPlugin(registerFunc, getLoggerOption())
+pl, err := routerplugin.NewRouterPlugin(registerFunc, 
+    routerplugin.WithLogger(getLogLevel()),
+)
 ```
 
 ## Integration with Monitoring
