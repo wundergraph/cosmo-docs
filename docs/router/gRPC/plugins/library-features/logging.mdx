@@ -61,6 +61,16 @@ The logging system supports standard log levels from the `hclog` package:
 | `hclog.Warn` | Warning messages for potential issues |
 | `hclog.Error` | Error messages for failures |
 
+## Panic Recovery
+
+The plugin framework provides automatic panic recovery to ensure system stability. When a panic occurs within your plugin:
+
+- **Automatic Recovery**: The panic is caught and gracefully handled without terminating the plugin
+- **Comprehensive Logging**: Full stack traces are captured and logged for debugging
+- **Structured Error Data**: Plugin stack traces are included in a dedicated `plugin_stack` field, separate from the router's own error context
+
+This ensures that plugin failures are isolated and thoroughly documented for efficient troubleshooting while maintaining overall system reliability.
+
 ## Plugin Setup
 
 Configure logging when creating your plugin instance by passing the logger option to `NewRouterPlugin`:
