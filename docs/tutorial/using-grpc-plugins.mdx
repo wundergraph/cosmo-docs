@@ -36,7 +36,7 @@ gRPC plugins are a powerful new way to write and deploy subgraphs without the ne
 
 For this tutorial, we'll create a gRPC plugin called `starwars` that wraps a small portion of the REST API from [SWAPI](https://swapi.info/). SWAPI is a free and open-source public API that provides information about Star Wars characters, planets, and more. For the tutorial, it functions as a stand-in for your own API or external datasource (an SQL database, Stripe, etc.).
 
-gRPC plugins support all the same features as [gRPC services](/router/grpc/grpc-services), but you don't have to create separate deployments, handle networking, or manage inter-service authentication.
+gRPC plugins support all the same features as [gRPC services](/router/gRPC/grpc-services), but you don't have to create separate deployments, handle networking, or manage inter-service authentication.
 
 Here's a short version of the steps for reference:
 
@@ -416,7 +416,7 @@ If you update the schema, you need to regenerate the code by running `wgc router
 
 ## What's next?
 
-You can find the full technical documentation for gRPC plugins [here](/router/grpc/plugins).
+You can find the full technical documentation for gRPC plugins [here](/router/gRPC/plugins).
 
 Well, in our case, the SWAPI has much more information than just people. It also includes data about vehicles, planets, and species. We could add these entities to our schema and resolve them using our plugin.
 
