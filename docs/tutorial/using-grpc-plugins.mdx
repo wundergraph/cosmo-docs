@@ -6,15 +6,37 @@ icon: plug
 
 ## Prerequisites
 
+---
+---
+---
+---
+---
+---
+---
+---
+---
+TODO: ADD MINIMUM VERSIONS ON RELEASE
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+
 - [Cosmo CLI](/cli/intro) installed and configured
+- [Cosmo Router](/router/intro) installed and configured to use Cosmo Cloud
 
 ## Overview
 
 gRPC plugins are a powerful new way to write and deploy subgraphs without the need for a GraphQL server. You can use plugins to wrap legacy APIs, mock future subgraphs or fully implement new features. Plugins are written in Go and can be deployed and run automatically by the Cosmo Router.
 
-For this tutorial, we'll create a gRPC plugin called `starwars` that wraps a small portion of the REST API from [SWAPI](https://swapi.info/). 
+For this tutorial, we'll create a gRPC plugin called `starwars` that wraps a small portion of the REST API from [SWAPI](https://swapi.info/). SWAPI is a free and open-source public API that provides information about Star Wars characters, planets, and more. For the tutorial, it functions as a stand-in for your own API or external datasource (an SQL database, Stripe, etc.).
 
-gRPC plugins support all the same features as gRPC services, but you don’t have to create separate deployments, handle networking, or manage inter-service authentication.
+gRPC plugins support all the same features as [gRPC services](/router/grpc/grpc-services), but you don't have to create separate deployments, handle networking, or manage inter-service authentication.
 
 Here's a short version of the steps for reference:
 
@@ -47,11 +69,11 @@ First off, let's get familiar with some terminology we use to describe different
 
 - **Cosmo Cloud**: Our cloud-hosted platform for publishing and monitoring your subgraphs
 - **Supergraph**: The unified graph containing the composition of all your subgraphs
-- **Subgraph**: A small part of a supergraph, usually serving a small service contract. For example, “billing”
-- **gRPC Subgraph**: A subgraph built with our new gRPC-based tooling that can be run standalone or as a plugin
+- **Subgraph**: A small part of a supergraph, usually serving a small service contract. For example, "billing"
+- **gRPC Subgraph**: A subgraph built with our new gRPC-based tooling that can be run standalone or as a gRPC plugin
 - **gRPC Plugin**: A way to run subgraphs created with gRPC alongside the router directly in your infrastructure, no extra deployment required
 
-Now that we have that sorted, let’s move onto the good stuff.
+Now that we have that sorted, let's move onto the good stuff.
 
 ## Building Plugins
 
@@ -63,7 +85,7 @@ You can create a gRPC plugin using our CLI tool, `wgc`:
 wgc router plugin init starwars
 ```
 
-You should now have a directory containing a single plugin, `starwars`. We’ll go over what each file does soon.
+You should now have a directory containing a single plugin, `starwars`. We'll go over what each file does soon.
 
 ```
 starwars
@@ -83,7 +105,7 @@ starwars
 
 ### Design your schema
 
-The first thing we need to do is take a look at the GraphQL schema in `starwars/src/schema.graphql`. It doesn’t contain our schema yet, so we’ll start by defining our new service in GraphQL terms.
+The first thing we need to do is take a look at the GraphQL schema in `starwars/src/schema.graphql`. It doesn't contain our schema yet, so we'll start by defining our new service in GraphQL terms.
 
 When you open this file, it will have some placeholder schema inside. You can safely remove all of the content and replace it with the following:
 
@@ -138,9 +160,9 @@ type Query {
 }
 ```
 
-For this example, we won’t wrap the entire SWAPI, only the `people` resource and its endpoints.
+For this example, we won't utilize the entire SWAPI for this tutorial, only the `people` resource and its endpoints.
 
-This schema has a single type, “Person”, and a query to get all the people or a specific person by ID.
+This schema has a single type, "Person", and a query to get all the people or a specific person by ID.
 
 ### Generate and Implement
 
@@ -150,7 +172,7 @@ Now we can use `wgc` again to generate the Protobuf representation of our subgra
 wgc router plugin generate ./starwars
 ```
 
-You’ll now see a few new files in the `generated` folder.
+You'll now see a few new files in the `generated` folder.
 
 ```
 generated
@@ -168,11 +190,11 @@ In short, these files are generated helpers based on the schema we wrote. They h
   We recommend checking this folder into version control (e.g. Git).
 </Note>
 
-Now, let’s start implementing our resolvers. After generating, if you open `main.go`, you will see some errors about undefined types. These are remnants from the example schema’s resolver, and you can safely delete them to start from scratch.
+Now, let's start implementing our resolvers. After generating, if you open `main.go`, you will see some errors about undefined types. These are remnants from the example schema's resolver, and you can safely delete them to start from scratch.
 
-Here’s a starting point for implementing our new resolvers:
+Here's a starting point for implementing our new resolvers:
 
-```go
+```go main.go
 package main
 
 import (
@@ -187,11 +209,13 @@ import (
 	"google.golang.org/grpc"
 )
 
+// 1. Add a constant that we can use to construct request URLs later
 const swapiBaseURL = "https://swapi.dev/api"
 
 func main() {
 	pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
 		s.RegisterService(&service.StarwarsService_ServiceDesc, &StarwarsService{
+			// 2a. Add an *http.Client with a timeout
 			client: &http.Client{
 				Timeout: 30 * time.Second,
 			},
@@ -205,6 +229,7 @@ func main() {
 	pl.Serve()
 }
 
+// 2b. Add a new *http.Client field to be used by the service.
 type StarwarsService struct {
 	service.UnimplementedStarwarsServiceServer
 
@@ -218,19 +243,19 @@ func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeo
 
 This updates the `main.go` that comes with the initial plugin template in a few ways:
 
-1. We removed resolvers for the old `QueryHello` RPC and a field `nextId` in the `StarwarsService` struct. We won't need it anymore.
+1. We add a constant `swapiBaseURL` that we'll later use to construct the URL for the SWAPI API endpoint.
 2. In the `StarwarsService` struct, we added a field of type `*http.Client`. 
     - This will hold a persistent HTTP client that our endpoints can use for the whole lifetime of the plugin process.
-    - We set a 30-second request timeout. It’s important to set this for HTTP clients in Go because the default is unlimited and can lead to resource exhaustion from many pending requests.
-3. We add a constant `swapiBaseURL` that we'll later use to construct the URL for the SWAPI API endpoint.
+    - We set a 30-second request timeout. It's important to set this for HTTP clients in Go because the default is unlimited and can lead to resource exhaustion from many pending requests.
+3. We removed resolvers for the old `QueryHello` RPC and a field `nextId` in the `StarwarsService` struct.
 
-If you ran this now, the plugin would just panic (exit ungracefully) when we tried to use the `people` query. Let’s fix that.
+If you published this now, the plugin would just panic (exit ungracefully) when we tried to use the `people` query because of the `panic("not implemented")` in the RPC resolver. The plugin would be automatically restarted, but the request would fail. Let's fix that.
 
 <Note>
 In the `main()` function, you can use `os.Getenv` or many available configuration libraries for Go to pull info from the environment to configure your service. A good one to start with is [caarlos0/env](https://github.com/caarlos0/env).
 </Note>
 
-Next, let’s add a struct (Go's most primitive object type) to help us work with SWAPI responses. 
+Next, let's add a struct (Go's most primitive object type) to help us work with SWAPI responses. 
 
 ```go main.go
 package main
@@ -253,9 +278,9 @@ func main() {
 }
 ```
 
-These types are very similar to those generated for our service, close enough that we could potentially use the generated types directly. But for this example, we’ll create a separate type to show what happens if you need more complex mapping from the wrapped API to your service.
+These types are very similar to those generated for our service, close enough that we could potentially use the generated types directly. But for this example, we'll create a separate type to show what happens if you need more complex mapping from the wrapped API to your service.
 
-Now, let’s implement the resolver for our `QueryPeople` RPC. Right now, your resolver should look like this:
+Now, let's implement the resolver for our `QueryPeople` RPC. Right now, your resolver should look like this:
 
 ```go main.go
 func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
@@ -350,7 +375,7 @@ wgc router plugin publish ./starwars --label team=A
 
 Congratulations! You've created your first gRPC plugin.  
 
-You’ll see the output from a Docker build and push, followed by a successful completion.
+You'll see the output from a Docker build and push, followed by a successful completion.
 
 If you have a router deployed serving your federated graph, you can now query `people` via GraphQL.
 
@@ -380,7 +405,7 @@ It should return something like:
 ```
 
 <Warning>
-If you get an error, check your router logs to see where it might be coming from. If you can’t solve it, a complete version of the plugin is linked in the [Appendix](#Appendix).
+If you get an error, check your router logs to see where it might be coming from. If you can't solve it, a complete version of the plugin is linked in the [Appendix](#Appendix).
 </Warning>
 
 ### Updating the plugin
@@ -391,9 +416,11 @@ If you update the schema, you need to regenerate the code by running `wgc router
 
 ## What's next?
 
+You can find the full technical documentation for gRPC plugins [here](/router/grpc/plugins).
+
 Well, in our case, the SWAPI has much more information than just people. It also includes data about vehicles, planets, and species. We could add these entities to our schema and resolve them using our plugin.
 
-In your case, you might add entity resolvers to your plugin’s GraphQL schema to see how federation works with gRPC, or create more plugins for other purposes. Plugins aren’t just for wrapping HTTP APIs either; you can use the full power of Go to query databases, implement business logic, or do anything else you need.
+In your case, you might add entity resolvers to your plugin's GraphQL schema to see how federation works with gRPC, or create more plugins for other purposes. Plugins aren't just for wrapping HTTP APIs either; you can use the full power of Go to query databases, implement business logic, or do anything else you need.
 
 You can also implement tests for your plugin to ensure it works correctly, you can find an example test in the `src/main_test.go`, you can try updating it to work with the new schema.
 
