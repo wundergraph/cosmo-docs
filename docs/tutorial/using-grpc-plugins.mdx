@@ -209,16 +209,18 @@ import (
 	"google.golang.org/grpc"
 )
 
-// 1. Add a constant that we can use to construct request URLs later
-const swapiBaseURL = "https://swapi.dev/api"
-
 func main() {
+	// 1. Initialize the HTTP client
+	client := httpclient.New(
+		httpclient.WithBaseURL("https://swapi.info/api/"),
+		httpclient.WithTimeout(30*time.Second),
+		httpclient.WithHeader("Accept", "application/json"),
+	)
+
+	// 2. Add the new HTTP client to the service
 	pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
 		s.RegisterService(&service.StarwarsService_ServiceDesc, &StarwarsService{
-			// 2a. Add an *http.Client with a timeout
-			client: &http.Client{
-				Timeout: 30 * time.Second,
-			},
+			client: client,
 		})
 	})
 
@@ -229,11 +231,10 @@ func main() {
 	pl.Serve()
 }
 
-// 2b. Add a new *http.Client field to be used by the service.
+// 3. Add a new *httpclient.Client field to be used by the service.
 type StarwarsService struct {
 	service.UnimplementedStarwarsServiceServer
-
-	client *http.Client
+	client *httpclient.Client
 }
 
 func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
@@ -243,11 +244,11 @@ func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeo
 
 This updates the `main.go` that comes with the initial plugin template in a few ways:
 
-1. We add a constant `swapiBaseURL` that we'll later use to construct the URL for the SWAPI API endpoint.
-2. In the `StarwarsService` struct, we added a field of type `*http.Client` (2b). 
+1. Initialize an instance of the httpclient provided by our `router-plugin` package. This client comes with special features for forwarding telemetry through the router.
+2. We pass the new `client` to the `StarwarsService` constructor.
+3. In the `StarwarsService` struct, we added a field of type `*httpclient.Client`
     - This will hold a persistent HTTP client that our endpoints can use for the whole lifetime of the plugin process.
-    - We set a 30-second request timeout. It's important to set this for HTTP clients in Go because the default is unlimited and can lead to resource exhaustion from many pending requests. (2a)
-3. We removed resolvers for the old `QueryHello` RPC and a field `nextId` in the `StarwarsService` struct.
+4. We removed resolvers for the old `QueryHello` RPC and a field `nextId` in the `StarwarsService` struct.
 
 If you published this now, the plugin would just panic (exit ungracefully) when we tried to use the `people` query because of the `panic("not implemented")` in the RPC resolver. The plugin would be automatically restarted, but the request would fail. Let's fix that.
 
@@ -294,31 +295,24 @@ Here's an implemented version of the `QueryPeople` RPC resolver:
 ...
 
 func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
-	// 1. Create a request to the SWAPI for people
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s/people/", swapiBaseURL), nil)
+	// 1. Send the request and handle the response
+	resp, err := s.client.Get(ctx, "/people")
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
 	}
 
-	// 2. Send the request and handle the response
-	resp, err := s.client.Do(httpReq)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
-	}
-	defer resp.Body.Close()
-
-	// 3. If the response status is not OK, return an error
+	// 2. If the response status is not OK, return an error
 	if resp.StatusCode != http.StatusOK {
 		return nil, status.Errorf(codes.Internal, "failed to fetch people: SWAPI returned status %d", resp.StatusCode)
 	}
 
-	// 4. Decode the response body into a list of SWAPIPerson
-	var people []SWAPIPerson
-	if err := json.NewDecoder(resp.Body).Decode(&people); err != nil {
+	// 3. Read out the response body into a list of SWAPIPerson
+	people, err := httpclient.UnmarshalTo[[]SWAPIPerson](resp)
+	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to decode response: %v", err)
 	}
 
-	// 5. Convert the []SWAPIPerson to []*service.Person (the type needed for our RPC's return type)
+	// 4. Convert the []SWAPIPerson to []*service.Person (the type needed for our RPC's return type)
 	protoPeople := make([]*service.Person, len(people)) // You can pre-allocate the new slice to the exact length of the people slice, this won't work if you're filtering while iterating.
 	for i, person := range people {
 		protoPeople[i] = &service.Person{
@@ -333,7 +327,7 @@ func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeo
 		}
 	}
 
-	// 6. Return a response containing the converted people objects
+	// 5. Return a response containing the converted people objects
 	return &service.QueryPeopleResponse{
 		People: protoPeople,
 	}, nil
@@ -344,14 +338,13 @@ func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeo
 
 Lets go over it step by step:
 
-1. Start by setting up a request to fetch the list of people from the SWAPI with HTTP GET to `{swapiBaseURL}/people/`.
-2. Perform the request and handle any errors that may occur.
-3. Check the response status code and return an error if it's not 200 OK.
-4. Decode the JSON response into a slice of `SWAPIPerson` structs.
-5. Transform the slice of `SWAPIPerson` structs into a slice of `*service.Person` structs (this type comes from the generated code for your schema)
+1. Start by sending up a request to fetch the list of people from the SWAPI with HTTP GET to `/people`.
+2. Check the response status code and return an error if it's not 200 OK.
+3. Decode the JSON response into a slice of `SWAPIPerson` structs.
+4. Transform the slice of `SWAPIPerson` structs into a slice of `*service.Person` structs (this type comes from the generated code for your schema)
     - In a more complex program, this is where you would do any transformations needed to produce the expected response from your backend, database, or other source.
     - This method lets you write the GraphQL schema for your client‑facing federated graph in a way that fits that ecosystem, while handling translation from other formats in a fully featured language like Go.
-6. Finally, we return a response containing the converted people objects
+5. Finally, we return a response containing the converted people objects
 
 <Tip>
 The errors here come from `google.golang.org/grpc/status` and `google.golang.org/grpc/codes`. They're an idiomatic way to return errors in a gRPC API.
@@ -479,101 +472,97 @@ You can also implement tests for your plugin to ensure it works correctly, you c
     ```
     ```go src/main.go
     package main
-        
+
     import (
-    	"context"
-    	"encoding/json"
-    	"fmt"
-    	"log"
-    	"net/http"
-    	"time"
-        
-    	service "github.com/wundergraph/cosmo/plugin/generated"
-        
-    	routerplugin "github.com/wundergraph/cosmo/router-plugin"
-    	"google.golang.org/grpc"
-    	"google.golang.org/grpc/codes"
-    	"google.golang.org/grpc/status"
+     	"context"
+     	"log"
+     	"net/http"
+     	"time"
+      
+     	service "github.com/wundergraph/cosmo/plugin/generated"
+     	"github.com/wundergraph/cosmo/router-plugin/httpclient"
+      
+     	routerplugin "github.com/wundergraph/cosmo/router-plugin"
+     	"google.golang.org/grpc"
+     	"google.golang.org/grpc/codes"
+     	"google.golang.org/grpc/status"
     )
-        
-    const swapiBaseURL = "https://swapi.dev/api"
-        
+    
     type SWAPIPerson struct {
-    	Name      string `json:"name"`
-    	Height    string `json:"height"`
-    	Mass      string `json:"mass"`
-    	HairColor string `json:"hair_color"`
-    	SkinColor string `json:"skin_color"`
-    	EyeColor  string `json:"eye_color"`
-    	BirthYear string `json:"birth_year"`
-    	Gender    string `json:"gender"`
+     	Name      string `json:"name"`
+     	Height    string `json:"height"`
+     	Mass      string `json:"mass"`
+     	HairColor string `json:"hair_color"`
+     	SkinColor string `json:"skin_color"`
+     	EyeColor  string `json:"eye_color"`
+     	BirthYear string `json:"birth_year"`
+     	Gender    string `json:"gender"`
     }
-        
+    
     func main() {
-    	pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
-    		s.RegisterService(&service.StarwarsService_ServiceDesc, &StarwarsService{
-    			client: &http.Client{
-    				Timeout: 30 * time.Second,
-    			},
-    		})
-    	})
-        
-    	if err != nil {
-    		log.Fatalf("failed to create router plugin: %v", err)
-    	}
-        
-    	pl.Serve()
+     	// 1. Initialize the HTTP client
+     	client := httpclient.New(
+      		httpclient.WithBaseURL("https://swapi.info/api/"),
+      		httpclient.WithTimeout(30*time.Second),
+      		httpclient.WithHeader("Accept", "application/json"),
+     	)
+      
+     	// 2. Add the new HTTP client to the service
+     	pl, err := routerplugin.NewRouterPlugin(func(s *grpc.Server) {
+      		s.RegisterService(&service.StarwarsService_ServiceDesc, &StarwarsService{
+     			client: client,
+      		})
+     	})
+      
+     	if err != nil {
+      		log.Fatalf("failed to create router plugin: %v", err)
+     	}
+      
+     	pl.Serve()
     }
-        
+    
     type StarwarsService struct {
-    	service.UnimplementedStarwarsServiceServer
-    	client *http.Client
+     	service.UnimplementedStarwarsServiceServer
+     	client *httpclient.Client
     }
-        
+    
     func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeopleRequest) (*service.QueryPeopleResponse, error) {
-    	// 1. Create a request to the SWAPI for people
-    	httpReq, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s/people/", swapiBaseURL), nil)
-    	if err != nil {
-    		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
-    	}
-        
-    	// 2. Send the request and handle the response
-    	resp, err := s.client.Do(httpReq)
-    	if err != nil {
-    		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
-    	}
-    	defer resp.Body.Close()
-        
-    	// 3. If the response status is not OK, return an error
-    	if resp.StatusCode != http.StatusOK {
-    		return nil, status.Errorf(codes.Internal, "failed to fetch people: SWAPI returned status %d", resp.StatusCode)
-    	}
-        
-    	// 4. Decode the response body into a list of SWAPIPerson
-    	var people []SWAPIPerson
-    	if err := json.NewDecoder(resp.Body).Decode(&people); err != nil {
-    		return nil, status.Errorf(codes.Internal, "failed to decode response: %v", err)
-    	}
-        
-    	// 5. Convert the []SWAPIPerson to []*service.Person (the type needed for our RPC's return type)
-    	protoPeople := make([]*service.Person, len(people)) // You can pre-allocate the new slice to the exact length of the people slice, this won't work if you're filtering while iterating.
-    	for i, person := range people {
-    		protoPeople[i] = &service.Person{
-    			Name:      person.Name,
-    			Height:    person.Height,
-    			Mass:      person.Mass,
-    			HairColor: person.HairColor,
-    			SkinColor: person.SkinColor,
-    			EyeColor:  person.EyeColor,
-    			BirthYear: person.BirthYear,
-    			Gender:    person.Gender,
-    		}
-    	}
-        
-    	// 6. Return a response containing the converted people objects
-    	return &service.QueryPeopleResponse{
-    		People: protoPeople,
-    	}, nil
+     	// 1. Send the request and handle the response
+     	resp, err := s.client.Get(ctx, "/people")
+     	if err != nil {
+      		return nil, status.Errorf(codes.Internal, "failed to fetch people: %v", err)
+     	}
+      
+     	// 2. If the response status is not OK, return an error
+     	if resp.StatusCode != http.StatusOK {
+      		return nil, status.Errorf(codes.Internal, "failed to fetch people: SWAPI returned status %d", resp.StatusCode)
+     	}
+      
+     	// 3. Read out the response body into a list of SWAPIPerson
+     	people, err := httpclient.UnmarshalTo[[]SWAPIPerson](resp)
+     	if err != nil {
+      		return nil, status.Errorf(codes.Internal, "failed to decode response: %v", err)
+     	}
+      
+     	// 4. Convert the []SWAPIPerson to []*service.Person (the type needed for our RPC's return type)
+     	protoPeople := make([]*service.Person, len(people)) // You can pre-allocate the new slice to the exact length of the people slice, this won't work if you're filtering while iterating.
+     	for i, person := range people {
+      		protoPeople[i] = &service.Person{
+     			Name:      person.Name,
+     			Height:    person.Height,
+     			Mass:      person.Mass,
+     			HairColor: person.HairColor,
+     			SkinColor: person.SkinColor,
+     			EyeColor:  person.EyeColor,
+     			BirthYear: person.BirthYear,
+     			Gender:    person.Gender,
+      		}
+     	}
+      
+     	// 6. Return a response containing the converted people objects
+     	return &service.QueryPeopleResponse{
+      		People: protoPeople,
+     	}, nil
     }
     ```
 </Accordion>
