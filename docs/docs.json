@@ -50,7 +50,8 @@
               "tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry",
               "tutorial/supergraph-previews-for-every-pull-request",
               "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags",
-              "tutorial/grpc-service-quickstart"
+              "tutorial/grpc-service-quickstart",
+              "tutorial/using-grpc-plugins"
             ]
           }
         ]
@@ -196,10 +197,7 @@
               {
                 "group": "Cache",
                 "icon": "database",
-                "pages": [
-                  "cli/router/cache",
-                  "cli/router/cache/push"
-                ]
+                "pages": ["cli/router/cache", "cli/router/cache/push"]
               },
               {
                 "group": "Token",
@@ -257,10 +255,7 @@
           {
             "group": "Operations",
             "icon": "get-pocket",
-            "pages": [
-              "cli/operations",
-              "cli/operations/push"
-            ]
+            "pages": ["cli/operations", "cli/operations/push"]
           },
           {
             "group": "Schema Contracts",
@@ -367,10 +362,7 @@
           {
             "group": "Groups",
             "icon": "users-rectangle",
-            "pages": [
-              "studio/groups",
-              "studio/groups/group-rules"
-            ]
+            "pages": ["studio/groups", "studio/groups/group-rules"]
           },
           {
             "group": "SSO",
@@ -397,10 +389,7 @@
           {
             "group": "Policies",
             "icon": "user-police-tie",
-            "pages": [
-              "studio/policies",
-              "studio/lint-policy/linter-rules"
-            ]
+            "pages": ["studio/policies", "studio/lint-policy/linter-rules"]
           },
           "studio/graph-pruning",
           "studio/invitations"

@@ -231,6 +231,10 @@ Please refer to the [Debugging Plugins](/router/gRPC/debugging) documentation fo
 
 When deploying router plugins with your Cosmo Router, keep these important considerations in mind:
 
+### Cosmo Cloud Plugin Registry
+
+Native integration with Cosmo Cloud allows you to push plugins directly to the platform without the need to re-deploy the Router. If you're already using Cosmo Cloud, you can use the `wgc router plugin publish` command to publish your plugin directly to the plugin registry for use by your routers.
+
 ### Platform Compatibility
 
 Plugins must be compiled for the same target platform as your router. This means:
@@ -238,9 +242,11 @@ Plugins must be compiled for the same target platform as your router. This means
 - If your router runs on Linux AMD64, your plugins must be built for Linux AMD64
 - If deploying to multiple architectures, plugins must be cross-compiled for each target platform
 
+If you're using the Cosmo Cloud Plugin Registry, you can specify platforms using the `--platform` flag when publishing your plugins from the CLI.
+
 ### Docker Integration
 
-For containerized deployments:
+For containerized router deployments using local plugins:
 
 1. Plugins must be embedded into the same Docker image as the Router
 2. The Router's configuration file must correctly reference the plugins path within the container
@@ -264,14 +270,6 @@ WORKDIR /app
 
 # The entrypoint is already set in the base image
 ```
-
-### Future Enhancements
-
-We're actively working on enhancing plugin deployment with:
-
-- **Cosmo Cloud Plugin Registry**: Native integration with Cosmo Cloud allowing you to push plugins directly to the platform without the need to re-deploy the Router
-
-These capabilities will further simplify the management and deployment of plugins in production environments.
 
 ## Conclusion
 
