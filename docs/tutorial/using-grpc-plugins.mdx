@@ -6,7 +6,7 @@ icon: plug
 
 ## Prerequisites
 
-- [Cosmo CLI](/cli/intro) (minimum version: [0.90.0](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.90.0)) installed and configured
+- [Cosmo CLI](/cli/intro) (minimum version: [0.90.1](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.90.1)) installed and configured
 - [Cosmo Router](/router/intro) (minimum version: [0.242.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.242.0)) installed and configured to use Cosmo Cloud
 
 ## Overview
@@ -183,6 +183,7 @@ import (
 	"time"
 
 	service "github.com/wundergraph/cosmo/plugin/generated"
+	"github.com/wundergraph/cosmo/router-plugin/httpclient"
 
 	routerplugin "github.com/wundergraph/cosmo/router-plugin"
 	"google.golang.org/grpc"
