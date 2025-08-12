@@ -244,9 +244,9 @@ func (s *StarwarsService) QueryPeople(ctx context.Context, req *service.QueryPeo
 This updates the `main.go` that comes with the initial plugin template in a few ways:
 
 1. We add a constant `swapiBaseURL` that we'll later use to construct the URL for the SWAPI API endpoint.
-2. In the `StarwarsService` struct, we added a field of type `*http.Client` (b). 
+2. In the `StarwarsService` struct, we added a field of type `*http.Client` (2b). 
     - This will hold a persistent HTTP client that our endpoints can use for the whole lifetime of the plugin process.
-    - We set a 30-second request timeout. It's important to set this for HTTP clients in Go because the default is unlimited and can lead to resource exhaustion from many pending requests. (a)
+    - We set a 30-second request timeout. It's important to set this for HTTP clients in Go because the default is unlimited and can lead to resource exhaustion from many pending requests. (2a)
 3. We removed resolvers for the old `QueryHello` RPC and a field `nextId` in the `StarwarsService` struct.
 
 If you published this now, the plugin would just panic (exit ungracefully) when we tried to use the `people` query because of the `panic("not implemented")` in the RPC resolver. The plugin would be automatically restarted, but the request would fail. Let's fix that.
