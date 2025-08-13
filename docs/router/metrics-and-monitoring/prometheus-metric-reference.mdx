@@ -114,13 +114,13 @@ telemetry:
 
 #### Metrics
 
-* `router_engine_connections`: This contains the number of connections active from the client to the router.
+* [`router_engine_connections`](#router-engine-connections): This contains the number of connections active from the client to the router.
 
 * `router_engine_subscriptions`: The number of currently active subscriptions, this number will differ from `router_engine_connections` if the client reuses connections.
 
 * `router_engine_triggers`: The number of currently active triggers. Subscriptions from the router to the subgraphs are grouped by triggers, which includes query, headers, variables and such. If two subscriptions initiated contain the same parameters, it will utilize the same trigger, and as a result the same connection from the router to the subgraph.
 
-* `router_engine_messages_sent_total`: The number of total messages for subscriptions sent over from the subgraph to the router.
+* [`router_engine_messages_sent_total`](#router-engine-messages-sent-total): The number of total messages for subscriptions sent over from the subgraph to the router.
 
 ### Connection Metrics
 
@@ -463,6 +463,44 @@ increase(router_circuit_breaker_short_circuits[5m])
 
 * High rate of short-circuited requests due to subgraph instability.
 * Circuit breaker is frequently protecting the system from cascading failures.
+
+## `router_engine_connections`
+
+Number of client to router connections active
+
+**Example PromQL Query:**
+
+Monitor the peak number of connections at any given time
+
+```bash
+max_over_time(router_engine_connections[15m])
+```
+
+**Reason for Monitoring:**
+
+- Understand the number of connection resources utilized in production
+
+**Error Cases Addressed:**
+
+- Correlate connection exhaustion issues in the router with number of connections used
+
+## `router_engine_messages_sent_total`
+
+**Example PromQL Query:**
+
+Monitor the peak number of messages sent from all subgraphs at any given time
+
+```bash
+sum by (wg_subgraph) (rate(router_engine_messages_sent_total[1m]))
+```
+
+**Reason for Monitoring:**
+
+- Understand the number of messages sent to the router from all subgraphs.
+
+**Error Cases Addressed:**
+
+- Correlate failures with number of messages sent
 
 ## `go_memstats_alloc_bytes`
 
