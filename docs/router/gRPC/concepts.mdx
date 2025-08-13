@@ -123,6 +123,109 @@ When compared to integrating REST APIs into GraphQL Federation, gRPC offers seve
 
 ## Architecture Overview
 
+### Development Workflow
+
+This diagram shows how the `wgc` CLI generates the necessary artifacts for gRPC integration:
+
+<div align="center">
+
+```mermaid
+graph TD
+    %% Development Tools
+    WGC["wgc CLI"]
+    
+    %% Generated Artifacts
+    SCHEMA["GraphQL Schema<br/>API Definition"]
+    PROTO["Protobuf Schema<br/>gRPC Definition"]
+    MAPPING["Mapping Files<br/>Translation Rules"]
+    ROUTERFILE["Router Execution File<br/>Complete Config"]
+    SERVICE["gRPC Service<br/>Business Logic"]
+
+    SCHEMA --> WGC --> Generated
+
+    subgraph Generated
+         PROTO & MAPPING
+    end
+    
+    %% Development flow
+    Generated --> |"implement"| SERVICE
+    Generated --> |"implement"| SERVICE
+    Generated --> |"compose"| ROUTERFILE
+    Generated --> |"compose"| ROUTERFILE
+    
+    %% Styling
+    classDef devTools fill:#86198f80,stroke:#701a75,stroke-width:4px,color:#ffffff,stroke-dasharray: 10 5
+    classDef artifacts fill:#a21caf80,stroke:#86198f,stroke-width:4px,color:#ffffff
+    classDef serviceLayer fill:#9d174d80,stroke:#831843,stroke-width:4px,color:#ffffff
+    
+    class WGC devTools
+    class SCHEMA,PROTO,MAPPING,ROUTERFILE artifacts
+    class SERVICE serviceLayer
+```
+
+</div>
+
+#### Explanation
+
+**As a developer**, you start by defining a **GraphQL Schema** with your types and operations. The CLI uses this schema to generate the necessary protobuf definitions and mapping files. 
+You can then use the generated protobuf schema to implement your gRPC service.
+The generated mapping files are used during composition to configure the router. 
+
+### Runtime Execution
+
+This diagram shows how the router processes GraphQL requests and communicates with gRPC services:
+
+<div align="center">
+
+```mermaid
+graph TD
+    %% Client Layer
+    CLIENT["Client<br/>GraphQL Operations"]
+    
+    %% Router Layer
+    ROUTER["Cosmo Router"]
+    ENGINE["Operation Planning"]
+    DATALOADER["Dataloader<br/>Batching"]
+    GRPCDATASOURCE["gRPC Plan Execution"]
+    
+    %% Execution Layer
+    PROTOMSG["GraphQL to Proto<br/>(Binary Protocol)"]
+    
+    %% Service Layer
+    SERVICE["gRPC Service<br/>Business Logic"]
+    
+    %% Runtime flow
+    CLIENT --> |"GraphQL Request"| ROUTER
+    ROUTER --> ENGINE
+    ENGINE --> GRPCDATASOURCE
+    GRPCDATASOURCE --> PROTOMSG
+    PROTOMSG --> DATALOADER
+    DATALOADER --> |"gRPC Call"| SERVICE
+    SERVICE --> |"gRPC Response"| DATALOADER
+    ROUTER --> |"GraphQL Response"| CLIENT
+    
+    %% Styling
+    classDef clientLayer fill:#ea489980,stroke:#be185d,stroke-width:4px,color:#ffffff,stroke-dasharray: 5 5
+    classDef routerLayer fill:#db277780,stroke:#be185d,stroke-width:4px,color:#ffffff
+    classDef executionLayer fill:#be185d80,stroke:#9d174d,stroke-width:4px,color:#ffffff
+    classDef serviceLayer fill:#9d174d80,stroke:#831843,stroke-width:4px,color:#ffffff
+    
+    class CLIENT clientLayer
+    class ROUTER,ENGINE,DATALOADER,GRPCDATASOURCE routerLayer
+    class EXECPLAN,PROTOMSG executionLayer
+    class SERVICE serviceLayer
+```
+
+</div>
+
+#### Explanation
+
+**At runtime**, clients send **GraphQL requests** to the Cosmo Router. The router's engine plans the operation and translates GraphQL into gRPC calls using the generated mapping files.
+**The data loader** batches requests to your gRPC services for optimal performance.
+Responses are translated back from protobuf to GraphQL format and assembled into the final client response.
+
+### In Short
+
 gRPC integration into GraphQL Federation follows this pattern:
 
 1. **Schema Definition**: You define GraphQL schemas that represent your gRPC interfaces
