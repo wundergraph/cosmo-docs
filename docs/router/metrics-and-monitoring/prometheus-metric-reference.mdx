@@ -96,6 +96,32 @@ telemetry:
 
   * **Improvement Areas:** Low cache request stats highlight the need for potential optimization or caching strategy updates.
 
+### Engine Metrics
+
+We expose subscription statistics from the router and the internal engine. By utilizing these metrics users can figure out the usage of subscriptions.
+
+#### Enable Engine Metrics
+
+Depending on your setup you can enable engine metrics for Prometheus in the router configuration
+
+```bash
+telemetry:
+  metrics:
+    prometheus:
+      engine_stats:
+        subscriptions: true
+```
+
+#### Metrics
+
+* `router_engine_connections`: This contains the number of connections active from the client to the router.
+
+* `router_engine_subscriptions`: The number of currently active subscriptions, this number will differ if the client reuses the connection.
+
+* `router_engine_triggers`: The number of currently active triggers. Subscriptions from the router to the subgraphs are grouped by triggers, which includes query, headers, variables and such. If two subscriptions initiated contain the same parameters, it will utilize the same trigger, and as a result the same connection from the router to the subgraph.
+
+* `router_engine_messages_sent_total`: The number of total messages sent over subscriptions to the client.
+
 ### Connection Metrics
 
 These metrics provide lower level metrics which helps track connection and pool metrics. By utilizing these metrics users can figure out when the router's connection pool is full and when connections are misbehaving by for example observing spikes in time to acquire connections.

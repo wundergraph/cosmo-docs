@@ -187,6 +187,35 @@ Few attributes can configured through the route configuration:
 
 Please use meaningful names in the Studio to ensure clarity. The instance ID is particularly important because it allows for the identification of a router even after restarts. If not specified, a random unique ID is used.
 
+
+### Engine Metrics
+
+We expose subscription statistics from the router and the internal engine. By utilizing these metrics users can figure out the usage of subscriptions.
+
+<CodeGroup>
+```bash config.yaml
+telemetry:
+  metrics:
+    otlp: 
+      engine_stats:
+        subscriptions: true
+    prometheus:
+      engine_stats:
+        subscriptions: true
+```
+</CodeGroup>
+
+#### Metrics
+
+* `router.engine.connections`: This contains the number of connections active from the client to the router.
+
+* `router.engine.subscriptions`: The number of currently active subscriptions.
+
+* `router.engine.triggers`: The number of currently active triggers. Subscriptions from the router to the subgraphs are grouped by triggers, which includes query, headers, variables and such. If two subscriptions initiated contain the same parameters, it will utilize the same trigger, and as a result the same connection from the router to the subgraph.
+
+* `router.engine.messages.sent`: The number of total messages sent over subscriptions to the client.
+
+
 ### Connection Metrics
 
 We also provide lower level metrics which helps track connection and pool metrics. By utilizing these metrics users can figure out when the router's connection pool is full and when connections are misbehaving by for example observing spikes in time to acquire connections. This can be enabled for Open Telemetry or Prometheus via
