@@ -116,7 +116,7 @@ telemetry:
 
 * `router_engine_connections`: This contains the number of connections active from the client to the router.
 
-* `router_engine_subscriptions`: The number of currently active subscriptions, this number will differ if the client reuses the connection.
+* `router_engine_subscriptions`: The number of currently active subscriptions, this number will differ from `router_engine_connections` if the client reuses connections.
 
 * `router_engine_triggers`: The number of currently active triggers. Subscriptions from the router to the subgraphs are grouped by triggers, which includes query, headers, variables and such. If two subscriptions initiated contain the same parameters, it will utilize the same trigger, and as a result the same connection from the router to the subgraph.
 
