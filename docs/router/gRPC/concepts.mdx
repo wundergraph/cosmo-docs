@@ -132,32 +132,28 @@ This diagram shows how the `wgc` CLI generates the necessary artifacts for gRPC 
 ```mermaid
 graph TD
     %% Development Tools
-    WGC["wgc CLI"]
-    
+    WGC["Use wgc CLI"]
+
     %% Generated Artifacts
-    SCHEMA["GraphQL Schema<br/>API Definition"]
+    SCHEMA["Design your GraphQL Schema"]
     PROTO["Protobuf Schema<br/>gRPC Definition"]
     MAPPING["Mapping Files<br/>Translation Rules"]
-    ROUTERFILE["Router Execution File<br/>Complete Config"]
     SERVICE["gRPC Service<br/>Business Logic"]
 
-    SCHEMA --> WGC --> Generated
+    SCHEMA --> WGC --> Generated["Generated Artifacts"]
 
-    subgraph Generated
+    subgraph Generated["Generated Artifacts"]
          PROTO & MAPPING
     end
-    
+
     %% Development flow
-    Generated --> |"implement"| SERVICE
-    Generated --> |"implement"| SERVICE
-    Generated --> |"compose"| ROUTERFILE
-    Generated --> |"compose"| ROUTERFILE
-    
+    Generated --> |"You implement"| SERVICE
+
     %% Styling
     classDef devTools fill:#86198f80,stroke:#701a75,stroke-width:4px,color:#ffffff,stroke-dasharray: 10 5
     classDef artifacts fill:#a21caf80,stroke:#86198f,stroke-width:4px,color:#ffffff
     classDef serviceLayer fill:#9d174d80,stroke:#831843,stroke-width:4px,color:#ffffff
-    
+
     class WGC devTools
     class SCHEMA,PROTO,MAPPING,ROUTERFILE artifacts
     class SERVICE serviceLayer
@@ -167,9 +163,8 @@ graph TD
 
 #### Explanation
 
-**As a developer**, you start by defining a **GraphQL Schema** with your types and operations. The CLI uses this schema to generate the necessary protobuf definitions and mapping files. 
-You can then use the generated protobuf schema to implement your gRPC service.
-The generated mapping files are used during composition to configure the router. 
+**As a developer**, you start by defining a **GraphQL Schema** with your types and operations. The CLI uses this schema to generate the necessary protobuf definitions, mapping files and language-specific service implementations.
+You can then use the generated skeleton to implement your gRPC service. If you want to see how to get started, check out our [Tutorial](/tutorial/using-grpc-plugins).
 
 ### Runtime Execution
 
