@@ -22,6 +22,10 @@ The `npx wgc subgraph publish` command enables you to publish a specific subgrap
 A previously created [Event-Driven Graph (EDG)](/federation/event-driven-federated-subscriptions)cannot be changed into a regular subgraph. Similarly, a regular subgraph cannot be changed into an EDG. Attempting to do either of these actions will result in an error.
 </Warning>
 
+<Warning>
+  If you want to publish a plugin subgraph, you must use the [router plugin publish](/cli/router/plugin/publish) command instead.
+</Warning>
+
 ## **Parameters**
 
 * `[subgraphName]`: The name of the subgraph you want to publish. Make sure to use the correct name of the subgraph you previously created.

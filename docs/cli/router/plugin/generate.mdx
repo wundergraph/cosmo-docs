@@ -1,0 +1,90 @@
+---
+title: "Generate"
+description: "Generate proto and gRPC code for a router plugin"
+icon: "code"
+---
+
+# wgc router plugin generate
+
+The `generate` command creates Protocol Buffers definitions, mapping files, and gRPC code based on your GraphQL schema. This command is useful when you want to generate the necessary code without compiling binaries.
+
+## Usage
+
+```bash
+wgc router plugin generate [directory] [options]
+```
+
+## Arguments
+
+| Argument    | Description             | Default                 |
+| ----------- | ----------------------- | ----------------------- |
+| `directory` | Directory of the plugin | `.` (current directory) |
+
+## Options
+
+| Option                       | Description                                                          | Default                               |
+| ---------------------------- | -------------------------------------------------------------------- | ------------------------------------- |
+| `--go-module-path <path>`    | Go module path to use for the plugin                                 | `github.com/wundergraph/cosmo/plugin` |
+| `--skip-tools-installation`  | Skip tool installation                                               | `false`                               |
+| `--force-tools-installation` | Force tools installation regardless of version check or confirmation | `false`                               |
+
+## Description
+
+This command performs the code generation steps of the plugin build process:
+
+1. **Generate Proto and Mapping Files**: Processes your GraphQL schema to generate Protocol Buffers definitions and mapping files
+2. **Generate gRPC Code**: Uses the generated Proto files to create Go code for the gRPC service
+3. **Install Go Dependencies**: Installs all required Go dependencies for your plugin
+
+The `generate` command is equivalent to running [`build`](./build) with the `--generate-only` flag. Use this when you're iterating on your GraphQL schema and need to regenerate the code without compiling binaries.
+
+## Required Tools
+
+The generate command will automatically check for and install the necessary toolchain when required tools can't be found in the right version on your system. You can control this behavior with the `--skip-tools-installation` and `--force-tools-installation` flags.
+
+You can also install the dependencies manually and use an IDE with Go support. The following table shows the current versions and download links for the required tools:
+
+| Tool                      | Version                    | Installation Link                                                          |
+| ------------------------- | -------------------------- | -------------------------------------------------------------------------- |
+| Go                        | >=1.22.0 (Last 2 versions) | [Releases](https://go.dev/doc/install)                                     |
+| Protocol Buffers (protoc) | ^29.3                      | [Releases](https://protobuf.dev/installation/)                             |
+| protoc-gen-go             | ^1.34.2                    | [GitHub Releases](https://github.com/protocolbuffers/protobuf-go/releases) |
+| protoc-gen-go-grpc        | ^1.5.1                     | [GitHub Releases](https://github.com/grpc/grpc-go/releases)                |
+
+## Examples
+
+### Generate code for the current directory
+
+```bash
+wgc router plugin generate
+```
+
+### Generate code for a specific plugin directory
+
+```bash
+wgc router plugin generate ./my-plugin
+```
+
+### Generate with a custom Go module path
+
+```bash
+wgc router plugin generate --go-module-path github.com/myorg/my-plugin ./my-plugin
+```
+
+### Skip tool installation (useful in CI environments)
+
+```bash
+wgc router plugin generate --skip-tools-installation ./my-plugin
+```
+
+## Output
+
+The generate process creates the following outputs:
+
+- **Proto files**: Protocol Buffers definitions in the `generated/` directory
+- **Mapping files**: Schema mapping files that connect your GraphQL schema to the gRPC service
+- **Generated Go code**: gRPC client and server code in the `generated/` directory
+- **Go dependencies**: All required dependencies will be installed in your Go module
+
+After generating, you can continue development with your IDE or run [`build`](./build) to compile the plugin into binaries.
+
