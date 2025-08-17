@@ -226,7 +226,11 @@
                 "pages": [
                   "cli/router/plugin",
                   "cli/router/plugin/init",
+                  "cli/router/plugin/create",
+                  "cli/router/plugin/delete",
                   "cli/router/plugin/build",
+                  "cli/router/plugin/generate",
+                  "cli/router/plugin/publish",
                   "cli/router/plugin/test"
                 ]
               }
