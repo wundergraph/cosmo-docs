@@ -30,9 +30,9 @@
     "options": ["copy", "view", "chatgpt", "claude"]
   },
   "navigation": {
-    "dropdowns": [
+    "tabs": [
       {
-        "dropdown": "Documentation",
+        "tab": "Documentation",
         "icon": "book-open",
         "groups": [
           {
@@ -43,6 +43,182 @@
               "enterprise",
               "security-and-compliance",
               "self-hosted"
+            ]
+          },
+          {
+            "group": "Getting Started",
+            "pages": [
+              "getting-started/cosmo-cloud-onboarding",
+              "getting-started/switch-from-apollo-to-cosmo"
+            ]
+          },
+          {
+            "group": "Router",
+            "pages": [
+              "router/intro",
+              "router/download-and-install",
+              {
+                "group": "Configuration",
+                "icon": "sliders-up",
+                "pages": [
+                  "router/configuration",
+                  "router/configuration/config-design",
+                  "router/configuration/template-expressions"
+                ]
+              },
+              "router/mcp",
+              "router/custom-modules",
+              {
+                "group": "gRPC",
+                "icon": "network-wired",
+                "pages": [
+                  "router/gRPC/concepts",
+                  "router/gRPC/grpc-services",
+                  "router/gRPC/graphql-support",
+                  {
+                    "group": "Plugins",
+                    "icon": "plug",
+                    "pages": [
+                      "router/gRPC/plugins",
+                      "router/gRPC/plugins/debugging",
+                      {
+                        "group": "Library Features",
+                        "icon": "books",
+                        "pages": [
+                          "router/gRPC/plugins/library-features/http-client",
+                          "router/gRPC/plugins/library-features/telemetry",
+                          "router/gRPC/plugins/library-features/logging"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "router/authentication-and-authorization",
+              "router/advanced-data-privacy",
+              {
+                "group": "Subscriptions",
+                "icon": "webhook",
+                "pages": [
+                  "router/subscriptions",
+                  "router/subscriptions/server-sent-events-sse",
+                  "router/subscriptions/multipart-http-requests",
+                  "router/subscriptions/websocket-subprotocols",
+                  "router/subscriptions/router-configuration-for-subscriptions"
+                ]
+              },
+              {
+                "group": "Persisted Queries",
+                "icon": "cloud-binary",
+                "pages": [
+                  "router/persisted-queries",
+                  "router/persisted-queries/persisted-operations",
+                  "router/persisted-queries/automatic-persisted-queries-apq"
+                ]
+              },
+              {
+                "group": "Open Telemetry",
+                "icon": "binary-circle-check",
+                "pages": [
+                  "router/open-telemetry",
+                  "router/open-telemetry/custom-attributes",
+                  "router/open-telemetry/prometheus-otlp-ingestion",
+                  "router/open-telemetry/setup-opentelemetry-collector"
+                ]
+              },
+              {
+                "group": "Metrics & Monitoring",
+                "icon": "projector",
+                "pages": [
+                  "router/metrics-and-monitoring",
+                  "router/metrics-and-monitoring/prometheus-metric-reference",
+                  "router/metrics-and-monitoring/grafana"
+                ]
+              },
+              {
+                "group": "Proxy capabilities",
+                "icon": "bridge-circle-check",
+                "pages": [
+                  "router/proxy-capabilities",
+                  "router/proxy-capabilities/request-headers-operations",
+                  "router/proxy-capabilities/response-header-operations",
+                  "router/proxy-capabilities/forward-client-extensions",
+                  "router/proxy-capabilities/adjusting-cache-control",
+                  "router/proxy-capabilities/override-subgraph-config"
+                ]
+              },
+              {
+                "group": "Traffic shaping",
+                "icon": "road-circle-check",
+                "pages": [
+                  "router/traffic-shaping",
+                  "router/traffic-shaping/retry",
+                  "router/traffic-shaping/timeout",
+                  "router/traffic-shaping/circuit-breaker"
+                ]
+              },
+              "router/storage-providers",
+              {
+                "group": "Deployment",
+                "icon": "truck-ramp-couch",
+                "pages": [
+                  "router/deployment",
+                  "router/deployment/config-hot-reload"
+                ]
+              },
+              {
+                "group": "Security",
+                "icon": "shield-quartered",
+                "pages": [
+                  "router/security",
+                  "router/security/tls",
+                  "router/security/config-validation-and-signing",
+                  "router/security/hardening-guide"
+                ]
+              },
+              {
+                "group": "Development",
+                "icon": "flask-round-potion",
+                "pages": [
+                  "router/development",
+                  "router/development/debugging",
+                  "router/development/development-mode"
+                ]
+              },
+              "router/performance-debugging",
+              "router/advanced-request-tracing-art",
+              {
+                "group": "Query Plan",
+                "icon": "file-contract",
+                "pages": [
+                  "router/query-plan",
+                  "router/query-plan/batch-generate-query-plans"
+                ]
+              },
+              {
+                "group": "Event-Driven Federated Subscriptions (EDFS)",
+                "icon": "calendar-users",
+                "pages": [
+                  "router/event-driven-federated-subscriptions-edfs",
+                  {
+                    "group": "NATS",
+                    "icon": "puzzle-piece",
+                    "pages": [
+                      "router/event-driven-federated-subscriptions-edfs/nats",
+                      "router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration"
+                    ]
+                  },
+                  "router/event-driven-federated-subscriptions-edfs/kafka",
+                  "router/event-driven-federated-subscriptions-edfs/redis"
+                ]
+              },
+              "router/compliance-and-data-management",
+              "router/query-batching",
+              "router/subgraph-error-propagation",
+              "router/file-upload",
+              "router/access-logs",
+              "router/profiling",
+              "router/upgrading-the-router"
             ]
           },
           {
@@ -212,7 +388,7 @@
         ]
       },
       {
-        "dropdown": "CLI",
+        "tab": "CLI",
         "icon": "terminal",
         "groups": [
           {
@@ -420,191 +596,9 @@
         ]
       },
       {
-        "dropdown": "Router",
-        "icon": "router",
-        "groups": [
-          {
-            "group": "Router",
-            "pages": [
-              "router/intro",
-              "router/download-and-install",
-              {
-                "group": "Configuration",
-                "icon": "sliders-up",
-                "pages": [
-                  "router/configuration",
-                  "router/configuration/config-design",
-                  "router/configuration/template-expressions"
-                ]
-              },
-              "router/mcp",
-              "router/custom-modules",
-              {
-                "group": "gRPC",
-                "icon": "network-wired",
-                "pages": [
-                  "router/gRPC/concepts",
-                  "router/gRPC/grpc-services",
-                  "router/gRPC/graphql-support",
-                  {
-                    "group": "Plugins",
-                    "icon": "plug",
-                    "pages": [
-                      "router/gRPC/plugins",
-                      "router/gRPC/plugins/debugging",
-                      {
-                        "group": "Library Features",
-                        "icon": "books",
-                        "pages": [
-                          "router/gRPC/plugins/library-features/http-client",
-                          "router/gRPC/plugins/library-features/telemetry",
-                          "router/gRPC/plugins/library-features/logging"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              "router/authentication-and-authorization",
-              "router/advanced-data-privacy",
-              {
-                "group": "Subscriptions",
-                "icon": "webhook",
-                "pages": [
-                  "router/subscriptions",
-                  "router/subscriptions/server-sent-events-sse",
-                  "router/subscriptions/multipart-http-requests",
-                  "router/subscriptions/websocket-subprotocols",
-                  "router/subscriptions/router-configuration-for-subscriptions"
-                ]
-              },
-              {
-                "group": "Persisted Queries",
-                "icon": "cloud-binary",
-                "pages": [
-                  "router/persisted-queries",
-                  "router/persisted-queries/persisted-operations",
-                  "router/persisted-queries/automatic-persisted-queries-apq"
-                ]
-              },
-              {
-                "group": "Open Telemetry",
-                "icon": "binary-circle-check",
-                "pages": [
-                  "router/open-telemetry",
-                  "router/open-telemetry/custom-attributes",
-                  "router/open-telemetry/prometheus-otlp-ingestion",
-                  "router/open-telemetry/setup-opentelemetry-collector"
-                ]
-              },
-              {
-                "group": "Metrics & Monitoring",
-                "icon": "projector",
-                "pages": [
-                  "router/metrics-and-monitoring",
-                  "router/metrics-and-monitoring/prometheus-metric-reference",
-                  "router/metrics-and-monitoring/grafana"
-                ]
-              },
-              {
-                "group": "Proxy capabilities",
-                "icon": "bridge-circle-check",
-                "pages": [
-                  "router/proxy-capabilities",
-                  "router/proxy-capabilities/request-headers-operations",
-                  "router/proxy-capabilities/response-header-operations",
-                  "router/proxy-capabilities/forward-client-extensions",
-                  "router/proxy-capabilities/adjusting-cache-control",
-                  "router/proxy-capabilities/override-subgraph-config"
-                ]
-              },
-              {
-                "group": "Traffic shaping",
-                "icon": "road-circle-check",
-                "pages": [
-                  "router/traffic-shaping",
-                  "router/traffic-shaping/retry",
-                  "router/traffic-shaping/timeout",
-                  "router/traffic-shaping/circuit-breaker"
-                ]
-              },
-              "router/storage-providers",
-              {
-                "group": "Deployment",
-                "icon": "truck-ramp-couch",
-                "pages": [
-                  "router/deployment",
-                  "router/deployment/config-hot-reload"
-                ]
-              },
-              {
-                "group": "Security",
-                "icon": "shield-quartered",
-                "pages": [
-                  "router/security",
-                  "router/security/tls",
-                  "router/security/config-validation-and-signing",
-                  "router/security/hardening-guide"
-                ]
-              },
-              {
-                "group": "Development",
-                "icon": "flask-round-potion",
-                "pages": [
-                  "router/development",
-                  "router/development/debugging",
-                  "router/development/development-mode"
-                ]
-              },
-              "router/performance-debugging",
-              "router/advanced-request-tracing-art",
-              {
-                "group": "Query Plan",
-                "icon": "file-contract",
-                "pages": [
-                  "router/query-plan",
-                  "router/query-plan/batch-generate-query-plans"
-                ]
-              },
-              {
-                "group": "Event-Driven Federated Subscriptions (EDFS)",
-                "icon": "calendar-users",
-                "pages": [
-                  "router/event-driven-federated-subscriptions-edfs",
-                  {
-                    "group": "NATS",
-                    "icon": "puzzle-piece",
-                    "pages": [
-                      "router/event-driven-federated-subscriptions-edfs/nats",
-                      "router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration"
-                    ]
-                  },
-                  "router/event-driven-federated-subscriptions-edfs/kafka",
-                  "router/event-driven-federated-subscriptions-edfs/redis"
-                ]
-              },
-              "router/compliance-and-data-management",
-              "router/query-batching",
-              "router/subgraph-error-propagation",
-              "router/file-upload",
-              "router/access-logs",
-              "router/profiling",
-              "router/upgrading-the-router"
-            ]
-          }
-        ]
-      },
-      {
-        "dropdown": "Guides",
+        "tab": "Guides",
         "icon": "newspaper",
         "groups": [
-          {
-            "group": "Getting Started",
-            "pages": [
-              "getting-started/cosmo-cloud-onboarding",
-              "getting-started/switch-from-apollo-to-cosmo"
-            ]
-          },
           {
             "group": "Concepts",
             "icon": "circle-info",
