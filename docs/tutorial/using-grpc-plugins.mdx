@@ -9,6 +9,8 @@ icon: plug
 - [Cosmo CLI](/cli/intro) (minimum version: [0.90.1](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.90.1)) installed and configured
 - [Cosmo Router](/router/intro) (minimum version: [0.242.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.242.0)) installed and configured to use Cosmo Cloud
 
+If you're new to Cosmo, you should start with the [Cosmo Cloud Onboarding](/getting-started/cosmo-cloud-onboarding) guide. This guide assumes you've created a federated graph and deployed and configured router(s) for it.
+
 ## Overview
 
 gRPC plugins are a powerful new way to write and deploy subgraphs without the need for a GraphQL server. You can use plugins to wrap legacy APIs, mock future subgraphs or fully implement new features. Plugins are written in Go and can be deployed and run automatically by the Cosmo Router.
@@ -44,6 +46,29 @@ Here's a short version of the steps for reference:
 
 ---
 
+## Setting up the CLI
+
+Before we start, we should make sure that your version of our CLI `wgc` is up to date and you're logged in.
+
+Check your version with:
+```bash
+wgc --version
+```
+
+<Warning>This needs to be `>=0.90.1` for the tutorial to work correctly.</Warning>
+
+Log in with:
+```bash
+wgc auth login
+```
+
+After logging in, verify your session and ensure you’re in the correct organization by running:
+```bash
+wgc auth whoami
+```
+
+## Building Plugins
+
 First off, let's get familiar with some terminology we use to describe different parts of the platform:
 
 - **Cosmo Cloud**: Our cloud-hosted platform for publishing and monitoring your subgraphs
@@ -53,8 +78,6 @@ First off, let's get familiar with some terminology we use to describe different
 - **gRPC Plugin**: A way to run subgraphs created with gRPC alongside the router directly in your infrastructure, no extra deployment required
 
 Now that we have that sorted, let's move onto the good stuff.
-
-## Building Plugins
 
 ###  Initialize Plugin
 
