@@ -41,6 +41,7 @@
             "pages": [
               "tutorial",
               "tutorial/using-grpc-plugins",
+              "tutorial/grpc-service-quickstart",
               "tutorial/deploy-federated-graphql-with-confidence",
               "tutorial/from-zero-to-federation-in-5-steps-using-cosmo",
               "tutorial/mastering-local-development-for-graphql-federation",
@@ -50,8 +51,7 @@
               "tutorial/using-persisted-operations",
               "tutorial/using-apollo-router-gateway-with-cosmo-oss-schema-registry",
               "tutorial/supergraph-previews-for-every-pull-request",
-              "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags",
-              "tutorial/grpc-service-quickstart"
+              "tutorial/gradual-and-experimental-feature-rollout-with-feature-flags"
             ]
           }
         ]
