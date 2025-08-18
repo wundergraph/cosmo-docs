@@ -17,6 +17,7 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 - `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 - `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
 - `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
+- `core.SubscriptionOnStartHandler` Implements a custom handler that is executed before a subscription is started. It allows you to verify if the client is allowed to start the subscription and also send initial data to the subscription. Use cases: send an initial message to the client, custom subscription authorization logics
 
 <Info>
   `*OriginHandler` handlers are called concurrently when your GraphQL operation
@@ -28,11 +29,10 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 </Info>
 
 <Info>
-  `RouterOnRequestHander` is only available since Router
-  [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
-</Info>
+  `RouterOnRequestHander` is only available since Router [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 
-## Example
+  `SubscriptionOnStartHandler`  is only available since Router 0.X.X
+</Info>
 
 The example below shows how to implement a custom middleware that has access to the GraphQL operation information.
 
