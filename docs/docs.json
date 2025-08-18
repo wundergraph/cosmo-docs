@@ -53,6 +53,18 @@
             ]
           },
           {
+            "group": "Concepts",
+            "icon": "circle-info",
+            "pages": [
+              "concepts/proposals",
+              "concepts/feature-flags",
+              "concepts/namespaces",
+              "concepts/schema-contracts",
+              "concepts/cache-warmer",
+              "concepts/router-compatibility-versions"
+            ]
+          },
+          {
             "group": "Router",
             "pages": [
               "router/intro",
@@ -599,18 +611,6 @@
         "tab": "Guides",
         "icon": "newspaper",
         "groups": [
-          {
-            "group": "Concepts",
-            "icon": "circle-info",
-            "pages": [
-              "concepts/proposals",
-              "concepts/feature-flags",
-              "concepts/namespaces",
-              "concepts/schema-contracts",
-              "concepts/cache-warmer",
-              "concepts/router-compatibility-versions"
-            ]
-          },
           {
             "group": "Tutorials",
             "pages": [
