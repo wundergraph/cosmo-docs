@@ -19,7 +19,6 @@ Create a feature subgraph based on an existing subgraph for your federated graph
 
 <Note>
   A feature subgraph does not function in isolation. One or more feature subgraphs must compose a [feature flag](/cli/feature-flags), which itself must be enabled to take effect.
-
 </Note>
 ```bash
 wgc feature-subgraph create my-feature-subgraph --subgraph my-subgraph --routing-url http://localhost:4000
@@ -29,6 +28,10 @@ The alias for `feature-subgraph` is `fs`.
 
 Note that unless specified by the `--namespace` parameter, the namespace will be automatically passed as "default".
 
+<Note>
+  The type of the feature subgraph is determined by the type of the base subgraph. For example, if the base subgraph is a plugin subgraph, the feature subgraph will also be a plugin subgraph.
+</Note>
+
 ## Parameters
 
 * `<name>`: The name of the feature subgraph to create. Must be unique among all subgraphs and feature subgraphs within the specified (otherwise "default") namespace.
@@ -36,12 +39,8 @@ Note that unless specified by the `--namespace` parameter, the namespace will be
 ## Required Options
 
 <Note>
-  If the routing URL is not supplied, or the base subgraph does not exist in the specified (otherwise "default") namespace, the command will fail.
+  If the base subgraph does not exist in the specified (otherwise "default") namespace, the command will fail.
 </Note>
-
-`-r , --routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint from which the subgraph will fetch data.
-
-* Example: `--routing-url http://localhost:4001/graphql`
 
 `--subgraph`: The name of the existing base subgraph for which the feature subgraph is to be created.
 
@@ -50,6 +49,12 @@ Note that unless specified by the `--namespace` parameter, the namespace will be
 <Info>
   Feature subgraphs do not use labels directly; labels are set by the [feature flag](/cli/feature-flags) that the feature subgraph(s) compose.
 </Info>
+
+<Note>
+  If the base subgraph is not a plugin subgraph, the routing url is required.
+</Note>
+
+* `-r , --routing-url`: Set the URL for the subgraph's data source. This URL defines the endpoint from which the subgraph will fetch data.
 
 * `-n, --namespace` : The namespace of the feature subgraph (defaults to "default"). Returns an error if the feature flag does not exist in that namespace.
 
