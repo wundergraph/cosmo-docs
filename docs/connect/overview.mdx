@@ -1,5 +1,5 @@
 ---
-title: "Concepts"
+title: "Overview"
 description: "Extend GraphQL Federation with gRPC integration. Build federated graphs without backend GraphQL servers."
 icon: "circle-info"
 ---
@@ -12,32 +12,21 @@ Instead of running backend GraphQL servers, teams define a schema contract that 
 This approach keeps the external API GraphQL-shaped while backend services remain free to use **simple request–response contracts** through gRPC. The router transparently maps GraphQL queries into RPC calls while preserving a unified supergraph.
 
 
-## Integration Models
+## We adopt to two deployment models
 
-Cosmo Connect provides two options for integrating services into your federated graph:
+Cosmo Connect provides two options for integrating gRPC into your federated graph:
 
 - **[Router Plugins](/connect/plugins)** — run as local processes managed by the router. Ideal for simple deployments where you want the lowest latency and do not need separate CI/CD or scaling.  
 - **[gRPC Services](/connect/grpc-services)** — independent deployments in any language. Suitable when you need full lifecycle control, team ownership boundaries, and independent scaling.
 
 Both approaches remove the need to build GraphQL servers while maintaining the benefits of federation.
 
-### Use Router Plugins When
-- You want the **simplest deployment model** with no separate service hosting  
-- **Performance** is critical (lowest latency, runs inside the router)  
-- Unified deployment with the router is acceptable  
-
-### Use gRPC Services When
-- You need **independent scaling** or deployment pipelines  
-- Teams use **languages without strong GraphQL server support** (e.g. Rust, Python)  
-- Services are owned by **different teams** with separate lifecycles  
-- You want to preserve a **distributed architecture** with full control  
-
 ## Key Benefits
 
-- **Federation without GraphQL servers** — backend teams implement gRPC contracts instead of GraphQL APIs  
+- **Federation without GraphQL servers** — backend teams implement gRPC contracts instead of GraphQL resolvers  
 - **Language flexibility** — leverage gRPC code generation across nearly all ecosystems, including those with poor GraphQL server libraries  
-- **Reduced migration effort** — wrap existing APIs (like Stripe or Keycloak) without writing full subgraphs, lowering the cost of moving from monoliths to federation  
-- **Developer experience** — simple request/response semantics for services, while the router handles GraphQL query planning, entity resolution, and schema contracts  
+- **Reduced migration effort** — wrap existing APIs (like REST or SOAP) without writing full subgraphs, lowering the cost of moving from monoliths to federation  
+- **Developer experience** — simple request/response semantics for services, while the router handles GraphQL query planning and batching 
 
 ## Implementation Docs
 

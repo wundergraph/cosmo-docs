@@ -56,7 +56,7 @@
             "group": "🚀 Cosmo Connect",
             "pages": [
               "connect/overview",
-              "connect/plugins", 
+              "connect/plugins",
               "connect/grpc-services"
             ]
           },
@@ -93,8 +93,6 @@
                 "icon": "network-wired",
                 "pages": [
                   "router/gRPC/concepts",
-                  "router/gRPC/grpc-services",
-                  "router/gRPC/graphql-support",
                   {
                     "group": "Plugins",
                     "icon": "plug",
@@ -111,7 +109,9 @@
                         ]
                       }
                     ]
-                  }
+                  },
+                  "router/gRPC/grpc-services",
+                  "router/gRPC/graphql-support"
                 ]
               },
               "router/authentication-and-authorization",
