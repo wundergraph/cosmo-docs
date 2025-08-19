@@ -1,0 +1,268 @@
+---
+title: '@external'
+description: The external direvtive serves multiple functions depending on how it is used and what federation version the subgraph defining it is.
+keywords: [external, directive, federation, graphql, provides, requires, key, composition]
+icon: "link"
+---
+
+Supported in both Federation V1 and V2, though usage and validation rules can differ between versions.
+
+## Overview
+
+The `@external` directive marks a field or type that is declared in this subgraph but resolved by another subgraph.
+The field may be resolved unconditionally or only in specific query paths, such as when used with `@provides`.
+Subgraphs use `@external` to reference fields they don’t resolve directly—typically when using `@requires`, `@provides`, or to satisfy `interface` contracts.
+
+```graphql
+directive @external on FIELD_DEFINITION | OBJECT
+```
+
+## Behavior in Federation Versions
+
+### Federation V1
+Federation V1 has looser validation rules, and `@external` may be required even when a field is technically resolvable.
+
+**`@key` usage**:
+Fields in `@key(fields: ...)` must be marked `@external` if they are declared in the subgraph but resolved in another. This is especially true for entity extensions.
+
+**`@requires` and `@provides`**:
+All fields in these field sets must be marked `@external`, regardless of whether they are leaf or non-leaf fields.
+
+**Validation**:
+In Federation V1, misconfigured `@external` fields are often silently removed during composition, with no visible error.
+
+---
+
+### Federation V2
+Federation V2 introduces stricter, more precise rules for `@external`.
+
+**`@key` usage**:
+Fields in `@key(fields: ...)` do not need `@external` unless they cannot be resolved in the subgraph.
+
+**`@requires` and `@provides`**:
+Only leaf fields, or parent fields explicitly listed in the same `@requires` or `@provides` field set string, must be marked `@external` if they are declared in the subgraph but resolved in another.
+A field set is the string argument passed to these directives, such as `"user { email }"`.
+
+**Validation**:
+In Federation V2, `@external` is only valid if the field is:
+- Referenced in a `@key`, `@requires`, or `@provides` field set.
+- **OR** required to satisfy an `interface`.
+
+It must also have a matching field in another subgraph that is not marked `@external`, known as a shared field instance. Otherwise, composition fails.
+
+WunderGraph Cosmo helps validate `@external` usage, especially in Federation V1 environments where misconfigurations can be harder to detect.
+
+## How It Works
+
+The `@external` directive:
+
+- Declares that the field may be:
+  - **Unresolvable** — the subgraph cannot return a value for this field on its own.
+  - **Conditionally resolvable** — the field may be resolved in specific query paths (e.g., via `@provides`).
+  - **Syntactically required** — included to support directive compatibility, such as in `@key(fields: ...)` in Federation V1.
+- Exempts the field from **shareability checks**.
+- Enables safe use in **directive arguments** like `@requires` and `@provides` without triggering composition errors.
+
+You can apply `@external` to:
+- **Individual field definitions** within an object.
+- An **entire object type**, which marks all of its fields as external.
+
+The key idea: `@external` marks a field that is defined in this subgraph but resolved in another.
+Whether and how the field resolves depends on the query path and the directives involved.
+
+## When to Use
+
+Only use `@external` when the field is **unresolvable** from the current subgraph **and** the field is **referenced by**:
+  - `@key(fields: "...")` (in Federation V1 only)
+  - `@provides(fields: "...")`
+  - `@requires(fields: "...")`
+**OR** the field is required to satisfy an `interface` implemented by the type
+	- For example, a type may need to declare `@external` fields to fulfill an interface it implements from another subgraph.
+
+A valid `@external` field must have a matching, resolvable definition in another subgraph that is not marked `@external`.
+This creates a shared field instance—a field defined in one subgraph and referenced externally in another—that enables composition and cross-subgraph resolution.
+
+## What `@external` Means in Different Contexts
+The meaning of `@external` depends on context. It can indicate:
+
+| Meaning                      | Description                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| **Unresolvable**             | The field cannot be resolved by the current subgraph                             |
+| **Conditionally resolvable** | The field is resolved only in certain paths (e.g., via `@provides`)              |
+| **Legacy `@key` usage (V1)** | The field is resolvable, but marked `@external` to satisfy a `@key` on an extension |
+| **Interface satisfaction**   | The field is required to fulfill an interface but is resolved in a different subgraph    |
+
+These distinctions help explain why `@external` may appear in places that seem redundant or unnecessary, especially in Federation V1.
+
+
+### Example: Field-Level Usage
+
+```graphql
+type User @key(fields: "id") {
+  id: ID!
+  email: String! @external
+  profilePicture: String
+}
+
+type Query {
+  recentSignups: [User!]! @provides(fields: "email")
+}
+```
+
+In this example, the `User.email` field is defined in the schema but only resolved by another subgraph.
+This subgraph references it via `@provides`.
+
+### Example: Type-Level Usage
+
+```graphql
+type Location @external {
+  city: String!
+  country: String!
+}
+```
+
+Applying `@external` to a type marks **all its fields** as externally defined.
+
+## Tips and Best Practices
+
+- Use `@external` only when needed for `@requires`, `@provides`, or `@key`
+- In Federation V2, leave it out unless it’s strictly necessary
+
+## Edge Cases
+
+### Legacy `@external` usage with `@key` on extensions (Federation V1)
+In Federation V1, an `@external`  field that is referenced by a `@key(fields: ...)` field set on an extension definition must be explicitly marked.
+This is considered legacy syntax, and the field is always resolvable by that subgraph in V1 and V2.
+```graphql
+# Subgraph A (Federation V1)
+extend type Product @key(fields: "id") {
+  id: ID! @external
+}
+```
+This syntax was required in Federation V1 for entity extensions.
+In V1, primary key fields on extensions had to be marked with `@external`, even if the subgraph could resolve them.
+The field was always resolvable — `@external` was simply part of the legacy composition model.
+
+### Misusing `@external` on key fields in Federation V2
+
+In Federation V2, you can still annotate key fields with `@external`, but doing so implies that the field is not resolvable from the current subgraph.
+If the field is actually resolvable, marking it `@external` will cause satisfiability errors at composition time.
+This is a common pitfall when migrating from V1: key fields marked `@external` must remain resolvable in V2.
+
+```graphql
+# Subgraph A (incorrect in Federation V2)
+type Product @key(fields: "id") @key(fields: "upc") {
+  id: ID! @external
+  upc: String! @external
+  name: String!
+}
+```
+```graphql
+# Subgraph B
+type Product @key(fields: "id") @key(fields: "upc") {
+  id: ID!
+  upc: String!
+  stock: Int!
+}
+```
+This fails composition because Subgraph A marks `id` and `upc` as `@external`, but doesn’t actually provide a way to resolve them.
+The router cannot satisfy queries that require navigating from A to B using these keys.
+```graphql
+{
+  products {
+    id
+  }
+}
+```
+This fails for the following reasons:
+- `Product.id` is not resolvable from Subgraph A.
+- The router cannot move to Subgraph B using either key, since their fields are not resolvable from Subgraph A.
+
+### External fields without a matching definition
+
+If you mark a field as `@external` but no other subgraph defines and resolves that field, the composition process will fail.
+Additionally, composition typically fails if a type has no locally defined fields — that is, if all of its fields are marked `@external`.
+Every type must own at least one field in the subgraph to be valid in the composed supergraph.
+Otherwise, the router has no anchor point for resolution.
+
+```graphql
+# Subgraph A
+type Product @key(fields: "sku") {
+  sku: String!
+  name: String! @external
+}
+```
+
+```graphql
+# Subgraph B (missing definition)
+type Product @key(fields: "sku") {
+  sku: String!
+}
+```
+
+This triggers a composition error (`EXTERNAL_MISSING_ON_BASE`).
+
+---
+
+### Normalization of `@external` on extended types
+
+Applying `@external` to a type does **not** automatically apply it to fields added later via `extend` blocks.
+This distinction is important when normalizing schemas across subgraphs.
+
+```graphql
+# Subgraph A
+type Location @external {
+  city: String!
+}
+
+extend type Location {
+  country: String!
+}
+```
+
+Only `city` is treated as `@external`.
+To ensure clarity and correctness, `country` should be annotated directly:
+
+```graphql
+extend type Location {
+  country: String! @external
+}
+```
+
+---
+## Migration & Validation Notes
+
+### Federation V1 inconsistencies
+
+In Federation V1, marking a field as `@external` is often required, even when it’s not referenced by `@requires` or `@provides`, due to weaker validation and looser assumptions.
+
+If you're migrating from V1 to V2:
+
+* Review `@external` usage carefully.
+* Remove unnecessary annotations when they are no longer required (e.g., in `@key`).
+* Prefer field-level precision over broad `@external` usage.
+
+### Silent removal of unresolved `@external` fields
+In Federation V1, a field marked `@external` without a matching, resolvable definition in another subgraph is removed during composition.
+```graphql
+# Subgraph A
+type Product {
+  legacyTag: String! @external
+}
+```
+If no other subgraph defines `legacyTag`, it will not appear in the composed supergraph at all.
+
+Cosmo emits a warning if it detects `@external` fields that do not match a known definition elsewhere.
+
+### Validation prevents fully-external types
+While Federation V1 permits liberal use of `@external`, composition will fail if all fields of a type are marked `@external`.
+
+| Use Case                                 | Valid? | Notes                                                  |
+| ---------------------------------------- | ------ | ------------------------------------------------------ |
+| Field used in `@requires` or `@provides` | ✅      | Field must be unresolvable or conditionally resolvable |
+| Field satisfies an interface             | ✅      | Always valid if required by the interface              |
+| Field used in `@key` (V1, on extension)  | ✅      | Legacy pattern — required even if resolvable           |
+| Field used in `@key` (V2, on object)     | ⚠️     | Only valid if truly unresolvable                       |
+| Type-level `@external`                   | ✅      | Applies to all fields on that type                     |
+| No non-external counterpart exists       | ❌      | Invalid — triggers error (V2) or silent removal (V1)   |
+| All fields on a type marked `@external`  | ❌      | Invalid — the subgraph must define at least one field without @external         |

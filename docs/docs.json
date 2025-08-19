@@ -78,17 +78,18 @@
         "group": "Federation",
         "pages": [
           "federation/federation-compatibility-matrix",
+          "federation/federation-directives-index",
           {
             "group": "directives",
             "icon": "sign-post",
             "pages": [
               "federation/directives",
-              "federation/federation-directives-index",
               "federation/directives/shareable",
               "federation/directives/authenticated",
               "federation/directives/requiresscopes",
               "federation/directives/openfed__subscriptionfilter",
-              "federation/directives/openfed__configuredescription"
+              "federation/directives/openfed__configuredescription",
+              "federation/directives/external"
             ]
           },
           {
