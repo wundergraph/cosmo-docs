@@ -1,16 +1,19 @@
 ---
-title: "Concepts"
+title: "Overview"
 icon: "lightbulb"
-sidebarTitle: Concepts
+sidebarTitle: Overview
 description: 'Core concepts for gRPC integration in Cosmo Router'
 ---
+
+[Cosmo Connect](/connect/overview) is the high-level framework for extending your federated graph with external implementations. 
+This section introduces the internal model behind Connect and explains how it works, before going deeper into 
+**Plugins** and **gRPC Services** as the two deployment approaches.
 
 ## Introduction
 
 The Cosmo Router supports integration with gRPC through a schema-first approach. You define a GraphQL schema that represents the interface to your gRPC implementation, and the Cosmo tooling generates the corresponding Protocol Buffer definitions and mappings that enable the router to establish communication.
 
 This approach allows you to bridge any service - whether it's gRPC, REST, SOAP, or legacy systems - into your GraphQL Federation Supergraph by creating a protocol translation layer. The router handles the communication with your implementations based on the generated mappings, making it easy to modernize your architecture while preserving existing investments.
-
 
 ## What is gRPC?
 
@@ -249,6 +252,8 @@ Cosmo provides two main approaches for gRPC integration:
 
 ## Choosing Between gRPC Services and Plugins
 
+This choice between gRPC Services and Router Plugins is central to Cosmo Connect’s design, giving you flexibility between simplicity and full control.
+
 When implementing gRPC integration in your GraphQL Federation, you have two main options: **gRPC Services** and **Router Plugins**. Each approach has distinct advantages that make them suitable for different scenarios.
 
 ### When to Choose gRPC Services
@@ -314,6 +319,9 @@ For the most up-to-date information, check our [GitHub repository](https://githu
 
 ## Next Steps
 
-- [gRPC Services](/router/gRPC/grpc-services) - Learn about gRPC services
-- [Router Plugins](/router/gRPC/plugins) - Learn about Router plugins
-- [gRPC Tutorial](/tutorial/grpc-service-quickstart) - Get started with your first gRPC service
+<CardGroup>
+  <Card title="gRPC Services" icon="server" href="/router/gRPC/grpc-services" horizontal/>
+  <Card title="Router Plugins" icon="plug" href="/router/gRPC/plugins" horizontal/>
+  <Card title="gRPC Tutorial" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
+  <Card title="Plugins Tutorial" icon="rocket" href="/tutorial/using-grpc-plugins" horizontal/>
+</CardGroup>

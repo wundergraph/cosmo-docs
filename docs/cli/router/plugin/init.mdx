@@ -3,7 +3,6 @@ title: "Init"
 description: "Scaffold a new gRPC router plugin"
 icon: "file-circle-plus"
 ---
-
 # wgc router plugin init
 
 The `init` command scaffolds a new gRPC router plugin project with all the necessary files and directory structure.
@@ -126,12 +125,15 @@ wgc router plugin init users -d ./plugins
 
 ## Next Steps
 
+<CardGroup>
+  <Card title="Build Plugin" icon="hammer" href="/cli/router/plugin/build" horizontal/>
+  <Card title="Test Plugin" icon="vial" href="/cli/router/plugin/test" horizontal/>
+</CardGroup>
+
 After initializing your plugin, you should:
 
 1. Customize the GraphQL schema in `src/schema.graphql`
 2. Generate code with `wgc router plugin generate` or `make generate`
 3. Implement your resolvers in `src/main.go`
 4. Implement your tests in `src/main_test.go` and run them with `make test`
-5. Build your plugin with `make build`
-
-For more information on these steps, see the [build](./build) and [test](./test) command documentation.
+5. Build your plugin with `make build` 
