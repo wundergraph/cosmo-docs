@@ -65,7 +65,6 @@
       },
       {
         "group": "Cosmo Connect",
-        "groupDescription": "New",
         "pages": [
           "connect/overview",
           "connect/plugins",
