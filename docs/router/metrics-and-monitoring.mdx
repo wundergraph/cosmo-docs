@@ -214,6 +214,48 @@ telemetry:
 * `router.engine.messages.sent`: The number of total messages for subscriptions sent over from the subgraph to the router.
 
 
+### EDFS Stream Metrics
+We expose metrics for EDFS streams, these statistics are collected at the level when the message is sent to the messaging backend or directly received from the messaging backend.
+
+```yaml config.yaml
+telemetry:
+  metrics:
+    otlp:
+      streams: true
+    prometheus:
+      streams: true
+```
+
+#### Metrics
+
+* `router.streams.sent.messages`: Counter of messages produced/sent to the messaging backend
+* `router.streams.received.messages`: Counter of messages consumed/received directly by the router from the messaging backend.
+
+The following attributes are attached to both metrics:
+
+* `wg.stream.operation.name`:
+This contains the operation type used to send a message to the message backend. This is useful to differentiate when an edfs adapter has multiple ways of sending messages, like in the case of "nats", with `publish`, and `request`.
+The following values are possible, based on the messaging backend
+
+    - nats: `publish`, `request`, `receive`
+
+    - kafka: `produce`, `receive`
+
+    - redis: `publish`, `receive`
+
+* `wg.provider.type`:
+One of the supported edfs provider types, which includes `kafka`, `nats`, `redis`
+
+* `wg.destination.name`:
+The name of the destination of the messaging backend (topic, queue, etc)
+
+* `wg.provider.id`:
+The provider id as specified in the router configuration
+
+* `wg.error.type`:
+A generic error type to indicate an error occurred. This is available only for `router.streams.sent.messages` at this moment, as we do not catch message receive errors.
+
+
 ### Connection Metrics
 
 We also provide lower level metrics which helps track connection and pool metrics. By utilizing these metrics users can figure out when the router's connection pool is full and when connections are misbehaving by for example observing spikes in time to acquire connections. This can be enabled for Open Telemetry or Prometheus via
@@ -394,6 +436,28 @@ Here you can see a few example queries to query useful information about your cl
        ```
        router_http_client_connection_acquire_duration_bucket{wg_http_client_reused_connection="true",le="25.0"}
        ```
+  </Tab>
+
+  <Tab title="Streams">
+    EDFS stream metrics contain only two metrics. To make sense of your data you need to filter by the attributes. The following examples give you a basic idea of how to use these two metrics.
+
+    #### Get failed publishes for a message broker
+    Let's say we want to see any failed publishes to our kafka broker. We can use the following query,
+    ```
+    router_streams_sent_messages_total{wg_provider_type="kafka",wg_provider_id="provider-id",wg_destination_name="employeeUpdated",wg_error_type!=""}
+    ```
+    If we are using a provider like nats which could publish to the same destination through different methods, we could also filter using the stream operation name
+    ```
+    router_streams_sent_messages_total{wg_provider_type="nats",wg_destination_name="employeeUpdatedMyNats.1",wg_error_type!="",wg_stream_operation_name="publish"}
+    ```
+
+    #### Look at messaged received throughput
+    You can use the rate function to understand the per-second average rate of messages received over the last 60 minutes
+    ```
+    rate(router_streams_received_messages_total{wg_provider_type="kafka"}[60m])
+    ```
+    With proper attribute filtering as demonstrated above, you can make it specific for a messaging backend or a destination.
+
   </Tab>
 </Tabs>
 
