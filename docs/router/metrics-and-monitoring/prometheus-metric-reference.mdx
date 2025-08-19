@@ -183,9 +183,9 @@ telemetry:
 
 #### Metrics
 
-* `router_http_client_connection_max`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
+* `router_http_client_max_connections`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
 
-* `router_http_client_connection_active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it's less common, multiple subgraphs can share the same host, which is why both dimensions are included.
+* `router_http_client_active_connections`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it's less common, multiple subgraphs can share the same host, which is why both dimensions are included.
 
 * `router_http_client_connection_acquire_duration`: The duration in ms that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
 
