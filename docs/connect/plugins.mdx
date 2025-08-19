@@ -1,13 +1,13 @@
 ---
 title: "Connect Plugins"
-description: "Lightweight extensions that run inside the router for quick integrations"
+description: "Lightweight extensions that run alongside the router as local processes for quick integrations"
 icon: "plug"
 ---
 
 ## Connect Plugins
 
 Connect Plugins are part of Cosmo Connect.
-They run directly inside the router process, providing the fastest path to integrating external APIs and services into your federated graph without requiring separate infrastructure or CI/CD pipelines—just publish through the Cosmo registry.
+They run as separate local processes managed by the router, providing the fastest path to integrating external APIs and services into your federated graph without requiring separate infrastructure or CI/CD pipelines—just publish through the Cosmo registry.
 
 ## Overview
 
@@ -22,5 +22,5 @@ They are best suited for straightforward integrations that don’t require indep
 
 ## Comparing with gRPC Services
 
-- **Plugins** — simplest deployment model and lowest latency, but run inside the router process  
+- **Plugins** — simplest deployment model and lowest latency, running as local processes managed by the router  
 - **gRPC Services** — independent deployments with full scaling and lifecycle control

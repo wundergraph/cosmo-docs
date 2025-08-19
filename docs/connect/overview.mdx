@@ -4,7 +4,7 @@ description: "Build federated graphs with gRPC services and plugins. No GraphQL 
 icon: "plug"
 ---
 
-# Cosmo Connect
+## Cosmo Connect
 
 Cosmo Connect extends GraphQL Federation beyond GraphQL by supporting **gRPC-based services**.  
 With Connect, backend teams no longer need to implement GraphQL servers. Instead, they define request–response contracts using gRPC, and the Cosmo Router translates GraphQL queries into gRPC calls while maintaining a unified GraphQL API.
@@ -17,7 +17,7 @@ Cosmo Connect is a new feature. Some functionality and configuration options may
 
 Cosmo Connect provides two integration models for extending federated graphs:
 
-- **Router Plugins** — run inside the router process for the simplest deployment model and the lowest latency  
+- **Router Plugins** — run as separate local processes managed by the router, giving you the simplest deployment model without needing to stand up a separate subgraph service  
 - **gRPC Services** — run as independent deployments in any language, with full control over scaling and ownership  
 
 Both approaches eliminate the need for backend GraphQL servers while preserving the benefits of federation.
@@ -26,7 +26,7 @@ Both approaches eliminate the need for backend GraphQL servers while preserving 
 
 <CardGroup cols={2}>
   <Card title="Plugins" icon="plug" href="/connect/plugins">
-    Extensions that run inside the router. Ideal for simple integrations and performance-critical paths.
+    Extensions that run alongside the router as local processes. Ideal for simple integrations where you don’t need independent scaling or CI/CD pipelines.
   </Card>
   <Card title="gRPC Services" icon="network-wired" href="/connect/grpc-services">
     Independent services with full lifecycle control. Suitable for distributed teams, complex business logic, and multi-language environments.
@@ -47,6 +47,6 @@ Both approaches eliminate the need for backend GraphQL servers while preserving 
 - You want to maintain a distributed architecture
 
 ## Next Steps
-- [Plugins](/connect/plugins) — Extensions that run inside the router  
+- [Plugins](/connect/plugins) — Extensions that run alongside the router as local processes  
 - [gRPC Services](/connect/grpc-services) — Independent services with full control  
 - [Concepts](/connect/concepts) — Core concepts and architecture behind Connect
