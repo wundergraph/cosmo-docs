@@ -1,52 +1,50 @@
 ---
 title: "Cosmo Connect Overview"
-description: "Build federated graphs with gRPC services and plugins. No GraphQL server implementation required—only a schema to define the contract."
+description: "Extend GraphQL Federation with gRPC integration. Build federated graphs without backend GraphQL servers."
 icon: "plug"
 ---
 
 ## Cosmo Connect
 
-Cosmo Connect extends GraphQL Federation beyond GraphQL by supporting **gRPC-based services**.  
-With Connect, backend teams no longer need to implement GraphQL servers. Instead, they define request–response contracts using gRPC, and the Cosmo Router translates GraphQL queries into gRPC calls while maintaining a unified GraphQL API.
+Cosmo Connect extends GraphQL Federation with support for **gRPC integration**.  
+Instead of running backend GraphQL servers, teams define a schema contract that describes how clients interact with services. From this schema, the Cosmo Router can generate Protocol Buffer files, which your backend services then implement.  
+
+This approach keeps the external API GraphQL-shaped while backend services remain free to use **simple request–response contracts** through gRPC. The router transparently maps GraphQL queries into RPC calls while preserving a unified supergraph.
 
 <Note>
-Cosmo Connect is a new feature. Some functionality and configuration options may evolve as the feature matures. Refer to the latest router documentation for the most up-to-date information.
+Cosmo Connect is a new feature. Some functionality and configuration options may evolve. Refer to the latest router documentation for the most up-to-date guidance.
 </Note>
 
-## Overview
+## Integration Models
 
-Cosmo Connect provides two integration models for extending federated graphs:
+Cosmo Connect provides two options for integrating services into your federated graph:
 
-- **Router Plugins** — run as separate local processes managed by the router, giving you the simplest deployment model without needing to stand up a separate subgraph service  
-- **gRPC Services** — run as independent deployments in any language, with full control over scaling and ownership  
+- **Router [Plugins](/connect/plugins)** — run as local processes managed by the router. Ideal for simple deployments where you want the lowest latency and do not need separate CI/CD or scaling.  
+- **[gRPC Services](/connect/grpc-services)** — independent deployments in any language. Suitable when you need full lifecycle control, team ownership boundaries, and independent scaling.
 
-Both approaches eliminate the need for backend GraphQL servers while preserving the benefits of federation.
-
-## Key Components
-
-<CardGroup cols={2}>
-  <Card title="Plugins" icon="plug" href="/connect/plugins">
-    Extensions that run alongside the router as local processes. Ideal for simple integrations where you don’t need independent scaling or CI/CD pipelines.
-  </Card>
-  <Card title="gRPC Services" icon="network-wired" href="/connect/grpc-services">
-    Independent services with full lifecycle control. Suitable for distributed teams, complex business logic, and multi-language environments.
-  </Card>
-</CardGroup>
-
-## When to Use Connect
+Both approaches remove the need to build GraphQL servers while maintaining the benefits of federation.
 
 ### Use Plugins When
-- You want the **simplest deployment model**  
-- **Performance** is critical (lowest latency)  
+- You want the **simplest deployment model** with no separate service hosting  
+- **Performance** is critical (lowest latency, runs inside the router)  
 - Unified deployment with the router is acceptable  
 
 ### Use gRPC Services When
-- You need **independent scaling** and deployment pipelines  
-- Teams use **languages other than Go**  
+- You need **independent scaling** or deployment pipelines  
+- Teams use **languages without strong GraphQL server support** (e.g. Rust, Python)  
 - Services are owned by **different teams** with separate lifecycles  
-- You want to maintain a distributed architecture
+- You want to preserve a **distributed architecture** with full control  
+
+## Key Benefits
+
+- **Federation without GraphQL servers** — backend teams implement gRPC contracts instead of GraphQL APIs  
+- **Language flexibility** — leverage gRPC code generation across nearly all ecosystems, including those with poor GraphQL server libraries  
+- **Reduced migration effort** — wrap existing APIs (like Stripe or Keycloak) without writing full subgraphs, lowering the cost of moving from monoliths to federation  
+- **Developer experience** — simple request/response semantics for services, while the router handles GraphQL query planning, entity resolution, and schema contracts  
 
 ## Next Steps
-- [Plugins](/connect/plugins) — Extensions that run alongside the router as local processes  
-- [gRPC Services](/connect/grpc-services) — Independent services with full control  
-- [Concepts](/connect/concepts) — Core concepts and architecture behind Connect
+
+<CardGroup>
+  <Card title="Create a gRPC subgraph from scratch" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
+  <Card title="Deploy a gRPC plugin via the router" icon="plug" href="/tutorial/using-grpc-plugins" horizontal/>
+</CardGroup>

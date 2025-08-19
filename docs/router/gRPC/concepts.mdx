@@ -12,7 +12,7 @@ The Cosmo Router supports integration with gRPC through a schema-first approach.
 This approach allows you to bridge any service - whether it's gRPC, REST, SOAP, or legacy systems - into your GraphQL Federation Supergraph by creating a protocol translation layer. The router handles the communication with your implementations based on the generated mappings, making it easy to modernize your architecture while preserving existing investments.
 
 <Card title="🚀 Introducing Cosmo Connect" icon="plug" href="/connect/overview">
-  **New in Cosmo**: Build federated graphs with gRPC services and plugins. No GraphQL required on the backend. 
+  **New in Cosmo**: Build federated graphs with gRPC services and plugins. 
   [Learn more →](/connect/overview)
 </Card>
 
@@ -324,6 +324,9 @@ For the most up-to-date information, check our [GitHub repository](https://githu
 
 ## Next Steps
 
-- [gRPC Services](/router/gRPC/grpc-services) - Learn about gRPC services
-- [Router Plugins](/router/gRPC/plugins) - Learn about Router plugins
-- [gRPC Tutorial](/tutorial/grpc-service-quickstart) - Get started with your first gRPC service
+<CardGroup>
+  <Card title="gRPC Services" icon="server" href="/router/gRPC/grpc-services" horizontal/>
+  <Card title="Router Plugins" icon="plug" href="/router/gRPC/plugins" horizontal/>
+  <Card title="gRPC Tutorial" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
+  <Card title="Plugins Tutorial" icon="rocket" href="/tutorial/using-grpc-plugins" horizontal/>
+</CardGroup>

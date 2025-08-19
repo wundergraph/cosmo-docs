@@ -109,8 +109,7 @@
         "pages": [
           "connect/overview",
           "connect/plugins",
-          "connect/grpc-services",
-          "connect/concepts"
+          "connect/grpc-services"
         ]
       },
       {
