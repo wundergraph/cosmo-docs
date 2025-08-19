@@ -64,6 +64,15 @@
         ]
       },
       {
+        "group": "Cosmo Connect",
+        "groupDescription": "New",
+        "pages": [
+          "connect/overview",
+          "connect/plugins",
+          "connect/grpc-services"
+        ]
+      },
+      {
         "group": "Concepts",
         "pages": [
           "concepts/proposals",
@@ -102,14 +111,6 @@
               "federation/event-driven-federated-subscriptions/composition-rules"
             ]
           }
-        ]
-      },
-      {
-        "group": "Cosmo Connect",
-        "pages": [
-          "connect/overview",
-          "connect/plugins",
-          "connect/grpc-services"
         ]
       },
       {
