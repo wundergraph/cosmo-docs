@@ -7,7 +7,7 @@ icon: "server"
 ## gRPC Services
 
 As part of Cosmo Connect, you can run gRPC services as independent processes that communicate with the router over the network.
-Unlike plugins, which run as local processes managed by the router, gRPC services are deployed as fully independent microservices and can live anywhere in your infrastructure.
+Unlike router plugins, which run as local processes managed by the router, gRPC services are deployed as fully independent microservices and can live anywhere in your infrastructure.
 
 This model is a good fit when teams want service autonomy, need independent scaling, or use any gRPC-supported language.
 
@@ -20,13 +20,13 @@ gRPC services extend your federated graph while keeping service boundaries intac
 - Manage lifecycles, monitoring, and releases per team  
 - Run in distributed or multi-region environments  
 
-## Comparing with Plugins
+## Comparing with Router Plugins
 
-- **Use gRPC Services** when you need language flexibility, independent scaling, and distributed deployments  
-- **Use [Plugins](/connect/plugins)** when you want the simplest deployment and the lowest latency
+- **Use [gRPC Services](/router/grpc/grpc-services)** when you need language flexibility, independent scaling, and distributed deployments  
+- **Use [Router Plugins](/router/grpc/plugins)** when you want the simplest deployment and the lowest latency
 
-## Next Steps
+## Get Started
 
 <CardGroup>
-  <Card title="Create a gRPC subgraph from scratch" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
+  <Card title="Deploy Your First gRPC Service" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
 </CardGroup>

@@ -11,20 +11,17 @@ Instead of running backend GraphQL servers, teams define a schema contract that 
 
 This approach keeps the external API GraphQL-shaped while backend services remain free to use **simple request–response contracts** through gRPC. The router transparently maps GraphQL queries into RPC calls while preserving a unified supergraph.
 
-<Note>
-Cosmo Connect is a new feature. Some functionality and configuration options may evolve. Refer to the latest router documentation for the most up-to-date guidance.
-</Note>
 
 ## Integration Models
 
 Cosmo Connect provides two options for integrating services into your federated graph:
 
-- **Router [Plugins](/connect/plugins)** — run as local processes managed by the router. Ideal for simple deployments where you want the lowest latency and do not need separate CI/CD or scaling.  
+- **[Router Plugins](/connect/plugins)** — run as local processes managed by the router. Ideal for simple deployments where you want the lowest latency and do not need separate CI/CD or scaling.  
 - **[gRPC Services](/connect/grpc-services)** — independent deployments in any language. Suitable when you need full lifecycle control, team ownership boundaries, and independent scaling.
 
 Both approaches remove the need to build GraphQL servers while maintaining the benefits of federation.
 
-### Use Plugins When
+### Use Router Plugins When
 - You want the **simplest deployment model** with no separate service hosting  
 - **Performance** is critical (lowest latency, runs inside the router)  
 - Unified deployment with the router is acceptable  
@@ -42,9 +39,21 @@ Both approaches remove the need to build GraphQL servers while maintaining the b
 - **Reduced migration effort** — wrap existing APIs (like Stripe or Keycloak) without writing full subgraphs, lowering the cost of moving from monoliths to federation  
 - **Developer experience** — simple request/response semantics for services, while the router handles GraphQL query planning, entity resolution, and schema contracts  
 
-## Next Steps
+## Implementation Docs
+
+The following documentation explains how to build and deploy both services and plugins:
+
+- **[Router Plugins](/router/grpc/plugins)** — Documentation for developing, configuring, and deploying plugins that run inside the router  
+- **[gRPC Services](/router/grpc/grpc-services)** — Documentation for the complete lifecycle of building, deploying, and managing independent gRPC services  
+
+These docs assume you're familiar with the concepts above and are ready to implement your first service or plugin.
+
+## Getting Started
+
+The following tutorials walk you through step-by-step examples of building your first integration. 
+Unlike the implementation docs, which cover the full technical reference, these focus on quick setup and hands-on learning:
 
 <CardGroup>
-  <Card title="Create a gRPC subgraph from scratch" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
-  <Card title="Deploy a gRPC plugin via the router" icon="plug" href="/tutorial/using-grpc-plugins" horizontal/>
+  <Card title="Deploy Your First gRPC Service" icon="code" href="/tutorial/grpc-service-quickstart" horizontal/>
+  <Card title="Deploy Your First Router Plugin" icon="plug" href="/tutorial/using-grpc-plugins" horizontal/>
 </CardGroup>
