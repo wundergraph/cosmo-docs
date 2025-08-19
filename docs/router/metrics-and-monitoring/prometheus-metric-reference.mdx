@@ -122,6 +122,50 @@ telemetry:
 
 * [`router_engine_messages_sent_total`](#router-engine-messages-sent-total): The number of total messages for subscriptions sent over from the subgraph to the router.
 
+### EDFS Streams Metrics
+We expose metrics for EDFS streams, these statistics are collected at the level when the message is sent to the messaging backend or directly received from the messaging backend.
+
+```yaml config.yaml
+telemetry:
+  metrics:
+    prometheus:
+      streams: true
+```
+
+#### Metrics
+
+* `router_streams_sent_messages_total`: Counter of messages produced/sent to the messaging backend
+* `router_streams_received_messages_total`: Counter of messages consumed/received directly by the router from the messaging backend.
+
+The following attributes are attached to both metrics:
+
+* `wg_stream_operation_name`:
+This contains the operation type used to send a message to the message backend. This is useful to differentiate when an edfs adapter has multiple ways of sending messages, like in the case of "nats", with `publish`, and `request`.
+The following values are possible, based on the messaging backend
+
+    - nats: `publish`, `request`, `receive`
+
+    - kafka: `produce`, `receive`
+
+    - redis: `publish`, `receive`
+
+* `wg_provider_type`:
+One of the supported edfs provider types, which includes `kafka`, `nats`, `redis`
+
+* `wg_destination_name`:
+The name of the destination of the messaging backend (topic, queue, etc)
+
+* `wg_provider_id`:
+The provider id as specified in the router configuration
+
+* `wg_error_type`:
+A generic error type to indicate an error occurred. This is available only for `router.streams.sent.messages` at this moment, as we do not catch message receive errors.
+
+#### Examples
+
+You can find more examples here under [`Streams`](/router/metrics-and-monitoring#example-prometheus-queries)
+
+
 ### Connection Metrics
 
 These metrics provide lower level metrics which helps track connection and pool metrics. By utilizing these metrics users can figure out when the router's connection pool is full and when connections are misbehaving by for example observing spikes in time to acquire connections.
@@ -139,9 +183,9 @@ telemetry:
 
 #### Metrics
 
-* `router_http_client_connection_max`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
+* `router_http_client_max_connections`: Static configuration values with the maximum connections allowed per host with a subgraph dimension.
 
-* `router_http_client_connection_active`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it's less common, multiple subgraphs can share the same host, which is why both dimensions are included.
+* `router_http_client_active_connections`: The number of currently active connections, grouped by both subgraph and host. A connection is considered active once it has completed DNS resolution, TLS handshake, and dialing. While it's less common, multiple subgraphs can share the same host, which is why both dimensions are included.
 
 * `router_http_client_connection_acquire_duration`: The duration in ms that a connection took to be initialized, which includes all of DNS, TLS Handshakes, and Dialing the host.
 
@@ -159,7 +203,7 @@ These metrics help monitor application memory usage, concurrency, and garbage co
 
   * **Inefficient Allocation:** A mismatch between allocated and used memory may indicate suboptimal memory usage patterns.
 
-* [`go_memstats_heap_alloc_bytes`](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_heap_alloc_bytes): Number of heap bytes allocated and still in use across all instances. Focuses on heap memory usage for efficient memory management. The value is same as [**go\_memstats\_alloc\_bytes**](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_alloc_bytes).
+* [`go_memstats_heap_alloc_bytes`](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_heap_alloc_bytes): Number of heap bytes allocated and still in use across all instances. Focuses on heap memory usage for efficient memory management. The value is same as [**go_memstats_alloc_bytes**](/router/metrics-and-monitoring/prometheus-metric-reference#go_memstats_alloc_bytes).
 
   * **Heap Saturation Risk:** High heap memory usage can lead to increased garbage collection frequency and performance degradation.
 
