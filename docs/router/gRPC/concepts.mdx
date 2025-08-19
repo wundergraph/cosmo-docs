@@ -5,6 +5,10 @@ sidebarTitle: Concepts
 description: 'Core concepts for gRPC integration in Cosmo Router'
 ---
 
+[Cosmo Connect](/connect/overview) is the high-level framework for extending your federated graph with external implementations. 
+This section introduces the internal model behind Connect and explains how it works, before going deeper into 
+**Plugins** and **gRPC Services** as the two deployment approaches.
+
 ## Introduction
 
 The Cosmo Router supports integration with gRPC through a schema-first approach. You define a GraphQL schema that represents the interface to your gRPC implementation, and the Cosmo tooling generates the corresponding Protocol Buffer definitions and mappings that enable the router to establish communication.
