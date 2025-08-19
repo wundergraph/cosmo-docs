@@ -105,6 +105,15 @@
         ]
       },
       {
+        "group": "Cosmo Connect",
+        "pages": [
+          "connect/overview",
+          "connect/plugins",
+          "connect/grpc-services",
+          "connect/concepts"
+        ]
+      },
+      {
         "group": "CLI (wgc)",
         "pages": [
           "cli/intro",

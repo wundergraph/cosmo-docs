@@ -4,7 +4,6 @@ description: 'Local router plugins for high-performance GraphQL Federation with 
 sidebarTitle: Overview
 icon: "circle-info"
 ---
-<Tip> Router plugins are part of **Cosmo Connect** </Tip>
 
 ## Introduction
 
@@ -17,6 +16,11 @@ including hot-reloading plugins without any service interruption.
 There's no need to deploy "Subgraph" services just to bring an existing API into your Supergraph.
 
 For an overview of gRPC concepts shared between plugins and services, see our [gRPC Concepts documentation](/router/gRPC/concepts).
+
+<Card title="🚀 Introducing Cosmo Connect" icon="plug" href="/connect/overview">
+  **New in Cosmo**: Build federated graphs with gRPC services and plugins. No GraphQL required on the backend.  
+  [Learn more →](/connect/overview)
+</Card>
 
 ## Workflow
 
@@ -278,5 +282,3 @@ Router plugins for the Cosmo Router provide a powerful way to implement high-per
 By leveraging the battle-tested HashiCorp go-plugin framework while maintaining clean separation of concerns, they offer the best of both worlds for many use cases.
 
 For complex systems, consider a hybrid approach: use router plugins for performance-critical paths and traditional subgraphs for areas that require independent scaling or deployment.
-
-See also: [gRPC Services](/router/grpc/grpc-services)

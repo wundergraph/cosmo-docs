@@ -1,0 +1,31 @@
+---
+title: "Concepts"
+description: "Core concepts for gRPC integration in Cosmo Router"
+icon: "lightbulb"
+---
+
+# Concepts
+
+Cosmo Router extends GraphQL Federation with support for **gRPC integration**. Instead of running separate GraphQL servers, you define a schema that describes the contract clients will use. From this schema, Protocol Buffer definitions are generated so the router can translate queries into gRPC calls. This makes it possible to connect gRPC or other existing systems directly into your federated graph.
+
+## How It Works
+
+At a high level, the process looks like this:
+
+- Define a GraphQL schema that represents the API contract  
+- Generate the corresponding Protobuf files  
+- Implement the gRPC methods in your services  
+- Configure the router so queries are executed through gRPC  
+
+## Why Use gRPC with Federation
+
+Teams often adopt Federation while still relying on existing systems. gRPC provides a strongly typed and efficient way to bring those systems into a federated graph with schema-first development and type safety.
+
+## Integration Options
+
+Cosmo supports two ways to integrate gRPC:
+
+- **Router Plugins** — run inside the router process for simple deployment and low latency  
+- **gRPC Services** — run as independent deployments in any language, with full control over scaling and ownership  
+
+Both approaches extend the federated graph without requiring backend GraphQL servers, letting you choose between performance and flexibility depending on your architecture needs.
