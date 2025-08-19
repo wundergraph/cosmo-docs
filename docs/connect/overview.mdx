@@ -6,11 +6,11 @@ icon: "circle-info"
 
 ## Cosmo Connect
 
-Cosmo Connect extends GraphQL Federation with support for **gRPC integration**.  
-Instead of running backend GraphQL servers, teams define a schema contract that describes how clients interact with services. From this schema, the Cosmo Router can generate Protocol Buffer files, which your backend services then implement.  
+Cosmo Connect gives you the power of GraphQL as your design language while removing the need to run GraphQL servers.
 
-This approach keeps the external API GraphQL-shaped while backend services remain free to use **simple request–response contracts** through gRPC. The router transparently maps GraphQL queries into RPC calls while preserving a unified supergraph.
+You define a GraphQL schema contract that specifies the service interface. From this contract, we generate Protocol Buffer definitions and language-specific stubs that you can use to implement your plugin or service.
 
+This approach makes the service fully GraphQL Federation compliant, while allowing backend services to remain free of any GraphQL framework or technology by simply leveraging straightforward gRPC.
 
 ## We adopt to two deployment models
 
