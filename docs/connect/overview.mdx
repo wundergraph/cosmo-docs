@@ -1,13 +1,13 @@
 ---
 title: "Cosmo Connect Overview"
-description: "Build federated graphs with gRPC services and plugins. No GraphQL required on the backend."
+description: "Build federated graphs with gRPC services and plugins. No GraphQL server implementation required—only a schema to define the contract."
 icon: "plug"
 ---
 
 # Cosmo Connect
 
-Cosmo Connect extends GraphQL Federation beyond GraphQL by supporting **gRPC and RPC-style services**.  
-With Connect, backend teams no longer need to implement GraphQL servers. Instead, they expose request–response contracts using gRPC, and the Cosmo Router translates GraphQL queries into gRPC calls while maintaining a unified GraphQL API.
+Cosmo Connect extends GraphQL Federation beyond GraphQL by supporting **gRPC-based services**.  
+With Connect, backend teams no longer need to implement GraphQL servers. Instead, they define request–response contracts using gRPC, and the Cosmo Router translates GraphQL queries into gRPC calls while maintaining a unified GraphQL API.
 
 <Note>
 Cosmo Connect is a new feature. Some functionality and configuration options may evolve as the feature matures. Refer to the latest router documentation for the most up-to-date information.
@@ -15,10 +15,10 @@ Cosmo Connect is a new feature. Some functionality and configuration options may
 
 ## Overview
 
-Cosmo Connect provides two integration patterns for extending federated graphs:
+Cosmo Connect provides two integration models for extending federated graphs:
 
-- **Plugins** — Local extensions that run as separate processes managed by the router. They provide the **simplest deployment model** with the **highest performance**.  
-- **gRPC Services** — Independent, remotely deployed services. They provide **full deployment control** and **language flexibility** across any gRPC-supported ecosystem.
+- **Router Plugins** — run inside the router process for the simplest deployment model and the lowest latency  
+- **gRPC Services** — run as independent deployments in any language, with full control over scaling and ownership  
 
 Both approaches eliminate the need for backend GraphQL servers while preserving the benefits of federation.
 
@@ -26,56 +26,27 @@ Both approaches eliminate the need for backend GraphQL servers while preserving 
 
 <CardGroup cols={2}>
   <Card title="Plugins" icon="plug" href="/connect/plugins">
-    Local extensions managed by the router. Ideal for simple integrations and performance-critical paths.
+    Extensions that run inside the router. Ideal for simple integrations and performance-critical paths.
   </Card>
   <Card title="gRPC Services" icon="network-wired" href="/connect/grpc-services">
     Independent services with full lifecycle control. Suitable for distributed teams, complex business logic, and multi-language environments.
   </Card>
 </CardGroup>
 
-## Benefits
-
-### For Backend Teams
-- **Simplified contracts** — schema-driven, request–response instead of GraphQL complexity  
-- **Language flexibility** — implement services in any gRPC-supported language  
-- **Team independence** — services and plugins can be owned and deployed separately  
-
-### For Frontend Teams
-- **Unified API** — single GraphQL endpoint across all services  
-- **Familiar interface** — standard GraphQL queries and mutations  
-- **Type safety** — generated types from the federated schema  
-
-### For Operations
-- **Lifecycle management** — router handles plugin hot-reloading and service discovery  
-- **Fault isolation** — plugins run in separate processes; services run remotely  
-- **Scalability** — choose between local plugins and independently scaled services  
-
 ## When to Use Connect
 
 ### Use Plugins When
 - You want the **simplest deployment model**  
 - **Performance** is critical (lowest latency)  
-- Teams are comfortable with Go development  
 - Unified deployment with the router is acceptable  
 
 ### Use gRPC Services When
 - You need **independent scaling** and deployment pipelines  
 - Teams use **languages other than Go**  
 - Services are owned by **different teams** with separate lifecycles  
-- You want to maintain a distributed microservices architecture  
-
-## Getting Started
-
-<CardGroup cols={2}>
-  <Card title="Quick Start with Plugins" icon="rocket" href="/connect/plugins">
-    Build and run a simple plugin alongside your router
-  </Card>
-  <Card title="gRPC Service Setup" icon="server" href="/connect/grpc-services">
-    Deploy and integrate your first gRPC service
-  </Card>
-</CardGroup>
+- You want to maintain a distributed architecture
 
 ## Next Steps
-- [Plugins](/connect/plugins) — Local extensions managed by the router  
+- [Plugins](/connect/plugins) — Extensions that run inside the router  
 - [gRPC Services](/connect/grpc-services) — Independent services with full control  
 - [Concepts](/connect/concepts) — Core concepts and architecture behind Connect

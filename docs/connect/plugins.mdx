@@ -1,163 +1,26 @@
 ---
 title: "Connect Plugins"
-description: "Lightweight gRPC plugins that run alongside the router for quick integrations"
+description: "Lightweight extensions that run inside the router for quick integrations"
 icon: "plug"
 ---
 
-# Connect Plugins
+## Connect Plugins
 
-Connect Plugins are lightweight gRPC services that run directly inside the router process. They provide the fastest path to integrating external APIs and services into your federated graph without requiring separate deployment infrastructure.
+Connect Plugins are part of Cosmo Connect.
+They run directly inside the router process, providing the fastest path to integrating external APIs and services into your federated graph without requiring separate infrastructure or CI/CD pipelines—just publish through the Cosmo registry.
 
 ## Overview
 
-Plugins integrate with the router to extend GraphQL Federation functionality. They're ideal for simple integrations, rapid prototyping, and services that don't require independent scaling.
-
-<Note>
-The exact plugin architecture and process model may vary. Refer to the router documentation for implementation details.
-</Note>
+Plugins extend the router’s federation functionality.
+They are best suited for straightforward integrations that don’t require independent scaling or dedicated service management.
 
 ## When to Use Plugins
 
-### Ideal Use Cases
+- **Simple integrations** with external APIs  
+- **Lightweight services** that don’t need independent scaling  
+- **Unified deployment** alongside the router  
 
-- **Simple integrations** with external APIs
-- **Lightweight services** that don't require independent scaling
-- **Unified deployment** with the router
+## Comparing with gRPC Services
 
-### Limitations
-
-- **Limited isolation** - plugin failures can affect router performance
-- **Router team dependency** for deployment and updates
-
-## Plugin Components
-
-<CardGroup cols={2}>
-  <Card title="GraphQL Schema" icon="code">
-    Defines the interface exposed to GraphQL clients
-  </Card>
-  <Card title="gRPC Implementation" icon="network-wired">
-    Implements the business logic using gRPC methods
-  </Card>
-  <Card title="Protocol Mappings" icon="arrows-rotate">
-    Generated mappings between GraphQL and gRPC
-  </Card>
-  <Card title="Router Integration" icon="router">
-    Integration with the router for federation
-  </Card>
-</CardGroup>
-
-## Development Workflow
-
-### 1. Initialize Plugin
-
-```bash
-wgc router plugin init my-plugin
-```
-
-### 2. Define GraphQL Schema
-
-```graphql
-type User {
-  id: ID!
-  name: String!
-  email: String!
-}
-
-type Query {
-  getUser(id: ID!): User
-}
-```
-
-### 3. Generate Protocol Buffers
-
-```bash
-# If you're in the plugin directory:
-wgc router plugin generate
-
-# Or if you're specifying the directory:
-wgc router plugin generate ./my-plugin
-```
-
-### 4. Implement gRPC Methods
-
-```go
-func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-    // Your business logic here
-    return &pb.GetUserResponse{
-        User: &pb.User{
-            Id:    req.Id,
-            Name:  "John Doe",
-            Email: "john@example.com",
-        },
-    }, nil
-}
-```
-
-### 5. Build and Publish
-
-```bash
-wgc router plugin build my-plugin
-wgc router plugin publish my-plugin
-```
-
-## Configuration
-
-Plugins are configured through the router configuration. See [Router Configuration](/router/configuration) for details on plugin setup.
-
-<Note>
-The exact plugin configuration structure may vary. Refer to the router configuration documentation for the most up-to-date configuration options.
-</Note>
-
-## Best Practices
-
-### Performance
-
-- **Keep plugins lightweight** - they share resources with the router
-- **Implement proper timeouts** - long-running operations impact router performance
-
-### Reliability
-
-- **Handle errors gracefully** - return appropriate gRPC status codes
-- **Implement retry logic** - handle transient failures
-
-### Security
-
-- **Validate inputs** - sanitize all incoming data
-- **Secure external calls** - use TLS and authentication
-
-## Examples
-
-<CardGroup cols={2}>
-  <Card title="Payment Gateway" icon="credit-card" href="/tutorial/using-grpc-plugins">
-    Stripe integration with webhook handling
-  </Card>
-  <Card title="Notification Service" icon="bell" href="/tutorial/grpc-service-quickstart">
-    Email and SMS notifications
-  </Card>
-  <Card title="File Storage" icon="folder" href="/router/file-upload">
-    File upload and management
-  </Card>
-  <Card title="Authentication" icon="shield" href="/router/authentication-and-authorization">
-    JWT validation and user management
-  </Card>
-</CardGroup>
-
-## Troubleshooting
-
-### Common Issues
-
-- **Plugin not starting**: Check configuration and dependencies
-- **Communication errors**: Verify gRPC protocol compatibility
-- **Schema conflicts**: Ensure GraphQL schema is valid and compatible
-
-### Debugging
-
-- **Enable debug logging** in router configuration
-- **Verify gRPC connectivity** between router and plugin
-
-## Next Steps
-
-- [gRPC Services](/connect/grpc-services) - For independent service deployment
-- [Concepts](/connect/concepts) - Deep dive into Connect architecture
-- [Router Configuration](/router/configuration) - Plugin configuration details
-- [gRPC Plugin Development](/router/gRPC/plugins) - Detailed plugin development guide
+- **Plugins** — simplest deployment model and lowest latency, but run inside the router process  
+- **gRPC Services** — independent deployments with full scaling and lifecycle control

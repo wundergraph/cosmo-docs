@@ -1,35 +1,25 @@
 ---
 title: "gRPC Services"
-description: "Deploy gRPC services independently for distributed GraphQL Federation."
+description: "Extend your federated graph with independently deployed gRPC services, defined by a simple GraphQL schema contract."
 icon: "server"
 ---
 
-# gRPC Services
+## gRPC Services
 
-Cosmo Connect lets you run gRPC services as independent microservices that communicate with the router over the network. Unlike plugins, which run inside the router process, gRPC services are deployed separately and can live anywhere in your infrastructure.
+As part of Cosmo Connect, you can run gRPC services as independent processes that communicate with the router over the network. Unlike plugins, which run inside the router process, gRPC services are deployed separately and can live anywhere in your infrastructure.
 
-This model is a good fit when teams want service autonomy, need independent scaling, or use languages other than Go.
-
-<Note>
-gRPC services are part of **Cosmo Connect**, enabling RPC-style integrations without requiring GraphQL servers.
-</Note>
+This model is a good fit when teams want service autonomy, need independent scaling, or use any gRPC-supported language.
 
 ## Why Use gRPC Services
 
 gRPC services extend your federated graph while keeping service boundaries intact. They make it possible to:
 
-- Build in any gRPC-supported language (Python, Java, Node.js, Rust, etc.)  
+- Build in any gRPC-supported language (such as Python, Java, Node.js, Rust)  
 - Scale services independently based on workload  
 - Manage lifecycles, monitoring, and releases per team  
 - Run in distributed or multi-region environments  
 
 ## Comparing with Plugins
 
-- **Choose gRPC Services** when you need language flexibility, separate deployment pipelines, or distributed architecture.  
-- **Choose Plugins** when you want the lowest latency, simplest deployment, and are comfortable working in Go.  
-
-## Next Steps
-
-- [gRPC Service Quickstart](/tutorial/grpc-service-quickstart) — Build and connect your first service  
-- [Router Plugins](/connect/plugins) — Learn about the plugin integration model  
-- [Concepts](/connect/concepts) — Explore the shared principles behind Connect
+- **Use gRPC Services** when you need language flexibility, independent scaling, and distributed deployments  
+- **Use Plugins** when you want the simplest deployment and the lowest latency
