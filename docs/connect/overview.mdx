@@ -22,6 +22,31 @@ How does this work? You define an Apollo-compatible Subgraph Schema, compile it 
 
 ## We support two deployment models
 
+```mermaid
+graph LR
+  client["Clients (Web / Mobile / Server)"] --> routerCore["Router Core"]
+
+  subgraph routerBox["Cosmo Router"]
+    routerCore
+    plugin["Router Plugin<br/>(Cosmo Connect)"]
+  end
+
+  routerCore --> subA["GraphQL Subgraph"]
+  routerCore --> grpcSvc["gRPC Service<br/>(Cosmo Connect)"]
+
+  grpcSvc --> restA["REST / HTTP APIs"]
+  grpcSvc --> soapA["Databases"]
+
+  plugin --> restA
+  plugin --> soapA
+
+  %% Styling
+  classDef grpcFill fill:#ea4899,stroke:#ea4899,stroke-width:1.5px,color:#ffffff;
+  classDef pluginFill fill:#ea4899,stroke:#ea4899,stroke-width:1.5px,color:#ffffff;
+  class grpcSvc grpcFill;
+  class plugin pluginFill;
+```
+
 Cosmo Connect supports two ways to integrate gRPC into your federated graph:
 
 - **[Router Plugins](/connect/plugins)** — run as local processes managed by the router. Ideal for simple deployments where you want the lowest latency and do not need separate CI/CD or scaling.  
