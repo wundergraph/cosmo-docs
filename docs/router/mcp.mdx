@@ -226,7 +226,7 @@ storage_providers:
 
 ## Session Handling
 
-By default, the MCP server runs in stateless mode (`session.stateless: true`). This default avoids scalability issues in load-balanced/serverless environments where sticky sessions is not respected. In stateless mode, the server does not keep any session data but this comes with limitations.
+By default, the MCP server runs in stateless mode (`session.stateless: true`). This avoids scalability issues in load-balanced/serverless environments where sticky sessions is not respected. In stateless mode, the server does not keep any session data but this comes with limitations.
 
 When the MCP server runs in stateless mode, capabilities that depend on long-lived connections or server-maintained session context are unavailable or limited:
 
@@ -240,8 +240,9 @@ When the MCP server runs in stateless mode, capabilities that depend on long-liv
 
 If you set `session.stateless: false`, the MCP server maintains per-session state. To ensure a session is consistently handled by the same Router instance, your load balancer or reverse proxy must enforce sticky sessions based on the `Mcp-Session-Id` header:
 
-- By specification, clients must send a stable `Mcp-Session-Id` value for every new session
-- Configure your infrastructure to route all requests with the same `Mcp-Session-Id` to the same Router instance
+You need to configure your load balancer to create sticky sessions based on the server's response header `Mcp-Session-Id`, provided the client includes that value in subsequent requests as a request header.
+
+For more information on sticky sessions, see your load balancer or reverse proxy documentation e.g., [F5 NGINX Plus](https://community.f5.com/kb/technicalarticles/mcp-session-affinity-with-f5-nginx-plus/341961).
 
 ### Session Storage
 
