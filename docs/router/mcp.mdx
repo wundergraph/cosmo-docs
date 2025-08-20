@@ -193,6 +193,9 @@ mcp:
   exclude_mutations: true
   enable_arbitrary_operations: false
   expose_schema: false
+  hot_reload_config:
+    enabled: true
+    interval: '10s'
 
 # Configure storage providers
 storage_providers:
@@ -214,6 +217,19 @@ storage_providers:
 | `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`                              |
 | `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`                              |
 | `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`                              |
+| `hot_reload_config.enabled`   | Enable automatic reloading of MCP operations at regular intervals.                                                                                       | `false`                              |
+| `hot_reload_config.interval`  | The interval at which the router checks for changes in operations directory.                                                                             | `10s`                                |
+
+## MCP Operations hot reloading
+
+The MCP server is capable of reloading operations without a full process restart. You can trigger a reload by configuring the `hot_reload_config` section to automatically check the MCP operations for changes at regular intervals.
+
+```yaml config.yaml
+mcp:
+  hot_reload_config:
+    enabled: true
+    interval: '10s'
+```
 
 ## Storage Providers
 
