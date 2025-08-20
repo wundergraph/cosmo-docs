@@ -72,7 +72,7 @@ The default log fields provide essential details about each HTTP request. These 
 
 * **path**: The request path (e.g., `/graphql`).
 
-* **query**: The query string included in the request URL (e.g., `/?param=1`).
+* **query**: The query string included in the request URL (e.g., `/?param=1`). Certain parameters can be skipped using the [ignore_query_params_list](#filtering-query-parameters) option.
 
 * **ip**: The client’s IP address (redacted by default).
 
@@ -105,6 +105,20 @@ An example of a log entry is shown below:
   "request_id": "dustins-MacBook-Pro.local/TBOXjJsAo5-000007"
 }
 ```
+
+#### Filtering Query Parameters
+
+The `query` field above by default will print the raw query string if present. However, this can potentially include sensitive information, especially if the GraphQL request was made over GET. Users can ignore specific query parameters using the following configuration, which will skip printing the "extensions" query parameter:
+
+```yaml
+access_logs:
+  router:
+    ignore_query_params_list:
+      - "extensions"
+```
+
+Note that if no `ignore_query_params_list` is specified, "variables" is ignored by default.
+
 
 ## Custom Fields
 
