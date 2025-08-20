@@ -231,11 +231,10 @@ By default, the MCP server runs in stateless mode (`session.stateless: true`). T
 
 In stateless mode, features that rely on long‑lived connections or server‑side session state are unavailable or limited:
 
-- No server-initiated notifications or sampling
+- No sampling
 - No elicitation flows
-- No persistent session context or connection resumability
-- No bidirectional messaging (request–response only)
-- No resource subscriptions
+- No session resumability
+- No bidirectional messaging (e.g. Notifications)
 
 ### Stateful mode (sticky sessions required)
 
