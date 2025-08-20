@@ -6,11 +6,11 @@ icon: "circle-info"
 
 ## Cosmo Connect
 
-Cosmo Connect gives you the power of GraphQL as your design language—without requiring backend teams to commit to GraphQL servers frameworks.
+Cosmo Connect allows you to use GraphQL Federation without requiring backend teams to run GraphQL servers or frameworks.
 
-You define a GraphQL schema contract that specifies the service interface. From this contract, Cosmo Connect generates Protocol Buffer definitions and language-specific stubs, enabling you to implement your service or plugin in the technology of your choice.
+One of the biggest downsides of Apollo Federation is that backend developers must adopt GraphQL and migrate their existing REST or gRPC services to a Federation-compatible framework. Cosmo Connect solves this problem by compiling GraphQL into gRPC and moving the complexity of the query language into the Router (API Gateway).
 
-This approach ensures full GraphQL Federation support while empowering backend teams to keep building with the tools and workflows they know best. By simply bridging their services into the supergraph with Cosmo Connect, every team contributes seamlessly — no matter the language, framework, or architecture. In turn, **every service becomes part of the supergraph**, unlocking new opportunities through unified data access, centralized governance, and deeper collaboration across the company.
+How does this work? You define an Apollo-compatible Subgraph Schema, compile it into a protobuf definition, and implement it in your favorite gRPC stack, such as Go, Java, C#, or many others. No specific framework or GraphQL knowledge is required. It is really just gRPC!
 
 ## Key benefits
 
