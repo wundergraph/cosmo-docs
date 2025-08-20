@@ -24,7 +24,8 @@ MCP (Model Context Protocol) is a protocol designed to help AI models interact w
 </Info>
 
 <Note>
-  We support only the latest MCP specification `2025-06-18` with Streamable HTTP support.
+  We support only the latest MCP specification `2025-06-18` with Streamable HTTP
+  support.
 </Note>
 
 The Cosmo MCP Server builds on top of the concept of persisted operations (also known as persisted queries or trusted documents). Instead of allowing AI models to execute arbitrary GraphQL operations, it exposes a predefined set of validated and approved operations. This provides a secure and controlled way for AI systems to interact with your data while maintaining tight control over what operations can be executed.
@@ -226,9 +227,9 @@ storage_providers:
 
 ## Session Handling
 
-By default, the MCP server runs in stateless mode (`session.stateless: true`). This avoids scalability issues in load-balanced/serverless environments where sticky sessions is not respected. In stateless mode, the server does not keep any session data but this comes with limitations.
+By default, the MCP server runs in stateless mode (`session.stateless: true`). This avoids scalability issues in load‑balanced or serverless environments where sticky sessions may not be guaranteed. In stateless mode, no session data is retained between requests.
 
-When the MCP server runs in stateless mode, capabilities that depend on long-lived connections or server-maintained session context are unavailable or limited:
+In stateless mode, features that rely on long‑lived connections or server‑side session state are unavailable or limited:
 
 - No server-initiated notifications or sampling
 - No elicitation flows
@@ -238,15 +239,17 @@ When the MCP server runs in stateless mode, capabilities that depend on long-liv
 
 ### Stateful mode (sticky sessions required)
 
-If you set `session.stateless: false`, the MCP server maintains per-session state. To ensure a session is consistently handled by the same Router instance, your load balancer or reverse proxy must enforce sticky sessions based on the `Mcp-Session-Id` header:
+If you set `session.stateless: false`, the MCP server maintains per‑session state. To ensure all requests for a session reach the same Router instance, configure sticky sessions keyed by `Mcp-Session-Id`:
 
-You need to configure your load balancer to create sticky sessions based on the server's response header `Mcp-Session-Id`, provided the client includes that value in subsequent requests as a request header.
+- The Router returns a unique `Mcp-Session-Id` response header when a session is established.
+- Clients must include that value in subsequent requests as the `Mcp-Session-Id` request header.
+- Your load balancer or reverse proxy must route requests with the same `Mcp-Session-Id` to the same instance.
 
-For more information on sticky sessions, see your load balancer or reverse proxy documentation e.g., [F5 NGINX Plus](https://community.f5.com/kb/technicalarticles/mcp-session-affinity-with-f5-nginx-plus/341961).
+For details, see your load balancer or reverse proxy documentation (e.g., [F5 NGINX Plus - MCP Session Affinity](https://community.f5.com/kb/technicalarticles/mcp-session-affinity-with-f5-nginx-plus/341961)).
 
 ### Session Storage
 
-In the future, we will evaluate the possibility to add a persistent session storage like Redis to the MCP server. This would allow the server to maintain session state between requests and provide more features like session-based security, resource subscriptions, and bidirectional messaging.
+In the future, we may add persistent session storage (e.g., Redis) to the MCP server. This would enable shared session state across instances and unlock features such as session‑based security, resource subscriptions, and bidirectional messaging.
 
 ## Storage Providers
 
