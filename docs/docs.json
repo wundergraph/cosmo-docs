@@ -62,7 +62,6 @@
           },
           {
             "group": "Concepts",
-            "icon": "circle-info",
             "pages": [
               "concepts/proposals",
               "concepts/feature-flags",
