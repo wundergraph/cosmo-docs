@@ -226,22 +226,7 @@ storage_providers:
 
 ## Session Handling
 
-By default, the MCP server runs in stateless mode (`session.stateless: true`). This default avoids scalability issues in load-balanced/serverless environments where sticky sessions may not be respected. In stateless mode, the server does not keep any session data but this comes with limitations.
-
-### Stateful operation (sticky sessions required)
-
-If you set `session.stateless: false`, the MCP server maintains per-session state. To ensure a session is consistently handled by the same Router instance, your load balancer or reverse proxy must enforce sticky sessions based on the `Mcp-Session-Id` header:
-
-- Ensure clients send a stable `Mcp-Session-Id` value for the duration of a session
-- Configure your infrastructure to route all requests with the same `Mcp-Session-Id` to the same Router instance
-
-<Warning>
-  When running in stateful mode without sticky sessions, features that rely on
-  session continuity will behave unpredictably because different requests may be
-  routed to different Router instances.
-</Warning>
-
-### Features missing in stateless mode with Streamable HTTP
+By default, the MCP server runs in stateless mode (`session.stateless: true`). This default avoids scalability issues in load-balanced/serverless environments where sticky sessions is not respected. In stateless mode, the server does not keep any session data but this comes with limitations.
 
 When the MCP server runs in stateless mode, capabilities that depend on long-lived connections or server-maintained session context are unavailable or limited:
 
@@ -249,9 +234,18 @@ When the MCP server runs in stateless mode, capabilities that depend on long-liv
 - No elicitation flows
 - No persistent session context or connection resumability
 - No bidirectional messaging (request–response only)
-- No SSE progress streaming in stateless mode
 - No resource subscriptions
-- No session-based security (use per-request tokens)
+
+### Stateful mode (sticky sessions required)
+
+If you set `session.stateless: false`, the MCP server maintains per-session state. To ensure a session is consistently handled by the same Router instance, your load balancer or reverse proxy must enforce sticky sessions based on the `Mcp-Session-Id` header:
+
+- By specification, clients must send a stable `Mcp-Session-Id` value for every new session
+- Configure your infrastructure to route all requests with the same `Mcp-Session-Id` to the same Router instance
+
+### Session Storage
+
+In the future, we will evaluate the possibility to add a persistent session storage like Redis to the MCP server. This would allow the server to maintain session state between requests and provide more features like session-based security, resource subscriptions, and bidirectional messaging.
 
 ## Storage Providers
 
