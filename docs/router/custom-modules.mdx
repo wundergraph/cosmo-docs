@@ -17,7 +17,7 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 - `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 - `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
 - `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
-- `core.SubscriptionOnStartHandler` Implements a custom handler that is executed before a subscription is started. It allows you to verify if the client is allowed to start the subscription and also send initial data to the subscription. Use cases: send an initial message to the client, custom subscription authorization logics
+- `core.SubscriptionOnStartHandler` Implements a custom handler that is executed before a subscription is started. It allows you to verify if the client is allowed to start the subscription and also send initial data to the subscription. **Use cases:** send an initial message to the client, custom subscription authorization logics
 
 <Info>
   `*OriginHandler` handlers are called concurrently when your GraphQL operation
@@ -258,6 +258,27 @@ func (m *SetScopesModule) RouterOnRequest(ctx core.RequestContext, next http.Han
     }
 
     next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+## Send an initial message in the subscription
+
+When a subscription is started you could need to send an initial message to the client, even if nothing is coming from the subgraph or edfs provider. In these cases you can implement a `SubscriptionOnStartHandler` .
+
+Lets say that you have a GraphQL subgraph that defines the following subscription:
+
+```tsx
+type Subscription {
+	
+}
+```
+
+```go
+func (m *InitialMsgModule) Middleware(core.RequestContext, next http.Handler) {
+	// Set the authentication scopes
+	ctx.SetAuthenticationScopes(customScopes)
+
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
 }
 ```
 
