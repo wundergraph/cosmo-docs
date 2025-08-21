@@ -23,6 +23,11 @@ MCP (Model Context Protocol) is a protocol designed to help AI models interact w
   requiring custom integration code for each model.
 </Info>
 
+<Note>
+  We support only the latest MCP specification `2025-06-18` with Streamable HTTP
+  support.
+</Note>
+
 The Cosmo MCP Server builds on top of the concept of persisted operations (also known as persisted queries or trusted documents). Instead of allowing AI models to execute arbitrary GraphQL operations, it exposes a predefined set of validated and approved operations. This provides a secure and controlled way for AI systems to interact with your data while maintaining tight control over what operations can be executed.
 
 ## Capabilities Provided by MCP
@@ -109,6 +114,7 @@ This allowed the company to:
 With this model in place, AI assistants could answer questions like “Did my payment to Amazon go through?” using only the approved fields and without touching full account numbers, balance history, or other restricted data.
 
 ### Outcome
+
 This approach helped the company:
 
 - Achieve compliance sign-off in weeks instead of months
@@ -186,9 +192,12 @@ mcp:
   enabled: true
   server:
     listen_addr: "localhost:5025"
-  router_url: "https://your-public-router-url.example.com/graphql" # Optional: Use when router is behind a proxy
+    base_url: "http://localhost:5025/mcp" # Optional: Advertised MCP base URL for SSE clients
+  router_url: "https://your-public-router-url.example.com/graphql" # Optional: Used in MCP responses when your router is behind a proxy
   storage:
     provider_id: "mcp" # References a file_system provider defined below
+  session:
+    stateless: true # Optional: When true, no server-side session state is kept
   graph_name: "my-graph"
   exclude_mutations: true
   enable_arbitrary_operations: false
@@ -203,17 +212,43 @@ storage_providers:
 
 ### Configuration Options
 
-| Option                        | Description                                                                                                                                              | Default                              |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `enabled`                     | Enable or disable the MCP server                                                                                                                         | `false`                              |
-| `server.listen_addr`          | The address and port where the MCP server will listen for requests                                                                                       | `localhost:5025`                     |
-| `server.base_url`             | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy. Purely metadata for AI model.                     | -                                    |
-| `router_url`                  | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy.                                                   | `http://{listen_addr}{graphql_path}` |
-| `storage.provider_id`         | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                            | -                                    |
-| `graph_name`                  | The name of the graph to be used by the MCP server                                                                                                       | `mygraph`                            |
-| `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`                              |
-| `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`                              |
-| `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`                              |
+| Option                        | Description                                                                                                                                              | Default          |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `enabled`                     | Enable or disable the MCP server                                                                                                                         | `false`          |
+| `server.listen_addr`          | The address and port where the MCP server will listen for requests                                                                                       | `localhost:5025` |
+| `server.base_url`             | The base URL of the MCP server advertised to LLM clients when SSE is used as primary transport. If unset, it's derived relative to the router URL.       | -                |
+| `router_url`                  | Custom URL to use for the router GraphQL endpoint in MCP responses. Use this when your router is behind a proxy.                                         | -                |
+| `storage.provider_id`         | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                            | -                |
+| `session.stateless`           | Whether the MCP server should operate in stateless mode. When true, no server-side session state is maintained between requests.                         | `true`           |
+| `graph_name`                  | The name of the graph to be used by the MCP server                                                                                                       | `mygraph`        |
+| `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`          |
+| `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`          |
+| `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`          |
+
+## Session Handling
+
+By default, the MCP server runs in stateless mode (`session.stateless: true`). This avoids scalability issues in load‑balanced or serverless environments where sticky sessions may not be guaranteed. In stateless mode, no session data is retained between requests.
+
+In stateless mode, features that rely on long‑lived connections or server‑side session state are unavailable or limited:
+
+- No sampling
+- No elicitation flows
+- No session resumability
+- No bidirectional messaging (e.g. Notifications)
+
+### Stateful mode (sticky sessions required)
+
+If you set `session.stateless: false`, the MCP server maintains per‑session state. To ensure all requests for a session reach the same Router instance, configure sticky sessions keyed by `Mcp-Session-Id`:
+
+- The Router returns a unique `Mcp-Session-Id` response header when a session is established.
+- Clients must include that value in subsequent requests as the `Mcp-Session-Id` request header.
+- Your load balancer or reverse proxy must route requests with the same `Mcp-Session-Id` to the same instance.
+
+For details, see your load balancer or reverse proxy documentation (e.g., [F5 NGINX Plus - MCP Session Affinity](https://community.f5.com/kb/technicalarticles/mcp-session-affinity-with-f5-nginx-plus/341961)).
+
+### Session Storage
+
+In the future, we may add persistent session storage (e.g., Redis) to the MCP server. This would enable shared session state across instances and unlock features such as session‑based security, resource subscriptions, and bidirectional messaging without the need to solve it on the load balancer level.
 
 ## Storage Providers
 
@@ -322,58 +357,69 @@ The MCP server respects the "Authorization" header from MCP clients and forwards
   appropriate access to your data.
 </Info>
 
-### Configuration
+## Installation Guides
 
 The authentication header can be configured in various AI tools and environments:
 
-#### Cursor and Claude Desktop
+### Claude
 
-Configure Cursor and Claude Desktop to use your MCP server with authentication by using the `mcp-remote` command.
+Requires latest version of Claude Desktop.
 
-<Note>
-  Cursor and Claude Desktop (Windows) have a bug where spaces inside args aren't
-  escaped when it invokes npx, which ends up mangling these values. You can work
-  around it by interpolating the value into the command using the `env` key.
-</Note>
+Go to `Settings` > `Developer` and click on `Edit Config`. Add the following to the `claude_desktop_config.json` file:
 
 ```json
 {
   "mcpServers": {
     "mygraph": {
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "http://localhost:5025/mcp",
-        "--header",
-        "Authorization:${AUTH_HEADER}" // note no spaces around ':'
-      ],
-      "env": {
-        "AUTH_HEADER": "Bearer <your-api-key>" // spaces OK in env vars
-      }
+      "args": ["-y", "mcp-remote", "http://localhost:5025/mcp"]
     }
   }
 }
 ```
 
-#### VS Code
+After that, you need to restart Claude Desktop.
 
-In VS Code, you can configure the MCP extension with authentication headers in your `settings.json`:
+### Cursor
+
+<Note>Requires Cursor v0.48.0+ for Streamable HTTP support.</Note>
+
+Go to `Settings` > `Tools & Integrations` > `MCP Servers` and add the following to the `mcp.json` file:
 
 ```json
-"mcp": {
-  "servers": {
-    "mygraph": {
-      "type": "sse",
+{
+  "mcpServers": {
+    "github": {
       "url": "http://localhost:5025/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer YOUR_API_KEY" // Optional
       }
     }
   }
 }
 ```
 
-#### Other MCP-compatible Tools
+### Windsurf
+
+Windsurf supports Streamable HTTP servers with a `serverUrl` field:
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "serverUrl": "http://localhost:5025/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY" // Optional
+      }
+    }
+  }
+}
+```
+
+### VS Code
+
+Click `View` > `Command Palette` > `"MCP: Add Server"` and use the URL `http://localhost:5025/mcp` to complete the configuration. For more information, see the [MCP Servers](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) documentation.
+
+### Other MCP-compatible Tools
 
 Other tools and AI models that support the MCP protocol typically provide similar ways to configure authentication headers. Always check the documentation for your specific AI tool for the exact configuration syntax.
