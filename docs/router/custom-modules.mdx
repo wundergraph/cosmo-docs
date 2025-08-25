@@ -371,12 +371,12 @@ The current module handler allow to intercept and modify request / response subg
 Incoming client request
     │
     └─▶ core.RouterOnRequestHandler (Early return, Custom Authentication Logic)
-    │ 
-    └─▶ "If the request starts a subscription"
-       │
-       └─▶ core.SubscriptionOnStartHandler (Early return, Custom Authentication Logic)
     │
     └─▶ core.RouterMiddlewareHandler (Early return, Validation)
+       │
+       └─▶ "If the request starts a subscription"
+          │
+          └─▶ core.SubscriptionOnStartHandler (Early return, Custom Authentication Logic)
        │
        └─▶ core.EnginePreOriginHandler (Header mods, Custom Response, Caching)
        │
