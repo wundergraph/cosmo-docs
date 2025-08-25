@@ -17,6 +17,7 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 - `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 - `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
 - `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
+- `core.SubscriptionOnStartHandler` Implements a custom handler that is executed before a subscription is started. It allows you to verify if the client is allowed to start the subscription and also send initial data to the subscription. **Use cases:** send an initial message to the client, custom subscription authorization logics
 
 <Info>
   `*OriginHandler` handlers are called concurrently when your GraphQL operation
@@ -28,11 +29,10 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 </Info>
 
 <Info>
-  `RouterOnRequestHander` is only available since Router
-  [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
-</Info>
+  `RouterOnRequestHander` is only available since Router [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 
-## Example
+  `SubscriptionOnStartHandler` is only available since Router [0.X.X](https://github.com/wundergraph/cosmo/releases/tag/router%400.X.X)
+</Info>
 
 The example below shows how to implement a custom middleware that has access to the GraphQL operation information.
 
@@ -261,6 +261,95 @@ func (m *SetScopesModule) RouterOnRequest(ctx core.RequestContext, next http.Han
 }
 ```
 
+## Send an initial message in the subscription
+
+When a subscription is started you could need to send an initial message to the client, even if nothing is coming from the subgraph or edfs provider. In these cases you can implement a `SubscriptionOnStartHandler` .
+
+Lets say that you have a GraphQL subgraph that defines the following subscription:
+
+```graphql
+type Subscription {
+	matchScore(matchId: Int!): Score! @edfs__kafkaSubscribe(topics: ["scores"], providerId: "my-kafka")
+}
+```
+
+When a client subscribes to the `matchScore` subscription, it will receive the score as soon as a message is published on the `scores` topic.
+But if the first message is coming late, the subscribed client could remain without data for a long time.
+To improve the user experience you could send an initial message to the client when the subscription is started, calling an external service
+to get the initial score.
+
+```go
+func (m *InitialMsgModule) SubscriptionOnStart(ctx core.SubscriptionOnStartHookContext) {
+    // Check if the subscription is the one you want to handle
+    if ctx.SubscriptionEventConfiguration().RootFieldName() != "matchScore" {
+        return
+    }
+
+    // Get the matchId from the subscription
+    matchId := ctx.Operation().Variables().GetInt("matchId")
+
+    // Call the external service to get the initial score
+    scores, err := m.getInitialScore(matchId)
+    if err != nil {
+        return
+    }
+
+    // Send the initial score to the client
+    // The message should follow the same schema of other messages sent in the topic
+    ctx.WriteEvent(&kafka.Event{
+        Data: []byte(fmt.Sprintf(`{"teamAName": %s, "teamBName": %s, "teamAScore": %d, "teamBScore": %d, "_typename": "Score"}`, scores.TeamAName, scores.TeamBName, scores.TeamAScore, scores.TeamBScore)),
+    })
+}
+```
+
+
+## Stop subscription if the client has not the right claim
+
+You might like to have additional permissions check to decide if a client is allowed to subscribe to a subscription.
+In these cases you can implement a `SubscriptionOnStartHandler` to check the permissions and stop the subscription if the
+client has not the right permissions.
+
+Lets say that you have a GraphQL subgraph that defines the following subscription:
+
+```graphql
+type Subscription {
+	matchScore(matchId: Int!): Score!
+}
+```
+
+When a client subscribes to the `matchScore` subscription, and if the client has not the right claim, the subscription
+will not be started and the client will receive an error.
+
+```go
+func (m *StopSubscriptionModule) SubscriptionOnStart(ctx core.SubscriptionOnStartHookContext) {
+    rootFieldName := ctx.SubscriptionEventConfiguration().RootFieldName()
+    if rootFieldName != "matchScore" {
+      return nil
+    }
+    auths := ctx.Authentication()
+    if auths == nil {
+      return core.NewStreamHookError(
+        errors.New("client does not have authentication set"), 
+        "client does not have authentication set",
+        http.StatusUnauthorized, 
+        http.StatusText(http.StatusUnauthorized),
+      )
+    }
+    // Get the claims from the authentication
+    claims := auths.Claims()
+    if val, ok := claims["can_subscribe"]; !ok || val != "true" {
+      return core.NewStreamHookError(
+        errors.New("client does not have the right claim"), 
+        "client does not have the right claim",
+        http.StatusUnauthorized, 
+        http.StatusText(http.StatusUnauthorized),
+      )
+    }
+
+    return nil
+}
+```
+
 ## Return GraphQL conform errors
 
 Please always use `core.WriteResponseError` to return an error. It ensures that the request is properly tracked for tracing and metrics.
@@ -284,6 +373,10 @@ Incoming client request
     └─▶ core.RouterOnRequestHandler (Early return, Custom Authentication Logic)
     │
     └─▶ core.RouterMiddlewareHandler (Early return, Validation)
+       │
+       └─▶ "If the request starts a subscription"
+          │
+          └─▶ core.SubscriptionOnStartHandler (Early return, Custom Authentication Logic)
        │
        └─▶ core.EnginePreOriginHandler (Header mods, Custom Response, Caching)
        │
