@@ -31,7 +31,7 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 <Info>
   `RouterOnRequestHander` is only available since Router [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 
-  `SubscriptionOnStartHandler`  is only available since Router 0.X.X
+  `SubscriptionOnStartHandler` is only available since Router [0.X.X](https://github.com/wundergraph/cosmo/releases/tag/router%400.X.X)
 </Info>
 
 The example below shows how to implement a custom middleware that has access to the GraphQL operation information.
@@ -267,18 +267,86 @@ When a subscription is started you could need to send an initial message to the 
 
 Lets say that you have a GraphQL subgraph that defines the following subscription:
 
-```tsx
+```graphql
 type Subscription {
-	
+	matchScore(matchId: Int!): Score! @edfs__kafkaSubscribe(topics: ["scores"], providerId: "my-kafka")
 }
 ```
 
-```go
-func (m *InitialMsgModule) Middleware(core.RequestContext, next http.Handler) {
-	// Set the authentication scopes
-	ctx.SetAuthenticationScopes(customScopes)
+When a client subscribes to the `matchScore` subscription, it will receive the score as soon as a message is published on the `scores` topic.
+But if the first message is coming late, the subscribed client could remain without data for a long time.
+To improve the user experience you could send an initial message to the client when the subscription is started, calling an external service
+to get the initial score.
 
-	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+```go
+func (m *InitialMsgModule) SubscriptionOnStart(ctx core.SubscriptionOnStartHookContext) {
+    // Check if the subscription is the one you want to handle
+    if ctx.SubscriptionEventConfiguration().RootFieldName() != "matchScore" {
+        return
+    }
+
+    // Get the matchId from the subscription
+    matchId := ctx.Operation().Variables().GetInt("matchId")
+
+    // Call the external service to get the initial score
+    scores, err := m.getInitialScore(matchId)
+    if err != nil {
+        return
+    }
+
+    // Send the initial score to the client
+    // The message should follow the same schema of other messages sent in the topic
+    ctx.WriteEvent(&kafka.Event{
+        Data: []byte(fmt.Sprintf(`{"teamAName": %s, "teamBName": %s, "teamAScore": %d, "teamBScore": %d, "_typename": "Score"}`, scores.TeamAName, scores.TeamBName, scores.TeamAScore, scores.TeamBScore)),
+    })
+}
+```
+
+
+## Stop subscription if the client has not the right claim
+
+You might like to have additional permissions check to decide if a client is allowed to subscribe to a subscription.
+In these cases you can implement a `SubscriptionOnStartHandler` to check the permissions and stop the subscription if the
+client has not the right permissions.
+
+Lets say that you have a GraphQL subgraph that defines the following subscription:
+
+```graphql
+type Subscription {
+	matchScore(matchId: Int!): Score!
+}
+```
+
+When a client subscribes to the `matchScore` subscription, and if the client has not the right claim, the subscription
+will not be started and the client will receive an error.
+
+```go
+func (m *StopSubscriptionModule) SubscriptionOnStart(ctx core.SubscriptionOnStartHookContext) {
+    rootFieldName := ctx.SubscriptionEventConfiguration().RootFieldName()
+    if rootFieldName != "matchScore" {
+      return nil
+    }
+    auths := ctx.Authentication()
+    if auths == nil {
+      return core.NewStreamHookError(
+        errors.New("client does not have authentication set"), 
+        "client does not have authentication set",
+        http.StatusUnauthorized, 
+        http.StatusText(http.StatusUnauthorized),
+      )
+    }
+    // Get the claims from the authentication
+    claims := auths.Claims()
+    if val, ok := claims["can_subscribe"]; !ok || val != "true" {
+      return core.NewStreamHookError(
+        errors.New("client does not have the right claim"), 
+        "client does not have the right claim",
+        http.StatusUnauthorized, 
+        http.StatusText(http.StatusUnauthorized),
+      )
+    }
+
+    return nil
 }
 ```
 
@@ -303,6 +371,10 @@ The current module handler allow to intercept and modify request / response subg
 Incoming client request
     │
     └─▶ core.RouterOnRequestHandler (Early return, Custom Authentication Logic)
+    │ 
+    └─▶ "If the request starts a subscription"
+       │
+       └─▶ core.SubscriptionOnStartHandler (Early return, Custom Authentication Logic)
     │
     └─▶ core.RouterMiddlewareHandler (Early return, Validation)
        │
