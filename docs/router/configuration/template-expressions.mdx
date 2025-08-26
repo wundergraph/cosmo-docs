@@ -222,6 +222,11 @@ This example returns the raw response body only when an error occurs, which is u
 request.error != nil ? response.body.raw : ''
 ```
 
+### Subgraph Retry Expressions
+
+You can use expressions to specify the conditions for retries upon subgraph request failures. However, this uses a different expression context, which can be found [here](/router/traffic-shaping/retry#conditional-retry-with-expressions).
+
+
 ### Additional Notes
 
 - A Request for Comments (RFC) is [open](https://github.com/wundergraph/cosmo/pull/1481) for feedback on the complete API specification. Future implementations will be driven by customer requirements.
