@@ -106,7 +106,7 @@ In addition, we provide a set of helper functions you can use.
 
 #### Default retry expression
 The following is the default retry expression used when retry is enabled, but no expression condition is explicitly specified.
-```
+```yaml config.yaml
 traffic_shaping:
   all:
     retry:
@@ -116,7 +116,7 @@ traffic_shaping:
 #### Don't retry on HTTP read timeouts
 Sometimes you might wish to allow only lower-level timeouts (connection timeouts, etc.) to trigger retries. The following expression will allow you to do this by ignoring HTTP read timeouts. A good reason you might want this is because the subgraph takes time to respond because it is running some business logic that takes a long time, for which you do not want to retry as it will only result in the same business logic running again.
 
-```
+```yaml config.yaml
 traffic_shaping:
   all:
     retry:
@@ -125,7 +125,7 @@ traffic_shaping:
 
 #### Retry on 429 Requests
 If you wish to retry on 429 requests, you could append `statusCode == 429` to the default expression.
-```
+```yaml config.yaml
 traffic_shaping:
   all:
     retry:
