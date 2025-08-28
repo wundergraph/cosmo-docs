@@ -1302,11 +1302,11 @@ Configure circuit breaker either for all subgraphs, or per subgraph. More inform
 | Environment Variable | YAML         | Required                                      | Description                                                                          | Default Value                                                   |
 | -------------------- | ------------ | --------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
 | RETRY_ENABLED        | enabled      | <Icon icon="square" />                        |                                                                                      | true                                                            |
-|                      | algorithm    | <Icon icon="square" />                        | backoff_jitter                                                                       | backoff_jitter                                                  |
-|                      | condition    | <Icon icon="square" />                        | The retry condition used to decide if a failed subgraph request should be retried.   | `IsRetryableStatusCode() || IsConnectionError() || IsTimeout()` |
-|                      | max_attempts | <Icon icon="square-check" iconType="solid" /> |                                                                                      |                                                                 |
-|                      | max_duration | <Icon icon="square-check" iconType="solid" /> |                                                                                      |                                                                 |
-|                      | interval     | <Icon icon="square-check" iconType="solid" /> |                                                                                      |                                                                 |
+| RETRY_ALGORITHM      | algorithm    | <Icon icon="square" />                        | backoff_jitter                                                                       | backoff_jitter                                                  |
+| RETRY_EXPRESSION     | expression   | <Icon icon="square" />                        | The retry expression used to decide if a failed subgraph request should be retried.  | `IsRetryableStatusCode() || IsConnectionError() || IsTimeout()` |
+| RETRY_MAX_ATTEMPTS   | max_attempts | <Icon icon="square-check" iconType="solid" /> |                                                                                      |                                                                 |
+| RETRY_MAX_DURATION   | max_duration | <Icon icon="square-check" iconType="solid" /> |                                                                                      |                                                                 |
+| RETRY_INTERVAL       | interval     | <Icon icon="square-check" iconType="solid" /> |                                                                                      |                                                                 |
 
 ### Client Request Request Rules
 
