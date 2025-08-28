@@ -24,14 +24,14 @@ traffic_shaping:
       max_attempts: 5
       interval: 3s
       max_duration: 10s
-      condition: "IsRetryableStatusCode() || IsConnectionError() || IsTimeout()"
+      expression: "IsRetryableStatusCode() || IsConnectionError() || IsTimeout()"
 ```
 
 * `enabled`: Enables the retry mechanism for GraphQL query operations.
 
 * `algorithm`: Select the algorithm for the retry. Currently, only `backoff_jitter` is supported. Additional fields depend on the algorithm selection.
 
-* `condition`: The condition used to determine if a failed subgraph request should be retried.
+* `expression`: The evaluated result of this expression is used to determine if a failed subgraph request should be retried.
 
 * **backoff_jitter**
 
@@ -51,14 +51,14 @@ We do not retry on 429 errors by default, as 429 means "Too Many Requests", indi
 If you have explicitly enabled retrying on HTTP 429 and the subgraph responds with 429, we attempt to follow the specification described [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/429). If a `Retry-After` header is present with a valid, non-zero value, we will not use the default backoff algorithm duration and instead use that value as the interval duration. If the duration from `Retry-After` exceeds the router configuration's `max_duration`, we will default to using `max_duration`. 
 
 <Note>
-  HTTP 429 used to be retried by default, but is not retried by default as of `router@0.247.0`. If you want to retry on 429, set an explicit expression in <code>retry.condition</code>.
+  HTTP 429 used to be retried by default, but is not retried by default as of `router@0.247.0`. If you want to retry on 429, set an explicit expression in <code>retry.expression</code>.
 </Note>
 
 ### Conditional retry with expressions
 
 You can control when retries should occur using exprlang expressions. Unlike expressions used throughout the router, which can be found [here](/router/configuration/template-expressions), the structure of retry expressions is different.
 
-Set `retry.condition` to a boolean expression evaluated on each subgraph attempt. When the expression returns `true`, the router will retry (subject to the configured algorithm limits).
+Set `retry.expression` to a boolean expression evaluated on each subgraph attempt. When the expression returns `true`, the router will retry (subject to the configured algorithm limits).
 
 #### Retry expression reference
 
@@ -69,7 +69,7 @@ Retry expressions are evaluated per subgraph attempt and provide a focused conte
 
 <Note>
   The GitHub references to Go source in this section are best-effort and not exhaustive.
-  They are included to give you useful context so you can tailor retry error conditions to your needs.
+  They are included to give you useful context so you can tailor retry error expressions to your needs.
 </Note>
 
 
@@ -104,23 +104,32 @@ In addition, we provide a set of helper functions you can use.
 
 ### Examples
 
-#### Default retry condition
-The following is the default retry condition used when retry is enabled, but no expression condition is explicitly specified.
-```
-IsRetryableStatusCode() || IsConnectionError() || IsTimeout()
+#### Default retry expression
+The following is the default retry expression used when retry is enabled, but no expression condition is explicitly specified.
+```yaml config.yaml
+traffic_shaping:
+  all:
+    retry:
+      expression: "IsRetryableStatusCode() || IsConnectionError() || IsTimeout()"
 ```
 
 #### Don't retry on HTTP read timeouts
 Sometimes you might wish to allow only lower-level timeouts (connection timeouts, etc.) to trigger retries. The following expression will allow you to do this by ignoring HTTP read timeouts. A good reason you might want this is because the subgraph takes time to respond because it is running some business logic that takes a long time, for which you do not want to retry as it will only result in the same business logic running again.
 
-```
-!IsHttpReadTimeout() && IsTimeout()
+```yaml config.yaml
+traffic_shaping:
+  all:
+    retry:
+      expression: "!IsHttpReadTimeout() && IsTimeout()"
 ```
 
 #### Retry on 429 Requests
 If you wish to retry on 429 requests, you could append `statusCode == 429` to the default expression.
-```
-IsRetryableStatusCode() || IsConnectionError() || IsTimeout() || statusCode == 429
+```yaml config.yaml
+traffic_shaping:
+  all:
+    retry:
+      expression: "IsRetryableStatusCode() || IsConnectionError() || IsTimeout() || statusCode == 429"
 ```
 
 ### Debugging
