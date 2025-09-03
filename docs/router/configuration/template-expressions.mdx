@@ -181,7 +181,8 @@ subgraph.request.error != nil ? subgraph.response.body.raw : ''
 
 #### ClientTrace Properties
 
-- `subgraph.request.clientTrace.connAcquireDuration` (float64): The duration in seconds it took to acquire the connection to the subgraph
+- `subgraph.request.clientTrace.fetchDuration` (time.Duration): The duration it took for the router to call the subgraph via HTTP and get a response or error. In case of retries, this value contains the combined duration for all retries. Note: gRPC calls are not supported at the moment.
+- `subgraph.request.clientTrace.connAcquireDuration` (time.Duration): The duration it took to acquire the connection to the subgraph. This includes the dial time if a connection was not reused. If a connection was not successfully acquired, it will be 0. In case of retries, only the last duration is recorded.
 
 This object is available in template expressions and can be accessed using the `subgraph` identifier. For example, you can access the subgraph name using `subgraph.name` or check for errors using `subgraph.request.error`.
 
