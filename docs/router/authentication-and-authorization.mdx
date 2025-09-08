@@ -51,6 +51,55 @@ The router configuration facilitates the setup of multiple JWKS (JSON Web Key Se
 
 For more information on the attributes, visit the auth configuration parameter section page [here](/router/configuration#authentication).
 
+### Disabling Authentication for Introspection Operations
+
+Cosmo Router supports bypassing authentication for introspection queries.
+
+This is useful, for example, when you want to configure client tooling from within a secured environment without requiring valid authentication tokens.
+Instead of having to disable authentication altogether, this feature allows you to keep the configuration as close to production as possible while still using introspection queries easily.
+
+<Warning>
+This feature is meant to be used in secure, internal environments. It is not recommended for use in a production environment.
+It is disabled by default.
+</Warning>
+
+To enable this feature, add the following configuration to your router configuration:
+
+<CodeGroup>
+  ```yaml config.yaml
+  introspection:
+    enabled: true # Introspection is enabled by default (explicitly shown here)
+    skip_authentication: true # Bypass authentication for introspection queries (default: false)
+  ```
+</CodeGroup>
+
+Now when you make an introspection query, you will not need to provide an authentication token.
+
+```bash
+curl -X POST http://localhost:3002/graphql \
+  --header "Content-Type: application/json" \
+  --data '{"query": "{ __schema { types { name } } }"}'
+```
+
+Optionally, you can set a dedicated token for introspection queries.
+
+<CodeGroup>
+  ```yaml config.yaml
+  introspection:
+    enabled: true
+    skip_authentication: true
+    token: "dedicated_secret_for_introspection" # Optional, set a dedicated secret for introspection queries
+  ```
+</CodeGroup>
+
+With the secret set, you will need to provide it via the `Authorization` header, without a Bearer prefix.
+
+```bash
+curl -X POST http://localhost:3002/graphql \
+  --header "Content-Type: application/json" \
+  --header "Authorization: dedicated_secret_for_introspection" \
+  --data '{"query": "{ __schema { types { name } } }"}'
+```
 
 
 ## Old Router configuration (\< 0.168.1)
