@@ -49,15 +49,8 @@
             "group": "Getting Started",
             "pages": [
               "getting-started/cosmo-cloud-onboarding",
-              "getting-started/switch-from-apollo-to-cosmo"
-            ]
-          },
-          {
-            "group": "🚀 Cosmo Connect",
-            "pages": [
-              "connect/overview",
-              "connect/plugins",
-              "connect/grpc-services"
+              "getting-started/switch-from-apollo-to-cosmo",
+              "tutorial/mastering-local-development-for-graphql-federation"
             ]
           },
           {
@@ -69,6 +62,14 @@
               "concepts/schema-contracts",
               "concepts/cache-warmer",
               "concepts/router-compatibility-versions"
+            ]
+          },
+          {
+            "group": "Cosmo Connect",
+            "pages": [
+              "connect/overview",
+              "connect/plugins",
+              "connect/grpc-services"
             ]
           },
           {
@@ -622,11 +623,11 @@
             "group": "Tutorials",
             "pages": [
               "tutorial",
+              "tutorial/mastering-local-development-for-graphql-federation",
+              "tutorial/from-zero-to-federation-in-5-steps-using-cosmo",
               "tutorial/using-grpc-plugins",
               "tutorial/grpc-service-quickstart",
               "tutorial/deploy-federated-graphql-with-confidence",
-              "tutorial/from-zero-to-federation-in-5-steps-using-cosmo",
-              "tutorial/mastering-local-development-for-graphql-federation",
               "tutorial/composing-graphs",
               "tutorial/pr-based-workflow-for-federation",
               "tutorial/otel-instrumentation-on-subgraphs",
