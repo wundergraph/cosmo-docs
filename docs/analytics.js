@@ -4,7 +4,6 @@
     let loaded = false;
 
     function loadActiveCampaign() {
-        console.log('loadActiveCampaign', { loaded });
         if (loaded) {
             return;
         }
@@ -29,8 +28,6 @@
         const consent = window.Osano && Osano.cm && Osano.cm.getConsent ? Osano.cm.getConsent() : null;
         const marketing = (consent && consent.MARKETING === 'ACCEPT' || !!(window.Osano && Osano.cm && Osano.cm.marketing));
         const analytics = (consent && consent.ANALYTICS === 'ACCEPT' || !!(window.Osano && Osano.cm && Osano.cm.analytics));
-
-        console.log('updateConsentFromOsano', { marketing, analytics });
 
         if (marketing || analytics) {
             loadActiveCampaign();
