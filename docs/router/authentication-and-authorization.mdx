@@ -26,6 +26,11 @@ In the current router version, the configuration and behavior of authentication 
         - url: https://example.com/.well-known/jwks.json
           refresh_interval: 1m
           algorithms: ["RS256"]
+          refresh_unknown_kid:
+            enabled: true
+            max_wait: 2m
+            interval: 30s
+            burst: 5
         - url: https://example2.com/.well-known/jwks.json
           refresh_interval: 2m
           # optional list of allowed algorithms per JWKS
@@ -89,3 +94,18 @@ Authentication information is also available to custom modules. See [Access Auth
 ### Forwarding authentication headers
 
 By default, the router won't forward authentication headers to subgraphs, but if desired this can be configured using [Proxy capabilities](/router/proxy-capabilities).
+
+
+### Refreshing Unknown KIDs on demand
+Setting `refresh_unknown_kid.enabled` as `true`, would enable the automatic refreshing of KIDs whenever a valid token with an unknwon KID is passed to the router. The router will assume that the JWKs has not been rotated and will call the JWKs endpoint hoping the JWKs with the matching KID has been added. However to prevent overloading the JWKs endpoint we ratelimit this feature, ratelimiting works based on the "burst" value specified.
+
+Let's say that the burst value was 1 and we sent 6 requests, this means after the 1st request, we need to wait 30 seconds (the value of `refresh_unknown_kid.interval`) before sending the next request with an unknown KID. If we however do end up sending another request with an unknown KID before the duration has elapsed, the response of that request will be blocked until it has elapsed. Likewise, since we can process only one request at a time, if we send 6 requests simultaneously, with an interval of `30s`
+
+The 2nd request will block for 30s (30s * 1)
+The 3rd request will block for 60s (30s * 2)
+The 4th request will block for 90s (30s * 3)
+The 5th request will block for 120s (30s * 4)
+The 6th request will block for 150s (30s * 5)
+
+The `max_wait` value, is used to prevent the ballooning of waits. If the max wait was set to `110s`, for the 5th and 6th requests, we already can compute and know that they will be blocked for more than `110s`, as such we immediately stop searching for unknown KIDs and error out.
+
