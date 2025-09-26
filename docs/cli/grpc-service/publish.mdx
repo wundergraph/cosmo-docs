@@ -16,12 +16,12 @@ wgc grpc-service publish <name> --schema <path-to-schema> --generated <path-to-g
   mapping, and lock files.
 </Note>
 
-<Note>
+<Warning>
   **Publish** is an irreversible action. However, the change will only be
   visible to the routers once the composition has been successful. Until then,
   the routers will operate with the most recent valid composition. Please use
   [subgraph check](/cli/subgraph/check) to understand the impact of your change.
-</Note>
+</Warning>
 
 ## Description
 
