@@ -93,6 +93,10 @@ The `error` field on the first level will contains a value only if there is an e
 
 If you want the command to exit with an error if at least one query fails to be planned, you can use the option `-fail-on-error`.
 
+### Output Format
+
+By default the query plan format is text based, but you can view the json version by using `-print-format json`
+
 ## Other options
 
 You can see all the options available launching the command without any arguments:
@@ -119,6 +123,8 @@ You can see all the options available launching the command without any argument
         required, source operations folder location
   -plans string
         required, output plans folder location
+  -print-format value
+        output format of the query plan (text, json) (default "text")
   -print-per-file
         write a file for each query, with inside the plan or the query plan error (default true)
   -print-report
