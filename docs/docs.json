@@ -550,7 +550,10 @@
                   "cli/grpc-service",
                   "cli/grpc-service/init",
                   "cli/grpc-service/list-templates",
-                  "cli/grpc-service/generate"
+                  "cli/grpc-service/generate",
+                  "cli/grpc-service/create",
+                  "cli/grpc-service/publish",
+                  "cli/grpc-service/delete"
                 ]
               },
               {
