@@ -350,7 +350,6 @@
                 "group": "Directives",
                 "icon": "sign-post",
                 "pages": [
-                  "federation/directives",
                   "federation/federation-directives-index",
                   "federation/directives/shareable",
                   "federation/directives/authenticated",
@@ -619,7 +618,7 @@
         ]
       },
       {
-        "tab": "Guides",
+        "tab": "Tutorials",
         "icon": "newspaper",
         "groups": [
           {
