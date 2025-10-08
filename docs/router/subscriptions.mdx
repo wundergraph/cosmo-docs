@@ -23,16 +23,23 @@ The Cosmo Router comes with subscription support out of the box without any limi
 
 * [**absinthe**](https://github.com/absinthe-graphql/absinthe_phoenix): Legacy transport for Clients that still use the Absinthe (Phoenix) protocol.
 
-<Frame caption="The Router connects your Clients and Subgraphs to establish a Real-time connection.">
-  <img src="/images/router/subscriptions1.png" />
+<Frame caption="Subscription architecture with router, protocol translator, and multiplexer.">
+  <img
+    src="/images/router/cosmo-router-subscription-architecture.png"
+    alt="GraphQL subscription architecture showing Cosmo Router with protocol translator and multiplexer connecting to multiple backend APIs."
+  />
 </Frame>
+
 
 These protocols are both supported between the client and the router as well as between the router and each subgraph. The supported transport depends on the support of your client or subgraph. By default, graphql-ws is used which is widely adopted. The protocol to be used to subscribe for each subgraph can be configured while registering the subgraph on the control plane. See [Create](/cli/subgraph/create) and [Update](/cli/subgraph/update) for more information.
 
 ### Multiplexing
 
-<Frame caption="The Clients and Subgraphs can speak different protocols depending on their abilities.">
-  <img src="/images/router/multiplexing.png" />
+<Frame caption="Multiplexing connections between clients and backend services.">
+  <img
+    src="/images/router/cosmo-router-multiplexing-connections.png"
+    alt="Diagram showing Cosmo Router multiplexing client subscriptions into shared connections to backend APIs or services."
+  />
 </Frame>
 
 The Cosmo router multiplexes long-lived connections to the subgraphs when possible. Multiple client requests with the same authentication information are routed to the subgraph over a single connection.
