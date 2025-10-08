@@ -71,8 +71,6 @@ telemetry:
         expression: "request.url.method"
 ```
 
-The above will attach the key "url_method" with the appropriate value to all spans and metrics. Note that when attaching values from expressions, if the value is not present at the time of evaluation it will not be attached.
-
 Users can also use subgraph expressions in telemetry metrics as follows:
 
 ```yaml
@@ -90,6 +88,23 @@ You can find more information about expressions and the fields accessible for ex
 <Warning>
 At the moment, we only allow expressions to return string values. If, for example, an expression returns an integer, you will need to cast it using exprlang’s string function.
 </Warning>
+
+### Evaluation Order
+
+The router processes requests in multiple internal steps (e.g., authentication, parsing, normalization, validation, planning). Expressions need to be evaluated at the appropriate step. For example, we cannot expose `sha256Hash` in the expression context until it has been computed. We make a best effort to evaluate expressions at the right time. As a result:
+
+* Not all spans will have the attribute
+* Not all metrics will have the attribute
+
+For example, the "Parse" span won't include information related to `validationTime` because the validation step hasn't occurred yet.
+
+In case of evaluating two attributes in a single expression, such as:
+
+```
+request.operation.sha256Hash != "somehash" ? string(request.operation.validationTime) : ""
+```
+
+This will be evaluated as late as possible, when the values for both `sha256Hash` and `validationTime` are available.
 
 # Metrics Only Attributes
 
@@ -140,4 +155,4 @@ telemetry:
 
 The above configuration will ensure that the attribute `service` will only be attached to spans.
 
-For a complete list of available options, please refer to the relevant documentation [section](/router/configuration#telemetry).
+For a complete list of available options, please refer to the relevant documentation [section](/router/configuration#telemetry-2).
