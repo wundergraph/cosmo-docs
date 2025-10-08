@@ -4,9 +4,13 @@ description: "Use tracing with Cosmo Studio to analyze the performance of your G
 icon: gauge-high
 ---
 
-<Frame>
-   <img src="/images/router/image-5.png" />
+<Frame caption="Cosmo Studio trace view for GraphQL query performance analysis">
+  <img 
+    src="/images/router/cosmo-studio-query-tracing-performance.png"
+    alt="Cosmo Studio showing GraphQL trace spans with timing breakdown for planning and execution phases."
+  />
 </Frame>
+
 
 In the default setup, the Router sends Open Telemetry data about the incoming GraphQL traffic. This data includes spans pertaining to the planning and execution phases of the GraphQL operations. This provides you with a powerful tool to understand how much time is spent on these processes and whether a cache is utilized. The following are the spans included:
 
