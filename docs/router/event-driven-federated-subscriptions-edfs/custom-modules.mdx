@@ -192,6 +192,7 @@ import (
     "encoding/json"
     "slices"
     "github.com/wundergraph/cosmo/router/core"
+    "github.com/wundergraph/cosmo/router/pkg/pubsub/datasource"
     "github.com/wundergraph/cosmo/router/pkg/pubsub/nats"
 )
 
@@ -205,7 +206,7 @@ type MyModule struct {}
 // Implement SubscriptionOnStartHandler for authorization
 func (m *MyModule) SubscriptionOnStart(ctx SubscriptionOnStartHandlerContext) error {
     // Check if the provider is NATS
-    if ctx.SubscriptionEventConfiguration().ProviderType() != pubsub.ProviderTypeNats {
+    if ctx.SubscriptionEventConfiguration().ProviderType() != datasource.ProviderTypeNats {
         return nil
     }
 
@@ -227,11 +228,11 @@ func (m *MyModule) SubscriptionOnStart(ctx SubscriptionOnStartHandlerContext) er
     // Check if the client has the required permissions
     clientAllowedEntitiesIds, found := ctx.Authentication().Claims()["readEmployee"]
     if !found {
-        return &core.HttpError{
-            Code: http.StatusForbidden,
-            Message: "client is not allowed to read employees",
-            CloseSubscription: true,
-        }
+      return core.NewHttpGraphqlError(
+        "client is not allowed to read employees",
+        http.StatusText(http.StatusForbidden),
+        http.StatusForbidden
+      )
     }
 
     return nil
@@ -240,7 +241,7 @@ func (m *MyModule) SubscriptionOnStart(ctx SubscriptionOnStartHandlerContext) er
 // Implement StreamReceiveEventHandler for event filtering and transformation
 func (m *MyModule) OnReceiveEvents(ctx StreamReceiveEventHandlerContext, events []core.StreamEvent) ([]core.StreamEvent, error) {
     // Check if the provider is NATS
-    if ctx.SubscriptionEventConfiguration().ProviderType() != pubsub.ProviderTypeNats {
+    if ctx.SubscriptionEventConfiguration().ProviderType() != datasource.ProviderTypeNats {
         return events, nil
     }
 
@@ -339,7 +340,7 @@ Here's an example of how to transform events before publishing:
 // Implement StreamPublishEventHandler for event transformation
 func (m *MyModule) OnPublishEvents(ctx StreamPublishEventHandlerContext, events []StreamEvent) ([]StreamEvent, error) {
     // Check if the provider is NATS
-    if ctx.PublishEventConfiguration().ProviderType() != pubsub.ProviderTypeNats {
+    if ctx.PublishEventConfiguration().ProviderType() != datasource.ProviderTypeNats {
         return events, nil
     }
 
