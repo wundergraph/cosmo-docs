@@ -221,11 +221,7 @@ func (m *MyModule) SubscriptionOnStart(ctx SubscriptionOnStartHandlerContext) er
 
     // Check if the client is authenticated
     if ctx.Authentication() == nil {
-        return &core.HttpError{
-            Code: http.StatusUnauthorized,
-            Message: "client is not authenticated",
-            CloseSubscription: true,
-        }
+        return core.NewHttpGraphqlError("client is not authenticated", http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
     }
 
     // Check if the client has the required permissions
