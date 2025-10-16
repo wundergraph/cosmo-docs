@@ -1,0 +1,49 @@
+---
+title: "Structure of "
+sidebarTitle: Overview
+icon: puzzle-piece-simple
+description: "Validate schema changes before deploying them to production on your own premises."
+---
+
+```typescript
+enum LintSeverity {
+  Warning = 0,
+  Error = 1
+}
+
+interface LintIssue {
+  lintRuleType: string;
+  severity: LintSeverity;
+  message: string;
+  issueLocation: {
+    line: number;
+    column: number;
+    endLine?: number;
+    endColumn?: number;
+  };
+}
+
+enum GraphPruningSeverity {
+  Warning = 0,
+  Error = 1
+}
+
+interface GraphPruningIssue {
+  graphPruningRuleType: string;
+  severity: GraphPruningSeverity;
+  fieldPath: string;
+  message: string;
+  issueLocation: {
+    line: number;
+    column: number;
+    endLine?: number;
+    endColumn?: number;
+  };
+  federatedGraphId: string;
+  federatedGraphName: string;
+  subgraphName?: string;
+}
+
+interface SubgraphCheckExtensionContent {
+}
+```

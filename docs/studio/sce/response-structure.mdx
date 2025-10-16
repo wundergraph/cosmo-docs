@@ -1,0 +1,27 @@
+```typescript
+enum LintSeverity {
+  Warning = 0,
+  Error = 1
+}
+
+interface LintIssue {
+  lintRuleType: string;
+  severity: LintSeverity;
+  message: string;
+  issueLocation: {
+    line: number;
+    column: number;
+    endLine?: number;
+    endColumn?: number;
+  };
+}
+
+interface Overwrite {
+  lintIssues: LintIssue[];
+}
+
+interface SubgraphCheckExtensionReply {
+  errorMessage: string | undefined;
+  overwrite: Overwrite | undefined;
+}
+```

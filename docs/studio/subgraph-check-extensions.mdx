@@ -1,0 +1,228 @@
+---
+title: "Subgraph Check Extensions"
+sidebarTitle: Overview
+icon: puzzle-piece-simple
+description: "Validate schema changes before deploying them to production on your own premises."
+---
+
+A subgraph check extension allows you to validate if a proposed schema change will produce any error before shipping
+it to production with your own validator.
+
+## How it works
+When you have enabled the subgraph check extension for a namespace, everytime a check is performed against a graph that
+belongs to said namespace, we send a request to the [configured](#configuration) endpoint with information about the
+and allow you to overwrite the `lint issues` or return an error which would fail
+
+## Configuration
+
+<Frame caption="Subgraph Check Extensions configuration">
+  <img src="/images/studio/sce/config.png" />
+</Frame>
+
+| Option                                    | Description                                                                                                                                                                                                |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Endpoint                                  | The URL to which each request is sent. This endpoint must be accessible from Cosmo.                                                                                                                        |
+| Secret Key                                | A value used to generate the request signature when sending data to the configured endpoint. This signature helps [verify](#verification) that the request originates from Cosmo and has not been altered. |
+| Include Composed SDL                      | When enabled, both the previous and current SDL (Schema Definition Language) versions are sent to your service.                                                                                            |
+| Include Lint Warnings and Errors          | When enabled, all detected lint issues are sent to your service. These issues are evaluated using the [Linter Rules](/studio/lint-policy/linter-rules).                                                    |
+| Include Graph Pruning Warnings and Errors | When enabled, all detected graph pruning issues are sent to your service. For more information, see [Graph Pruning](/studio/graph-pruning).                                                                |
+| Include Schema Changes                    | When enabled, details of schema changes are included in the data sent to your service.                                                                                                                     |
+| Include Affected Operations               | When enabled, information about affected operations is included in the data sent to your service.                                                                                                          | |
+
+## Verification
+To ensure the payload data is coming from a trusted source and hasn’t been tampered with during transit, we employ HMAC
+signatures. When setting up the *Subgraph Check Extension* for a namespace, you can provide a secret key. This
+secret key is used to compute a signature that is sent along with each request.
+
+The header containing this signature is `X-Cosmo-Signature-256`.
+
+### Verification Example
+To verify the request, you need to compute the HMAC signature on your server and compare it to the signature in the
+`X-Cosmo-Signature-256` header.
+
+Here’s an example in Node.js:
+```typescript
+import crypto from 'crypto';
+
+function verifySignature(body, receivedSignature, secret) {
+  const computedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(body)
+    .digest('hex');
+
+  return computedSignature === receivedSignature;
+}
+
+// Usage:
+const isVerified = verifySignature(JSON.stringify(req.body), req.headers['x-cosmo-signature-256'], YOUR_SECRET);
+```
+
+## Handler Example
+For this example we are using `fastify` and `tsx` to run the local server on port `4000`. Before running any check,
+we need to configure the check extension to point to our local server and set the secret key. For this example, we are
+using the following values:
+
+- Endpoint: `http://localhost:4000/check-schema`
+- Secret key: `...`
+
+<CodeGroup>
+  ```typescript server.ts
+  import Fastify, { type FastifyInstance } from 'fastify'
+
+  import { SubgraphCheckExtensionPayload, SubgraphCheckExtensionReply } from './types'
+  import { verifySignature } from './utils'
+
+  const YOUR_SECRET = '...'
+  const server: FastifyInstance = Fastify({ logger: true })
+
+  server.post<{ 
+    Body: SubgraphCheckExtensionPayload,
+    Reply: SubgraphCheckExtensionReply
+  }>(
+    '/check-schema',
+    {
+      config: { rawBody: true }
+    },
+    async (req, res) => {
+    if (!req.body) {
+      res.code(400)
+      return { errorMessage: 'Bad request' }
+    }
+
+    const { body } = req
+    const cosmoSignature = req.headers['x-cosmo-signature-256']
+    if (!verifySignature(body, cosmoSignature, YOUR_SECRET)) {
+      res.code(400)
+      return { errorMessage: 'Bad request' }
+    }
+
+    // We can run checks conditionally
+    if (body.namespace.name !== 'default' || body.subgraph?.name !== 'family') {
+      // We only want to overwrite the lint issues for the subgraph `family` on the namespace `default`
+      res.code(204)
+      return
+    }
+
+    return {
+      overwrite: {
+        lintIssues: [
+          {
+            lintRuleType: 'TYPE_SUFFIX',
+            severity: 1,
+            message: 'Type names should use the prefix `Type`',
+            issueLocation: {
+              line: 9,
+              column: 6,
+              endLine: 9,
+              endColumn: 11,
+            },
+          },
+        ],
+      },
+    }
+  })
+
+  const start = async () => {
+    try {
+      await server.listen({ port: 4000 })
+
+      const address = server.server.address()
+      const port = typeof address === 'string' ? address : address?.port
+    } catch (err) {
+      server.log.error(err)
+      process.exit(1)
+    }
+  }
+
+  start()
+  ```
+
+  ```typescript utils.ts
+  import crypto from 'node:crypto';
+
+  export function verifySignature(body: unknown, receivedSignature: string, secret: string) {
+    const computedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(JSON.stringify(body))
+      .digest('hex');
+
+    return computedSignature === receivedSignature;
+  }
+  ```
+
+  ```typescript types.ts
+  export interface OrganizationContext {
+    id: string;
+    slug: string;
+  }
+
+  export interface NamespaceContext {
+    id: string;
+    name: string;
+  }
+
+  export interface VCSContext {
+    author: string;
+    commitSha: string;
+    branch: string;
+  }
+
+  export interface AffectedGraphItem {
+    id: string;
+    name: string;
+  }
+
+  export interface SubgraphContext {
+    id: string;
+    name: string;
+    isDeleted: boolean;
+  }
+
+  export interface SubgraphCheckExtensionPayload {
+    actorId: string;
+    checkId: string;
+    organization: OrganizationContext;
+    namespace: NamespaceContext;
+    vcsContext?: VCSContext;
+    affectedGraphs: AffectedGraphItem[];
+    url: string;
+    subgraph?: SubgraphContext;
+  }
+
+  enum LintSeverity {
+    Warning = 0,
+    Error = 1
+  }
+
+  export interface LintIssue {
+    lintRuleType: string;
+    severity: LintSeverity;
+    message: string;
+    issueLocation: {
+      line: number;
+      column: number;
+      endLine?: number;
+      endColumn?: number;
+    };
+  }
+
+  export interface OverwriteInfo {
+    lintIssues: LintIssue[];
+  }
+
+  export interface SubgraphCheckExtensionReply {
+    errorMessage?: string;
+    overwrite?: OverwriteInfo;
+  }
+  ```
+
+  ```json package.json
+  {
+    ...
+    "scripts": {
+      "dev": "tsx watch server.ts"
+    }
+    ...
+  }
+  ```
+</CodeGroup>
