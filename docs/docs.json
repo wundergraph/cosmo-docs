@@ -668,17 +668,17 @@
     "href": "https://cosmo-docs.wundergraph.com/"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Talk to an Expert",
-        "href": "https://wundergraph.com/contact/sales"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "Cloud Login",
-      "href": "https://cosmo.wundergraph.com/login"
-    }
+      "label": "Talk to an Expert",
+      "href": "https://wundergraph.com/contact/sales"
+    },
+    "links": [
+      {
+        "label": "Cloud Login",
+        "href": "https://cosmo.wundergraph.com/login"
+      }
+    ]
   },
   "footer": {
     "socials": {
