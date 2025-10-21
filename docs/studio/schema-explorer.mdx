@@ -4,8 +4,12 @@ icon: file-lines
 description: "An interactive explorer to navigate though your federated graph schema. It has built in search and usage tracking for every type in your schema"
 ---
 
-<Frame caption="Schema Explorer">
-  <img src="/images/studio/explorer.png" />
+<Frame caption="Schema Explorer — Query fields overview">
+  <img
+    src="/images/studio/schema-explorer-query-fields-overview.png"
+    alt="Cosmo Studio Schema Explorer displaying the Query root with fields like findEmployees, products, and teammates."
+    title="Schema Explorer — Query fields overview"
+  />
 </Frame>
 
 
@@ -26,7 +30,11 @@ Check the docs here to see how the usage for each type looks like
 Open the search modal by hitting `Cmd/Ctrl + K` on your keyboard. Jump to any type you like to view.
 
 <Frame caption="The Schema Explorer: Search modal">
-  <img src="/images/studio/image-2.png" />
+  <img
+    src="/images/studio/object-search-interface-with-categories.png"
+    alt="Cosmo Studio search interface showing objects like Identifiable, City, Mood, and Time."
+    title="Object search interface with categories"
+  />
 </Frame>
 
 ## Deprecated Fields
@@ -34,7 +42,11 @@ Open the search modal by hitting `Cmd/Ctrl + K` on your keyboard. Jump to any ty
 You can view all deprecated fields in your schema in one place along with their usage. This helps to determine if it is safe to remove the field/argument.
 
 <Frame caption="Deprecated Fields">
-  <img src="/images/studio/deprecated-fields.png" />
+  <img
+    src="/images/studio/deprecated-fields-in-cosmo-studio-schema-explorer.png"
+    alt="Cosmo Studio schema view showing deprecated fields teammates query and middlename string marked as no longer supported."
+    title="Deprecated fields in Cosmo Studio schema explorer"
+  />
 </Frame>
 
 ## Authenticated Types and Fields
@@ -46,17 +58,29 @@ You can easily view all types and fields that use the `@authenticated` and/or `@
 </Note>
 
 <Frame caption="Authenticated Types and Fields">
-  <img src="/images/studio/authentication.png" />
+  <img
+    src="/images/studio/app-settings-page.png"
+    alt="Cosmo Studio view listing authenticated schema fields and types in the router schema."
+    title="Authenticated types and fields"
+  />
 </Frame>
 
 When a type or field is annotated with the `@requiresScopes` directive, the list of required scopes can be accessed by clicking the `View scopes` button in the type header.
 
-<Frame caption="Authenticated Types and Fields">
-  <img src="/images/studio/type-scopes.png" />
+<Frame caption="Type scopes view">
+  <img
+    src="/images/studio/field-details-for-factcontent-type.png"
+    alt="Cosmo Studio field details for FactContent tyspe with read:entity access scope."
+    title="Field details for FactContent type"
+  />
 </Frame>
 
 Or beside the type/field name in the table.
 
-<Frame caption="Authenticated Types and Fields">
-  <img src="/images/studio/field-scopes.png" />
+<Frame caption="Field scopes view">
+  <img
+    src="/images/studio/mutation-scopes-addfact.png"
+    alt="Cosmo Studio Mutation view with addFact field requiring authentication scopes write:fact or write:all."
+    title="Mutation scopes — addFact"
+  />
 </Frame>
