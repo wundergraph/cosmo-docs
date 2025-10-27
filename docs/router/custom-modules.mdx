@@ -78,6 +78,20 @@ c.OperationHash() // 81671788718
 c.Content() // query MyOperation { ... }
 ```
 
+### Access sha256Hash
+
+You can access the sha256Hash of the operation using the following:
+
+```go
+ctx.Operation().Sha256Hash() // ctx core.RequestContext
+```
+
+However, the sha256Hash is not computed by default and is only computed if it is required by the router. If you are only using the sha256Hash in custom modules, you will need to explicitly force it to be computed. You can do this using the following:
+
+```go
+ctx.SetForceSha256Compute() // ctx core.RequestContext
+```
+
 ### Access query plan information
 
 In Middleware, you can access some stats about the query plan that will be used for the operation.
