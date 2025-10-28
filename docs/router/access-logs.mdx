@@ -54,6 +54,30 @@ access_logs:
   </ul>
 </Info>
 
+## Log level
+
+You can control the verbosity of access logs. The default is info, and based on the log level, any log entry that would be printed above the set log level would be excluded. For example, if "error" was the level set, "info", "debug" and "warn" log entries would be excluded.
+
+```yaml
+access_logs:
+  level: debug # Default: info
+```
+
+
+## Add stack traces
+
+You have the option of adding stack traces to all error logs. Note that by default even if this feature is disabled panics will contain stack traces.
+
+```yaml
+access_logs:
+  add_stacktrace: true # Default: false
+```
+
+<Info>
+  As of router [0.258.3](https://github.com/wundergraph/cosmo/releases/tag/router%400.258.3) any requests that caused an error are logged as "error" on the access logs. Previously all non-panic access logs were marked as "info" logs.
+</Info>
+
+
 ## Default Log Fields
 
 The default log fields provide essential details about each HTTP request. These fields include:

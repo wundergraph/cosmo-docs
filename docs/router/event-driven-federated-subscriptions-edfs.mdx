@@ -5,8 +5,11 @@ icon: "circle-info"
 sidebarTitle: "Overview"
 ---
 
-<Frame>
-  ![](/images/router/EDFS.png)
+<Frame caption="Event-Driven Federated Subscriptions (EDFS) Architecture">
+  <img 
+    src="/images/router/event-driven-federated-subscriptions-router-message-broker.png" 
+    alt="Diagram of EDFS showing Router subscribing to message broker and triggering stateless subgraph fetches." 
+  />
 </Frame>
 
 Event Driven Federated Subscriptions (EDFS) solves 3 major problems when it comes to GraphQL Federation and Subscriptions by directly connecting the Router to an event source like Kafka and NATS and making it a part of the Graph.
