@@ -60,25 +60,26 @@ For more information on the attributes, visit the auth configuration parameter s
 
 Cosmo Router supports bypassing authentication for introspection queries.
 
-This is useful, for example, when you want to configure client tooling from within a secured environment without requiring valid authentication tokens.
+This is useful, for example, when you want to configure client tooling from within a secured environment without requiring authentication tokens.
 Instead of having to disable authentication altogether, this feature allows you to keep the configuration as close to production as possible while still using introspection queries easily.
+Additionally, you can define a dedicated secret to authenticate introspection queries.
 
 <Warning>
 This feature is meant to be used in secure, internal environments. It is not recommended for use in a production environment.
-By default introspection queries are not excluded from authentication, if authentication is enabled in the router. 
+By default, introspection queries are not excluded from authentication.
 </Warning>
 
-To enable this feature, add the following configuration to your router configuration:
+To enable this feature, add the following section to your router configuration:
 
 <CodeGroup>
   ```yaml config.yaml
-  introspection:
-    enabled: true # Introspection is enabled by default (explicitly shown here)
-    skip_authentication: true # Bypass authentication for introspection queries (default: false)
+  authentication:
+    ignore_introspection: true # default is false
+    # other auth settings here
   ```
 </CodeGroup>
 
-Now when you make an introspection query, you will not need to provide an authentication token.
+Now, when you send an introspection query, you won't need to provide an authentication token.
 
 ```bash
 curl -X POST http://localhost:3002/graphql \
@@ -86,18 +87,16 @@ curl -X POST http://localhost:3002/graphql \
   --data '{"query": "{ __schema { types { name } } }"}'
 ```
 
-Optionally, you can set a dedicated token for introspection queries.
+Optionally, you can set a dedicated secret for introspection queries.
 
 <CodeGroup>
   ```yaml config.yaml
   introspection:
-    enabled: true
-    skip_authentication: true
-    token: "dedicated_secret_for_introspection" # Optional, set a dedicated secret for introspection queries
+    secret: 'dedicated_secret_for_introspection'
   ```
 </CodeGroup>
 
-With the secret set, you will need to provide it via the `Authorization` header, without a Bearer prefix.
+When a secret is set, you must include it in the `Authorization` header (without a Bearer prefix).
 
 ```bash
 curl -X POST http://localhost:3002/graphql \
