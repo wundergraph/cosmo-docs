@@ -134,7 +134,7 @@ The following sections describe each configuration in detail with all available 
 | CONTROLPLANE_URL                 | controlplane_url                 | <Icon icon="square-check" iconType="solid" /> | The controlplane url. Not required when a static execution config is provided.                                                                                                                     | https://cosmo-cp.wundergraph.com |
 | PLAYGROUND_ENABLED               | playground_enabled               | <Icon icon="square" />                        | Enables the GraphQL playground on (`$LISTEN_ADDR/`)                                                                                                                                                | true                             |
 | PLAYGROUND_PATH                  | playground_path                  | <Icon icon="square" />                        | The path where the playground is served                                                                                                                                                            | "/"                              |
-| INTROSPECTION_ENABLED            | introspection_enabled            | <Icon icon="square" />                        | Enables the GraphQL introspection                                                                                                                                                                  | true                             |
+| INTROSPECTION_ENABLED            | introspection_enabled            | <Icon icon="square" />                        | Enables the GraphQL introspection (deprecated, use `introspection.enabled` instead)                                                                                                                                                                | true                             |
 | QUERY_PLANS_ENABLED              | query_plans_enabled              | <Icon icon="square" />                        | The Router can return Query plans as part of the response, which might be useful to understand the execution.                                                                                      | true                             |
 | LOG_LEVEL                        | log_level                        | <Icon icon="square" />                        | The log level to use. Allowed levels are `"debug"`, `"info"`, `"warn"`, `"error"`, `"panic"`, `"fatal"`.                                                                                     | info                             |
 | JSON_LOG                         | json_log                         | <Icon icon="square" />                        | Render the log output in JSON format (true) or human readable (false)                                                                                                                              | true                             |
@@ -172,6 +172,11 @@ readiness_check_path: "/health/ready"
 liveness_check_path: "/health/live"
 router_config_path: ""
 ```
+
+<Warning>
+  `introspection_enabled` is a deprecated flag.
+  Please use `introspection.enabled` instead.
+</Warning>
 
 ## Config watcher hot reloading
 
@@ -302,6 +307,25 @@ version: "1"
 
 graph:
   token: "<your-graph-token>"
+```
+
+## Introspection
+
+Overall configuration for managing introspection queries on this Router.
+
+| Environment Variable  | YAML           | Required               | Description                                                                                                                                   | Default Value |
+| --------------------- | -------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| INTROSPECTION_ENABLED | enabled        | <Icon icon="square" /> | Enable or disable introspection queries                                                                                                       | true          |
+| INTROSPECTION_SECRET  | secret         | <Icon icon="square" /> | Optional, dedicated secret used for instrospection authentication. Only used when `authentication.ignore_introspection` is set to `true`.     |               |
+
+### Example YAML config:
+
+```yaml config.yaml
+version: "1"
+
+introspection:
+  enabled: true
+  secret: "dedicated_secret_for_introspection"
 ```
 
 ## MCP (Model Context Protocol)
@@ -1505,6 +1529,21 @@ authentication:
       - type: header
         name: X-Authorization
 ```
+
+### Bypass Introspection Authentication
+
+This is useful when you want to bypass authentication for introspection queries,
+for example let certain tools introspect the schema without requiring authentication token.
+
+<Warning>
+  This feature is meant to be used in secure, internal environments. It is not recommended for use in a production environment.
+  By default, introspection queries are not excluded from authentication.
+  Also consider setting `introspection.secret` for a static secret dedicated to introspection queries.
+</Warning>
+
+| Environment Variable | YAML                 | Required               | Description                         | Default Value    |
+| -------------------- | -------------------- | ---------------------- | ----------------------------------- | ---------------- |
+|                      | ignore_introspection | <Icon icon="square" /> | Bypass introspection authentication | false            |
 
 ### Old Authentication Config (Router Version \< 0.XXX.X)
 
