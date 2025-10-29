@@ -86,11 +86,19 @@ You can access the sha256Hash of the operation using the following:
 ctx.Operation().Sha256Hash() // ctx core.RequestContext
 ```
 
-However, the sha256Hash is not computed by default and is only computed if it is required by the router. If you are only using the sha256Hash in custom modules, you will need to explicitly force it to be computed. You can do this using the following:
+However, the sha256Hash is not computed by default and is only computed if it is required by the router. Some of the scenarios where it will be required by the router are:
+* When the sha256Hash is used in expressions
+* When the sha256Hash is added as a custom attribute for telemetry or access logs
+* When using Persisted Operations
+* If `persisted_operations.log_unknown` or `persisted_operations.safelist.enabled` is set to `true`
+
+However, if you are only using the sha256Hash in custom modules, you will need to explicitly force it to be computed. You can do this using the following:
 
 ```go
 ctx.SetForceSha256Compute() // ctx core.RequestContext
 ```
+
+You can verify whether the sha256Hash has already been computed by the router by checking if the value is empty, without calling the `SetForceSha256Compute()` method above.
 
 ### Access query plan information
 
