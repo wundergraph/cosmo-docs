@@ -356,7 +356,7 @@ Operations are converted to snake_case for tool naming consistency.
   Available since Router [0.260.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.260.0)
 </Info>
 
-The MCP server forwards **all headers** from MCP clients to the router, including authorization headers, custom headers, and tracing headers. This allows you to:
+The MCP server forwards **all headers** from MCP clients to the Router, including authorization headers, custom headers, and tracing headers. This allows you to:
 
 - Leverage all authentication and authorization capabilities of your Cosmo Router
 - Pass custom headers for tracing, debugging, or application-specific purposes
@@ -368,7 +368,10 @@ The MCP server forwards **all headers** from MCP clients to the router, includin
 
 ### Common Use Cases
 
-**Authentication**: Pass authorization tokens to secure your GraphQL operations
+#### Authentication & Authorization
+
+Pass authorization tokens to secure your GraphQL operations
+
 ```json
 {
   "headers": {
@@ -377,7 +380,9 @@ The MCP server forwards **all headers** from MCP clients to the router, includin
 }
 ```
 
-**Tracing**: Include trace IDs for request correlation and debugging
+#### Tracing
+
+Include trace IDs for request correlation and debugging
 ```json
 {
   "headers": {
@@ -387,7 +392,9 @@ The MCP server forwards **all headers** from MCP clients to the router, includin
 }
 ```
 
-**Custom Headers**: Pass application-specific headers for business logic
+#### Custom Headers 
+
+Pass application-specific headers for business logic
 ```json
 {
   "headers": {
