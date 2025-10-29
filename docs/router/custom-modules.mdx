@@ -98,7 +98,9 @@ However, if you are only using the sha256Hash in custom modules, you will need t
 ctx.SetForceSha256Compute() // ctx core.RequestContext
 ```
 
-You can verify whether the sha256Hash has already been computed by the router by checking if the value is empty, without calling the `SetForceSha256Compute()` method above. The following example shows how you can access and use the `sha256Hash` in custom modules:
+You can verify whether the sha256Hash has already been computed by the router by checking if the value is empty, without calling the `SetForceSha256Compute()` method above.
+
+The following example shows how you can access and use the `sha256Hash` in custom modules:
 
 ```go
 // This runs before the sha256Hash is computed, and SetForceSha256Compute should only be called here
