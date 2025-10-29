@@ -92,13 +92,28 @@ However, the sha256Hash is not computed by default and is only computed if it is
 * When using Persisted Operations
 * If `persisted_operations.log_unknown` or `persisted_operations.safelist.enabled` is set to `true`
 
-However, if you are only using the sha256Hash in custom modules, you will need to explicitly force it to be computed. You can do this using the following:
+However, if you are only using the sha256Hash in custom modules, you will need to explicitly force it to be computed. You can do this by calling `SetForceSha256Compute()` in the `RouterOnRequestHandler` hook, as it's the only hook that runs before the sha256Hash is computed by the router:
 
 ```go
 ctx.SetForceSha256Compute() // ctx core.RequestContext
 ```
 
-You can verify whether the sha256Hash has already been computed by the router by checking if the value is empty, without calling the `SetForceSha256Compute()` method above.
+You can verify whether the sha256Hash has already been computed by the router by checking if the value is empty, without calling the `SetForceSha256Compute()` method above. The following example shows how you can access and use the `sha256Hash` in custom modules:
+
+```go
+// This runs before the sha256Hash is computed, and SetForceSha256Compute should only be called here
+func (m *Sha256VerifierModule) RouterOnRequest(ctx core.RequestContext, next http.Handler) {
+	// Tell the router that the sha256Hash is required, in case it's not computed via other means
+	ctx.SetForceSha256Compute()
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+
+func (m *Sha256VerifierModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	// Print the sha256Hash
+	fmt.Println(ctx.Operation().Sha256Hash())
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
 
 ### Access query plan information
 
