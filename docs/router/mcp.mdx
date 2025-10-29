@@ -350,19 +350,63 @@ Operations are converted to snake_case for tool naming consistency.
 4. **Create focused operations**: Design operations specifically for AI model consumption rather than exposing generic operations.
 5. **Security considerations**: For mutation operations, add checks and validations to prevent misuse.
 
-## Authentication
-
-The MCP server respects the "Authorization" header from MCP clients and forwards them to the router. This allows you to leverage all the authentication and authorization capabilities of your Cosmo Router when AI models interact with your GraphQL API.
+## Header Forwarding
 
 <Info>
-  By passing authentication headers from AI tools to your GraphQL API, you can
-  maintain consistent security across all API consumers while giving AI models
-  appropriate access to your data.
+  Available since Router [0.260.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.260.0)
 </Info>
+
+The MCP server forwards **all headers** from MCP clients to the Router, including authorization headers, custom headers, and tracing headers. This allows you to:
+
+- Leverage all authentication and authorization capabilities of your Cosmo Router
+- Pass custom headers for tracing, debugging, or application-specific purposes
+- Maintain consistent security and observability across all API consumers
+
+<Info>
+  All headers sent by MCP clients are forwarded through the complete chain: MCP Client -> MCP Server -> Router -> Subgraphs. The router's [header forwarding rules](/router/proxy-capabilities/request-headers-operations) determine what ultimately reaches your subgraphs.
+</Info>
+
+### Common Use Cases
+
+#### Authentication & Authorization
+
+Pass authorization tokens to secure your GraphQL operations
+
+```json
+{
+  "headers": {
+    "Authorization": "Bearer YOUR_API_KEY"
+  }
+}
+```
+
+#### Tracing
+
+Include trace IDs for request correlation and debugging
+```json
+{
+  "headers": {
+    "X-Trace-Id": "trace-123",
+    "X-Request-Id": "req-456"
+  }
+}
+```
+
+#### Custom Headers 
+
+Pass application-specific headers for business logic
+```json
+{
+  "headers": {
+    "X-Tenant-Id": "tenant-abc",
+    "X-Feature-Flag": "new-feature-enabled"
+  }
+}
+```
 
 ## Installation Guides
 
-The authentication header can be configured in various AI tools and environments:
+Headers can be configured in various AI tools and environments:
 
 ### Claude
 
@@ -392,10 +436,12 @@ Go to `Settings` > `Tools & Integrations` > `MCP Servers` and add the following 
 ```json
 {
   "mcpServers": {
-    "github": {
+    "mygraph": {
       "url": "http://localhost:5025/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY" // Optional
+        "Authorization": "Bearer YOUR_API_KEY", // Optional: Auth
+        "X-Trace-Id": "cursor-session-123",     // Optional: Custom headers
+        "X-Client": "cursor"                    // Optional: Client identification
       }
     }
   }
@@ -409,10 +455,12 @@ Windsurf supports Streamable HTTP servers with a `serverUrl` field:
 ```json
 {
   "mcpServers": {
-    "github": {
+    "mygraph": {
       "serverUrl": "http://localhost:5025/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY" // Optional
+        "Authorization": "Bearer YOUR_API_KEY", // Optional: Auth
+        "X-Trace-Id": "windsurf-session-456",   // Optional: Custom headers
+        "X-Client": "windsurf"                  // Optional: Client identification
       }
     }
   }
