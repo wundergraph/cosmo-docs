@@ -60,6 +60,7 @@ The integration of GraphQL with MCP creates a uniquely powerful system for AI-AP
 
 - **Precise data selection**: GraphQL's nature allows you to define exactly what data AI models can access, from simple queries to complex operations across your entire graph.
 - **Declarative operation definition**: Create purpose-built `.graphql` files with operations tailored specifically for AI consumption. These function as persisted operations (trusted documents), giving you complete control over what queries AI models can execute.
+- **Self-documenting operations**: Using the September 2025 GraphQL spec, you can embed rich descriptions directly in your operation definitions, making them immediately understandable to AI models without external documentation.
 - **Flexible data exposure**: Control exactly which operations and fields are exposed to AI systems with granular precision.
 - **Compositional API design**: Build different operation sets for different AI use cases without changing your underlying API.
 - **Runtime safety**: GraphQL's strong typing ensures AI models can only request valid data patterns that match your schema.
@@ -88,10 +89,15 @@ Their existing REST APIs posed three major challenges:
 
 ### Using GraphQL and MCP to Define a Safe Access Layer
 
-The team adopted GraphQL with the Model Context Protocol (MCP) to expose only specific operations tailored for AI access:
+The team adopted GraphQL with the Model Context Protocol (MCP) to expose only specific operations tailored for AI access. By using operation descriptions (following the September 2025 GraphQL spec), they could provide clear context to AI models about what each operation does and its limitations:
 
 ```graphql
-# AI-safe transaction query with PII and financial details removed
+"""
+Retrieves recent transaction history for a customer account.
+Returns only non-sensitive transaction details suitable for AI assistant responses.
+Excludes: account numbers, routing information, precise location data, and full merchant details.
+Use this to answer customer questions about recent purchases and payment status.
+"""
 query GetTransactionHistory($accountId: ID!, $last: Int!) {
   account(id: $accountId) {
     transactions(last: $last) {
@@ -101,20 +107,25 @@ query GetTransactionHistory($accountId: ID!, $last: Int!) {
       category
       amount
       status
-      # No account numbers, routing information, location data, or full merchant details
     }
   }
 }
 ```
 
+The operation description becomes the tool description that AI models see, helping them understand:
+- What data the operation provides
+- What sensitive information is excluded
+- When to use this operation appropriately
+
 This allowed the company to:
 
-- Accelerate compliance review by clearly showing what data AI could access
-- Avoid duplicating APIs, using GraphQL’s type system and persisted operations
+- Accelerate compliance review by clearly documenting what data AI could access in the operation definitions themselves
+- Avoid duplicating APIs, using GraphQL's type system and persisted operations
 - Enforce operational boundaries through schema validation and mutation exclusion
+- Provide self-documenting operations that AI models could understand without external documentation
 - Scale safely by exposing new fields to AI only when explicitly approved
 
-With this model in place, AI assistants could answer questions like “Did my payment to Amazon go through?” using only the approved fields and without touching full account numbers, balance history, or other restricted data.
+With this model in place, AI assistants could answer questions like "Did my payment to Amazon go through?" using only the approved fields and without touching full account numbers, balance history, or other restricted data.
 
 ### Outcome
 
@@ -139,10 +150,11 @@ The Cosmo Router server:
 
 When an AI model interacts with your MCP endpoint:
 
-1. It discovers available GraphQL operations
-2. Understands input requirements through the JSON schema
-3. Executes operations with appropriate parameters
-4. Receives structured data that it can interpret and use in its responses
+1. It discovers available GraphQL operations as tools and their descriptions
+2. Reads the tool descriptions to understand what each operation does, what data it returns, and when to use it
+3. Understands input requirements through the JSON schema
+4. Executes tools with appropriate parameters
+5. Receives structured data that it can interpret and use in its responses
 
 ## Built-in MCP Tools
 
@@ -181,7 +193,7 @@ The operation execution tools provide a structured and controlled way for AI mod
 
 - **Tool naming**: Tools follow the pattern `execute_operation_<operation_name>` (with operation names converted to snake_case)
 - **Tool schema**: Generated from your GraphQL operation's variables, ensuring type safety
-- **Tool description**: Inherited from your GraphQL operation descriptions, including operation name and additional context
+- **Tool description**: Extracted from your GraphQL operation's description string (following the September 2025 GraphQL spec) or from comment-based descriptions. The description provides context to help AI models understand the operation's purpose.
 - **Mutation warnings**: Tools for mutation operations include a warning that the operation has side effects
 
 By default, all operations in your specified directory will be exposed as tools. Use the `exclude_mutations: true` configuration option to prevent mutation operations from being exposed if you want to ensure AI models can only read data.
@@ -279,11 +291,32 @@ A storage provider must be specified to load GraphQL operations.
 1. Create a directory to store your GraphQL operations as specified in your `storage.provider_id` configuration.
 2. Add `.graphql` files containing named GraphQL operations.
 
-Each operation file should contain a single named operation along with a description comment that AI models can use to understand its purpose.
+Each operation file should contain a single named operation. You can provide descriptions for AI models in two ways:
 
-### Example Query Operation
+1. **Operation description strings** (recommended, following September 2025 GraphQL spec)
+2. **Comment-based descriptions** (legacy approach)
+
+### Example Query Operation with Description String
 
 Create a file `operations/getUsers.graphql`:
+
+```graphql
+"""
+Returns a list of all users in the system with their basic information.
+This is a read-only operation that doesn't modify any data.
+"""
+query GetUsers {
+  users {
+    id
+    name
+    email
+  }
+}
+```
+
+### Example Query Operation with Comment-Based Description
+
+Alternatively, you can use comment-based descriptions:
 
 ```graphql
 # Returns a list of all users in the system with their basic information
@@ -302,8 +335,10 @@ query GetUsers {
 Create a file `operations/createUser.graphql`:
 
 ```graphql
-# Creates a new user in the system
-# Required inputs: name and email
+"""
+Creates a new user in the system.
+Required inputs: name and email
+"""
 mutation CreateUser($name: String!, $email: String!) {
   createUser(input: { name: $name, email: $email }) {
     id
@@ -345,7 +380,7 @@ Operations are converted to snake_case for tool naming consistency.
 ### Best Practices
 
 1. **Meaningful names**: Give operations clear, action-oriented names that describe what they do.
-2. **Add descriptions**: Include comments that describe the operation's purpose, required inputs, and any side effects.
+2. **Add descriptions**: Use operation description strings (triple-quoted strings `"""`) following the September 2025 GraphQL spec to describe the operation's purpose, required inputs, and any side effects. These descriptions become the tool descriptions that AI models use to understand your operations.
 3. **Use explicit types**: Define all input variables with explicit types to ensure proper validation.
 4. **Create focused operations**: Design operations specifically for AI model consumption rather than exposing generic operations.
 5. **Security considerations**: For mutation operations, add checks and validations to prevent misuse.
