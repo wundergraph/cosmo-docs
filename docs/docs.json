@@ -216,7 +216,7 @@
                 ]
               },
               {
-                "group": "Event-Driven Federated Subscriptions (EDFS)",
+                "group": "Cosmo Streams (EDFS)",
                 "icon": "calendar-users",
                 "pages": [
                   "router/event-driven-federated-subscriptions-edfs",
