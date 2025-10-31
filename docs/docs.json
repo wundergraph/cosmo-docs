@@ -217,7 +217,7 @@
               },
               {
                 "group": "Cosmo Streams (EDFS)",
-                "icon": "calendar-users",
+                "icon": "wave",
                 "pages": [
                   "router/event-driven-federated-subscriptions-edfs",
                   {
@@ -230,7 +230,16 @@
                   },
                   "router/event-driven-federated-subscriptions-edfs/kafka",
                   "router/event-driven-federated-subscriptions-edfs/redis",
-                  "router/event-driven-federated-subscriptions-edfs/custom-modules"
+                  {
+                    "group": "Custom Modules",
+                    "icon": "cubes",
+                    "pages": [
+                      "router/event-driven-federated-subscriptions-edfs/custom-modules",
+                      "router/event-driven-federated-subscriptions-edfs/custom-modules/on-receive-event",
+                      "router/event-driven-federated-subscriptions-edfs/custom-modules/on-publish-event",
+                      "router/event-driven-federated-subscriptions-edfs/custom-modules/on-subscription-start"
+                    ]
+                  }
                 ]
               },
               "router/compliance-and-data-management",
