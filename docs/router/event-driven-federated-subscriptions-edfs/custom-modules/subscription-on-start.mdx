@@ -1,10 +1,10 @@
 ---
-title: "OnSubscriptionStart Handler"
+title: "SubscriptionOnStart Handler"
 description: "A Cosmo Streams Custom Module, which lets you customize subscription initialization behavior"
 icon: "circle-play"
 ---
 
-The `OnSubscriptionStart` handler is a custom module hook that allows you to intercept and customize the initialization of GraphQL subscriptions.
+The `SubscriptionOnStart` handler is a custom module hook that allows you to intercept and customize the initialization of GraphQL subscriptions.
 This handler is called once when a subscription starts, giving you the opportunity to validate permissions, send initial events, or perform setup logic.
 
 This handler is particularly useful for:
@@ -13,10 +13,11 @@ This handler is particularly useful for:
 - **Subscription logging**: Track subscription attempts and user behavior
 - **Connection validation**: Ensure clients meet specific criteria before subscribing
 - **Rate limiting**: Control subscription attempts per user or client
+- **State initialization**: Initialize state used by other handlers such as `OnReceiveEvents` or `OnPublishEvents` of the same module
 
 ## Handler Interface
 
-In order to use the `OnSubscriptionStart` handler you need to create a [Custom Module](../../custom-modules) which implements the `SubscriptionOnStartHandler` interface.
+In order to use the `SubscriptionOnStart` handler you need to create a [Custom Module](../../custom-modules) which implements the `SubscriptionOnStartHandler` interface.
 
 ```go
 type SubscriptionOnStartHandler interface {
@@ -46,7 +47,7 @@ type SubscriptionOnStartHandlerContext interface {
 
 ## Error Handling
 
-When you return an error from the `OnSubscriptionStart` handler, the router responds to the client with an error event and closes the subscription.
+When you return an error from the `SubscriptionOnStart` handler, the router responds to the client with an error event and closes the subscription.
 You can choose to log a generic error or a custom error response with more details for the client.
 
 ```go
@@ -92,26 +93,26 @@ This will result in a error response with more details for the client.
 ```
 
 <Warning>
-Errors are not logged automatically by the router. If you need the error to be logged, you can use the `ctx.Logger()` to log the error yourself.
+Errors are not logged automatically by the router. If you need the error to be logged, you can use `ctx.Logger()` to log the error yourself.
 </Warning>
 
 ## Usage Example
 
 ### Complete Custom Module with Event Bypass
 
-The following example demonstrates how to register a passive `OnSubscriptionStart` handler that logs subscription attempts but allows all subscriptions to proceed normally.
+The following example demonstrates how to register a passive `SubscriptionOnStart` handler that logs subscription attempts but allows all subscriptions to proceed normally.
 
 ```go
 package module
 
 import (
-    "github.com/wundergraph/cosmo/router/core"
-    "go.uber.org/zap"
+	"github.com/wundergraph/cosmo/router/core"
+	"go.uber.org/zap"
 )
 
 func init() {
-    // Register your module with the router
-    core.RegisterModule(&SubscriptionStartModule{})
+	// Register your module with the router
+	core.RegisterModule(&SubscriptionStartModule{})
 }
 
 const ModuleID = "subscriptionStartModule"
@@ -119,42 +120,37 @@ const ModuleID = "subscriptionStartModule"
 // SubscriptionStartModule demonstrates a passive subscription start handler
 type SubscriptionStartModule struct{}
 
-// OnSubscriptionStart logs subscription attempts and allows them to proceed
-func (m *SubscriptionStartModule) OnSubscriptionStart(
-    ctx core.SubscriptionOnStartHandlerContext,
+// SubscriptionOnStart logs subscription attempts and allows them to proceed
+func (m *SubscriptionStartModule) SubscriptionOnStart(
+	ctx core.SubscriptionOnStartHandlerContext,
 ) error {
-    logger := ctx.Logger()
-    
-    // Log subscription details
-    if config := ctx.SubscriptionEventConfiguration(); config != nil {
-        logger.Info("Subscription started",
-            zap.String("field_name", config.RootFieldName()),
-            zap.String("provider_id", config.ProviderID()),
-            zap.String("provider_type", string(config.ProviderType())),
-        )
-    } else {
-        logger.Info("Engine subscription started",
-            zap.String("operation_name", ctx.Operation().Name()),
-        )
-    }
-    
-    // Allow subscription to proceed
-    return nil
+	logger := ctx.Logger()
+	config := ctx.SubscriptionEventConfiguration()
+
+	// Log subscription details
+	logger.Info("Subscription started",
+		zap.String("field_name", config.RootFieldName()),
+		zap.String("provider_id", config.ProviderID()),
+		zap.String("provider_type", string(config.ProviderType())),
+	)
+
+	// Allow subscription to proceed
+	return nil
 }
 
 // Module returns the module information for registration
 func (m *SubscriptionStartModule) Module() core.ModuleInfo {
-    return core.ModuleInfo{
-        ID: ModuleID,
-        New: func() core.Module {
-            return &SubscriptionStartModule{}
-        },
-    }
+	return core.ModuleInfo{
+		ID: ModuleID,
+		New: func() core.Module {
+			return &SubscriptionStartModule{}
+		},
+	}
 }
 
 // Interface guards to ensure we implement the required interfaces
 var (
-    _ core.SubscriptionOnStartHandler = (*SubscriptionStartModule)(nil)
+	_ core.SubscriptionOnStartHandler = (*SubscriptionStartModule)(nil)
 )
 ```
 
@@ -164,7 +160,7 @@ You can use `ctx.WriteEvent()` to send initial or welcome events to subscribers 
 This is useful for providing current state or welcome messages.
 
 ```go
-func (m *CosmoStreamsModule) OnSubscriptionStart(
+func (m *SubscriptionStartModule) SubscriptionOnStart(
 	ctx core.SubscriptionOnStartHandlerContext,
 ) error {
 	// Bypass the handler on other subscriptions
@@ -176,11 +172,9 @@ func (m *CosmoStreamsModule) OnSubscriptionStart(
 	// The router will resolve all other fields requested by the subscriber
 	initialEventData := `{ "__typename": "Employee", "id": 1 }`
 	initialEvent := ctx.NewEvent([]byte(initialEventData))
-	success := ctx.WriteEvent(initialEvent)
 
-	if success {
-		ctx.Logger().Debug("Initial event sent to subscriber")
-	} else {
+	success := ctx.WriteEvent(initialEvent)
+	if !success {
 		ctx.Logger().Warn("Failed to send initial event to subscriber")
 	}
 
@@ -198,7 +192,7 @@ The router will use this information to resolve all fields requested by the subs
 This example validates JWT tokens and blocks subscriptions for users without the required "role" claim, demonstrating proper authentication enforcement.
 
 ```go
-func (m *CosmoStreamsModule) SubscriptionOnStart(ctx core.SubscriptionOnStartHandlerContext) error {
+func (m *SubscriptionStartModule) SubscriptionOnStart(ctx core.SubscriptionOnStartHandlerContext) error {
 	// Only check "employeeUpdated" subscription
 	if ctx.SubscriptionEventConfiguration().RootFieldName() != "employeeUpdated" {
 		return nil

@@ -235,7 +235,7 @@
                     "icon": "cubes",
                     "pages": [
                       "router/event-driven-federated-subscriptions-edfs/custom-modules",
-                      "router/event-driven-federated-subscriptions-edfs/custom-modules/on-subscription-start",
+                      "router/event-driven-federated-subscriptions-edfs/custom-modules/subscription-on-start",
                       "router/event-driven-federated-subscriptions-edfs/custom-modules/on-receive-event",
                       "router/event-driven-federated-subscriptions-edfs/custom-modules/on-publish-event"
                     ]

@@ -51,7 +51,7 @@ type StreamPublishEventHandlerContext interface {
 
 As mentioned in the [Publish Overview Section](/router/event-driven-federated-subscriptions-edfs#publish) the return type of a Cosmo Streams mutation
 must use the type `PublishEventResult`. This type declares a boolean `success` field.  
-Implementations of `OnPublishEvents` return two fields: `events` and `error`. When `error` is not `nil`, the client's response
+Implementations of `OnPublishEvents` handlers return two fields: `events` and `error`. When `error` is not `nil`, the client's response
 will have the success field set to `false`. Also the error will be logged on the routers console output.
 When events are returned, these will always be sent to the provider, even if you return an error.
 This can be useful in case you partially processed data but hit an error along the way.
@@ -61,9 +61,9 @@ See code examples below for a demonstration.
 
 When the `OnPublishEvents` handler returns an error, the router takes the following actions:
 
-1. **GraphQL Error Response**: The client will receive a response, where the `success` field is `false`
-2. **Event Publishing**: Returned events are sent to the message broker, if any provided
-3. **Error Logging**: The error is logged by the router with details about the mutation, provider, and field name
+1. The client will receive a response, where the `success` field is `false`
+2. Returned events are sent to the message broker, if any provided
+3. The error is logged by the router with details about the mutation, provider, and field name
 
 
 <Warning>
@@ -124,17 +124,44 @@ const ModuleID = "eventPublishModule"
 // that implements StreamPublishEventHandler but simply passes events through unchanged
 type EventPublishModule struct {}
 
-// OnPublishEvents passes all events through unchanged
-func (m *EventPublishModule) OnPublishEvents(
+func (m *AuthEventHandler) OnPublishEvents(
     ctx core.StreamPublishEventHandlerContext, 
     events datasource.StreamEvents,
 ) (datasource.StreamEvents, error) {
     logger := ctx.Logger()
-    logger.Debug("Processing outgoing events - bypassing unchanged", 
+    auth := ctx.Authentication()
+    
+    // Require authentication for publishing events
+    if auth == nil {
+        logger.Warn("Unauthenticated user attempted to publish events")
+        return nil, errors.New("authentication required to publish events")
+    }
+    
+    // Check JWT claims for required permissions
+    claims := auth.Claims()
+    if claims == nil {
+        return nil, errors.New("invalid authentication token")
+    }
+    
+    // Check for required role to publish events
+    roleClaimValue, hasRole := claims["role"]
+    if !hasRole {
+        return nil, errors.New("missing role claim - publication denied")
+    }
+    
+    userRole, ok := roleClaimValue.(string)
+    if !ok || (userRole != "admin" && userRole != "publisher") {
+        logger.Warn("User without publish permissions attempted to publish events", 
+            zap.Any("role", roleClaimValue),
+        )
+        return nil, errors.New("insufficient permissions to publish events")
+    }
+    
+    // User is authorized - allow event publishing
+    logger.Debug("Authorized user publishing events", 
+        zap.String("role", userRole),
         zap.Int("event_count", events.Len()),
     )
-    
-    // Simply return the events unchanged
     return events, nil
 }
 
