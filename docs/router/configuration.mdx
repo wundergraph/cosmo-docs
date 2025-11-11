@@ -611,7 +611,7 @@ This option may change or be removed in future versions as the OpenTelemetry SDK
 | METRICS_OTLP_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        | The metric labels to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions. | []            |
 | METRICS_OTLP_CONNECTION_STATS      | connection_stats      | <Icon icon="square" />                        | Enable connection metrics.                                                                                                                                | false         |
 | METRICS_OTLP_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Ensure that circuit breaker metrics are enabled for OTEL.                                                                                                 | false         |
-| METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable EDFS stream metrics.                                                                                                                               | false         |
+| METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                                                                                                             | false         |
 
 ### Attributes
 
@@ -662,7 +662,7 @@ telemetry:
 | PROMETHEUS_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        |                                                                           |                  |
 | PROMETHEUS_EXCLUDE_SCOPE_INFO    | exclude_scope_info    | <Icon icon="square" />                        | Exclude scope info from Prometheus metrics.                               | false            |
 | PROMETHEUS_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Enable the circuit breaker metrics for prometheus metric collection.      | false            |
-| PROMETHEUS_OTLP_STREAM           | streams               | <Icon icon="square" />                        | Enable EDFS stream metrics.                                               | false            |
+| PROMETHEUS_OTLP_STREAM           | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                             | false            |
 
 ### Example YAML config:
 
