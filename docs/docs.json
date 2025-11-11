@@ -216,21 +216,30 @@
                 ]
               },
               {
-                "group": "Event-Driven Federated Subscriptions (EDFS)",
-                "icon": "calendar-users",
+                "group": "Cosmo Streams (EDFS)",
+                "icon": "wave",
                 "pages": [
-                  "router/event-driven-federated-subscriptions-edfs",
+                  "router/cosmo-streams",
                   {
                     "group": "NATS",
                     "icon": "puzzle-piece",
                     "pages": [
-                      "router/event-driven-federated-subscriptions-edfs/nats",
-                      "router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration"
+                      "router/cosmo-streams/nats",
+                      "router/cosmo-streams/nats/stream-and-consumer-configuration"
                     ]
                   },
-                  "router/event-driven-federated-subscriptions-edfs/kafka",
-                  "router/event-driven-federated-subscriptions-edfs/redis",
-                  "router/event-driven-federated-subscriptions-edfs/custom-modules"
+                  "router/cosmo-streams/kafka",
+                  "router/cosmo-streams/redis",
+                  {
+                    "group": "Custom Modules",
+                    "icon": "cubes",
+                    "pages": [
+                      "router/cosmo-streams/custom-modules",
+                      "router/cosmo-streams/custom-modules/subscription-on-start",
+                      "router/cosmo-streams/custom-modules/on-receive-event",
+                      "router/cosmo-streams/custom-modules/on-publish-event"
+                    ]
+                  }
                 ]
               },
               "router/compliance-and-data-management",
@@ -738,5 +747,11 @@
     "gtm": {
       "tagId": "GTM-5GPL7DQH"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/router/event-driven-federated-subscriptions-edfs/:path*",
+      "destination": "/router/cosmo-streams/:path*"
+    }
+  ]
 }
