@@ -100,7 +100,7 @@
                       "router/gRPC/plugins",
                       "router/gRPC/plugins/debugging",
                       {
-                        "group": "Library Features",
+                        "group": "Library Features (Go Only)",
                         "icon": "books",
                         "pages": [
                           "router/gRPC/plugins/library-features/http-client",

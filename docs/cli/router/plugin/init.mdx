@@ -25,16 +25,20 @@ wgc router plugin init [options] <name>
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | `-p, --project <project>`     | Project name. When provided, a minimal router project is bootstrapped and the plugin is created at `<project>/<name>`. | (none)                  |
 | `-d, --directory <directory>` | Directory to create the plugin or project in                                                                           | `.` (current directory) |
-| `-l, --language <language>`   | Programming language to use for the plugin (currently only `go` is supported)                                          | `go`                    |
+| `-l, --language <language>`   | Programming language to use for the plugin (currently only `go` and `ts` is supported)                                          | `go`                    |
 
 ## Description
 
 This command creates a new plugin directory with the specified name and scaffolds the basic plugin structure, including:
 
 - A GraphQL schema file (`src/schema.graphql`)
-- Go implementation files (`src/main.go`, `src/main_test.go`)
+- Language specific implementation files
+  - For Go: `src/main.go`, `src/main_test.go`
+  - For TS: `src/plugin.ts`, `src/plugin.test.ts`
 - Generated mapping and protocol files (`generated/mapping.json`, `generated/service.proto`, `generated/service.proto.lock.json`)
-- Go module configuration (`go.mod`)
+- Language specific configuration (`go.mod`)
+  - For Go: `go.mod`
+  - For TS: `package.json`, `tsconfig.json`
 - Makefile and Dockerfile (`Makefile`, `Dockerfile`)
 - Documentation (`README.md`)
 
@@ -50,7 +54,8 @@ If you want to create a plugin in an existing project directory, omit `--project
 
 ### With `--project`
 
-```
+<CodeGroup>
+```text Go
 my-project/
 ├── README.md                 # Project documentation
 ├── Makefile                  # Project Makefile
@@ -77,16 +82,71 @@ my-project/
     └── Dockerfile
 ```
 
+```text TypeScript
+my-project/
+├── README.md                 # Project documentation
+├── Makefile                  # Project Makefile
+├── config.yaml               # Router configuration
+├── graph.yaml                # Supergraph configuration
+├── .gitignore
+└── my-plugin/                # Your plugin directory
+    ├── README.md
+    ├── Makefile
+    ├── package.json
+    ├── tsconfig.json
+    ├── .gitignore
+    ├── .cursorignore
+    ├── .cursor/
+    │   └── rules/
+    │       └── plugin-development.mdc
+    ├── src/
+    │   ├── schema.graphql
+    │   ├── plugin.ts
+    │   ├── fs-polyfill.ts
+    │   ├── plugin-server.ts
+    │   └── plugin.test.ts
+    ├── generated/
+    │   ├── mapping.json
+    │   ├── service.proto
+    │   └── service.proto.lock.json
+    └── Dockerfile
+```
+</CodeGroup>
+
+
 ### Without `--project`
 
 The plugin is created directly under the chosen directory:
 
-```
-
+<CodeGroup>
+```text Go
 my-plugin/
 ├── README.md
 ├── Makefile
 ├── go.mod
+├── .gitignore
+├── .cursorignore
+├── .cursor/
+│   └── rules/
+│       └── plugin-development.mdc
+├── src/
+│   ├── schema.graphql
+│   ├── plugin.ts
+│   ├── fs-polyfill.ts
+│   ├── plugin-server.ts
+│   └── plugin.test.ts
+├── generated/
+│   ├── mapping.json
+│   ├── service.proto
+│   └── service.proto.lock.json
+└── Dockerfile
+```
+```text TypeScript
+my-plugin/
+├── README.md
+├── Makefile
+├── package.json
+├── tsconfig.json
 ├── .gitignore
 ├── .cursorignore
 ├── .cursor/
@@ -102,6 +162,7 @@ my-plugin/
 │   └── service.proto.lock.json
 └── Dockerfile
 ```
+</CodeGroup>
 
 ## Examples
 
@@ -134,6 +195,6 @@ After initializing your plugin, you should:
 
 1. Customize the GraphQL schema in `src/schema.graphql`
 2. Generate code with `wgc router plugin generate` or `make generate`
-3. Implement your resolvers in `src/main.go`
-4. Implement your tests in `src/main_test.go` and run them with `make test`
+3. Implement your resolvers in `src/main.go` or `src/plugin.ts`
+4. Implement your tests in `src/main_test.go` or `src/plugin.test.ts` and run them with `make test`
 5. Build your plugin with `make build` 
