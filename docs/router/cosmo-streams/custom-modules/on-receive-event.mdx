@@ -16,11 +16,6 @@ This handler is particularly useful for:
 - **Authentication and authorization**: Filter events based on user permissions
 - **Monitoring and analytics**: Log or track events for observability
 
-<Warning>
-The handler runs once for each active subscription, so it's recommended to avoid resource-heavy computations or 
-blocking operations to maintain performance.
-</Warning>
-
 <Info>
 If there is no active subscription this handler is not executed, even if new messages arrive at the broker.
 This is because the Router will not listen for messages on the broker topic/queue until at least one
@@ -46,6 +41,9 @@ type StreamReceiveEventHandler interface {
 }
 
 type StreamReceiveEventHandlerContext interface {
+    // Context is a context for handlers.
+	// If it is cancelled, the handler should stop processing.
+	Context() context.Context
     // Request is the initial client request that started the subscription
     Request() *http.Request
     // Logger is the logger for the request
@@ -61,20 +59,65 @@ type StreamReceiveEventHandlerContext interface {
 }
 ```
 
-## Asynchronous Execution
+## Asynchronous Execution and Performance Considerations
 
 The `OnReceiveEvents` handler is executed **asynchronously** for each active subscription when events are received from the message broker.
 To control resource usage and prevent overwhelming your system, you can configure the maximum number of concurrent handlers using
-the `max_concurrent_event_receive_handlers` configuration option.
+the `max_concurrent_handlers` configuration option.
 
 ```yaml
 events:
   subscription_hooks:
-    max_concurrent_event_receive_handlers: 100  # Default: 100
+    on_receive_events:
+      max_concurrent_handlers: 100  # Default: 100
 ```
 
-This setting controls how many `OnReceiveEvents` handlers routines can run simultaneously across all active subscriptions.
-This helps prevent resource exhaustion while maintaining good performance and low latency for event processing.
+This amount of concurrent handlers is not global inside the router. It is defined per topic / message queue being observed by the router.
+If you define multiple Cosmo Streams subscriptions inside your schema, each one will have its own concurrent handlers limit.
+
+When the maximum number of concurrent handlers is reached for a topic, events will not get polled from the message queue until a handler has finished its work and is free again.
+To avoid sending out of order events to the subscription clients, the router will wait a certain amount of time for all handlers to finish, before polling the next batch of events.
+This timeout is configurable via router configuration:
+```yaml
+events:
+    subscription_hooks:
+      on_receive_events:
+        handler_timeout: 1s # default: 5s
+```
+
+If the timeout is reached, the router will poll the next batch of events immediately, which could result in sending out of order events to the subscription clients.
+In this case a warning will be logged.
+
+We recommend to use the `ctx.Context()`, which is cancelled in such a case.
+You can use it to abort any long running operations:
+
+```go
+func (m *CosmoStreamsModule) OnReceiveEvents(
+    ctx core.StreamReceiveEventHandlerContext,
+    events datasource.StreamEvents,
+) (datasource.StreamEvents, error) {
+	for _, event := range events.All() {
+		select {
+		case <-ctx.Context().Done():
+			ctx.Logger().Debug("context cancelled, stopping processing and return no events to subscriber")
+			return datasource.StreamEvents{}, nil
+		default:
+			// process event here...
+		}
+	}
+	return events, nil
+}
+```
+
+<Info>
+The router will not abort the handler if the context is cancelled. It will simply move on to receive the next batch of events from the broker and process them.
+In this case events could be sent out of order to subscription clients, because old long-running handlers are still processing the previous batch of events.
+</Info>
+
+<Warning>
+For as long as the handler limit is reached, the router will not poll the next batch of events from the broker.
+This effectively means that the subscription does not get updated until a new handler is free again.
+</Warning>
 
 ## Error Handling
 

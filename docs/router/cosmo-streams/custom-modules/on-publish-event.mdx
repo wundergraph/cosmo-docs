@@ -49,7 +49,7 @@ type StreamPublishEventHandlerContext interface {
 
 ## Error Handling
 
-As mentioned in the [Publish Overview Section](/router/event-driven-federated-subscriptions-edfs#publish) the return type of a Cosmo Streams mutation
+As mentioned in the [Publish Overview Section](/router/cosmo-streams#publish) the return type of a Cosmo Streams mutation
 must use the type `PublishEventResult`. This type declares a boolean `success` field.  
 Implementations of `OnPublishEvents` handlers return two fields: `events` and `error`. When `error` is not `nil`, the client's response
 will have the success field set to `false`. Also the error will be logged on the routers console output.

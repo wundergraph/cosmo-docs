@@ -1572,7 +1572,7 @@ cdn:
 
 ## Events
 
-The Events section lets you define Event Sources for [Event-Driven Federated Subscriptions (EDFS)](/router/event-driven-federated-subscriptions-edfs).
+The Events section lets you define Event Sources for [Cosmo Streams / EDFS](/router/cosmo-streams).
 
 We support NATS, Kafka and Redis as event bus provider.
 
@@ -1646,6 +1646,15 @@ events:
 | :------------------- | :--- | :------- | :--------------------------------------------------------------------------------------- | :------------ |
 |                      | id   |          | The ID of the provider. This have to match with the ID specified in the subgraph schema. | []            |
 |                      | urls |          | A list of redis instances URLS, e.g: `redis://localhost:6379/2`                          |               |
+
+### Subscription Hooks
+
+Configuration for Cosmo Streams hooks. Learn more about [Custom Modules for Cosmo Streams](/router/cosmo-streams/custom-modules).
+
+| Environment Variable                                           | YAML                   | Required | Description                                                                                 | Default Value |
+| :------------------------------------------------------------- | :--------------------- | :------- | :------------------------------------------------------------------------------------------ | :-            |
+| | subscription_hooks.on_receive_events.handler_timeout         | <Icon icon="square" /> |          | The maximum time to wait for all OnReceiveEvents handlers to complete per event-batch.      | 5s            |
+| | subscription_hooks.on_receive_events.max_concurrent_handlers | <Icon icon="square" /> |          | The maximum number of concurrent OnReceiveEvents handlers per broker message queue / topic. | 100           |
 
 ## Router Engine Configuration
 

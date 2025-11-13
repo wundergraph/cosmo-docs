@@ -114,7 +114,7 @@ The `@edfs__natsPublish`, `@edfs__kafkaPublish`, and `@edfs__redisPublish ` dire
 
 Using the `@edfs__natsSubscribe`, `@edfs__kafkaSubscribe` and `@edfs__redisSubscribe` directives, you can create a Subscription to the corresponding message bus. By default, all the provider implementations are stateless, meaning every client receives the same events in a broadcast fashion. This behavior can be adjusted. NATS allows you to create a [consumer group](https://docs.nats.io/nats-concepts/jetstream/consumers), resulting in multiple independent streams of the subject, where each client can consume events at their own pace.
 
-The `@openfed__subscriptionFilter` directive allows you to filter subscription messages based on specified conditions. For more information see [Subscription Filter](/router/event-driven-federated-subscriptions-edfs#subscription-filter).
+The `@openfed__subscriptionFilter` directive allows you to filter subscription messages based on specified conditions. For more information see [Subscription Filter](/router/cosmo-streams#subscription-filter).
 
 An Event-Driven Subgraph does not need to be implemented. It is simply a Subgraph Schema that instructs the Router on how to connect specific root fields to the Event Source. Scroll down for an example.
 
