@@ -1,12 +1,12 @@
 ---
 title: "OnReceiveEvents Handler"
-description: "A Cosmo Streams Custom Module, which lets you customize events received from a message broker before being passed to subscribers"
+description: "A Cosmo Streams Custom Module, which lets you customize events received from a message provider before being passed to subscribers"
 icon: "arrow-left"
 ---
 
 The `OnReceiveEvents` handler is a custom module hook that allows you to intercept and process events received from 
-supported message brokers before they are delivered to GraphQL subscription clients.
-This handler is called whenever a batch of events is received from a message broker, giving you the opportunity to filter, transform, enrich, 
+supported message providers before they are delivered to GraphQL subscription clients.
+This handler is called whenever a batch of events is received from a provider, giving you the opportunity to filter, transform, enrich, 
 or validate events before they reach your subscribers.
 
 This handler is particularly useful for:
@@ -16,14 +16,9 @@ This handler is particularly useful for:
 - **Authentication and authorization**: Filter events based on user permissions
 - **Monitoring and analytics**: Log or track events for observability
 
-<Warning>
-The handler runs once for each active subscription, so it's recommended to avoid resource-heavy computations or 
-blocking operations to maintain performance.
-</Warning>
-
 <Info>
-If there is no active subscription this handler is not executed, even if new messages arrive at the broker.
-This is because the Router will not listen for messages on the broker topic/queue until at least one
+If there is no active subscription this handler is not executed, even if new messages arrive at the provider.
+This is because the Router will not listen for messages on the provider topic/queue until at least one
 client subscribes to a particular subscription.
 </Info>
 
@@ -46,6 +41,9 @@ type StreamReceiveEventHandler interface {
 }
 
 type StreamReceiveEventHandlerContext interface {
+    // Context is a context for handlers.
+	// If it is cancelled, the handler should stop processing.
+	Context() context.Context
     // Request is the initial client request that started the subscription
     Request() *http.Request
     // Logger is the logger for the request
@@ -61,20 +59,65 @@ type StreamReceiveEventHandlerContext interface {
 }
 ```
 
-## Asynchronous Execution
+## Asynchronous Execution and Performance Considerations
 
-The `OnReceiveEvents` handler is executed **asynchronously** for each active subscription when events are received from the message broker.
+The `OnReceiveEvents` handler is executed **asynchronously** for each active subscription when events are received from the provider.
 To control resource usage and prevent overwhelming your system, you can configure the maximum number of concurrent handlers using
-the `max_concurrent_event_receive_handlers` configuration option.
+the `max_concurrent_handlers` configuration option.
 
 ```yaml
 events:
   subscription_hooks:
-    max_concurrent_event_receive_handlers: 100  # Default: 100
+    on_receive_events:
+      max_concurrent_handlers: 100  # Default: 100
 ```
 
-This setting controls how many `OnReceiveEvents` handlers routines can run simultaneously across all active subscriptions.
-This helps prevent resource exhaustion while maintaining good performance and low latency for event processing.
+This limit applies per [Trigger](/router/cosmo-streams#deduplication-of-subscriptions), not globablly.
+
+When the maximum number of concurrent handlers for a topic is reached, the router will not poll new events from the message queue until a handler finishes and becomes available again.
+To avoid delivering events out of order to subscription clients, the router waits for all handlers to complete before polling the next batch of events.
+This waiting period is configurable via the router settings:
+
+```yaml
+events:
+    subscription_hooks:
+      on_receive_events:
+        handler_timeout: 1s # default: 5s
+```
+
+If the timeout is reached, the router immediately polls the next batch of events, which may result in out-of-order delivery to subscription clients.
+In this case, a warning is logged.
+
+It is recommended to use `ctx.Context()`, which is cancelled in such situations.
+You can use this context to abort any long-running operations:
+
+```go
+func (m *CosmoStreamsModule) OnReceiveEvents(
+    ctx core.StreamReceiveEventHandlerContext,
+    events datasource.StreamEvents,
+) (datasource.StreamEvents, error) {
+	for _, event := range events.All() {
+		select {
+		case <-ctx.Context().Done():
+			ctx.Logger().Debug("context cancelled, stopping processing and return no events to subscriber")
+			return datasource.StreamEvents{}, nil
+		default:
+			// process event here...
+		}
+	}
+	return events, nil
+}
+```
+
+<Info>
+The router does not abort the handler when the context is cancelled. Instead, it proceeds to receive the next batch of events from the provider.
+In this case, events may be delivered out of order because long-running handlers are still processing the previous batch.
+</Info>
+
+<Warning>
+While the handler limit is reached, the router will not poll the next batch of events from the provider.
+This effectively means that the subscription will not receive updates until a handler becomes free again.
+</Warning>
 
 ## Error Handling
 
@@ -259,7 +302,7 @@ func (m *EventFilterModule) OnReceiveEvents(
 
 Certain providers enrich their messages with metadata accessible by the Router.
 Kafka and NATS, for example, have the option to add headers to messages.
-Here's an example that filters out all messages coming from a Kafka broker where a header indicates
+Here's an example that filters out all messages coming from a Kafka instance where a header indicates
 it's not meant for GraphQL subscriptions.
 
 ```go
