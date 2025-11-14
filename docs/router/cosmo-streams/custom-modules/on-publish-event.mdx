@@ -1,20 +1,20 @@
 ---
 title: "OnPublishEvents Handler"
-description: "A Cosmo Streams Custom Module, which lets you customize events before they are sent to message brokers"
+description: "A Cosmo Streams Custom Module, which lets you customize events before they are sent to message providers"
 icon: "arrow-right"
 ---
 
-The `OnPublishEvents` handler is a custom module hook that allows you to intercept and process events before they are sent to message brokers through GraphQL mutations. This handler is called whenever a batch of events is about to be published to a provider, giving you the opportunity to filter, transform, enrich, or validate events before they are sent to the message broker.
+The `OnPublishEvents` handler is a custom module hook that allows you to intercept and process events before they are sent to providers through GraphQL mutations. This handler is called whenever a batch of events is about to be published to a provider, giving you the opportunity to filter, transform, enrich, or validate events before they are sent to the provider.
 
 This handler is particularly useful for:
 - **Event validation**: Ensure events meet specific criteria before publishing
-- **Data transformation**: Modify event payloads to match broker expectations
+- **Data transformation**: Modify event payloads to match provider expectations
 - **Event enrichment**: Add additional metadata or context to events
 - **Authentication and authorization**: Filter events based on user permissions
 - **Monitoring and analytics**: Log or track outgoing events for observability
 
 <Info>
-This handler is executed only when a GraphQL mutation triggers event publishing. Unlike `OnReceiveEvents`, this handler processes outgoing events to message brokers, not incoming events from subscriptions.
+This handler is executed only when a GraphQL mutation triggers event publishing. Unlike `OnReceiveEvents`, this handler processes outgoing events to providers, not incoming events from subscriptions.
 </Info>
 
 ## Handler Interface
@@ -62,7 +62,7 @@ See code examples below for a demonstration.
 When the `OnPublishEvents` handler returns an error, the router takes the following actions:
 
 1. The client will receive a response, where the `success` field is `false`
-2. Returned events are sent to the message broker, if any provided
+2. Returned events are sent to the message providers, if any provided
 3. The error is logged by the router with details about the mutation, provider, and field name
 
 
@@ -216,7 +216,7 @@ func (m *SelectivePublishHandler) OnPublishEvents(
 
 ### Prevent unauthorized users from sending Cosmo Streams mutation events to providers
 
-You can use `ctx.Authentication()` to validate that only authorized users can publish events to specific message brokers.
+You can use `ctx.Authentication()` to validate that only authorized users can publish events to specific providers.
 This is useful for securing mutation operations that trigger event publishing.
 
 ```go
@@ -264,7 +264,7 @@ func (m *AuthEventHandler) OnPublishEvents(
 
 ### Attach headers to Kafka events
 
-You can attach headers to Kafka events before sending them to brokers.
+You can attach headers to Kafka events before sending them to providers.
 
 ```go
 func (m *EventPublishModule) OnPublishEvents(
