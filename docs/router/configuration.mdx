@@ -336,7 +336,6 @@ The Model Context Protocol (MCP) server allows AI models to discover and interac
 | ------------------------------- | ------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
 | MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                             | false          |
 | MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                           | localhost:5025 |
-| MCP_SERVER_BASE_URL             | mcp.server.base_url             | <Icon icon="square" /> | The base URL of the MCP server. This is the URL advertised to LLM clients when SSE is used as primary transport.                                             | -              |
 | MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy; used in MCP responses to provide the real router URL. | -              |
 | MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                                | -              |
 | MCP_SESSION_STATELESS           | mcp.session.stateless           | <Icon icon="square" /> | Whether the MCP server should operate in stateless mode. When true, no server-side session state is maintained between requests.                             | true           |
@@ -354,7 +353,6 @@ mcp:
   enabled: true
   server:
     listen_addr: "localhost:5025"
-    base_url: "http://localhost:5025/mcp" # Optional: Advertised MCP base URL for SSE clients
   router_url: "https://your-public-router-url.example.com/graphql" # Optional: Used in MCP responses when your router is behind a proxy.
   storage:
     provider_id: "mcp" # References a file_system provider defined below
