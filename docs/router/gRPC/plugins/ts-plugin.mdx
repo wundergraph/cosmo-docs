@@ -1,0 +1,40 @@
+---
+title: 'TypeScript Plugins'
+description: "TypeScript Router Plugins"
+icon: "circle-info"
+sidebarTitle: Overview
+---
+
+TypeScript (with Bun) is one of the languages supported out of the box for developing router plugins. However, unlike Golang router plugins, it does not come with its own library. This means there is no automated tracing or out-of-the-box HTTP client at the moment.
+
+<Note>
+TypeScript (with Bun) support is available in [wgc@0.96.0](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.96.0) and above.
+</Note>
+
+In the following structure
+
+```text
+plugin
+├── bin
+│   └── grpc-health-check/proto/health/v1
+│       └── health.proto
+├── patches
+└── src
+    └── plugin-server.ts
+```
+
+We would like to bring your attention to the `bin/grpc-health-check` folder, `patches` folder, and `src/plugin-server.ts`.
+
+`plugin-server.ts`
+Provides similar minimal functionality to the [router-plugin](https://pkg.go.dev/github.com/wundergraph/cosmo/router-plugin) package for Go, which internally uses the official Hashicorp `go-plugin` plugin server helper functions.
+
+This provides the following out of the box
+- Health Check using the [grpc-health-check package](https://github.com/grpc/grpc-node/tree/master/packages/grpc-health-check)
+- Create a unix socket for communication and initialize the stdout plugin handshake
+
+`patches`
+- When bun compiles binaries it sets values for `__dirname` at compile-time, this ends up breaking the `grpc-health-check` package as it attempts to load a `health.proto` definition from an incorrect path. As a workaround we have used the `bun patch` functionality to set the path to where the bun binary resides at runtime.
+- While the inquire index.js file [here](https://github.com/protobufjs/protobuf.js/blob/master/lib/inquire/index.js) has been updated to not use eval, however it has not been published to npm, most likely due to a build step issue. We use the `bun patch` functionality to use the correct version.
+
+`grpc-health-check`
+- When you build a plugin using `wgc router plugin build <pluginName>`, the binary is placed in the `bin` folder. In addition, the `health.proto` definition is copied into the correct directory structure under `grpc-health-check`. Ensure that both the binary and the `grpc-health-check` folder are copied over when deploying or running the plugin.
