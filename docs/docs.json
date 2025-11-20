@@ -101,7 +101,7 @@
                       "router/gRPC/plugins/debugging",
                       {
                         "group": "Go Plugins",
-                        "icon": "g",
+                        "icon": "golang",
                         "pages": [
                           "router/gRPC/plugins/go-plugin",
                           "router/gRPC/plugins/go-plugin/http-client",
