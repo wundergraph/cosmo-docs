@@ -32,18 +32,26 @@ type StreamPublishEventHandler interface {
 }
 
 type StreamPublishEventHandlerContext interface {
-    // Request is the original request received by the router.
-    Request() *http.Request
-    // Logger is the logger for the request
-    Logger() *zap.Logger
-    // Operation is the GraphQL operation
-    Operation() OperationContext
-    // Authentication is the authentication for the request
-    Authentication() authentication.Authentication
-    // PublishEventConfiguration the publish event configuration
-    PublishEventConfiguration() datasource.PublishEventConfiguration
-    // NewEvent creates a new event that can be used in the subscription.
-    NewEvent(data []byte) datasource.MutableStreamEvent
+	// Request is the original request received by the router.
+	Request() *http.Request
+	// Logger is the logger for the request
+	Logger() *zap.Logger
+	// Operation is the GraphQL operation
+	Operation() OperationContext
+	// Authentication is the authentication for the request
+	Authentication() authentication.Authentication
+	// PublishEventConfiguration the publish event configuration
+	PublishEventConfiguration() datasource.PublishEventConfiguration
+	// NewEvent creates a new event that can be used in the subscription.
+	//
+	// The data parameter must contain valid JSON bytes representing the event payload
+	// that will be sent to your message broker (Kafka, NATS, etc.). The JSON must have
+	// properly quoted property names and must include the __typename field required by GraphQL.
+	// For example: []byte(`{"__typename": "Employee", "id": 1, "update": {"name": "John"}}`).
+	//
+	// This method is typically used in OnPublishEvents hooks to create new or modified events
+	// before they are sent to the message broker.
+	NewEvent(data []byte) datasource.MutableStreamEvent
 }
 ```
 

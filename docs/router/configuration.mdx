@@ -1647,14 +1647,14 @@ events:
 |                      | id   |          | The ID of the provider. This have to match with the ID specified in the subgraph schema. | []            |
 |                      | urls |          | A list of redis instances URLS, e.g: `redis://localhost:6379/2`                          |               |
 
-### Subscription Hooks
+### Cosmo Streams handlers
 
-Configuration for Cosmo Streams hooks. Learn more about [Custom Modules for Cosmo Streams](/router/cosmo-streams/custom-modules).
+Configuration for Cosmo Streams handlers. Learn more about [Custom Modules for Cosmo Streams](/router/cosmo-streams/custom-modules).
 
 | Environment Variable                                           | YAML                   | Required | Description                                                                            | Default Value |
 | :------------------------------------------------------------- | :--------------------- | :------- | :------------------------------------------------------------------------------------- | :-            |
-| | subscription_hooks.on_receive_events.handler_timeout         | <Icon icon="square" /> |          | The maximum time to wait for all OnReceiveEvents handlers to complete per event-batch. | 5s            |
-| | subscription_hooks.on_receive_events.max_concurrent_handlers | <Icon icon="square" /> |          | The maximum number of concurrent OnReceiveEvents handlers per trigger.                 | 100           |
+| | handlers.on_receive_events.handler_timeout         | <Icon icon="square" /> |          | The maximum time to wait for all OnReceiveEvents handlers to complete per event-batch. | 5s            |
+| | handlers.on_receive_events.max_concurrent_handlers | <Icon icon="square" /> |          | The maximum number of concurrent OnReceiveEvents handlers per trigger.                 | 100           |
 
 ## Router Engine Configuration
 
