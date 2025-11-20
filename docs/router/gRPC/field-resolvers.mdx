@@ -1,0 +1,240 @@
+---
+title: "Field Resolvers"
+description: "Custom field resolution in gRPC integration for GraphQL Federation"
+sidebarTitle: Field Resolvers
+icon: "function"
+---
+
+## Introduction
+
+Field resolvers in Cosmo Router enable you to implement custom resolution logic for any field in your GraphQL schema through gRPC integration. This powerful feature allows you to add computed fields, perform complex transformations, and integrate external data sources seamlessly within your federated graph.
+
+Unlike traditional GraphQL resolvers that run within your application code, Cosmo's field resolvers execute as gRPC services, providing better performance, type safety, and language flexibility while maintaining the familiar GraphQL developer experience.
+
+## What are Field Resolvers?
+
+Field resolvers are specialized functions that define how specific fields in your GraphQL schema should be resolved. They bridge the gap between your GraphQL API and custom business logic by:
+
+- **Custom Field Logic**: Implementing complex calculations, data transformations, or external API calls
+- **Argument Handling**: Processing field arguments passed from GraphQL operations, either directly or through variables  
+- **Context Awareness**: Accessing parent object data and resolver context to make informed decisions
+- **Type Safety**: Leveraging protobuf definitions to ensure type-safe communication between the router and your resolver logic
+
+When a GraphQL operation requests a field with a custom resolver, the Cosmo Router delegates the resolution to your gRPC service, which can implement any custom logic required to compute the field's value.
+
+## How Field Resolvers Work in Protobuf
+
+The implementation of field resolvers in a protobuf-based system presents a unique architectural challenge. Since Protocol Buffers don't natively support field arguments (unlike GraphQL), Cosmo solves this through an innovative approach:
+
+### The Challenge
+Traditional protobuf message definitions cannot represent GraphQL fields with arguments, as protobuf fields are simple properties without parameter support.
+
+### The Solution
+To overcome this limitation, Cosmo generates **RPC methods for each field resolver** instead of simple message fields. This approach:
+
+1. **Converts fields to RPCs**: Each field with custom resolution logic becomes a dedicated RPC method in the generated protobuf service
+2. **Preserves argument support**: Field arguments are mapped to RPC method parameters, maintaining full GraphQL functionality
+3. **Enables complex resolution**: The RPC method can implement any custom logic needed to resolve the field value
+
+### Runtime Execution Flow
+When your GraphQL operation requests a field with arguments:
+
+1. **Query Planning**: The Cosmo Router analyzes the operation and identifies fields requiring custom resolution
+2. **Data Retrieval**: The router first fetches any necessary parent data from relevant gRPC services  
+3. **Field Resolution**: For each field resolver, the router calls the corresponding RPC method with the field arguments and parent context
+4. **Response Assembly**: The resolved field values are integrated back into the GraphQL response structure
+
+This architecture ensures that your field resolvers have access to both the requested arguments and the complete parent object context, enabling sophisticated resolution logic while maintaining GraphQL's declarative query interface.
+
+## Schema Definition and Generated Protobuf
+
+**This example GraphQL schema:**
+```graphql
+type Query {
+  foo(id: ID!): Foo!
+}
+
+type Foo {
+  id: ID!
+  bar(baz: String!): String! @connect__fieldResolver(context: "id")
+}
+```
+
+**will produce the following Protobuf definitions:**
+
+```protobuf
+// Service definition for ProductService
+service ProductService {
+  rpc QueryFoo(QueryFooRequest) returns (QueryFooResponse) {}
+  rpc ResolveFooBar(ResolveFooBarRequest) returns (ResolveFooBarResponse) {}
+}
+
+// Request message for foo operation.
+message QueryFooRequest {
+  string id = 1;
+}
+// Response message for foo operation.
+message QueryFooResponse {
+  Foo foo = 1;
+}
+message ResolveFooBarArgs {
+  string baz = 1;
+}
+
+message ResolveFooBarContext {
+  string id = 1;
+}
+
+message ResolveFooBarRequest {
+  // context provides the resolver context for the field bar of type Foo.
+  repeated ResolveFooBarContext context = 1;
+  // field_args provides the arguments for the resolver field bar of type Foo.
+  ResolveFooBarArgs field_args = 2;
+}
+
+message ResolveFooBarResult {
+  string bar = 1;
+}
+
+message ResolveFooBarResponse {
+  repeated ResolveFooBarResult result = 1;
+}
+
+message Foo {
+  string id = 1;
+}
+```
+
+## Implementation Guide
+
+### Step-by-Step Setup
+
+<Steps>
+  <Step title="Define Schema">
+    Define the schema with field resolvers.
+  </Step>
+  <Step title="Generate Protobuf">
+    Use the `wgc grpc-service generate` command to generate the protobuf definition for the gRPC service.
+  </Step>
+  <Step title="Implement Resolver Logic">
+    Implement the field resolver logic in the gRPC service.
+  </Step>
+  <Step title="Deploy and Test">
+    Deploy the gRPC service and test the field resolvers.
+  </Step>
+</Steps>
+
+
+### Example implementation
+
+The provide better insights of how to implement field resolvers you can take a look at the following Go example:
+We would like to retrieve the popularity score for a category based on the id and a given threshold.
+
+<CodeGroup>
+```graphql schema.graphql
+type Category {
+  id: ID!
+  name: String!
+  kind: CategoryKind!
+  popularityScore(threshold: Int): Int @connect__fieldResolver(context: "id")
+}
+```
+
+```go service.go
+func (s *MockService) ResolveCategoryPopularityScore(_ context.Context, req *productv1.ResolveCategoryPopularityScoreRequest) (*productv1.ResolveCategoryPopularityScoreResponse, error) {
+  // We need to return the result in the original order of the context elements (len(GetContext())).
+	results := make([]*productv1.ResolveCategoryPopularityScoreResult, 0, len(req.GetContext()))
+
+  // The threshold is provided in the field arguments of the request (req.GetFieldArgs())
+	threshold := req.GetFieldArgs().GetThreshold()
+
+  // You can implement any custom logic to compute the popularity score. 
+  // To keep it simple, in this example we just compare to a base score of 50
+  // and either return nil or the base score.
+	baseScore := 50
+	for range req.GetContext() {
+		if int(threshold.GetValue()) > baseScore {
+			results = append(results, &productv1.ResolveCategoryPopularityScoreResult{
+				PopularityScore: nil,
+			})
+		} else {
+			results = append(results, &productv1.ResolveCategoryPopularityScoreResult{
+				PopularityScore: &wrapperspb.Int32Value{Value: int32(baseScore)},
+			})
+		}
+	}
+
+	resp := &productv1.ResolveCategoryPopularityScoreResponse{
+		Result: results,
+	}
+
+	return resp, nil
+}
+```
+</CodeGroup>
+
+## Data Loading and Batching
+
+Cosmo Connect automatically optimizes field resolver performance through intelligent batching mechanisms that eliminate the N+1 query problem commonly found in GraphQL implementations.
+
+### How Batching Works
+
+When your GraphQL operation requests fields across multiple entities, Cosmo Connect:
+
+1. **Aggregates Context**: Collects all context elements from the original operation that require field resolution
+2. **Batches Requests**: Groups multiple field resolution calls into a single gRPC request 
+3. **Preserves Order**: Maintains the original order of context elements to ensure correct response mapping
+
+### Implementation Requirements
+
+As a field resolver implementer, you only need to follow one simple rule:
+
+<Warning>
+Always return results in the **exact same order** as the provided context elements. The router relies on positional mapping to correctly associate resolved values with their corresponding entities.
+</Warning>
+
+### Entity Resolution
+
+The same batching principles apply to entity lookups in federated scenarios. Whether resolving computed fields or fetching related entities, Cosmo Connect ensures optimal request patterns by aggregating multiple lookups into efficient batch operations.
+
+## Performance Considerations
+
+Field resolvers introduce additional execution complexity since they require context-aware resolution across your gRPC services. Understanding the performance implications helps you design efficient resolver implementations.
+
+### Execution Flow Impact
+
+When field resolvers are involved in your GraphQL operation:
+
+1. **Context Preparation**: The router must first gather all necessary parent data from relevant services
+2. **Field Resolution**: Additional gRPC calls are made to resolve computed fields with the prepared context
+3. **Response Assembly**: Resolved field values are merged back into the final GraphQL response
+
+### Built-in Optimizations
+
+Cosmo Connect includes several performance optimizations out of the box:
+
+- **Automatic Batching**: Multiple field resolutions are automatically grouped into single gRPC calls
+- **Parallel Execution**: Independent field resolvers can execute concurrently where possible
+- **Context Reuse**: Shared parent data is fetched once and reused across multiple field resolvers
+- **Lazy Loading**: Field resolvers are only invoked when their fields are actually requested in the operation
+
+### Best Practices
+
+To maximize performance in your field resolver implementations:
+
+- **Minimize External Calls**: Reduce dependencies on external services within resolver logic
+- **Leverage Batching**: Design your resolver to efficiently handle batch requests rather than individual items
+- **Cache Strategically**: Implement appropriate caching for frequently computed or slowly changing data
+- **Monitor Execution**: Use Cosmo's observability features to identify performance bottlenecks
+
+## Limitations and Constraints
+
+<Warning>
+Currently a few limitations apply to field resolvers:
+- Interfaces and Unions for arguments and context fields are not yet supported.
+- Grouping of field resolvers are not yet supported.
+</Warning>
+
+
+
+See also: [gRPC Services](/router/gRPC/grpc-services) · [Plugins](/router/gRPC/plugins) · [GraphQL Support](/router/gRPC/graphql-support) 
