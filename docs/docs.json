@@ -103,7 +103,7 @@
                         "group": "Go Plugins",
                         "icon": "golang",
                         "pages": [
-                          "router/gRPC/plugins/go-plugin",
+                          "router/gRPC/plugins/go-plugin/overview",
                           "router/gRPC/plugins/go-plugin/http-client",
                           "router/gRPC/plugins/go-plugin/telemetry",
                           "router/gRPC/plugins/go-plugin/logging"
@@ -113,7 +113,7 @@
                         "group": "TypeScript Plugins",
                         "icon": "t",
                         "pages": [
-                          "router/gRPC/plugins/ts-plugin"
+                          "router/gRPC/plugins/ts-plugin/overview"
                         ]
                       }
                     ]
