@@ -1,3 +1,50 @@
+---
+title: "Response Payload Structure"
+sidebarTitle: Response Payload
+icon: reply
+description: "Definition of the response payload structure for Subgraph Check Extension."
+---
+
+When your server receives a request from the Subgraph Check Extension, it must respond with either a `204 No Content`
+status code, in which case the extension will assume that nothing changed, or a `200 OK` status code with the structure
+described below.
+
+The response payload allows you to append a collection of **LintIssues** to the check, which will be displayed in the
+Check results page. On top of that, you can also return a collection of **error messages** to be displayed in the
+extension's UI.
+
+The response payload must be a JSON object with a maximum of **5 MB** in size.
+
+## SubgraphCheckExtensionReply
+| Field                      | Description                                                                        |
+|----------------------------|------------------------------------------------------------------------------------|
+| `errors`                   | An optional collection of error messages.                                          |
+| [`lintIssues`](#lintissue) | An optional collection of [LintIssues](#lintissue) to append to the check results. |
+
+## LintIssue
+| Field                                 | Description                                         |
+|---------------------------------------|-----------------------------------------------------|
+| `lintRuleType`                        | The type of lint rule that was violated.            |
+| [`severity`](#lintseverity)           | The severity of the lint issue.                     |
+| `message`                             | A human-readable message describing the lint issue. |
+| [`issueLocation`](#lintissuelocation) | The location of the lint issue in the source code.  |
+
+### LintSeverity
+| Field   | Value | Description                |
+|---------|-------|----------------------------|
+| Warning | `0`   | Represents a lint warning. |
+| Error   | `1`   | Represents a lint error.   |
+
+### LintIssueLocation
+| Field       | Description                              |
+|-------------|------------------------------------------|
+| `line`      | The line number of the lint issue.       |
+| `column`    | The column number of the lint issue.     |
+| `endLine`   | The end line number of the lint issue.   |
+| `endColumn` | The end column number of the lint issue. |
+
+## TypeScript definition
+
 ```typescript
 enum LintSeverity {
   Warning = 0,
@@ -16,12 +63,8 @@ interface LintIssue {
   };
 }
 
-interface Overwrite {
-  lintIssues: LintIssue[];
-}
-
 interface SubgraphCheckExtensionReply {
-  errorMessage: string | undefined;
-  overwrite: Overwrite | undefined;
+  errors?: string[];
+  lintIssues?: LintIssue[];
 }
 ```

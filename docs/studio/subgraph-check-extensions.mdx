@@ -9,9 +9,28 @@ A subgraph check extension allows you to validate if a proposed schema change wi
 it to production with your own validator.
 
 ## How it works
-When you have enabled the subgraph check extension for a namespace, everytime a check is performed against a graph that
-belongs to said namespace, we send a request to the [configured](#configuration) endpoint with information about the
-and allow you to overwrite the `lint issues` or return an error which would fail
+When the subgraph check extension is enabled for a namespace, each time a check is performed against a graph within
+that namespace, a request is sent to the [configured endpoint](#configuration). This request includes details about
+the check and allows you to define additional lint issues or return a set of error messages that can cause the
+check to fail.
+
+
+### Request
+The request is sent using the `POST` method with a `JSON` body. You can learn more about the request structure in
+the [request payload structure](/studio/sce/request-payload-structure) page.
+
+### Response
+We use the status code to determine whether the request was successful or not. We expect the status code `200` or `204`,
+any status code other than these will be considered a failure and displayed as so on the checks page.
+
+When we receive a `200` status code, we'll validate that the response body matches the expected
+[response structure](/studio/sce/response-structure). If we cannot validate the response, we'll consider the check to
+be a failure.
+
+<Note>
+  A status code of `204` indicates that the request was successful but that no further action is required. This can be
+  useful when you don't want to perform any check and don't want the check to fail.
+</Note>
 
 ## Configuration
 
@@ -19,15 +38,35 @@ and allow you to overwrite the `lint issues` or return an error which would fail
   <img src="/images/studio/sce/config.png" />
 </Frame>
 
-| Option                                    | Description                                                                                                                                                                                                |
-|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Endpoint                                  | The URL to which each request is sent. This endpoint must be accessible from Cosmo.                                                                                                                        |
-| Secret Key                                | A value used to generate the request signature when sending data to the configured endpoint. This signature helps [verify](#verification) that the request originates from Cosmo and has not been altered. |
-| Include Composed SDL                      | When enabled, both the previous and current SDL (Schema Definition Language) versions are sent to your service.                                                                                            |
-| Include Lint Warnings and Errors          | When enabled, all detected lint issues are sent to your service. These issues are evaluated using the [Linter Rules](/studio/lint-policy/linter-rules).                                                    |
-| Include Graph Pruning Warnings and Errors | When enabled, all detected graph pruning issues are sent to your service. For more information, see [Graph Pruning](/studio/graph-pruning).                                                                |
-| Include Schema Changes                    | When enabled, details of schema changes are included in the data sent to your service.                                                                                                                     |
-| Include Affected Operations               | When enabled, information about affected operations is included in the data sent to your service.                                                                                                          | |
+### Endpoint
+The URL to which each request is sent. This endpoint must be accessible from Cosmo.
+
+### Secret Key
+A value used to generate the request signature when sending data to the configured endpoint. This signature
+helps [verify](#verification) that the request originates from Cosmo and has not been altered.
+
+### Include Composed SDL
+When enabled, both the previous and current SDL (Schema Definition Language) versions are sent to your service.
+
+### Include Lint Warnings and Errors
+When enabled, all detected lint issues are sent to your service.
+
+<Note>
+  To receive the list of warnings and errors, you need to enable the [Linter Rules](/studio/lint-policy/linter-rules) for the namespace.
+</Note>
+
+### Include Graph Pruning Warnings and Errors
+When enabled, all detected graph pruning issues are sent to your service.
+
+<Note>
+  To receive the list of warnings and errors, you need to enable the [Graph Pruning](/studio/graph-pruning) for the namespace.
+</Note>
+
+### Include Schema Changes
+When enabled, details of schema changes are included in the data sent to your service.
+
+### Include Affected Operations
+When enabled, information about affected operations is included in the data sent to your service.
 
 ## Verification
 To ensure the payload data is coming from a trusted source and hasn’t been tampered with during transit, we employ HMAC
@@ -56,173 +95,3 @@ function verifySignature(body, receivedSignature, secret) {
 // Usage:
 const isVerified = verifySignature(JSON.stringify(req.body), req.headers['x-cosmo-signature-256'], YOUR_SECRET);
 ```
-
-## Handler Example
-For this example we are using `fastify` and `tsx` to run the local server on port `4000`. Before running any check,
-we need to configure the check extension to point to our local server and set the secret key. For this example, we are
-using the following values:
-
-- Endpoint: `http://localhost:4000/check-schema`
-- Secret key: `...`
-
-<CodeGroup>
-  ```typescript server.ts
-  import Fastify, { type FastifyInstance } from 'fastify'
-
-  import { SubgraphCheckExtensionPayload, SubgraphCheckExtensionReply } from './types'
-  import { verifySignature } from './utils'
-
-  const YOUR_SECRET = '...'
-  const server: FastifyInstance = Fastify({ logger: true })
-
-  server.post<{ 
-    Body: SubgraphCheckExtensionPayload,
-    Reply: SubgraphCheckExtensionReply
-  }>(
-    '/check-schema',
-    {
-      config: { rawBody: true }
-    },
-    async (req, res) => {
-    if (!req.body) {
-      res.code(400)
-      return { errorMessage: 'Bad request' }
-    }
-
-    const { body } = req
-    const cosmoSignature = req.headers['x-cosmo-signature-256']
-    if (!verifySignature(body, cosmoSignature, YOUR_SECRET)) {
-      res.code(400)
-      return { errorMessage: 'Bad request' }
-    }
-
-    // We can run checks conditionally
-    if (body.namespace.name !== 'default' || body.subgraph?.name !== 'family') {
-      // We only want to overwrite the lint issues for the subgraph `family` on the namespace `default`
-      res.code(204)
-      return
-    }
-
-    return {
-      overwrite: {
-        lintIssues: [
-          {
-            lintRuleType: 'TYPE_SUFFIX',
-            severity: 1,
-            message: 'Type names should use the prefix `Type`',
-            issueLocation: {
-              line: 9,
-              column: 6,
-              endLine: 9,
-              endColumn: 11,
-            },
-          },
-        ],
-      },
-    }
-  })
-
-  const start = async () => {
-    try {
-      await server.listen({ port: 4000 })
-
-      const address = server.server.address()
-      const port = typeof address === 'string' ? address : address?.port
-    } catch (err) {
-      server.log.error(err)
-      process.exit(1)
-    }
-  }
-
-  start()
-  ```
-
-  ```typescript utils.ts
-  import crypto from 'node:crypto';
-
-  export function verifySignature(body: unknown, receivedSignature: string, secret: string) {
-    const computedSignature = crypto
-      .createHmac('sha256', secret)
-      .update(JSON.stringify(body))
-      .digest('hex');
-
-    return computedSignature === receivedSignature;
-  }
-  ```
-
-  ```typescript types.ts
-  export interface OrganizationContext {
-    id: string;
-    slug: string;
-  }
-
-  export interface NamespaceContext {
-    id: string;
-    name: string;
-  }
-
-  export interface VCSContext {
-    author: string;
-    commitSha: string;
-    branch: string;
-  }
-
-  export interface AffectedGraphItem {
-    id: string;
-    name: string;
-  }
-
-  export interface SubgraphContext {
-    id: string;
-    name: string;
-    isDeleted: boolean;
-  }
-
-  export interface SubgraphCheckExtensionPayload {
-    actorId: string;
-    checkId: string;
-    organization: OrganizationContext;
-    namespace: NamespaceContext;
-    vcsContext?: VCSContext;
-    affectedGraphs: AffectedGraphItem[];
-    url: string;
-    subgraph?: SubgraphContext;
-  }
-
-  enum LintSeverity {
-    Warning = 0,
-    Error = 1
-  }
-
-  export interface LintIssue {
-    lintRuleType: string;
-    severity: LintSeverity;
-    message: string;
-    issueLocation: {
-      line: number;
-      column: number;
-      endLine?: number;
-      endColumn?: number;
-    };
-  }
-
-  export interface OverwriteInfo {
-    lintIssues: LintIssue[];
-  }
-
-  export interface SubgraphCheckExtensionReply {
-    errorMessage?: string;
-    overwrite?: OverwriteInfo;
-  }
-  ```
-
-  ```json package.json
-  {
-    ...
-    "scripts": {
-      "dev": "tsx watch server.ts"
-    }
-    ...
-  }
-  ```
-</CodeGroup>

@@ -1,11 +1,32 @@
 ---
-title: "Structure of "
-sidebarTitle: Overview
-icon: puzzle-piece-simple
+title: "File Structure"
+sidebarTitle: File Structure
+icon: file-export
 description: "Validate schema changes before deploying them to production on your own premises."
 ---
 
 ```typescript
+interface SubgraphInfo {
+  id: string;
+  name: string;
+  oldComposedSdl?: string;
+  newComposedSdl?: string;
+}
+
+interface CompositionSubgraphInfo {
+  id: string;
+  name: string;
+  sdl: string;
+}
+
+interface CompositionInfo {
+  id: string;
+  name: string;
+  composedSchema?: string;
+  federatedClientSchema?: string;
+  subgraphs: CompositionSubgraphInfo[],
+}
+
 enum LintSeverity {
   Warning = 0,
   Error = 1
@@ -44,6 +65,29 @@ interface GraphPruningIssue {
   subgraphName?: string;
 }
 
+interface SchemaChangeInfo {
+  message: string
+  changeType: TypeOfChangeType
+  path: string
+  isBreaking: boolean
+}
+
+interface AffectedOperationInfo {
+  schemaChangeId: string
+  hash: string
+  name: string
+  type: string
+  lastSeenAt: Date
+  firstSeenAt: Date
+  isSafeOverride: boolean
+}
+
 interface SubgraphCheckExtensionContent {
+  subgraphs?: SubgraphInfo[];
+  compositions?: CompositionInfo;
+  lintIssues?: LintIssue[];
+  graphPruningIssues?: GraphPruningIssue[];
+  schemaChanges?: SchemaChangeInfo[];
+  affectedOperations?: AffectedOperationInfo[];
 }
 ```

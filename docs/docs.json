@@ -254,9 +254,10 @@
                 "icon": "puzzle-piece-simple",
                 "pages": [
                   "studio/subgraph-check-extensions",
-                  "studio/sce/payload-structure",
+                  "studio/sce/request-payload-structure",
                   "studio/sce/response-structure",
-                  "studio/sce/file-content"
+                  "studio/sce/file-content",
+                  "studio/sce/handler-example"
                 ]
               },
               "studio/schema-contracts",
