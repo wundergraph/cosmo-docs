@@ -16,7 +16,7 @@ In short, these files are generated helpers based on the schema we wrote. They h
   We recommend checking this folder into version control (e.g. Git).
 </Note>
 
-Now, let's start implementing our resolvers. After generating, if you open `main.go`, you will see some errors about undefined types. These are remnants from the example schema's resolver, and you can safely delete them to start from scratch.
+Now, let's start implementing our resolvers. After generating, if you open `plugin.ts`, you will see some errors about undefined types. These are remnants from the example schema's resolver, and you can safely delete them to start from scratch.
 
 Here's a starting point for implementing our new resolvers:
 
@@ -32,7 +32,6 @@ import {
   QueryPeopleResponse,
 } from '../generated/service_pb.js';
 import { PluginServer } from './plugin-server.js';
-
 
 export class StarwarsService implements IStarwarsServiceServer {
   [name: string]: grpc.UntypedHandleCall;
@@ -86,25 +85,24 @@ If you published this now, the plugin would just exit ungracefully when we tried
 
 Next, let's define a TypeScript type to help us work with SWAPI responses. 
 
-```go main.go
-package main
+```ts plugin.ts
 
-...
-
-type SWAPIPerson struct {
-	Name      string `json:"name"`
-	Height    string `json:"height"`
-	Mass      string `json:"mass"`
-	HairColor string `json:"hair_color"`
-	SkinColor string `json:"skin_color"`
-	EyeColor  string `json:"eye_color"`
-	BirthYear string `json:"birth_year"`
-	Gender    string `json:"gender"`
+interface SWAPIPerson {
+  name: string;
+  height: string;
+  mass: string;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
 }
 
-function run() {
+export class StarwarsService implements IStarwarsServiceServer {
 	...
 }
+
+...
 ```
 
 These types are very similar to those generated for our service, close enough that we could potentially use the generated types directly. But for this example, we'll create a separate type to show what happens if you need more complex mapping from the wrapped API to your service.
@@ -123,7 +121,7 @@ queryPeople(
 
 Here's an implemented version of the `QueryPeople` RPC resolver:
 
-```go main.go
+```ts plugin.ts
 ...
 
 export class StarwarsService implements IStarwarsServiceServer {
@@ -256,7 +254,7 @@ You can also implement tests for your plugin to ensure it works correctly, you c
 ## Appendix
 
 <Accordion icon="code" title="Full plugin code">
-    ```graphql src/schema.graphql
+```graphql src/schema.graphql
     type Person {
       """
       The name of this person
@@ -306,7 +304,7 @@ You can also implement tests for your plugin to ensure it works correctly, you c
       people: [Person!]!
     }
     ```
-    ```ts src/plugin.ts
+```ts src/plugin.ts
 import * as grpc from '@grpc/grpc-js';
 import axios, { type AxiosInstance } from "axios";
 import {
