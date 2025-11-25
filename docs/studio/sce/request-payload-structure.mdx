@@ -9,18 +9,21 @@ When the subgraph check extension is triggered, your registered endpoint will re
 containing information about the check. You can use this information to decide whether you want to discard or perform
 any additional linting on your subgraphs.
 
+If no option is enabled for the [namespace configuration](/studio/subgraph-check-extensions#configuration), no file
+will be generated and the `url` field will be `undefined` or no present in the request payload.
+
 ## SubgraphCheckExtensionPayload
-| Field                                  | Description                                                                                                                                  |
-|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| `actorId`                              | The unique identifier of the actor that triggered the check.                                                                                 |
-| `checkId`                              | The unique identifier of the check.                                                                                                          |
-| [`labels`](#labelinfo)                 | Contains the labels used to trigger the check. This field will not be present when `subgraphs` is                                            |
-| [`organization`](#organizationcontext) | Information about the organization that triggered the check.                                                                                 |
-| [`namespace`](#namespacecontext)       | Information about the associated namespace.                                                                                                  |
-| [`vcsContext`](#vcscontext)            | Details about the Version Control System (VCS) that triggered the check. This field is only included when the check is initiated from a VCS. |
-| [`affectedGraphs`](#affectedgraphinfo) | A list of all graphs affected by the check.                                                                                                  |
-| [`subgraphs`](#subgraphcontext)        | A list of all the subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.                |
-| `url`                                  | The URL from which the file containing bulk data can be downloaded.                                                                          |
+| Field            | Type                                          | Description                                                                                                                                  |
+|------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| `actorId`        | `string`                                      | The unique identifier of the actor that triggered the check.                                                                                 |
+| `checkId`        | `string`                                      | The unique identifier of the check.                                                                                                          |
+| `labels`         | [`LabelInfo[]`](#labelinfo)                   | Contains the labels used to trigger the check. This field will not be present when `subgraphs` is                                            |
+| `organization`   | [`OrganizationContext`](#organizationcontext) | Information about the organization that triggered the check.                                                                                 |
+| `namespace`      | [`NamespaceContext`](#namespacecontext)       | Information about the associated namespace.                                                                                                  |
+| `vcsContext`     | [`VCSContext`](#vcscontext)                   | Details about the Version Control System (VCS) that triggered the check. This field is only included when the check is initiated from a VCS. |
+| `affectedGraphs` | [`AffectedGraphInfo[]`](#affectedgraphinfo)   | A list of all graphs affected by the check.                                                                                                  |
+| `subgraphs`      | [`SubgraphContext[]`](#subgraphcontext)       | A list of all the subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.                |
+| `url`            | `string` or `undefined`                       | The URL from which the file containing bulk data can be downloaded.                                                                          |
 
 <Note>
   You will only be able to access the URL provided by the `url` field for *5 minutes* after the request comes in.
@@ -29,52 +32,52 @@ any additional linting on your subgraphs.
 ### LabelInfo
 Provides information about the labels used to trigger the check.
 
-| Field | Description            |
-|-------|------------------------|
-| key   | The key of the label.  |
-| name  | The name of the label. |
+| Field | Type     | Description            |
+|-------|----------|------------------------|
+| key   | `string` | The key of the label.  |
+| name  | `string` | The name of the label. |
 
 ### OrganizationContext
 Provides information about the organization that triggered the check.
 
-| Field | Description                                |
-|-------|--------------------------------------------|
-| id    | The unique identifier of the organization. |
-| slug  | The slug of the organization.              |
+| Field | Type     | Description                                |
+|-------|----------|--------------------------------------------|
+| id    | `string` | The unique identifier of the organization. |
+| slug  | `string` | The slug of the organization.              |
 
 ### NamespaceContext
 Provides information about the associated namespace.
 
-| Field | Description                             |
-|-------|-----------------------------------------|
-| id    | The unique identifier of the namespace. |
-| name  | The display name of the namespace.      |
+| Field | Type     | Description                             |
+|-------|----------|-----------------------------------------|
+| id    | `string` | The unique identifier of the namespace. |
+| name  | `string` | The display name of the namespace.      |
 
 ### VCSContext
 Provides details about the Version Control System (VCS) that triggered the check. This field is only included when the check is initiated from a VCS.
 
-| Field     | Description                                          |
-|-----------|------------------------------------------------------|
-| author    | The email address of the commit author.              |
-| commitSha | The SHA hash of the commit that triggered the check. |
-| branch    | The name of the branch associated with the commit.   |
+| Field     | Type     | Description                                          |
+|-----------|----------|------------------------------------------------------|
+| author    | `string` | The email address of the commit author.              |
+| commitSha | `string` | The SHA hash of the commit that triggered the check. |
+| branch    | `string` | The name of the branch associated with the commit.   |
 
 ### AffectedGraphInfo
 Provides information about the graphs affected by the check.
 
-| Field | Description                         |
-|-------|-------------------------------------|
-| id    | The unique identifier of the graph. |
-| name  | The name of the graph.              |
+| Field | Type     | Description                         |
+|-------|----------|-------------------------------------|
+| id    | `string` | The unique identifier of the graph. |
+| name  | `string` | The name of the graph.              |
 
 ### SubgraphContext
 Provides information about the subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.
 
-| Field     | Description                                                       |
-|-----------|-------------------------------------------------------------------|
-| id        | The unique identifier of the subgraph.                            |
-| name      | The name of the subgraph.                                         |
-| isDeleted | Indicates whether the check was triggered by a subgraph deletion. |
+| Field     | Type      | Description                                                       |
+|-----------|-----------|-------------------------------------------------------------------|
+| id        | `string`  | The unique identifier of the subgraph.                            |
+| name      | `string`  | The name of the subgraph.                                         |
+| isDeleted | `boolean` | Indicates whether the check was triggered by a subgraph deletion. |
 
 ## TypeScript definition
 

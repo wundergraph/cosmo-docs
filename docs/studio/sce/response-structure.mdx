@@ -16,18 +16,18 @@ extension's UI.
 The response payload must be a JSON object with a maximum of **5 MB** in size.
 
 ## SubgraphCheckExtensionReply
-| Field                      | Description                                                                        |
-|----------------------------|------------------------------------------------------------------------------------|
-| `errors`                   | An optional collection of error messages.                                          |
-| [`lintIssues`](#lintissue) | An optional collection of [LintIssues](#lintissue) to append to the check results. |
+| Field        | Type                                       | Description                                                                                                                                                                                                |
+|--------------|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `errors`     | `string[]` or `undefined`                  | An optional collection of errors caught by the check extension. When one or more errors are returned, it is reported as a failure on the schema check extension.                                           |
+| `lintIssues` | [`LintIssue[]`](#lintissue) or `undefined` | An optional collection of lint issues that will be appended to the ones reported by the internal lint check. If you only want to see issues reported by your service, you can disable the `Lint Policies`. |
 
 ## LintIssue
-| Field                                 | Description                                         |
-|---------------------------------------|-----------------------------------------------------|
-| `lintRuleType`                        | The type of lint rule that was violated.            |
-| [`severity`](#lintseverity)           | The severity of the lint issue.                     |
-| `message`                             | A human-readable message describing the lint issue. |
-| [`issueLocation`](#lintissuelocation) | The location of the lint issue in the source code.  |
+| Field           | Type                                      | Description                                                                                                 |
+|-----------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `lintRuleType`  | `string`                                  | A `string` representing the Lint rule. This can be anything that helps you identify the applied rule.       |
+| `severity`      | [`LintSeverity`](#lintseverity)           | The severity of the issue.                                                                                  |
+| `message`       | `string`                                  | A message providing context for the issue.                                                                  |
+| `issueLocation` | [`LintIssueLocation`](#lintissuelocation) | The location of the issue related to the schema. This helps highlight the issue on the check result screen. |
 
 ### LintSeverity
 | Field   | Value | Description                |
@@ -36,31 +36,33 @@ The response payload must be a JSON object with a maximum of **5 MB** in size.
 | Error   | `1`   | Represents a lint error.   |
 
 ### LintIssueLocation
-| Field       | Description                              |
-|-------------|------------------------------------------|
-| `line`      | The line number of the lint issue.       |
-| `column`    | The column number of the lint issue.     |
-| `endLine`   | The end line number of the lint issue.   |
-| `endColumn` | The end column number of the lint issue. |
+| Field       | Type                    | Description                              |
+|-------------|-------------------------|------------------------------------------|
+| `line`      | `number`                | The line number of the lint issue.       |
+| `column`    | `number`                | The column number of the lint issue.     |
+| `endLine`   | `number` or `undefined` | The end line number of the lint issue.   |
+| `endColumn` | `number` or `undefined` | The end column number of the lint issue. |
 
 ## TypeScript definition
 
 ```typescript
-enum LintSeverity {
-  Warning = 0,
-  Error = 1
-}
-
 interface LintIssue {
   lintRuleType: string;
   severity: LintSeverity;
   message: string;
-  issueLocation: {
-    line: number;
-    column: number;
-    endLine?: number;
-    endColumn?: number;
-  };
+  issueLocation: LintIssueLocation;
+}
+
+interface LintIssueLocation {
+  line: number;
+  column: number;
+  endLine?: number;
+  endColumn?: number;
+}
+
+enum LintSeverity {
+  Warning = 0,
+  Error = 1
 }
 
 interface SubgraphCheckExtensionReply {
