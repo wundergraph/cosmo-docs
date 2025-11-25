@@ -9,7 +9,10 @@ icon: "signature"
 </Info>
 
 <Frame caption="Validated & Signed composition">
-  <img src="/images/router/security/image-1.png" />
+  <img
+    src="/images/router/security/composition-ready-to-fetch-status.png"
+    alt="Cosmo Docs screenshot showing composition with green Ready to fetch status and View button"
+  />
 </Frame>
 
 The router configuration includes a Graph Plan, which encapsulates all the necessary information for planning and executing queries. It also specifies the URLs of your subgraphs. This configuration can be periodically fetched from the CDN or downloaded via `wgc` cli to the file system. In either scenario, the content originates from our platform. It is crucial to detect and mitigate tampering attacks, where an adversary might alter the configuration to reroute your traffic to an unauthorized server. To address this concern, we have developed a feature named "Config Validation & Signing" to identify and prevent such attacks.

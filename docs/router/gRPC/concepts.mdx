@@ -131,7 +131,12 @@ When compared to integrating REST APIs into GraphQL Federation, gRPC offers seve
 This diagram shows how the `wgc` CLI generates the necessary artifacts for gRPC integration:
 
 <div align="center">
-    <img src="/images/router/cosmo-connect/development-workflow.png" alt="Development Workflow" width="80%" height="80%" />
+  <img
+    src="/images/router/cosmo-connect/graphql-schema-design-with-wgc-cli-and-grpc.png"
+    alt="GraphQL schema design using wgc CLI, generating Protobuf and gRPC artifacts in Cosmo Docs"
+    width="80%"
+    height="80%"
+  />
 </div>
 
 #### Explanation
@@ -144,7 +149,10 @@ You can then use the generated skeleton to implement your gRPC service. If you w
 This diagram shows how the router processes GraphQL requests and communicates with gRPC services:
 
 <div align="center">
-    <img src="/images/router/cosmo-connect/runtime-execution.png" alt="Runtime Execution" />
+  <img
+    src="/images/router/cosmo-connect/graphql-operations-flow-through-grpc.png"
+    alt="GraphQL operations executed via gRPC, from client requests to service business logic"
+  />
 </div>
 
 #### Explanation
@@ -231,7 +239,7 @@ When implementing gRPC integration in your GraphQL Federation, you have two main
 
 | Factor | gRPC Services | Router Plugins |
 |--------|---------------|--------------|
-| **Language Support** | Any gRPC language | Go only (More coming soon) |
+| **Language Support** | Any gRPC language | Go, and TS(with Bun) only (More coming soon) |
 | **Deployment Model** | Distributed microservices | Co-located with router |
 | **Team Autonomy** | High - independent ownership | Low - router-dependent |
 | **Performance** | Network latency overhead | Minimal latency |

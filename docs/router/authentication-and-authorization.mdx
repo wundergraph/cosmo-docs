@@ -56,6 +56,54 @@ The router configuration facilitates the setup of multiple JWKS (JSON Web Key Se
 
 For more information on the attributes, visit the auth configuration parameter section page [here](/router/configuration#authentication).
 
+### Disabling Authentication for Introspection Operations
+
+Cosmo Router supports bypassing authentication for introspection queries.
+
+This is useful, for example, when you want to configure client tooling from within a secured environment without requiring authentication tokens.
+Instead of having to disable authentication altogether, this feature allows you to keep the configuration as close to production as possible while still using introspection queries easily.
+Additionally, you can define a dedicated secret to authenticate introspection queries.
+
+<Warning>
+This feature is meant to be used in secure, internal environments. It is not recommended for use in a production environment.
+By default, introspection queries are not excluded from authentication.
+</Warning>
+
+To enable this feature, add the following section to your router configuration:
+
+<CodeGroup>
+  ```yaml config.yaml
+  authentication:
+    ignore_introspection: true # default is false
+    # other auth settings here
+  ```
+</CodeGroup>
+
+Now, when you send an introspection query, you won't need to provide an authentication token.
+
+```bash
+curl -X POST http://localhost:3002/graphql \
+  --header "Content-Type: application/json" \
+  --data '{"query": "{ __schema { types { name } } }"}'
+```
+
+Optionally, you can set a dedicated secret for introspection queries.
+
+<CodeGroup>
+  ```yaml config.yaml
+  introspection:
+    secret: 'dedicated_secret_for_introspection'
+  ```
+</CodeGroup>
+
+When a secret is set, you must include it in the `Authorization` header (without a Bearer prefix).
+
+```bash
+curl -X POST http://localhost:3002/graphql \
+  --header "Content-Type: application/json" \
+  --header "Authorization: dedicated_secret_for_introspection" \
+  --data '{"query": "{ __schema { types { name } } }"}'
+```
 
 
 ## Old Router configuration (\< 0.168.1)

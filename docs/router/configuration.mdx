@@ -134,7 +134,7 @@ The following sections describe each configuration in detail with all available 
 | CONTROLPLANE_URL                 | controlplane_url                 | <Icon icon="square-check" iconType="solid" /> | The controlplane url. Not required when a static execution config is provided.                                                                                                                     | https://cosmo-cp.wundergraph.com |
 | PLAYGROUND_ENABLED               | playground_enabled               | <Icon icon="square" />                        | Enables the GraphQL playground on (`$LISTEN_ADDR/`)                                                                                                                                                | true                             |
 | PLAYGROUND_PATH                  | playground_path                  | <Icon icon="square" />                        | The path where the playground is served                                                                                                                                                            | "/"                              |
-| INTROSPECTION_ENABLED            | introspection_enabled            | <Icon icon="square" />                        | Enables the GraphQL introspection                                                                                                                                                                  | true                             |
+| INTROSPECTION_ENABLED            | introspection_enabled            | <Icon icon="square" />                        | Enables the GraphQL introspection (deprecated, use `introspection.enabled` instead)                                                                                                                                                                | true                             |
 | QUERY_PLANS_ENABLED              | query_plans_enabled              | <Icon icon="square" />                        | The Router can return Query plans as part of the response, which might be useful to understand the execution.                                                                                      | true                             |
 | LOG_LEVEL                        | log_level                        | <Icon icon="square" />                        | The log level to use. Allowed levels are `"debug"`, `"info"`, `"warn"`, `"error"`, `"panic"`, `"fatal"`.                                                                                     | info                             |
 | JSON_LOG                         | json_log                         | <Icon icon="square" />                        | Render the log output in JSON format (true) or human readable (false)                                                                                                                              | true                             |
@@ -172,6 +172,11 @@ readiness_check_path: "/health/ready"
 liveness_check_path: "/health/live"
 router_config_path: ""
 ```
+
+<Warning>
+  `introspection_enabled` is a deprecated flag.
+  Please use `introspection.enabled` instead.
+</Warning>
 
 ## Config watcher hot reloading
 
@@ -215,6 +220,8 @@ For a detailed example, please refer to the [Access Logs](/router/access-logs) s
 | -------------------------------------------- | ------------------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 |                                              | access_logs                                      | <Icon icon="square" /> | Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.                                                                                                                                                                                                                                                                                                                                                       |               |
 | ACCESS_LOGS_ENABLED                          | access_logs.enabled                              | <Icon icon="square" /> | Enable the access logs. The access logs are used to log the incoming requests. By default, the access logs are enabled and logged to the standard output.                                                                                                                                                                                                                                                                                                                                                       | true          |
+| ACCESS_LOGS_LEVEL                            | access_logs.level                                | <Icon icon="square" /> | Minimum level required for an access log entry to be emitted. One of: <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, <code>panic</code>, <code>fatal</code>.                                                                                                                                                                                                                                                                                                                     | info          |
+| ACCESS_LOGS_ADD_STACKTRACE                   | access_logs.add_stacktrace                       | <Icon icon="square" /> | When true, include stack traces in access logs for error cases. Panics always include stack traces regardless.                                                                                                                                                                                                                                                                                                                                                                                                  | false          |
 |                                              | access_logs.buffer                               | <Icon icon="square" /> | The buffer is used to buffer the logs before writing them to the output.                                                                                                                                                                                                                                                                                                                                                                                                                                        |               |
 | ACCESS_LOGS_BUFFER_ENABLED                   | access_logs.buffer.enabled                       | <Icon icon="square" /> | Enable the buffer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | false         |
 | ACCESS_LOGS_BUFFER_SIZE                      | access_logs.buffer.size                          | <Icon icon="square" /> | The size of the buffer. The default value is 256KB.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |               |
@@ -249,6 +256,8 @@ version: "1"
 
 access_logs:
   enabled: true
+  level: info
+  add_stacktrace: true
   buffer:
     enabled: false
     size: 256KB
@@ -300,6 +309,25 @@ graph:
   token: "<your-graph-token>"
 ```
 
+## Introspection
+
+Overall configuration for managing introspection queries on this Router.
+
+| Environment Variable  | YAML           | Required               | Description                                                                                                                                   | Default Value |
+| --------------------- | -------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| INTROSPECTION_ENABLED | enabled        | <Icon icon="square" /> | Enable or disable introspection queries                                                                                                       | true          |
+| INTROSPECTION_SECRET  | secret         | <Icon icon="square" /> | Optional, dedicated secret used for instrospection authentication. Only used when `authentication.ignore_introspection` is set to `true`.     |               |
+
+### Example YAML config:
+
+```yaml config.yaml
+version: "1"
+
+introspection:
+  enabled: true
+  secret: "dedicated_secret_for_introspection"
+```
+
 ## MCP (Model Context Protocol)
 
 The Model Context Protocol (MCP) server allows AI models to discover and interact with your GraphQL API in a secure way.
@@ -308,7 +336,6 @@ The Model Context Protocol (MCP) server allows AI models to discover and interac
 | ------------------------------- | ------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
 | MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                             | false          |
 | MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                           | localhost:5025 |
-| MCP_SERVER_BASE_URL             | mcp.server.base_url             | <Icon icon="square" /> | The base URL of the MCP server. This is the URL advertised to LLM clients when SSE is used as primary transport.                                             | -              |
 | MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy; used in MCP responses to provide the real router URL. | -              |
 | MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                                | -              |
 | MCP_SESSION_STATELESS           | mcp.session.stateless           | <Icon icon="square" /> | Whether the MCP server should operate in stateless mode. When true, no server-side session state is maintained between requests.                             | true           |
@@ -326,7 +353,6 @@ mcp:
   enabled: true
   server:
     listen_addr: "localhost:5025"
-    base_url: "http://localhost:5025/mcp" # Optional: Advertised MCP base URL for SSE clients
   router_url: "https://your-public-router-url.example.com/graphql" # Optional: Used in MCP responses when your router is behind a proxy.
   storage:
     provider_id: "mcp" # References a file_system provider defined below
@@ -1502,6 +1528,21 @@ authentication:
         name: X-Authorization
 ```
 
+### Bypass Introspection Authentication
+
+This is useful when you want to bypass authentication for introspection queries,
+for example let certain tools introspect the schema without requiring authentication token.
+
+<Warning>
+  This feature is meant to be used in secure, internal environments. It is not recommended for use in a production environment.
+  By default, introspection queries are not excluded from authentication.
+  Also consider setting `introspection.secret` for a static secret dedicated to introspection queries.
+</Warning>
+
+| Environment Variable | YAML                 | Required               | Description                         | Default Value    |
+| -------------------- | -------------------- | ---------------------- | ----------------------------------- | ---------------- |
+|                      | ignore_introspection | <Icon icon="square" /> | Bypass introspection authentication | false            |
+
 ### Old Authentication Config (Router Version \< 0.XXX.X)
 
 ### Provider
@@ -1684,7 +1725,9 @@ Configure the GraphQL Execution Engine of the Router.
 | ENGINE_ENABLE_VALIDATION_CACHE                                | enable_validation_cache                                | <Icon icon="square" /> | Enable the validation cache. The validation cache is used to cache results of validating GraphQL Operations.                                                                                                                                                                                                                                | true          |
 | ENGINE_VALIDATION_CACHE_SIZE                                  | validation_cache_size                                  | <Icon icon="square" /> | The size of the validation cache.                                                                                                                                                                                                                                                                                                           | 1024          |
 | ENGINE_DISABLE_EXPOSING_VARIABLES_CONTENT_ON_VALIDATION_ERROR | disable_exposing_variables_content_on_validation_error | <Icon icon="square" /> | Disables exposing the variables content in the error response. This is useful to avoid leaking sensitive information in the error response.                                                                                                                                                                                                 | false         |
-| ENGINE_ENABLE_SUBGRAPH_FETCH_OPERATION_NAME                   | enable_subgraph_fetch_operation_name                   | <Icon icon="square" /> | Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: `$OperationName__$SubgraphName__$FetchID`.                                                                                                       | false          |
+| ENGINE_ENABLE_SUBGRAPH_FETCH_OPERATION_NAME                   | enable_subgraph_fetch_operation_name                   | <Icon icon="square" /> | Enable appending the operation name to subgraph fetches. This will ensure that the operation name will be included in the corresponding subgraph requests using the following format: `$OperationName__$SubgraphName__$FetchID`.                                                                                                            | false         |
+| ENGINE_ENABLE_REQUIRE_FETCH_REASONS                           | enable_require_fetch_reasons                           | <Icon icon="square" /> | Enable the openfed__requireFetchReasons directive, and forces the adding of the "fetch_reasons" extension to upstream subgraph requests. This extension explains why each field was requested.                                                                                                                                              | false         |
+| ENGINE_VALIDATE_REQUIRED_EXTERNAL_FIELDS                      | validate_required_external_fields                      | <Icon icon="square" /> | Validate nullable external "@requires" dependencies. When a subgraph entity fetch returns a null value with an error for a field set specified in the "@requires" directive, any following fetch that depends on it should not receive such an entity.                                                                                      | false         |
 | ENGINE_SUBSCRIPTION_FETCH_TIMEOUT                             | subscription_fetch_timeout                             | <Icon icon="square" /> | The maximum time a subscription fetch can take before it is considered timed out.                                                                                                                                                                                                                                                           | 30s           |
 
 ### Example YAML config:

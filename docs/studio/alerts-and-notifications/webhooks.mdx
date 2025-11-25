@@ -77,12 +77,20 @@ const isVerified = verifySignature(JSON.stringify(req.body), req.headers['x-cosm
   <Step title="Navigate to the notifications page on Cosmo"/>
   <Step title="In the Webhooks tab, click on the Create button.">
 <Frame>
-  <img src="/images/studio/webhooks.png" />
+  <img
+    src="/images/studio/webhook-configuration-page.png"
+    alt="Cosmo Studio configuration page for creating new organization webhooks."
+    title="Webhook configuration page"
+  />
 </Frame>
 </Step>
 <Step title="Provide the endpoint of the webhook, and the webhook secret for verification and then select the events you want to be notified of.">
 <Frame>
-  <img src="/images/studio/create_webhook.png" />
+  <img
+    src="/images/studio/create-webhook-dialog.png"
+    alt="Create webhook dialog showing endpoint input, secret key, and schema update event selection."
+    title="Create webhook dialog"
+  />
 </Frame>
 </Step>
 <Step title="Lastly, click on the Create button."/>
