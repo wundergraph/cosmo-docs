@@ -67,6 +67,7 @@ plans/query2.graphql
 <Info>
 The report structure changed since Router 0.189.0
 </Info>
+
 You can use the `-print-report` option to generate a report in addition to the individual query plan files. The report will be saved in the plans folder as `report.json` and will follow this structure:
 
 ```bash
@@ -75,7 +76,13 @@ You can use the `-print-report` option to generate a report in addition to the i
     "plans": [
         {
             "file_name": "[...]",
-            "plan": "[...]"
+            "plan": "[...]",
+            "timings":{
+                "ParseTime":1000,
+                "NormalizeTime":1000,
+                "ValidateTime":1000,
+                "PlanTime":1000
+            }
         },
         {
             "file_name": "[...]",
@@ -87,7 +94,9 @@ You can use the `-print-report` option to generate a report in addition to the i
 
 If you only need the report, you can add the following option to the command `-print-per-file=false`.
 
-The `error` field on the first level will contains a value only if there is an error that is not directly related to a single plan (eg: timeout error, missing or corrupted router config).
+The `error` field on the first level will contain a value only if there is an error that is not directly related to a single plan (eg: timeout error, missing or corrupted router config).
+
+The fields inside `timings`, added since router version `0.265.0`, contains the time taken (in nanoseconds) for each phase of the query planning process. If you use the values to track performance over time, make sure to run the command in similar conditions to get comparable results and to allow some variance in the data.
 
 ### Fail on planning error
 
