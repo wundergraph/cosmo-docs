@@ -13,14 +13,14 @@ This tutorial is part of [Cosmo Connect](/connect/overview) and focuses on deplo
 
 ## Prerequisites
 
-- [Cosmo CLI](/cli/intro) (minimum version: [0.90.1](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.90.1)) installed and configured
+- [Cosmo CLI](/cli/intro) (minimum version: [0.98.0](https://github.com/wundergraph/cosmo/releases/tag/wgc%400.98.0)) installed and configured
 - [Cosmo Router](/router/intro) (minimum version: [0.242.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.242.0)) installed and configured to use Cosmo Cloud
 
 If you're new to Cosmo, you should start with the [Cosmo Cloud Onboarding](/getting-started/cosmo-cloud-onboarding) guide. This tutorial assumes you've created a federated graph and deployed and configured router(s) for it.
 
 ## Overview
 
-gRPC plugins are a powerful new way to write and deploy subgraphs without the need for a GraphQL server. You can use plugins to wrap legacy APIs, mock future subgraphs or fully implement new features. Plugins are written in Go and can be deployed and run automatically by the Cosmo Router.
+gRPC plugins are a powerful new way to write and deploy subgraphs without the need for a GraphQL server. You can use plugins to wrap legacy APIs, mock future subgraphs or fully implement new features. Plugins are written in Go or TypeScript and can be deployed and run automatically by the Cosmo Router.
 
 For this tutorial, we'll create a gRPC plugin called `starwars` that wraps a small portion of the REST API from [SWAPI](https://swapi.info/). SWAPI is a free and open-source public API that provides information about Star Wars characters, planets, and more. For the tutorial, it functions as a stand-in for your own API or external datasource (an SQL database, Stripe, etc.).
 
