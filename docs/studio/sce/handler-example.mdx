@@ -5,7 +5,7 @@ icon: puzzle-piece-simple
 description: "Implementing a simple handler for Subgraph Check Extensions."
 ---
 
-For this example we are using `fastify` and `tsx` to run the local server on port `4000`. Before running any check,
+For this example, we are using `fastify` and `tsx` to run a local server on port `4000`. Before running any checks,
 we need to configure the check extension to point to our local server and set the secret key. For this example, we are
 using the following values:
 
@@ -13,13 +13,13 @@ using the following values:
 - Secret key: `...`
 
 ## Setting up the project
-First, we need to create a new directory for our project and navigate to the directory.
+First, create a new directory for the project and navigate into it.
 ```shell
 mkdir <project-name>
 cd <project-name>
 ````
 
-After we are in the project directory, we need to initialize our project using your preferred package manager and install the required dependencies.
+Once inside the project directory, initialize the project using your preferred package manager and install the required dependencies.
 <CodeGroup>
   ```shell NPM
   npm init -y
@@ -37,7 +37,7 @@ After we are in the project directory, we need to initialize our project using y
   ```
 </CodeGroup>
 
-And finally, we need to create a new script in the `package.json` file to run our project.
+Finally, create a script in the `package.json` file to run the project.
   ```json
   {
     ...
@@ -49,7 +49,7 @@ And finally, we need to create a new script in the `package.json` file to run ou
   ```
 
 ## Handler implementation
-Below you will find the implementation of the handler along with a helper to validate the request signature and type definitions for the payload and reply.
+The following example includes the handler implementation, a helper for validating the request signature, and type definitions for the payload and reply.
 
 <CodeGroup>
   ```typescript server.ts
@@ -82,9 +82,9 @@ Below you will find the implementation of the handler along with a helper to val
         return { errorMessage: 'Bad request' };
       }
 
-      // We can run checks conditionally
+      // Run checks conditionally
       if (body.namespace.name !== 'default' || body.subgraph?.name !== 'family') {
-        // We only want to overwrite the lint issues for the subgraph `family` on the namespace `default`
+        // Only overwrite lint issues for the `family` subgraph in the `default` namespace
         res.code(204);
         return;
       }

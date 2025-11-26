@@ -5,28 +5,28 @@ icon: share
 description: "Definition of the request payload structure for Subgraph Check Extension."
 ---
 
-When the subgraph check extension is triggered, your registered endpoint will receive a request with a `JSON` payload
-containing information about the check. You can use this information to decide whether you want to discard or perform
+When the Subgraph Check Extension is triggered, your registered endpoint receives a request with a `JSON` payload
+containing information about the check. You can use this information to decide whether to discard the check or perform
 any additional linting on your subgraphs.
 
-If no option is enabled for the [namespace configuration](/studio/subgraph-check-extensions#configuration), no file
-will be generated and the `url` field will be `undefined` or no present in the request payload.
+If no option is enabled in the [namespace configuration](/studio/subgraph-check-extensions#configuration), no file
+is generated and the `url` field will be `undefined` or not present in the request payload.
 
 ## SubgraphCheckExtensionPayload
 | Field            | Type                                          | Description                                                                                                                                  |
 |------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | `actorId`        | `string`                                      | The unique identifier of the actor that triggered the check.                                                                                 |
 | `checkId`        | `string`                                      | The unique identifier of the check.                                                                                                          |
-| `labels`         | [`LabelInfo[]`](#labelinfo)                   | Contains the labels used to trigger the check. This field will not be present when `subgraphs` is                                            |
+| `labels`         | [`LabelInfo[]`](#labelinfo)                   | Contains the labels used to trigger the check. This field will not be present when `subgraphs` is defined.                                           |
 | `organization`   | [`OrganizationContext`](#organizationcontext) | Information about the organization that triggered the check.                                                                                 |
 | `namespace`      | [`NamespaceContext`](#namespacecontext)       | Information about the associated namespace.                                                                                                  |
 | `vcsContext`     | [`VCSContext`](#vcscontext)                   | Details about the Version Control System (VCS) that triggered the check. This field is only included when the check is initiated from a VCS. |
 | `affectedGraphs` | [`AffectedGraphInfo[]`](#affectedgraphinfo)   | A list of all graphs affected by the check.                                                                                                  |
-| `subgraphs`      | [`SubgraphContext[]`](#subgraphcontext)       | A list of all the subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.                |
-| `url`            | `string` or `undefined`                       | The URL from which the file containing bulk data can be downloaded.                                                                          |
+| `subgraphs`      | [`SubgraphContext[]`](#subgraphcontext)       | A list of all subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.                |
+| `url`            | `string` or `undefined`                       | The URL from which the bulk data file can be downloaded.                                                                          |
 
 <Note>
-  You will only be able to access the URL provided by the `url` field for *5 minutes* after the request comes in.
+  You can access the URL provided in the `url` field for *5 minutes* after the request arrives.
 </Note>
 
 ### LabelInfo
@@ -60,7 +60,7 @@ Provides details about the Version Control System (VCS) that triggered the check
 |-----------|----------|------------------------------------------------------|
 | author    | `string` | The email address of the commit author.              |
 | commitSha | `string` | The SHA hash of the commit that triggered the check. |
-| branch    | `string` | The name of the branch associated with the commit.   |
+| branch    | `string` | The branch name associated with the commit.   |
 
 ### AffectedGraphInfo
 Provides information about the graphs affected by the check.
@@ -77,7 +77,7 @@ Provides information about the subgraphs that triggered the check. This field is
 |-----------|-----------|-------------------------------------------------------------------|
 | id        | `string`  | The unique identifier of the subgraph.                            |
 | name      | `string`  | The name of the subgraph.                                         |
-| isDeleted | `boolean` | Indicates whether the check was triggered by a subgraph deletion. |
+| isDeleted | `boolean` | Indicates whether the check was triggered by a deleted subgraph. |
 
 ## TypeScript definition
 

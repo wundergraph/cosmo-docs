@@ -2,19 +2,19 @@
 title: "File Structure"
 sidebarTitle: File Structure
 icon: file-export
-description: "Definition of the ."
+description: "Definition of the Subgraph Check extension payload structure."
 ---
 
 ## SubgraphCheckExtensionContent
 <Note>
-  The fields listed below are all optionals and can be included and excluded based on the
+  The fields listed below are all optional and can be included or excluded based on the
   [namespace configuration](/studio/subgraph-check-extensions#configuration).
 </Note>
 
 | Field                | Type                                                               | Description                                                                                   |
 |----------------------|--------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | `subgraphs`          | [`SubgraphInfo[]`](#subgraphinfo) or `undefined`                   | A list of subgraphs that trigger the check.                                                   |
-| `compositions`       | [`CompositionInfo[]`](#compositioninfo) or `undefined`             | A list of all the compositions caused by the check.                                           |
+| `compositions`       | [`CompositionInfo[]`](#compositioninfo) or `undefined`             | A list of all compositions produced by the check.                                           |
 | `lintIssues`         | [`LintIssues[]`](#lintissue) or `undefined`                        | A list containing all the lint issues detected based on the `Lint Policies`.                  |
 | `graphPruningIssues` | [`GraphPruningIssues[]`](#graphpruningissue) or `undefined`        | A list containing all the graph pruning issues detected based on the `Graph Pruning Policies` |
 | `schemaChanges`      | [`SchemaChangeInfo[]`](#schemachangeinfo) or `undefined`           | A list containing all the changes detected by the check.                                      |
@@ -35,7 +35,7 @@ description: "Definition of the ."
 | `name`                  | `string`                                                | The name of the composition.                                                            |
 | `composedSchema`        | `string`                                                | The composed SDL schema.                                                                |
 | `federatedClientSchema` | `string`                                                | The composed schema for the Federated Client.                                           |
-| `subgraphs`             | [`CompositionSubgraphInfo[]`](#compositionsubgraphinfo) | A collection containing all the subgraphs that colaborated to produce this composition. |
+| `subgraphs`             | [`CompositionSubgraphInfo[]`](#compositionsubgraphinfo) | A collection of all subgraphs that contributed to this composition. |
 
 ## CompositionSubgraphInfo
 | Field  | Type     | Description                            |
@@ -102,7 +102,7 @@ description: "Definition of the ."
 ## SchemaChangeInfo
 | Field        | Type      | Description                                                                                                        |
 |--------------|-----------|--------------------------------------------------------------------------------------------------------------------|
-| `message`    | `string`  | A `string` representation of the change that occurred.                                                             |
+| `message`    | `string`  | A `string` representation of the change.                                                             |
 | `changeType` | `string`  | A string representing the type of change. You can find the possible values [here](#list-of-possible-change-types). |
 | `path`       | `string`  | The path to the schema change.                                                                                     |
 | `isBreaking` | `boolean` | A value indicating whether the detected change is considered breaking or not.                                      |
