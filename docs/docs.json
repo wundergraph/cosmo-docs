@@ -100,12 +100,20 @@
                       "router/gRPC/plugins",
                       "router/gRPC/plugins/debugging",
                       {
-                        "group": "Library Features",
-                        "icon": "books",
+                        "group": "Go Plugins",
+                        "icon": "golang",
                         "pages": [
-                          "router/gRPC/plugins/library-features/http-client",
-                          "router/gRPC/plugins/library-features/telemetry",
-                          "router/gRPC/plugins/library-features/logging"
+                          "router/gRPC/plugins/go-plugin/overview",
+                          "router/gRPC/plugins/go-plugin/http-client",
+                          "router/gRPC/plugins/go-plugin/telemetry",
+                          "router/gRPC/plugins/go-plugin/logging"
+                        ]
+                      },
+                      {
+                        "group": "TypeScript Plugins",
+                        "icon": "t",
+                        "pages": [
+                          "router/gRPC/plugins/ts-plugin/overview"
                         ]
                       }
                     ]
@@ -343,7 +351,7 @@
             ]
           },
           {
-            "group": "Federation",
+            "group": "GraphQL / Federation",
             "pages": [
               "federation/federation-compatibility-matrix",
               {

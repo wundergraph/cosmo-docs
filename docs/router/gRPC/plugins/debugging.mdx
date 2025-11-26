@@ -31,6 +31,8 @@ However, for the best experience, we recommend installing the tools manually. Th
 | Protocol Buffers (protoc) | ^29.3 | [Releases](https://protobuf.dev/installation/) |
 | protoc-gen-go | ^1.34.2 | [GitHub Releases](https://github.com/protocolbuffers/protobuf-go/releases) |
 | protoc-gen-go-grpc | ^1.5.1 | [GitHub Releases](https://github.com/grpc/grpc-go/releases) |
+| Bun | ^1.2.15 | [GitHub Releases](https://github.com/oven-sh/bun/releases) |
+| Node | ^22.11.0 | [Releases](https://nodejs.org/en/about/previous-releases) |
 
 
 ## Building for Debug
@@ -41,6 +43,10 @@ To build your plugin with debug information, use the `--debug` flag with the bui
 wgc router plugin build --debug ./my-plugin
 ```
 
+Based on the language you select the process for debugging is a bit different.
+
+<Tabs>
+<Tab title="Go">
 This will compile the plugin with debug symbols and without optimizations, making it suitable for debugging.
 
 ## Debugging with Delve
@@ -121,11 +127,66 @@ To debug your plugin in VS Code:
      - F10: Step Over
      - F11: Step Into
 
-## Tips for Effective Debugging
+## Troubleshooting
 
-1. **Log Points**: Consider adding log points instead of breakpoints for less intrusive debugging
-2. **Conditional Breakpoints**: Use conditional breakpoints to break only when specific conditions are met
-3. **Watch Expressions**: Set watch expressions to monitor variable values during execution
+- If you can't attach to the process, ensure you have the necessary permissions
+- For production environments, make sure to rebuild without the `--debug` flag
+- When debugging fails to hit breakpoints, verify the source code paths match
+- If symbols are missing, confirm you built with the `--debug` flag
+</Tab>
+
+<Tab title="TypeScript">
+When we want to debug a TypeScript plugin we cannot create a bun binary as debugging is not supported, instead when you pass the `--debug` argument, we will copy over all the source and create a thin bash script that acts as a wrapper which mimics the usual binary. Doing this allows us to pass in `--inspect` to bun allowing us to hook into it for debugging.
+
+## Debugging with debug.bun.sh
+When the plugin is started in debug mode, it will create a link that can be accessed to debug your plugin, all in your browser. In order to find the generated URL, you should access `plugin_stderr.log`, which should be inside the `plugin/bin` folder after startup. What you are looking for is text similar to
+
+```
+Inspect in browser:
+  https://debug.bun.sh/#localhost:6499/ai8omlnz82t
+```
+
+All you need to do now is simply go to the above URL and you can start debugging. You can find more info on the Bun web debugger [here](https://bun.com/docs/guides/runtime/web-debugger).
+
+## Debugging with VS Code
+
+To debug your plugin in VS Code:
+
+1. Ensure that you have installed the [Bun VS Code Extension](https://bun.com/guides/runtime/vscode-debugger)
+2. You will need to copy the WebSocket URL from `plugin_stderr.log` which would look like the following, and paste it in the URL in step 3 below.
+
+<Note>
+Bun officially recommends using the web debugger for now as their VS Code support improves.
+</Note>
+
+```
+Listening:
+  ws://localhost:6499/ai8omlnz82t
+```
+
+3. Create a `.vscode/launch.json` file with this configuration (replace the URL with your actual WebSocket URL from step 2):
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "bun",
+            "request": "attach",
+            "name": "Attach To Bun",
+            "url": "ws://localhost:6499/ai8omlnz82t"
+        }
+    ]
+}
+```
+
+4. Start debugging:
+   - Press F5 or click Run → Start Debugging
+   - Set breakpoints by clicking the gutter
+   - Use the debug toolbar or keyboard shortcuts:
+     - F5: Continue
+     - F10: Step Over
+     - F11: Step Into
 
 ## Troubleshooting
 
@@ -133,6 +194,16 @@ To debug your plugin in VS Code:
 - For production environments, make sure to rebuild without the `--debug` flag
 - When debugging fails to hit breakpoints, verify the source code paths match
 - If symbols are missing, confirm you built with the `--debug` flag
+</Tab>
+</Tabs>
+
+## Tips for Effective Debugging
+
+1. **Log Points**: Consider adding log points instead of breakpoints for less intrusive debugging
+2. **Conditional Breakpoints**: Use conditional breakpoints to break only when specific conditions are met
+3. **Watch Expressions**: Set watch expressions to monitor variable values during execution
+
+
 
 <Note>
 Debugging in production environments is not recommended as it can impact performance. Always use debug builds in development environments only.
