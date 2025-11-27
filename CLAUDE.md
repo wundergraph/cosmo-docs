@@ -42,7 +42,7 @@ mintlify install
 - **Namespaces**: Environment isolation for graphs (dev, staging, prod)
 - **Feature Flags & Feature Subgraphs**: Toggle-able subgraph replacements for incremental rollout
 - **Schema Contracts**: Filtered graph versions using @tag directives
-- **Cosmo Streams / EDFS**: Event-Driven Federated Subscriptions for real-time data
+- **Cosmo Streams / EDFS: Connects to event streaming systems like Kafka, NATS, and Redis to power event-driven, federated operations through real-time subscriptions.
 
 ## Documentation Structure
 
