@@ -6,6 +6,15 @@ icon: "chart-line"
 
 The Operations page provides a comprehensive view into your operations, allowing you to monitor and analyze your operations with detailed metrics, client usage data, and performance insights.
 
+## Why Use the Operations Page
+
+- **Track All Operations**: Monitor and analyze all the operations executed against your federated graph
+- **Analyze Deprecated Fields**: Identify operations that use deprecated schema fields and determine which clients are affected
+- **Make Safe Schema Changes**: Use deprecated field usage data to decide whether it's safe to remove deprecated fields
+- **Monitor Client Usage**: Track how different clients interact with your operations and identify usage patterns
+- **Debug Performance Issues**: Sort operations by latency or error rate to quickly identify problematic operations
+- **Plan Schema Evolution**: Use client and deprecated field usage data to plan migration timelines and communicate changes
+
 <Frame>
   <img src="/images/studio/operations/default.png" />
 </Frame>
@@ -106,27 +115,3 @@ Control the time period for your analytics:
 - **Request Metrics**: Request rate over time and visual charts showing request patterns
 - **Latency Metrics**: P95 latency and visual chart of response times
 - **Error Metrics**: Error rate percentage and error patterns over time
-
-## Client Usage Analysis
-
-For selected operations, view detailed client usage information:
-
-- **Client Identification**: Clients identified by `graphql-client-name` header
-- **Client Versions**: Track usage across different client versions
-- **Request Volume**: Number of requests per client
-- **Last Used**: The last time the operation was used by the client
-
-## Deprecated Fields Analysis
-
-Monitor usage of deprecated schema fields:
-
-- **Field Identification**: List of deprecated fields used by the operation
-- **Client Impact**: Which clients will be affected by field removal
-
-### Schema Evolution Support
-
-The deprecated fields analysis helps with:
-
-- **Safe Migrations**: Ensure deprecated fields can be safely removed
-- **Client Communication**: Identify which clients need updates
-- **Timeline Planning**: Plan deprecation timelines based on actual usage
