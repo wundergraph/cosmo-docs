@@ -637,7 +637,7 @@ This option may change or be removed in future versions as the OpenTelemetry SDK
 | METRICS_OTLP_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        | The metric labels to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions. | []            |
 | METRICS_OTLP_CONNECTION_STATS      | connection_stats      | <Icon icon="square" />                        | Enable connection metrics.                                                                                                                                | false         |
 | METRICS_OTLP_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Ensure that circuit breaker metrics are enabled for OTEL.                                                                                                 | false         |
-| METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable EDFS stream metrics.                                                                                                                               | false         |
+| METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                                                                                                             | false         |
 
 ### Attributes
 
@@ -688,7 +688,7 @@ telemetry:
 | PROMETHEUS_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        |                                                                           |                  |
 | PROMETHEUS_EXCLUDE_SCOPE_INFO    | exclude_scope_info    | <Icon icon="square" />                        | Exclude scope info from Prometheus metrics.                               | false            |
 | PROMETHEUS_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Enable the circuit breaker metrics for prometheus metric collection.      | false            |
-| PROMETHEUS_OTLP_STREAM           | streams               | <Icon icon="square" />                        | Enable EDFS stream metrics.                                               | false            |
+| PROMETHEUS_OTLP_STREAM           | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                             | false            |
 
 ### Example YAML config:
 
@@ -1613,7 +1613,7 @@ cdn:
 
 ## Events
 
-The Events section lets you define Event Sources for [Event-Driven Federated Subscriptions (EDFS)](/router/event-driven-federated-subscriptions-edfs).
+The Events section lets you define Event Sources for [Cosmo Streams / EDFS](/router/cosmo-streams).
 
 We support NATS, Kafka and Redis as event bus provider.
 
@@ -1687,6 +1687,15 @@ events:
 | :------------------- | :--- | :------- | :--------------------------------------------------------------------------------------- | :------------ |
 |                      | id   |          | The ID of the provider. This have to match with the ID specified in the subgraph schema. | []            |
 |                      | urls |          | A list of redis instances URLS, e.g: `redis://localhost:6379/2`                          |               |
+
+### Cosmo Streams handlers
+
+Configuration for Cosmo Streams handlers. Learn more about [Custom Modules for Cosmo Streams](/router/cosmo-streams/custom-modules).
+
+| Environment Variable | YAML                                               | Required               | Description                                                                            | Default Value |
+| :------------------- | :------------------------------------------------- | :--------------------- | :------------------------------------------------------------------------------------- | :-            |
+|                      | handlers.on_receive_events.handler_timeout         | <Icon icon="square" /> | The maximum time to wait for all OnReceiveEvents handlers to complete per event-batch. | 5s            |
+|                      | handlers.on_receive_events.max_concurrent_handlers | <Icon icon="square" /> | The maximum number of concurrent OnReceiveEvents handlers per trigger.                 | 100           |
 
 ## Router Engine Configuration
 
