@@ -1,0 +1,156 @@
+---
+title: "Operations"
+description: "Comprehensive view into your operations. Monitor and analyze your operations with detailed metrics and insights."
+icon: "chart-line"
+---
+
+The Operations page provides a comprehensive view into your operations, allowing you to monitor and analyze your operations with detailed metrics, client usage data, and performance insights.
+
+<Frame>
+  <img src="/images/studio/operations/default.png" />
+</Frame>
+
+## Page Layout
+
+The Operations page features a responsive two-panel layout designed for efficient operation analysis:
+
+### Left Panel - Operations List
+
+The left panel displays a searchable, filterable list of all operations executed against your federated graph. Each operation shows:
+
+- **Operation Name**: The name of the GraphQL operation (or "Unnamed Operation" for operations without names)
+- **Operation Type**: Query, Mutation, or Subscription
+- **Performance Metrics**: Based on your selected sorting criteria (latency, request count, or error rate)
+- **Deprecated Fields Indicator**: Visual indicator if the operation uses deprecated schema fields
+
+### Right Panel - Operation Details & Analytics
+
+The right panel dynamically displays either:
+
+- **Overview Analytics**: Aggregate metrics for all operations when no specific operation is selected
+- **Operation-Specific Analytics**: Detailed metrics and insights for a selected operation
+
+<Frame>
+  <img src="/images/studio/operations/right-panel.png" />
+</Frame>
+## Search and Filtering
+
+### Search Operations
+
+Use the search functionality to quickly find specific operations:
+
+- **Text Search**: Search by operation name or hash
+- **Real-time Results**: Search results update as you type with debounced input
+- **Mobile Support**: On mobile devices, search opens in a bottom sheet for optimal user experience
+
+### Sorting Options
+
+Sort operations by different performance metrics:
+
+- **Request Count**: Sort by total number of requests (default)
+- **Latency**: Sort by average response time
+- **Error Rate**: Sort by percentage of failed requests
+- **Sort Direction**: Toggle between ascending and descending order
+
+### Advanced Filters
+
+#### Deprecated Fields Filter
+
+Enable the "Show only operations with deprecated fields" filter to:
+
+- Identify operations using deprecated schema fields
+- Monitor deprecated field usage over time
+
+#### Client Name Filter
+
+Filter operations by specific clients when multiple clients access your graph:
+
+- View operations from specific clients
+- Analyze client-specific usage patterns
+
+## Operation Selection and Analysis
+
+### Selecting an Operation
+
+Click on any operation in the left panel to view detailed analytics:
+
+- **Operation Hash**: Unique identifier for the operation
+- **Copy Hash**: One-click copying of operation hash for debugging
+- **Operation Content**: View the full GraphQL operation document
+- **Performance History**: Historical metrics and trends
+
+<Frame>
+  <img src="/images/studio/operations/selected-operation.png" />
+</Frame>
+
+### Operation Actions
+
+When an operation is selected, you can:
+
+#### View Traces
+
+- Navigate directly to the Analytics Traces page
+- Pre-filtered to show traces for the selected operation
+- Maintain current date range and filters
+
+#### View Operation Content
+
+- Open a modal displaying the complete GraphQL operation
+- Syntax highlighting for better readability
+- Copy operation content for testing or debugging
+
+## Analytics and Metrics
+
+### Date Range Selection
+
+Control the time period for your analytics:
+
+- **Predefined Ranges**: Last 24 hours, 7 days, 30 days, etc.
+- **Custom Date Range**: Select specific start and end dates
+- **Analytics Retention**: Respects your plan's analytics retention limits
+- **Real-time Updates**: Refresh data manually or set automatic refresh intervals
+
+### Performance Metrics Cards
+
+#### Request Metrics
+
+- **Requests Per Minute**: Request rate over time
+- **Request Trends**: Visual charts showing request patterns
+
+#### Latency Metrics
+
+- **P95 Latency**: 95th percentile response time
+- **Latency Distribution**: Visual chart of response times
+
+#### Error Metrics
+
+- **Error Rate**: Percentage of failed requests
+- **Error Trends**: Error patterns over time
+
+## Client Usage Analysis
+
+### Client Usage Table
+
+For selected operations, view detailed client usage information:
+
+- **Client Identification**: Clients identified by `graphql-client-name` header
+- **Client Versions**: Track usage across different client versions
+- **Request Volume**: Number of requests per client
+- **Last Used**: The last time the operation was used by the client
+
+## Deprecated Fields Analysis
+
+### Deprecated Fields Table
+
+Monitor usage of deprecated schema fields:
+
+- **Field Identification**: List of deprecated fields used by the operation
+- **Client Impact**: Which clients will be affected by field removal
+
+### Schema Evolution Support
+
+The deprecated fields analysis helps with:
+
+- **Safe Migrations**: Ensure deprecated fields can be safely removed
+- **Client Communication**: Identify which clients need updates
+- **Timeline Planning**: Plan deprecation timelines based on actual usage

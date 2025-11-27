@@ -293,6 +293,7 @@
                   "studio/analytics/client-identification"
                 ]
               },
+              "studio/operations",
               {
                 "group": "API Keys",
                 "icon": "key",
