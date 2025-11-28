@@ -17,13 +17,13 @@ is generated and the `url` field will be `undefined` or not present in the reque
 |------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | `actorId`        | `string`                                      | The unique identifier of the actor that triggered the check.                                                                                 |
 | `checkId`        | `string`                                      | The unique identifier of the check.                                                                                                          |
-| `labels`         | [`LabelInfo[]`](#labelinfo)                   | Contains the labels used to trigger the check. This field will not be present when `subgraphs` is defined.                                           |
+| `labels`         | [`LabelInfo[]`](#labelinfo)                   | Contains the labels used to trigger the check. This field will not be present when `subgraphs` is defined.                                   |
 | `organization`   | [`OrganizationContext`](#organizationcontext) | Information about the organization that triggered the check.                                                                                 |
 | `namespace`      | [`NamespaceContext`](#namespacecontext)       | Information about the associated namespace.                                                                                                  |
 | `vcsContext`     | [`VCSContext`](#vcscontext)                   | Details about the Version Control System (VCS) that triggered the check. This field is only included when the check is initiated from a VCS. |
 | `affectedGraphs` | [`AffectedGraphInfo[]`](#affectedgraphinfo)   | A list of all graphs affected by the check.                                                                                                  |
-| `subgraphs`      | [`SubgraphContext[]`](#subgraphcontext)       | A list of all subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.                |
-| `url`            | `string` or `undefined`                       | The URL from which the bulk data file can be downloaded.                                                                          |
+| `subgraphs`      | [`SubgraphContext[]`](#subgraphcontext)       | A list of all subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.                    |
+| `url`            | `string` or `undefined`                       | The URL from which the bulk data file can be downloaded.                                                                                     |
 
 <Note>
   You can access the URL provided in the `url` field for *5 minutes* after the request arrives.
@@ -60,7 +60,7 @@ Provides details about the Version Control System (VCS) that triggered the check
 |-----------|----------|------------------------------------------------------|
 | author    | `string` | The email address of the commit author.              |
 | commitSha | `string` | The SHA hash of the commit that triggered the check. |
-| branch    | `string` | The branch name associated with the commit.   |
+| branch    | `string` | The branch name associated with the commit.          |
 
 ### AffectedGraphInfo
 Provides information about the graphs affected by the check.
@@ -73,10 +73,10 @@ Provides information about the graphs affected by the check.
 ### SubgraphContext
 Provides information about the subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.
 
-| Field     | Type      | Description                                                       |
-|-----------|-----------|-------------------------------------------------------------------|
-| id        | `string`  | The unique identifier of the subgraph.                            |
-| name      | `string`  | The name of the subgraph.                                         |
+| Field     | Type      | Description                                                      |
+|-----------|-----------|------------------------------------------------------------------|
+| id        | `string`  | The unique identifier of the subgraph.                           |
+| name      | `string`  | The name of the subgraph.                                        |
 | isDeleted | `boolean` | Indicates whether the check was triggered by a deleted subgraph. |
 
 ## TypeScript definition
