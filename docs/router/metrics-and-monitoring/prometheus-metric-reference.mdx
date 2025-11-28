@@ -122,8 +122,8 @@ telemetry:
 
 * [`router_engine_messages_sent_total`](#router-engine-messages-sent-total): The number of total messages for subscriptions sent over from the subgraph to the router.
 
-### EDFS Streams Metrics
-We expose metrics for EDFS streams, these statistics are collected at the level when the message is sent to the messaging backend or directly received from the messaging backend.
+### Cosmo Streams Metrics
+We expose metrics for [Cosmo Streams](/router/cosmo-streams), these statistics are collected at the level when the message is sent to the messaging backend or directly received from the messaging backend.
 
 ```yaml config.yaml
 telemetry:
@@ -140,7 +140,7 @@ telemetry:
 The following attributes are attached to both metrics:
 
 * `wg_stream_operation_name`:
-This contains the operation type used to send a message to the message backend. This is useful to differentiate when an edfs adapter has multiple ways of sending messages, like in the case of "nats", with `publish`, and `request`.
+This contains the operation type used to send a message to the message backend. This is useful to differentiate when a Cosmo Streams adapter has multiple ways of sending messages, like in the case of "nats", with `publish`, and `request`.
 The following values are possible, based on the messaging backend
 
     - nats: `publish`, `request`, `receive`
@@ -150,7 +150,7 @@ The following values are possible, based on the messaging backend
     - redis: `publish`, `receive`
 
 * `wg_provider_type`:
-One of the supported edfs provider types, which includes `kafka`, `nats`, `redis`
+One of the supported Cosmo Streams provider types, which includes `kafka`, `nats`, `redis`
 
 * `wg_destination_name`:
 The name of the destination of the messaging backend (topic, queue, etc)

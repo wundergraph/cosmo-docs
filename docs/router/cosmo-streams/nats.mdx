@@ -2,7 +2,7 @@
 title: "NATS"
 sidebarTitle: Overview
 icon: circle-info
-description: "NATS event provider support for EDFS"
+description: "NATS event provider support for Cosmo Streams"
 ---
 
 
@@ -23,10 +23,10 @@ description: "NATS event provider support for EDFS"
 
 ## Full schema example
 
-Here is a comprehensive example of how to use NATS with EDFS. This guide covers request, publish, subscribe directive. All examples can be modified to suit your specific needs. The schema directives and `edfs__*` types belong to the EDFS schema contract and must not be modified.
+Here is a comprehensive example of how to use NATS with Cosmo Streams. This guide covers request, publish, subscribe directive. All examples can be modified to suit your specific needs. The schema directives and `edfs__*` types belong to the Cosmo Streams schema contract and must not be modified.
 
 ```js
-# EDFS
+# Cosmo Streams
 
 directive @edfs__natsRequest(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
 directive @edfs__natsPublish(subject: String!, providerId: String! = "default") on FIELD_DEFINITION
