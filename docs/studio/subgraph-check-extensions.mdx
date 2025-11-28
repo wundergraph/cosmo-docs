@@ -5,7 +5,19 @@ icon: puzzle-piece-simple
 description: "Validate schema changes before deploying them to production on your own premises."
 ---
 
-A subgraph check extension allows you to validate whether a proposed schema change will produce any errors before deploying it to production with your own validator.
+A subgraph check extension allows you to validate whether a proposed schema change will produce any errors before
+deploying it to production with your own validator.
+
+## Use cases
+
+This feature comes in handy when you want to ensure that your subgraphs adhere to your company's policies or standards
+outside what Cosmo offers out of the box. For example, you might want to ensure that all types and fields follow a
+certain naming convention.
+
+Another use case is to hook subgraph check into additional pipelines in your system to ensure that the proposed changes
+are valid and follow the expected standards before they are deployed to production. For example, if your development team
+introduces a breaking change that is expected, a notification can be sent to your frontend team so they can be aware
+of the upcoming change.
 
 ## How it works
 When the Subgraph Check extension is enabled for a namespace, each time a check runs against a graph in that namespace, 
