@@ -267,6 +267,17 @@
               "studio/schema-explorer",
               "studio/schema-registry",
               "studio/schema-checks",
+              {
+                "group": "Check Extensions",
+                "icon": "puzzle-piece-simple",
+                "pages": [
+                  "studio/subgraph-check-extensions",
+                  "studio/sce/request-payload-structure",
+                  "studio/sce/response-structure",
+                  "studio/sce/file-content",
+                  "studio/sce/handler-example"
+                ]
+              },
               "studio/schema-contracts",
               "studio/overrides",
               "studio/changelog",
