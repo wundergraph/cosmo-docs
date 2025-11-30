@@ -14,7 +14,7 @@ Connect Client enables you to generate type-safe gRPC/Connect clients and OpenAP
 
 ## Overview
 
-While **Connect Backend** (gRPC Subgraphs) focuses on implementing subgraphs using gRPC, **Connect Client** focuses on the consumer side. It allows you to define GraphQL operations (Queries, Mutations and soon Subscriptions) and compile them into a Protobuf service definition.
+While **Connect gRPC Services** (gRPC Subgraphs) focuses on implementing subgraphs using gRPC, **Connect Client** focuses on the consumer side. It allows you to define GraphQL operations (Queries, Mutations and soon Subscriptions) and compile them into a Protobuf service definition.
 
 The Cosmo Router acts as a bridge. It serves your generated operations via the Connect protocol, executes them against your Federated Graph, and maps the GraphQL response back to typed Protobuf messages.
 

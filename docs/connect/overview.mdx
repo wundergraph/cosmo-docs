@@ -14,7 +14,7 @@ How does this work? You define an Apollo-compatible Subgraph Schema, compile it 
 
 ## Key Capabilities
 
-### Connect Backend (gRPC Subgraphs)
+### Connect gRPC Services (gRPC Subgraphs)
 
 Implement Federated Subgraphs using gRPC instead of GraphQL resolvers.
 - **No GraphQL servers required**: Backend teams implement standard gRPC services.
@@ -32,15 +32,16 @@ Generate type-safe clients from your GraphQL operations.
 
 ```mermaid
 graph LR
-  client["Clients (Web / Mobile / Server)"] --> routerCore["Router Core"]
+  client["GraphQL Clients<br/>(Web / Mobile)"] --> routerCore["Router Core"]
+  connectClient["Connect Clients<br/>(Generated SDKs)"] --> routerCore
 
   subgraph routerBox["Cosmo Router"]
     routerCore
-    plugin["Router Plugin<br/>(Cosmo Connect)"]
+    plugin["Router Plugin<br/>(Connect gRPC Service)"]
   end
 
   routerCore --> subA["GraphQL Subgraph"]
-  routerCore --> grpcSvc["gRPC Service<br/>(Cosmo Connect)"]
+  routerCore --> grpcSvc["gRPC Service<br/>(Connect gRPC Service)"]
 
   grpcSvc --> restA["REST / HTTP APIs"]
   grpcSvc --> soapA["Databases"]
@@ -51,16 +52,20 @@ graph LR
   %% Styling
   classDef grpcFill fill:#ea4899,stroke:#ea4899,stroke-width:1.5px,color:#ffffff;
   classDef pluginFill fill:#ea4899,stroke:#ea4899,stroke-width:1.5px,color:#ffffff;
+  classDef clientFill fill:#3b82f6,stroke:#3b82f6,stroke-width:1.5px,color:#ffffff;
+  
   class grpcSvc grpcFill;
   class plugin pluginFill;
+  class connectClient clientFill;
 ```
 
-Cosmo Connect supports two ways to integrate gRPC into your federated graph:
+Cosmo Connect supports three main integration patterns:
 
-- **[Router Plugins](/connect/plugins)** — run as local processes managed by the router. Ideal for simple deployments where you want the lowest latency and do not need separate CI/CD or scaling.  
-- **[gRPC Services](/connect/grpc-services)** — independent deployments in any language. Suitable when you need full lifecycle control, team ownership boundaries, and independent scaling.
+1.  **[Connect Client](/connect/client)** — Generated clients that speak the Connect protocol to the Router.
+2.  **[Router Plugins](/connect/plugins)** — gRPC services running as local processes managed by the router.
+3.  **[gRPC Services](/connect/grpc-services)** — Independent gRPC services implementing subgraphs.
 
-Both approaches remove the need to build GraphQL servers while maintaining the benefits of federation.
+Both plugin and service approaches remove the need to build GraphQL servers while maintaining the benefits of federation. Connect Client removes the need to manually write GraphQL queries in your application code.
 
 ## Implementation Docs
 
