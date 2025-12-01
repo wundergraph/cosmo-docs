@@ -59,9 +59,9 @@ sequenceDiagram
 
 ### 1. Define GraphQL Operations
 
-Create a directory for your operations, e.g., `operations/`:
+Create a directory for your operations, e.g., `services/`:
 
-```graphql operations/GetEmployee.graphql
+```graphql services/GetEmployee.graphql
 query GetEmployee($id: ID!) {
   employee(id: $id) {
     id
@@ -88,13 +88,13 @@ Run the `wgc grpc-service generate` command with the `--with-operations` flag. Y
 ```bash
 wgc grpc-service generate \
   --input schema.graphql \
-  --output ./operations \
-  --with-operations ./operations \
+  --output ./services \
+  --with-operations ./services \
   --package-name "myorg.employee.v1" \
   MyService
 ```
 
-This command generates a `service.proto` file and a `service.proto.lock.json` file in the `./operations` directory.
+This command generates a `service.proto` file and a `service.proto.lock.json` file in the `./services` directory.
 
 ### 3. Configure and Start Router
 
@@ -113,7 +113,7 @@ storage_providers:
   file_system:
     - id: "fs-services"
       # Path to the directory containing your generated service.proto and operations
-      path: "./operations" 
+      path: "./services" 
 ```
 
 Start the router. It is now ready to accept requests for the operations defined in `service.proto`.
@@ -125,20 +125,27 @@ Use [buf](https://buf.build/) or `protoc` to generate the client code for your a
 Example `buf.gen.yaml` for Go:
 
 ```yaml buf.gen.yaml
-version: v1
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/wundergraph/cosmo/router-tests/testdata/connectrpc/client
 plugins:
-  - plugin: buf.build/connectrpc/go
-    out: gen/go
-    opt: paths=source_relative
-  - plugin: buf.build/protocolbuffers/go
-    out: gen/go
-    opt: paths=source_relative
+  - remote: buf.build/protocolbuffers/go
+    out: client
+    opt:
+      - paths=source_relative
+  - remote: buf.build/connectrpc/go
+    out: client
+    opt:
+      - paths=source_relative
 ```
 
 Run the generation:
 
 ```bash
-buf generate operations/service.proto
+buf generate services/service.proto
 ```
 
 ### 5. Use the Client
@@ -180,6 +187,131 @@ func main() {
     )
 }
 ```
+
+## Directory Structure & Organization
+
+The Cosmo Router uses a convention-based directory structure to automatically discover and load Connect RPC services. This approach co-locates proto files with their GraphQL operations for easy management.
+
+### Configuration
+
+Configure the router to point to your root services directory using a storage provider:
+
+```yaml config.yaml
+connect_rpc:
+  enabled: true
+  server:
+    listen_addr: "0.0.0.0:8081"
+  services_provider_id: "fs-services"
+
+storage_providers:
+  file_system:
+    - id: "fs-services"
+      path: "./services"  # Root services directory
+```
+
+The router will recursively walk the `services` directory and automatically discover all proto files and their associated GraphQL operations.
+
+### Recommended Structure
+
+For organization purposes, we recommend keeping all services in a root `services` directory, with subdirectories for packages and individual services.
+
+#### Single Service per Package
+
+When you have one service per package, you can organize files directly in the package directory:
+
+```
+services/
+└── employee.v1/              # Package directory
+    ├── employee.proto        # Proto definition
+    ├── employee.proto.lock.json
+    ├── GetEmployee.graphql   # Operation files
+    ├── UpdateEmployee.graphql
+    └── DeleteEmployee.graphql
+```
+
+Or with operations in a subdirectory:
+
+```
+services/
+└── employee.v1/
+    ├── employee.proto
+    ├── employee.proto.lock.json
+    └── operations/
+        ├── GetEmployee.graphql
+        ├── UpdateEmployee.graphql
+        └── DeleteEmployee.graphql
+```
+
+#### Multiple Services per Package
+
+When multiple services share the same proto package, organize them in service subdirectories:
+
+```
+services/
+└── company.v1/                    # Package directory
+    ├── EmployeeService/           # First service
+    │   ├── employee.proto         # package company.v1; service EmployeeService
+    │   ├── employee.proto.lock.json
+    │   └── operations/
+    │       ├── GetEmployee.graphql
+    │       └── UpdateEmployee.graphql
+    └── DepartmentService/         # Second service, same package
+        ├── department.proto       # package company.v1; service DepartmentService
+        ├── department.proto.lock.json
+        └── operations/
+            ├── GetDepartment.graphql
+            └── ListDepartments.graphql
+```
+
+### Flexible Organization
+
+The router determines service identity by proto package declarations, not directory names. This gives you flexibility in organizing your files:
+
+```
+services/
+├── hr-services/
+│   ├── employee.proto        # package company.v1; service EmployeeService
+│   └── GetEmployee.graphql
+└── admin-services/
+    ├── department.proto      # package company.v1; service DepartmentService
+    └── GetDepartment.graphql
+```
+
+<Note>
+  **Service Uniqueness**: The combination of proto package name and service name must be unique. For example, you can have multiple services with the same package name (e.g., `company.v1`) as long as they have different service names (`EmployeeService`, `DepartmentService`). The router uses the package + service combination to identify and route requests.
+</Note>
+
+### Discovery Rules
+
+The router follows these rules when discovering services:
+
+1. **Recursive Discovery**: The router recursively walks the services directory to find all `.proto` files
+2. **Proto Association**: Each `.proto` file discovered becomes a service endpoint
+3. **Operation Association**: All `.graphql` files in the same directory (or subdirectories) are associated with the nearest parent `.proto` file
+4. **Nested Proto Limitation**: If a `.proto` file is found in a directory, any `.proto` files in subdirectories are **not** discovered (the parent proto takes precedence)
+
+#### Example: Nested Proto Files
+
+```
+services/
+└── employee.v1/
+    ├── employee.proto        # ✅ Discovered as a service
+    ├── GetEmployee.graphql   # ✅ Associated with employee.proto
+    └── nested/
+        ├── other.proto       # ❌ NOT discovered (parent proto found first)
+        └── UpdateEmployee.graphql  # ✅ Still associated with employee.proto
+```
+
+<Warning>
+  **Avoid Nested Proto Files**: Do not place `.proto` files in subdirectories of a directory that already contains a `.proto` file. The nested proto files will not be discovered by the router.
+</Warning>
+
+### Best Practices
+
+1. **Use Semantic Versioning**: Include version numbers in package names (e.g., `employee.v1`, `employee.v2`) to support API evolution
+2. **Co-locate Operations**: Keep GraphQL operations close to their proto definitions for easier maintenance
+3. **Consistent Naming**: Use clear, descriptive names for packages and services that reflect their purpose
+4. **Lock File Management**: Always commit `.proto.lock.json` files to version control to maintain field number stability
 
 ## Observability
 
