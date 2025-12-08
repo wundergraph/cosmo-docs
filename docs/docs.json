@@ -100,12 +100,20 @@
                       "router/gRPC/plugins",
                       "router/gRPC/plugins/debugging",
                       {
-                        "group": "Library Features",
-                        "icon": "books",
+                        "group": "Go Plugins",
+                        "icon": "golang",
                         "pages": [
-                          "router/gRPC/plugins/library-features/http-client",
-                          "router/gRPC/plugins/library-features/telemetry",
-                          "router/gRPC/plugins/library-features/logging"
+                          "router/gRPC/plugins/go-plugin/overview",
+                          "router/gRPC/plugins/go-plugin/http-client",
+                          "router/gRPC/plugins/go-plugin/telemetry",
+                          "router/gRPC/plugins/go-plugin/logging"
+                        ]
+                      },
+                      {
+                        "group": "TypeScript Plugins",
+                        "icon": "t",
+                        "pages": [
+                          "router/gRPC/plugins/ts-plugin/overview"
                         ]
                       }
                     ]
@@ -217,20 +225,30 @@
                 ]
               },
               {
-                "group": "Event-Driven Federated Subscriptions (EDFS)",
-                "icon": "calendar-users",
+                "group": "Cosmo Streams (EDFS)",
+                "icon": "wave",
                 "pages": [
-                  "router/event-driven-federated-subscriptions-edfs",
+                  "router/cosmo-streams",
                   {
                     "group": "NATS",
                     "icon": "puzzle-piece",
                     "pages": [
-                      "router/event-driven-federated-subscriptions-edfs/nats",
-                      "router/event-driven-federated-subscriptions-edfs/nats/stream-and-consumer-configuration"
+                      "router/cosmo-streams/nats",
+                      "router/cosmo-streams/nats/stream-and-consumer-configuration"
                     ]
                   },
-                  "router/event-driven-federated-subscriptions-edfs/kafka",
-                  "router/event-driven-federated-subscriptions-edfs/redis"
+                  "router/cosmo-streams/kafka",
+                  "router/cosmo-streams/redis",
+                  {
+                    "group": "Custom Modules",
+                    "icon": "cubes",
+                    "pages": [
+                      "router/cosmo-streams/custom-modules",
+                      "router/cosmo-streams/custom-modules/subscription-on-start",
+                      "router/cosmo-streams/custom-modules/on-receive-event",
+                      "router/cosmo-streams/custom-modules/on-publish-event"
+                    ]
+                  }
                 ]
               },
               "router/compliance-and-data-management",
@@ -250,6 +268,17 @@
               "studio/schema-explorer",
               "studio/schema-registry",
               "studio/schema-checks",
+              {
+                "group": "Check Extensions",
+                "icon": "puzzle-piece-simple",
+                "pages": [
+                  "studio/subgraph-check-extensions",
+                  "studio/sce/request-payload-structure",
+                  "studio/sce/response-structure",
+                  "studio/sce/file-content",
+                  "studio/sce/handler-example"
+                ]
+              },
               "studio/schema-contracts",
               "studio/overrides",
               "studio/changelog",
@@ -276,6 +305,7 @@
                   "studio/analytics/client-identification"
                 ]
               },
+              "studio/operations",
               {
                 "group": "API Keys",
                 "icon": "key",
@@ -344,7 +374,7 @@
             ]
           },
           {
-            "group": "Federation",
+            "group": "GraphQL / Federation",
             "pages": [
               "federation/federation-compatibility-matrix",
               {
@@ -738,5 +768,11 @@
     "gtm": {
       "tagId": "GTM-5GPL7DQH"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/router/event-driven-federated-subscriptions-edfs/:path*",
+      "destination": "/router/cosmo-streams/:path*"
+    }
+  ]
 }

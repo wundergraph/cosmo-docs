@@ -17,7 +17,7 @@ The router provides three different ways of customization:
 </Info>
 
 <Warning>
-  **Experimental options** 
+  **Experimental options**
 
   Options starting with the prefix `experiment_` are unstable, and do not fall under any API stability guarantees. They may be updated or removed in future versions without a deprecation notice.
 </Warning>
@@ -129,14 +129,14 @@ The following sections describe each configuration in detail with all available 
 </Info>
 
 | Environment Variable             | YAML                             | Required                                      | Description                                                                                                                                                                                        | Default Value                    |
-| -------------------------------- | -------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+|----------------------------------|----------------------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|
 | LISTEN_ADDR                      | listen_addr                      | <Icon icon="square" />                        | The server listener address.                                                                                                                                                                       | localhost:3002                   |
 | CONTROLPLANE_URL                 | controlplane_url                 | <Icon icon="square-check" iconType="solid" /> | The controlplane url. Not required when a static execution config is provided.                                                                                                                     | https://cosmo-cp.wundergraph.com |
 | PLAYGROUND_ENABLED               | playground_enabled               | <Icon icon="square" />                        | Enables the GraphQL playground on (`$LISTEN_ADDR/`)                                                                                                                                                | true                             |
 | PLAYGROUND_PATH                  | playground_path                  | <Icon icon="square" />                        | The path where the playground is served                                                                                                                                                            | "/"                              |
-| INTROSPECTION_ENABLED            | introspection_enabled            | <Icon icon="square" />                        | Enables the GraphQL introspection (deprecated, use `introspection.enabled` instead)                                                                                                                                                                | true                             |
+| INTROSPECTION_ENABLED            | introspection_enabled            | <Icon icon="square" />                        | **Deprecated**, use ["introspection.enabled"](/router/configuration#introspection) instead. Enables the GraphQL introspection.                                                                     | true                             |
 | QUERY_PLANS_ENABLED              | query_plans_enabled              | <Icon icon="square" />                        | The Router can return Query plans as part of the response, which might be useful to understand the execution.                                                                                      | true                             |
-| LOG_LEVEL                        | log_level                        | <Icon icon="square" />                        | The log level to use. Allowed levels are `"debug"`, `"info"`, `"warn"`, `"error"`, `"panic"`, `"fatal"`.                                                                                     | info                             |
+| LOG_LEVEL                        | log_level                        | <Icon icon="square" />                        | The log level to use. Allowed levels are `"debug"`, `"info"`, `"warn"`, `"error"`, `"panic"`, `"fatal"`.                                                                                           | info                             |
 | JSON_LOG                         | json_log                         | <Icon icon="square" />                        | Render the log output in JSON format (true) or human readable (false)                                                                                                                              | true                             |
 | SHUTDOWN_DELAY                   | shutdown_delay                   | <Icon icon="square" />                        | Maximum time in seconds the server has to shutdown gracefully. Should be higher than `GRACE_PERIOD`                                                                                                | 60s                              |
 | GRACE_PERIOD                     | grace_period                     | <Icon icon="square" />                        | Maximum time in seconds the server has between schema updates to gracefully clean up all resources. Should be smaller than `SHUTDOWN_DELAY`                                                        | 30s                              |
@@ -162,7 +162,8 @@ listen_addr: "localhost:3002"
 controlplane_url: "https://cosmo-cp.wundergraph.com"
 playground_enabled: true
 playground_path: "/"
-introspection_enabled: true
+introspection:
+  enabled: true
 json_log: true
 shutdown_delay: 15s
 grace_period: 20s
@@ -172,11 +173,6 @@ readiness_check_path: "/health/ready"
 liveness_check_path: "/health/live"
 router_config_path: ""
 ```
-
-<Warning>
-  `introspection_enabled` is a deprecated flag.
-  Please use `introspection.enabled` instead.
-</Warning>
 
 ## Config watcher hot reloading
 
@@ -619,7 +615,7 @@ telemetry:
 | METRICS_EXPERIMENT_CARDINALITY_LIMIT | experiment_cardinality_limit | <Icon icon="square" /> | Sets a hard limit on the number of Metric Points that can be collected during a collection cycle. | 2000          |
 
 <Warning>
-The `experiment_cardinality_limit` option is experimental because it relies on experimental functionality in the OpenTelemetry SDK for Go. This feature helps prevent excessive memory usage by limiting the number of unique metric combinations (cardinality) that can be collected in a single collection cycle. 
+The `experiment_cardinality_limit` option is experimental because it relies on experimental functionality in the OpenTelemetry SDK for Go. This feature helps prevent excessive memory usage by limiting the number of unique metric combinations (cardinality) that can be collected in a single collection cycle.
 
 See the specification for more information: https://opentelemetry.io/docs/specs/otel/metrics/sdk/#cardinality-limits
 
@@ -637,7 +633,7 @@ This option may change or be removed in future versions as the OpenTelemetry SDK
 | METRICS_OTLP_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        | The metric labels to exclude from the OTEL metrics. Accepts a list of Go regular expressions. Use https://regex101.com/ to test your regular expressions. | []            |
 | METRICS_OTLP_CONNECTION_STATS      | connection_stats      | <Icon icon="square" />                        | Enable connection metrics.                                                                                                                                | false         |
 | METRICS_OTLP_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Ensure that circuit breaker metrics are enabled for OTEL.                                                                                                 | false         |
-| METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable EDFS stream metrics.                                                                                                                               | false         |
+| METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                                                                                                             | false         |
 
 ### Attributes
 
@@ -688,7 +684,7 @@ telemetry:
 | PROMETHEUS_EXCLUDE_METRIC_LABELS | exclude_metric_labels | <Icon icon="square" />                        |                                                                           |                  |
 | PROMETHEUS_EXCLUDE_SCOPE_INFO    | exclude_scope_info    | <Icon icon="square" />                        | Exclude scope info from Prometheus metrics.                               | false            |
 | PROMETHEUS_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Enable the circuit breaker metrics for prometheus metric collection.      | false            |
-| PROMETHEUS_OTLP_STREAM           | streams               | <Icon icon="square" />                        | Enable EDFS stream metrics.                                               | false            |
+| PROMETHEUS_OTLP_STREAM           | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                             | false            |
 
 ### Example YAML config:
 
@@ -1613,7 +1609,7 @@ cdn:
 
 ## Events
 
-The Events section lets you define Event Sources for [Event-Driven Federated Subscriptions (EDFS)](/router/event-driven-federated-subscriptions-edfs).
+The Events section lets you define Event Sources for [Cosmo Streams / EDFS](/router/cosmo-streams).
 
 We support NATS, Kafka and Redis as event bus provider.
 
@@ -1688,15 +1684,24 @@ events:
 |                      | id   |          | The ID of the provider. This have to match with the ID specified in the subgraph schema. | []            |
 |                      | urls |          | A list of redis instances URLS, e.g: `redis://localhost:6379/2`                          |               |
 
+### Cosmo Streams handlers
+
+Configuration for Cosmo Streams handlers. Learn more about [Custom Modules for Cosmo Streams](/router/cosmo-streams/custom-modules).
+
+| Environment Variable | YAML                                               | Required               | Description                                                                            | Default Value |
+| :------------------- | :------------------------------------------------- | :--------------------- | :------------------------------------------------------------------------------------- | :-            |
+|                      | handlers.on_receive_events.handler_timeout         | <Icon icon="square" /> | The maximum time to wait for all OnReceiveEvents handlers to complete per event-batch. | 5s            |
+|                      | handlers.on_receive_events.max_concurrent_handlers | <Icon icon="square" /> | The maximum number of concurrent OnReceiveEvents handlers per trigger.                 | 100           |
+
 ## Router Engine Configuration
 
 Configure the GraphQL Execution Engine of the Router.
 
 | Environment Variable                                          | YAML                                                   | Required               | Description                                                                                                                                                                                                                                                                                                                                 | Default Value |
-| ------------------------------------------------------------- | ------------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|---------------------------------------------------------------|--------------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | ENGINE_ENABLE_SINGLE_FLIGHT                                   | enable_single_flight                                   | <Icon icon="square" /> | Deduplicate exactly the same in-flight origin request                                                                                                                                                                                                                                                                                       | true          |
 | ENGINE_ENABLE_REQUEST_TRACING                                 | enable_request_tracing                                 | <Icon icon="square" /> | Enable [Advanced Request Tracing (ART)](/router/advanced-request-tracing-art)This config is not correlated to OTEL tracing.                                                                                                                                                                                                                 | true          |
-| ENGINE_ENABLE_EXECUTION_PLAN_CACHE_RESPONSE_HEADER            | enable_execution_plan_cache_response_header            | <Icon icon="square" /> | Usually only required for testing. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS"                                                                                                                                                                                                         | false         |
+| ENGINE_ENABLE_EXECUTION_PLAN_CACHE_RESPONSE_HEADER            | enable_execution_plan_cache_response_header            | <Icon icon="square" /> | **Deprecated**, use ["enable_cache_response_headers"](/router/configuration#debug-configuration) instead. When enabled, the Router sets the response Header "X-WG-Execution-Plan-Cache" to "HIT" or "MISS"                                                                                                                                  | false         |
 | ENGINE_MAX_CONCURRENT_RESOLVERS                               | max_concurrent_resolvers                               | <Icon icon="square" /> | Use this to limit the concurrency in the GraphQL Engine. A high number will lead to more memory usage. A number too low will slow down your Router.                                                                                                                                                                                         | 32            |
 | ENGINE_ENABLE_NET_POLL                                        | enable_net_poll                                        | <Icon icon="square" /> | Enables the more efficient poll implementation for all WebSocket implementations (client, server) of the router. This is only available on Linux and MacOS. On Windows or when the host system is limited, the default synchronous implementation is used.                                                                                  | true          |
 | ENGINE_WEBSOCKET_CLIENT_POLL_TIMEOUT                          | websocket_client_poll_timeout                          | <Icon icon="square" /> | The timeout for the poll loop of the WebSocket client implementation. The period is specified as a string with a number and a unit                                                                                                                                                                                                          | 1s            |
@@ -1730,7 +1735,6 @@ version: "1"
 engine:
   enable_single_flight: true
   enable_request_tracing: true
-  enable_execution_plan_cache_response_header: false
   max_concurrent_resolvers: 32
   enable_websocket_epoll_kqueue: true
   epoll_kqueue_poll_timeout: "1s"
@@ -1755,23 +1759,24 @@ engine:
 
 ### Debug Configuration
 
-| Environment Variable                                           | YAML                                              | Required               | Description                                                                                                                                                    | Default Value |
-| -------------------------------------------------------------- | ------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| ENGINE_DEBUG_PRINT_OPERATION_TRANSFORMATIONS                   | print_operation_transformations                   | <Icon icon="square" /> | Print the operation transformations.                                                                                                                           | false         |
-| ENGINE_DEBUG_PRINT_OPERATION_ENABLE_AST_REFS                   | print_operation_enable_ast_refs                   | <Icon icon="square" /> | Print the operation enable AST refs.                                                                                                                           | false         |
-| ENGINE_DEBUG_PRINT_PLANNING_PATHS                              | print_planning_paths                              | <Icon icon="square" /> | Print the planning paths.                                                                                                                                      | false         |
-| ENGINE_DEBUG_PRINT_QUERY_PLANS                                 | print_query_plans                                 | <Icon icon="square" /> | Print the query plans.                                                                                                                                         | false         |
-| ENGINE_DEBUG_PRINT_NODE_SUGGESTIONS                            | print_node_suggestions                            | <Icon icon="square" /> | Print the node suggestions.                                                                                                                                    | false         |
-| ENGINE_DEBUG_CONFIGURATION_VISITOR                             | configuration_visitor                             | <Icon icon="square" /> | Print the configuration visitor.                                                                                                                               | false         |
-| ENGINE_DEBUG_PLANNING_VISITOR                                  | planning_visitor                                  | <Icon icon="square" /> | Print the planning visitor.                                                                                                                                    | false         |
-| ENGINE_DEBUG_DATASOURCE_VISITOR                                | datasource_visitor                                | <Icon icon="square" /> | Print the datasource visitor.                                                                                                                                  | false         |
-| ENGINE_DEBUG_REPORT_WEBSOCKET_CONNECTIONS                      | report_websocket_connections                      | <Icon icon="square" /> | Print the websocket connections.                                                                                                                               | false         |
-| ENGINE_DEBUG_REPORT_MEMORY_USAGE                               | report_memory_usage                               | <Icon icon="square" /> | Print the memory usage.                                                                                                                                        | false         |
-| ENGINE_DEBUG_ENABLE_RESOLVER_DEBUGGING                         | enable_resolver_debugging                         | <Icon icon="square" /> | Enable verbose debug logging for the Resolver.                                                                                                                 | false         |
-| ENGINE_DEBUG_ENABLE_PERSISTED_OPERATIONS_CACHE_RESPONSE_HEADER | enable_persisted_operations_cache_response_header | <Icon icon="square" /> | Enable the persisted operations cache response header. The persisted operations cache response header is used to cache the persisted operations in the client. | false         |
-| ENGINE_DEBUG_ENABLE_NORMALIZATION_CACHE_RESPONSE_HEADER        | enable_normalization_cache_response_header        | <Icon icon="square" /> | Enable the normalization cache response header. The normalization cache response header is used to cache the normalized operations in the client.              | false         |
-| ENGINE_DEBUG_ALWAYS_INCLUDE_QUERY_PLAN                         | always_include_query_plan                         | <Icon icon="square" /> | Always include the query plan in the response.                                                                                                                 | false         |
-| ENGINE_DEBUG_ALWAYS_SKIP_LOADER                                | always_skip_loader                                | <Icon icon="square" /> | Always skip the loader. This will return no data but only render response extensions, e.g. to expose the query plan.                                           | false         |
+| Environment Variable                                           | YAML                                              | Required               | Description                                                                                                                                                                                                                                                                                        | Default Value |
+|----------------------------------------------------------------|---------------------------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| ENGINE_DEBUG_PRINT_OPERATION_TRANSFORMATIONS                   | print_operation_transformations                   | <Icon icon="square" /> | Print the operation transformations.                                                                                                                                                                                                                                                               | false         |
+| ENGINE_DEBUG_PRINT_OPERATION_ENABLE_AST_REFS                   | print_operation_enable_ast_refs                   | <Icon icon="square" /> | Print the operation enable AST refs.                                                                                                                                                                                                                                                               | false         |
+| ENGINE_DEBUG_PRINT_PLANNING_PATHS                              | print_planning_paths                              | <Icon icon="square" /> | Print the planning paths.                                                                                                                                                                                                                                                                          | false         |
+| ENGINE_DEBUG_PRINT_QUERY_PLANS                                 | print_query_plans                                 | <Icon icon="square" /> | Print the query plans.                                                                                                                                                                                                                                                                             | false         |
+| ENGINE_DEBUG_PRINT_NODE_SUGGESTIONS                            | print_node_suggestions                            | <Icon icon="square" /> | Print the node suggestions.                                                                                                                                                                                                                                                                        | false         |
+| ENGINE_DEBUG_CONFIGURATION_VISITOR                             | configuration_visitor                             | <Icon icon="square" /> | Print the configuration visitor.                                                                                                                                                                                                                                                                   | false         |
+| ENGINE_DEBUG_PLANNING_VISITOR                                  | planning_visitor                                  | <Icon icon="square" /> | Print the planning visitor.                                                                                                                                                                                                                                                                        | false         |
+| ENGINE_DEBUG_DATASOURCE_VISITOR                                | datasource_visitor                                | <Icon icon="square" /> | Print the datasource visitor.                                                                                                                                                                                                                                                                      | false         |
+| ENGINE_DEBUG_REPORT_WEBSOCKET_CONNECTIONS                      | report_websocket_connections                      | <Icon icon="square" /> | Print the websocket connections.                                                                                                                                                                                                                                                                   | false         |
+| ENGINE_DEBUG_REPORT_MEMORY_USAGE                               | report_memory_usage                               | <Icon icon="square" /> | Print the memory usage.                                                                                                                                                                                                                                                                            | false         |
+| ENGINE_DEBUG_ENABLE_RESOLVER_DEBUGGING                         | enable_resolver_debugging                         | <Icon icon="square" /> | Enable verbose debug logging for the Resolver.                                                                                                                                                                                                                                                     | false         |
+| ENGINE_DEBUG_ENABLE_CACHE_RESPONSE_HEADERS                     | enable_cache_response_headers                     | <Icon icon="square" /> | Enable hit/miss response headers for the normalization caches ("X-WG-Normalization-Cache", "X-WG-Variables-Normalization-Cache", "X-WG-Variables-Remapping-Cache"), the persisted operations cache ("X-WG-Persisted-Operation-Cache"), and the execution plan cache ("X-WG-Execution-Plan-Cache"). | false         |
+| ENGINE_DEBUG_ENABLE_PERSISTED_OPERATIONS_CACHE_RESPONSE_HEADER | enable_persisted_operations_cache_response_header | <Icon icon="square" /> | **Deprecated**, use "enable_cache_response_headers" instead. Enable the persisted operations cache response header. The persisted operations cache response header is used to cache the persisted operations in the client.                                                                        | false         |
+| ENGINE_DEBUG_ENABLE_NORMALIZATION_CACHE_RESPONSE_HEADER        | enable_normalization_cache_response_header        | <Icon icon="square" /> | **Deprecated**, use "enable_cache_response_headers" instead. Enable the normalization cache response header. The normalization cache response header is used to cache the normalized operations in the client.                                                                                     | false         |
+| ENGINE_DEBUG_ALWAYS_INCLUDE_QUERY_PLAN                         | always_include_query_plan                         | <Icon icon="square" /> | Always include the query plan in the response.                                                                                                                                                                                                                                                     | false         |
+| ENGINE_DEBUG_ALWAYS_SKIP_LOADER                                | always_skip_loader                                | <Icon icon="square" /> | Always skip the loader. This will return no data but only render response extensions, e.g. to expose the query plan.                                                                                                                                                                               | false         |
 
 ### Example YAML config:
 
@@ -1860,7 +1865,7 @@ For mor information on how to use the expression language, please refer to the [
 
 ### Rate Limiting Example YAML configuration
 
-```json
+```yaml config.yaml
 rate_limit:
     enabled: true
     strategy: "simple"
@@ -2101,12 +2106,12 @@ Produces the same error message as Apollo when an invalid variable is supplied. 
 Produces the same error status as Apollo when validation fails. **Error status**: 400 Bad Request **Minimum router version**: [0.175.0](https://github.com/wundergraph/cosmo/compare/router@0.174.3...router@0.175.0)
 
 | Environment Variable                                               | YAML                                                     | Required               | Description                                                                                                                                                                   | Default Value |
-| ------------------------------------------------------------------ | -------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|--------------------------------------------------------------------|----------------------------------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | APOLLO_COMPATIBILITY_ENABLE_ALL                                    | apollo_compatibility_flags: enable_all: \<bool\>         | <Icon icon="square" /> | Enables all the options of Apollo Compatibility.                                                                                                                              | false         |
 | APOLLO_COMPATIBILITY_VALUE_COMPLETION_ENABLED                      | value_completion: enabled: \<bool\>                      | <Icon icon="square" /> | Enables value completion.                                                                                                                                                     | false         |
 | APOLLO_COMPATIBILITY_TRUNCATE_FLOATS_ENABLED                       | truncate_floats: enabled: \<bool\>                       | <Icon icon="square" /> | Enables truncate floats.                                                                                                                                                      | false         |
 | APOLLO_COMPATIBILITY_SUPPRESS_FETCH_ERRORS_ENABLED                 | suppress_fetch_errors: enabled: \<bool\>                 | <Icon icon="square" /> | Enables suppress fetch errors.                                                                                                                                                | false         |
-| APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED     | replace_undefined_op_field_errors: enabled: \<bool\>     | <Icon icon="square" /> | (Deprecated) Replaces undefined operation field errors. Use use_graphql_validation_failed_status instead.                                                                     | false         |
+| APOLLO_COMPATIBILITY_REPLACE_UNDEFINED_OP_FIELD_ERRORS_ENABLED     | replace_undefined_op_field_errors: enabled: \<bool\>     | <Icon icon="square" /> | **Deprecated**. Replaces undefined operation field errors. Use use_graphql_validation_failed_status instead.                                                                  | false         |
 | APOLLO_COMPATIBILITY_REPLACE_INVALID_VAR_ERRORS_ENABLED            | replace_invalid_var_errors: enabled: \<bool\>            | <Icon icon="square" /> | Replaces invalid variable errors.                                                                                                                                             | false         |
 | APOLLO_COMPATIBILITY_REPLACE_VALIDATION_ERROR_STATUS_ENABLED       | replace_validation_error_status: enabled: \<bool\>       | <Icon icon="square" /> | Replaces validation error status with 400.                                                                                                                                    | false         |
 | APOLLO_COMPATIBILITY_SUBSCRIPTION_MULTIPART_PRINT_BOUNDARY_ENABLED | subscription_multipart_print_boundary: enabled: \<bool\> | <Icon icon="square" /> | Prints the multipart boundary right after the message in multipart subscriptions. Without this flag, the Apollo client wouldn't parse a message until the next one is pushed. | false         |

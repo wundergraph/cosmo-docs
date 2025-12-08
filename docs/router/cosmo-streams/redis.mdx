@@ -1,7 +1,7 @@
 ---
 title: "Redis"
 icon: "sitemap"
-descripton: "Redis event provider support for EDFS"
+descripton: "Redis event provider support for Cosmo Streams"
 ---
 
 <Frame caption="Interconnected system with Redis and routers">
@@ -21,10 +21,10 @@ descripton: "Redis event provider support for EDFS"
 
 ## Full schema example
 
-Here is a comprehensive example of how to use Redis with EDFS. This guide covers publish, subscribe, and the filter directive. All examples can be modified to suit your specific needs. The schema directives and `edfs__*` types belong to the EDFS schema contract and must not be modified.
+Below is a comprehensive example of how to use Redis with Cosmo Streams. This guide covers publish, subscribe, and the filter directive. All examples can be modified to suit your specific needs. The schema directives and `edfs__*` types belong to the Cosmo Streams schema contract and must not be modified.
 
 ```js
-# EDFS
+# Cosmo Streams
 
 directive @edfs__redisPublish(channel: String!, providerId: String! = "default") on FIELD_DEFINITION
 directive @edfs__redisSubscribe(channels: [String!]!, providerId: String! = "default") on FIELD_DEFINITION

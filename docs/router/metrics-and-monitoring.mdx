@@ -214,8 +214,8 @@ telemetry:
 * `router.engine.messages.sent`: The number of total messages for subscriptions sent over from the subgraph to the router.
 
 
-### EDFS Streams Metrics
-We expose metrics for EDFS streams, these statistics are collected at the level when the message is sent to the messaging backend or directly received from the messaging backend.
+### Cosmo Streams Metrics
+We expose metrics for [Cosmo Streams](/router/cosmo-streams). New data points are emitted when new messages are either sent or received from the messaging backend
 
 ```yaml config.yaml
 telemetry:
@@ -234,7 +234,7 @@ telemetry:
 The following attributes are attached to both metrics:
 
 * `wg.stream.operation.name`:
-This contains the operation type used to send a message to the message backend. This is useful to differentiate when an edfs adapter has multiple ways of sending messages, like in the case of "nats", with `publish`, and `request`.
+This contains the operation type used to send a message to the message backend. This is useful to differentiate when a Cosmo Streams adapter has multiple ways of sending messages, like in the case of "nats", with `publish`, and `request`.
 The following values are possible, based on the messaging backend
 
     - nats: `publish`, `request`, `receive`
@@ -244,7 +244,7 @@ The following values are possible, based on the messaging backend
     - redis: `publish`, `receive`
 
 * `wg.provider.type`:
-One of the supported edfs provider types, which includes `kafka`, `nats`, `redis`
+One of the supported Cosmo Streams provider types, which includes `kafka`, `nats`, `redis`
 
 * `wg.destination.name`:
 The name of the destination of the messaging backend (topic, queue, etc)
@@ -438,8 +438,8 @@ Here you can see a few example queries to query useful information about your cl
        ```
   </Tab>
 
-  <Tab title="EDFS Streams">
-    EDFS stream metrics contain only two metrics. To make sense of your data you need to filter by the attributes. The following examples give you a basic idea of how to use these two metrics.
+  <Tab title="Cosmo Streams">
+Cosmo Streams exposes only two core metrics. To get meaningful insights, you’ll need to filter them using the available attributes. The examples below show how to work with these metrics effectively.
 
     #### Get failed publishes for a message broker
     Let's say we want to see any failed publishes to our kafka broker. We can use the following query,
