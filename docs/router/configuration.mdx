@@ -1855,6 +1855,35 @@ For mor information on how to use the expression language, please refer to the [
 | RATE_LIMIT_SIMPLE_PERIOD                             | period                             | <Icon icon="square-check" iconType="solid" /> | The rate limiting period, e.g. "10s", "1m", etc...                                                                                            | 1s            |
 | RATE_LIMIT_SIMPLE_REJECT_EXCEEDING_REQUESTS          | reject_exceeding_requests          | <Icon icon="square" />                        | Reject the complete request if a sub-request exceeds the rate limit. If set to false, partial responses are possible.                         | false         |
 | RATE_LIMIT_SIMPLE_HIDE_STATS_FROM_RESPONSE_EXTENSION | hide_stats_from_response_extension | <Icon icon="square" />                        | Hide the rate limit stats from the response extension. If the value is true, the rate limit stats are not included in the response extension. | false         |
+|                                                      | overrides                          | <Icon icon="square" />                        | Optional per-key overrides for rate, burst, and period. Keys must match the fully qualified Redis key (prefix + suffix).                      |               |
+
+### Rate Limit Overrides
+
+Overrides let you provide bespoke limits for specific rate-limit keys—for example, to give paying customers higher throughput or to throttle noisy tenants. Each entry in `simple_strategy.overrides` is a map keyed by the full Redis key and can override `rate`, `burst`, and `period`.
+
+Key structure reminder:
+
+- `storage.key_prefix` defines the prefix applied to every key.
+- `key_suffix_expression` appends the dynamic portion at runtime.
+- An override must include both segments (for example, `cosmo_rate_limit:id_premium_user`).
+
+The example below uses `request.auth.claims.client_id` to build suffixes such as `id_paying_client`, which then match the override keys.
+
+```yaml
+rate_limit:
+  simple_strategy:
+    overrides:
+      cosmo_rate_limit:id_premium_user:
+        rate: 25
+        burst: 50
+        period: 1m
+      cosmo_rate_limit:id_trial_user:
+        rate: 2
+        burst: 4
+        period: 30s
+```
+
+Any fields you omit inherit from the base simple strategy configuration. This allows targeted tuning without duplicating the global defaults.
 
 ### Rate Limit Error Extension Code
 
@@ -1876,13 +1905,22 @@ rate_limit:
         reject_exceeding_requests: false
         reject_status_code: 200
         hide_stats_from_response_extension: false
+        overrides:
+          cosmo_rate_limit:id_paying_client:
+            rate: 20
+            burst: 40
+            period: 1m
+          cosmo_rate_limit:id_trial_client:
+            rate: 2
+            burst: 2
+            period: 30s
     storage:
         cluster_enabled: false
         urls:
          - "redis://localhost:6379"
         key_prefix: "cosmo_rate_limit"
     debug: false
-    key_suffix_expression: ""
+    key_suffix_expression: "request.auth.claims.client_id != nil ? 'id_' + request.auth.claims.client_id : ''"
     error_extension_code:
         enabled: true
         code: "RATE_LIMIT_EXCEEDED"
