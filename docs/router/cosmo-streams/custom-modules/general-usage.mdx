@@ -1,14 +1,14 @@
 ---
 title: "General Usage"
-description: "General usage of Cosmo Streams Custom Modules for all available hooks"
+description: "General usage of Cosmo Streams Custom Modules across all available hooks"
 icon: "gear"
 ---
 
-This documentation page covers concepts that are common to all available Cosmo Streams handlers.
+This page describes concepts that are shared across all Cosmo Streams handlers and apply to every available hook.
 
 ## Operation Variables
 
-If variables are used in the operation, you can access them using the `Variables` method on the `OperationContext` interface.
+If your operation defines variables, you can access them through the `Variables` method on the `OperationContext` interface.
 
 ```go
 variables := ctx.Operation().Variables()
@@ -22,7 +22,7 @@ subscription($customerId: Int!) {
 }
 ```
 
-Provided variables:
+Example variables payload:
 
 ```json
 {
@@ -30,7 +30,7 @@ Provided variables:
 }
 ```
 
-Inside your handler, you can access the variables using the `Variables` method.
+Inside your handler, you can retrieve the variables using the `Variables` method:
 
 ```go
 variables := ctx.Operation().Variables()
@@ -39,14 +39,14 @@ customerId := variables.Get("customerId").GetInt() // = 123
 
 ## Operation Arguments
 
-In case no variables are used in the operation, or there is no control over the variables,
-you can access the operation arguments using the `OperationContext` interface, too.
+If no variables are defined in the operation, or if you do not control the variables,
+you can access arguments directly via the `OperationContext` interface.
 
 ```go
 arguments := ctx.Operation().Arguments()
 ```
 
-Suppose you have an operation with multiple arguments
+Consider an operation that defines multiple arguments:
 
 ```graphql
 subscription {
@@ -57,12 +57,13 @@ subscription {
 }
 ```
 
-In order to access the subscription argument `customerId`, you need to use the `Get` method.
+To access the `customerId` argument of the subscription field, use the `Get` method:
+
 ```go
 customerId := ctx.Operation().Arguments().Get("orderUpdates", "customerId").GetStringBytes()
 ```
 
-Since `orderUpdates` is the root field, you can also write the code with a more general approach
+Because `orderUpdates` is the root field, you can also resolve the field name dynamically:
 
 ```go
 // For OnPublishEvent handler
@@ -71,18 +72,17 @@ rootFieldName := ctx.PublishEventConfiguration().RootFieldName()
 // For OnReceiveEvent and SubscriptionOnStart handler
 rootFieldName := ctx.SubscriptionEventConfiguration().RootFieldName()
 
-
 customerId := ctx.Operation().Arguments().Get(rootFieldName, "customerId").Value()
 ```
 
-In order to access an argument of a nested field, like the `sortBy` argument of the `items` field, 
-you need to use the dot notation to access the nested field.
+To access arguments on nested fields, such as the `sortBy` argument of the `items` field,
+use dot notation to reference the nested path.
 
 ```go
 sortBy := ctx.Operation().Arguments().Get("orderUpdates.items", "sortBy").GetStringBytes()
 ```
 
-If you use an alias for a field, you need to use the alias as the key to access the argument.
+When a field uses an alias, the alias must be used as the key when accessing its arguments.
 
 ```graphql
 subscription {
@@ -99,7 +99,7 @@ cheapestItemsSortBy := ctx.Operation().Arguments().Get("orderUpdates.cheapestIte
 newestItemsSortBy := ctx.Operation().Arguments().Get("orderUpdates.newestItems", "sortBy").GetStringBytes()
 ```
 
-You can also access more complex arguments, like arrays and objects.
+You can also work with more complex argument types, such as arrays and input objects.
 
 ```graphql
 subscription {
