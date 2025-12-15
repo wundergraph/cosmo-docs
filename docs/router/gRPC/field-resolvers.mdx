@@ -197,14 +197,14 @@ Always return results in the **exact same order** as the provided context elemen
 ```go
 // Good: Maintains positional mapping by returning empty results for skipped elements
 func (s *ExampleService) ResolveExample(_ context.Context, req *examplev1.ResolveExampleRequest) (*examplev1.ResolveExampleResponse, error) {
-  results := make([]*examplev1.ResolveExampleResult, 0, len(req.GetContext()))
-	for _, reqContext range req.GetContext() {
-    if reqContext.GetId() == "1" {
-      // Skip resolution for this context element by returning an empty result.
-      // This maintains the required 1:1 mapping between context and results.
-      results = append(results, &examplev1.ResolveExampleResult{})
-      continue
-    }
+	results := make([]*examplev1.ResolveExampleResult, 0, len(req.GetContext()))
+	for _, reqContext := range req.GetContext() {
+		if reqContext.GetId() == "1" {
+			// Skip resolution for this context element by returning an empty result.
+			// This maintains the required 1:1 mapping between context and results.
+			results = append(results, &examplev1.ResolveExampleResult{})
+			continue
+		}
 
 		results = append(results, &examplev1.ResolveExampleResult{
 			Example: "example",
@@ -220,25 +220,26 @@ func (s *ExampleService) ResolveExample(_ context.Context, req *examplev1.Resolv
 
 // Bad: Breaks positional mapping by skipping result elements
 func (s *ExampleService) ResolveExample(_ context.Context, req *examplev1.ResolveExampleRequest) (*examplev1.ResolveExampleResponse, error) {
-  results := make([]*examplev1.ResolveExampleResult, 0, len(req.GetContext()))
-	for _, reqContext range req.GetContext() {
-    if reqContext.GetId() == "1" {
-      // ERROR: Skipping this element without adding a corresponding result
-      // will break the positional mapping between context and results.
-      continue
-    }
+	results := make([]*examplev1.ResolveExampleResult, 0, len(req.GetContext()))
+	for _, reqContext := range req.GetContext() {
+		if reqContext.GetId() == "1" {
+			// ERROR: Skipping this element without adding a corresponding result
+			// will break the positional mapping between context and results.
+			continue
+		}
 
 		results = append(results, &examplev1.ResolveExampleResult{
 			Example: "example",
 		})
 	}
 
-  resp := &examplev1.ResolveExampleResponse{
+	resp := &examplev1.ResolveExampleResponse{
 		Result: results,
 	}
 
 	return resp, nil
 }
+
 ```
 
 
