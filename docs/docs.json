@@ -119,7 +119,8 @@
                     ]
                   },
                   "router/gRPC/grpc-services",
-                  "router/gRPC/graphql-support"
+                  "router/gRPC/graphql-support",
+                  "router/gRPC/field-resolvers"
                 ]
               },
               "router/authentication-and-authorization",
