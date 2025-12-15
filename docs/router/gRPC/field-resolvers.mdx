@@ -40,7 +40,7 @@ To overcome this limitation, Cosmo generates **RPC methods for each field resolv
 When your GraphQL operation requests a field with arguments:
 
 1. **Query Planning**: The Cosmo Router analyzes the operation and identifies fields requiring custom resolution
-2. **Data Retrieval**: The router first fetches any necessary parent data from relevant gRPC services  
+2. **Data Retrieval**: The router first fetches any necessary parent data which is needed for the current type to resolve the field value  
 3. **Field Resolution**: For each field resolver, the router calls the corresponding RPC method with the field arguments and parent context
 4. **Response Assembly**: The resolved field values are integrated back into the GraphQL response structure
 
@@ -127,8 +127,9 @@ message Foo {
 
 ### Example implementation
 
-The provide better insights of how to implement field resolvers you can take a look at the following Go example:
-We would like to retrieve the popularity score for a category based on the id and a given threshold.
+To provide better insights on how to implement field resolvers, you can take a look at the following Go example.
+
+In this example, we want to retrieve the popularity score for a category based on the ID and a given threshold.
 
 <CodeGroup>
 ```graphql schema.graphql
@@ -142,15 +143,15 @@ type Category {
 
 ```go service.go
 func (s *MockService) ResolveCategoryPopularityScore(_ context.Context, req *productv1.ResolveCategoryPopularityScoreRequest) (*productv1.ResolveCategoryPopularityScoreResponse, error) {
-  // We need to return the result in the original order of the context elements (len(GetContext())).
+  // We need to return results in the original order of the context elements.
 	results := make([]*productv1.ResolveCategoryPopularityScoreResult, 0, len(req.GetContext()))
 
-  // The threshold is provided in the field arguments of the request (req.GetFieldArgs())
+  // The threshold is provided in the field arguments of the request (req.GetFieldArgs()).
 	threshold := req.GetFieldArgs().GetThreshold()
 
   // You can implement any custom logic to compute the popularity score. 
-  // To keep it simple, in this example we just compare to a base score of 50
-  // and either return nil or the base score.
+  // To keep it simple, in this example we compare against a base score of 50
+  // and return either nil or the base score.
 	baseScore := 50
 	for range req.GetContext() {
 		if int(threshold.GetValue()) > baseScore {
@@ -230,7 +231,7 @@ To maximize performance in your field resolver implementations:
 ## Limitations and Constraints
 
 <Warning>
-- Grouping of field resolvers are not yet supported.
+- Grouping of field resolvers is not yet supported.
 </Warning>
 
 
