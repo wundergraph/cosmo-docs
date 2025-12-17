@@ -6,80 +6,38 @@ icon: "circle-info"
 
 ## Cosmo Connect
 
-Cosmo Connect lets backend teams participate in a federated GraphQL architecture without learning, writing, or
-operating GraphQL. Backend services integrate into the graph by implementing RPC stubs, while frontend teams and API
-consumers interact with the graph through generated, type-safe, versioned SDKs or OpenAPI—without writing GraphQL
-queries.
+Cosmo Connect lets you build and consume federated GraphQL without requiring everyone to learn GraphQL. Backend teams can integrate services using familiar RPC patterns, while frontend teams can use generated, type-safe SDKs instead of writing GraphQL queries.
 
 ### The Challenge
 
-One of the biggest barriers to GraphQL adoption is the learning curve. While GraphQL offers tremendous benefits for API
-composition and flexibility, requiring every developer to learn GraphQL concepts, schema design, and query optimization
-can slow down adoption and create friction across an organization.
+GraphQL adoption often faces two key barriers:
 
-At the same time, fully realizing the benefits of GraphQL often implies deep changes to existing systems. Rewriting
-or restructuring an entire backend stack to adopt GraphQL-native patterns is rarely practical for mature architectures
-built around existing services, protocols and team boundaries.
+1. **Learning curve** - Requiring every developer to learn GraphQL concepts, schema design, and query optimization slows adoption
+2. **Migration complexity** - Rewriting existing backend services to adopt GraphQL-native patterns is rarely practical for mature architectures
 
 ### The Solution
 
-Cosmo Connect solves this problem by providing two complementary capabilities:
+Cosmo Connect removes these barriers by letting teams work with familiar tools:
 
-1. **Connect gRPC Subgraphs** - Backend teams can implement federated subgraphs using standard gRPC instead of GraphQL
-resolvers
-2. **Connect RPC** - API consumers can use type-safe RPC clients instead of writing GraphQL queries
+- **Backend teams** can implement federated subgraphs using standard gRPC instead of GraphQL resolvers
+- **Frontend teams** can use type-safe RPC clients instead of writing GraphQL queries
+- **The Router** handles all GraphQL complexity as a protocol mediation layer
 
-The Router handles all GraphQL complexity, acting as a protocol mediation layer between familiar RPC interfaces and
-your GraphQL supergraph.
+## What You Can Build
 
-## Key Capabilities
+<CardGroup cols={3}>
+  <Card title="Connect RPC Clients" icon="mobile" href="/connect/client">
+    Generate type-safe SDKs from GraphQL operations.
+  </Card>
+  <Card title="Connect gRPC Services" icon="server" href="/connect/grpc-services">
+    Build federated subgraphs using standard gRPC instead of GraphQL resolvers.
+  </Card>
+  <Card title="Connect Router Plugins" icon="plug" href="/connect/plugins">
+    Extend the router with gRPC services that run as managed local processes.
+  </Card>
+</CardGroup>
 
-### Connect gRPC Services (gRPC Subgraphs)
-
-Implement Federated Subgraphs using gRPC instead of GraphQL resolvers.
-
-- **No GraphQL servers required**: Backend teams implement standard gRPC services
-- **Language flexibility**: Use any language with gRPC support (Go, Java, Rust, C#, etc.)
-- **Reduced complexity**: The Router handles query planning; your service handles simple RPCs
-- **Familiar patterns**: Use protobuf definitions and standard gRPC tooling
-
-**How it works**: Define an Apollo-compatible Subgraph Schema, compile it into a protobuf definition using the `wgc`
-CLI, and implement it in your favorite gRPC stack. No specific framework or GraphQL knowledge is required—it's really
-just gRPC!
-
-### Connect RPC (Typed Clients)
-
-Generate OpenAPI Specifications and client SDKs from your GraphQL operations without writing GraphQL queries.
-
-- **Type Safety**: Generate SDKs for iOS, Android, Web, and Backend services using standard protobuf tooling
-- **OpenAPI Support**: Generate OpenAPI 3.0 specifications for REST-like documentation and tooling
-- **Multi-Protocol**: Use gRPC, Connect, gRPC-Web, or plain HTTP/JSON
-- **No GraphQL Required**: API consumers never need to learn GraphQL query syntax
-- **Governed API Products**: Distribute versioned proto files as API products via Git, developer portals, or schema
-registries
-
-**How it works**: Define GraphQL operations (Trusted Documents), generate protobuf service definitions using the `wgc`
-CLI, and distribute proto files to consumers who generate type-safe clients in their preferred language.
-
-#### Architecture
-
-The ConnectRPC server in the Cosmo Router supports multiple client protocols, allowing you to consume your GraphQL API
-using various RPC and HTTP protocols:
-
-```mermaid
-flowchart LR
-    A1[gRPC Client<br/>binary proto] --> B[ConnectRPC Server]
-    A2[Connect Client<br/>JSON or binary] --> B
-    A3[gRPC-Web Client<br/>binary proto] --> B
-    A4[HTTP Client<br/>JSON GET/POST] --> B
-
-    B <-->|GraphQL| C[GraphQL Router<br/>Cosmo Supergraph]
-```
-
-This architecture enables clients to use their preferred protocol while the Router handles translation to GraphQL
-operations.
-
-## Deployment Models
+## Architecture
 
 ```mermaid
 graph LR
@@ -88,17 +46,14 @@ graph LR
 
   subgraph routerBox["Cosmo Router"]
     routerCore
-    plugin["Router Plugin<br/>(Connect gRPC Service)"]
+    plugin["Router Plugin"]
   end
 
   routerCore --> subA["GraphQL Subgraph"]
-  routerCore --> grpcSvc["gRPC Service<br/>(Connect gRPC Service)"]
+  routerCore --> grpcSvc["gRPC Service"]
 
-  grpcSvc --> restA["REST / HTTP APIs"]
-  grpcSvc --> soapA["Databases"]
-
-  plugin --> restA
-  plugin --> soapA
+  grpcSvc --> backend["Backend Systems"]
+  plugin --> backend
 
   %% Styling
   classDef grpcFill fill:#ea4899,stroke:#ea4899,stroke-width:1.5px,color:#ffffff;
@@ -110,28 +65,11 @@ graph LR
   class connectClient clientFill;
 ```
 
-Cosmo Connect supports three main integration patterns:
-
-1.  **[Connect RPC](/connect/client)** — Generated clients that speak the Connect protocol to the Router.
-2.  **[Router Plugins](/connect/plugins)** — gRPC services running as local processes managed by the router.
-3.  **[gRPC Services](/connect/grpc-services)** — Independent gRPC services implementing subgraphs.
-
-Both plugin and service approaches remove the need to build GraphQL servers while maintaining the benefits of federation. Connect Client removes the need to manually write GraphQL queries in your application code.
-
-## Implementation Docs
-
-The following documentation explains how to build and deploy services and plugins:
-
-- **[Connect RPC](/connect/client)** — Generate type-safe clients and OpenAPI specs from GraphQL operations.
-- **[Router Plugins](/router/gRPC/plugins)** — Documentation for developing, configuring, and deploying plugins that run inside the router  
-- **[gRPC Services](/router/gRPC/grpc-services)** — Documentation for the complete lifecycle of building, deploying, and managing independent gRPC services  
-
-These docs assume you're familiar with the concepts above and are ready to implement your first service or plugin.
+The diagram shows how Cosmo Connect integrates with your existing architecture. Traditional GraphQL clients and Connect-generated clients both communicate with the Router, which federates queries across GraphQL subgraphs, gRPC services, and router plugins.
 
 ## Getting Started
 
-The following tutorials walk you through step-by-step examples of building your first integration. 
-Unlike the implementation docs, which cover the full technical reference, these focus on quick setup and hands-on learning:
+Choose your path based on what you want to build:
 
 <CardGroup>
   <Card title="Deploy Your First gRPC Service" icon="code" href="/tutorial/grpc-service-quickstart" horizontal>
