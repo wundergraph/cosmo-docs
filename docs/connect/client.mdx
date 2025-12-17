@@ -1,22 +1,40 @@
 ---
-title: "Connect Client"
+title: "Connect RPC"
 description: "Generate type-safe clients and OpenAPI specs from GraphQL operations"
 icon: "code"
 ---
 
-# Connect Client
+# Connect RPC
 
 <Warning>
-  **Alpha Feature**: The Connect Client capability is currently in alpha. APIs and functionality may change as we gather feedback.
+  **Alpha Feature**: The Connect RPC capability is currently in alpha. APIs and functionality may change as we gather feedback.
 </Warning>
 
-Connect Client enables you to generate type-safe gRPC/Connect clients and OpenAPI specifications directly from your GraphQL operations. This allows you to consume your Federated (or monolithic) Graph using standard gRPC tooling in any language, or expose REST APIs via OpenAPI without writing manual adapters.
+Connect RPC enables you to generate type-safe gRPC/Connect clients and OpenAPI specifications directly from your
+GraphQL operations. This allows you to consume your Federated (or monolithic) Graph using standard gRPC tooling in any
+language, or expose REST APIs via OpenAPI without writing manual adapters.
 
-## Overview
+## What is ConnectRPC?
 
-While **Connect gRPC Services** (gRPC Subgraphs) focuses on implementing subgraphs using gRPC, **Connect Client** focuses on the consumer side. It allows you to define GraphQL operations (Queries, Mutations and soon Subscriptions) and compile them into a Protobuf service definition.
+ConnectRPC enables Platform Engineering (platform teams) to distribute GraphQL-backed APIs as governed, versioned API
+products using protobuf.
 
-The Cosmo Router acts as a bridge. It serves your generated operations via the Connect protocol, executes them against your Federated Graph, and maps the GraphQL response back to typed Protobuf messages.
+## How does ConnectRPC work?
+
+ConnectRPC turns GraphQL APIs into distributable, protocol-agnostic API products by introducing a clear, governed workflow:
+
+1. **Define GraphQL Operations (Trusted Documents)**
+
+API Providers define a fixed set of GraphQL queries and mutations that represent the supported API surface.
+
+2. **Generate Protobuf Service Definitions**
+
+Using the wgc CLI, convert GraphQL operations into protobuf service definitions.
+
+3. **Distribute as Versioned API Products**
+
+Distribute OpenAPI and proto files via Git, your developer portal, or schema registry of your choice to enable API
+consumers to generate type-safe clients in their favourite language.
 
 ## Workflow
 
@@ -96,6 +114,49 @@ wgc grpc-service generate \
 
 This command generates a `service.proto` file and a `service.proto.lock.json` file in the `./services` directory.
 
+#### Command Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-i, --input <path>` | **(Required)** GraphQL schema file (SDL) | - |
+| `-w, --with-operations <path>` | **(Required for ConnectRPC)** Directory containing GraphQL operation files (`.graphql`, `.gql`, `.graphqls`, `.gqls`). Each operation becomes an RPC method | - |
+| `-o, --output <path>` | Output directory for generated files | `.` |
+| `-p, --package-name <name>` | Proto package name | `service.v1` |
+| `-g, --go-package <name>` | Adds `option go_package` to proto file | - |
+| `-l, --proto-lock <path>` | Path to proto lock file for field number stability | `<output>/service.proto.lock.json` |
+| `--custom-scalar-mapping <json>` | Custom scalar mappings as JSON string | - |
+| `--custom-scalar-mapping-file <path>` | Path to JSON file with custom scalar mappings | - |
+| `--max-depth <number>` | Maximum recursion depth for nested selections/fragments | `50` |
+
+#### How It Works
+
+ConnectRPC uses **operations-based generation** (enabled with the `-w` flag):
+
+- Generates proto from GraphQL operation files (queries, mutations, subscriptions)
+- Each operation becomes an RPC method in the service
+- Operation files are processed recursively from the specified directory
+- Files are sorted alphabetically for deterministic output
+- **Query operations automatically marked with `NO_SIDE_EFFECTS` idempotency level**
+- Subscriptions marked as server streaming RPCs
+- Generates `service.proto` and `service.proto.lock.json`
+
+#### Important Requirements
+
+<Warning>
+**Operation Naming**: Operation names must be in PascalCase (e.g., `GetEmployeeById`, `UpdateEmployeeMood`). This ensures exact matching between GraphQL operation names and RPC method names.
+
+- ❌ Invalid: `get_employee`, `GETEMPLOYEE`, `getEmployee`
+- ✅ Valid: `GetEmployee`, `CreatePost`, `OnMessageAdded`
+</Warning>
+
+<Warning>
+**One Operation Per File**: Each `.graphql` file must contain exactly one named operation. This is required for deterministic proto schema generation. Multiple operations in a single file will cause an error.
+</Warning>
+
+<Warning>
+**No Root-Level Aliases**: Field aliases at the root level are not supported as they break proto schema generation consistency (each GraphQL field must map to exactly one proto field name). Aliases on nested fields are allowed.
+</Warning>
+
 ### 3. Configure and Start Router
 
 Enable the ConnectRPC server in your `config.yaml` and point the `services` provider to the directory containing your generated `service.proto`.
@@ -122,36 +183,194 @@ Start the router. It is now ready to accept requests for the operations defined 
 
 Use [buf](https://buf.build/) or `protoc` to generate the client code for your application.
 
-Example `buf.gen.yaml` for Go:
+#### Understanding buf.gen.yaml
 
-```yaml buf.gen.yaml
+The `buf.gen.yaml` file configures code generation from proto files. Here's what each section does:
+
+- **`version: v2`** - Uses Buf v2 configuration format
+- **`managed.enabled: true`** - Enables managed mode for consistent code generation
+- **`managed.override`** - Customizes generation options (e.g., Go module path prefix)
+- **`plugins`** - Defines code generators to run:
+  - `local` - Uses locally installed plugin
+  - `remote` - Uses Buf Schema Registry plugins
+  - `out` - Output directory for generated code
+  - `opt` - Plugin-specific options
+
+#### Language-Specific Examples
+
+<Tabs>
+  <Tab title="TypeScript/JavaScript">
+```bash
+# Install dependencies
+npm install @bufbuild/protoc-gen-es @connectrpc/protoc-gen-connect-es
+
+# Create buf.gen.yaml
+cat > buf.gen.yaml << EOF
+version: v2
+plugins:
+  - local: ./node_modules/.bin/protoc-gen-es
+    out: gen/ts
+    opt: target=ts
+  - local: ./node_modules/.bin/protoc-gen-connect-es
+    out: gen/ts
+    opt: target=ts
+EOF
+
+# Generate
+buf generate services/service.proto
+```
+  </Tab>
+
+  <Tab title="Go">
+```bash
+# Install dependencies
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
+
+# Create buf.gen.yaml
+cat > buf.gen.yaml << EOF
 version: v2
 managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/wundergraph/cosmo/router-tests/testdata/connectrpc/client
+      value: github.com/yourorg/yourproject/gen/go
 plugins:
-  - remote: buf.build/protocolbuffers/go
-    out: client
-    opt:
-      - paths=source_relative
-  - remote: buf.build/connectrpc/go
-    out: client
-    opt:
-      - paths=source_relative
-```
+  - local: protoc-gen-go
+    out: gen/go
+    opt: paths=source_relative
+  - local: protoc-gen-connect-go
+    out: gen/go
+    opt: paths=source_relative
+EOF
 
-Run the generation:
-
-```bash
+# Generate
 buf generate services/service.proto
 ```
+  </Tab>
+
+  <Tab title="Swift (iOS)">
+```bash
+# Add to Package.swift:
+# .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.25.0")
+# .package(url: "https://github.com/connectrpc/connect-swift.git", from: "0.12.0")
+
+# Create buf.gen.yaml
+cat > buf.gen.yaml << EOF
+version: v2
+plugins:
+  - remote: buf.build/apple/swift
+    out: gen/swift
+  - remote: buf.build/connectrpc/swift
+    out: gen/swift
+EOF
+
+# Generate
+buf generate services/service.proto
+```
+  </Tab>
+
+  <Tab title="Kotlin (Android)">
+```bash
+# Create buf.gen.yaml
+cat > buf.gen.yaml << EOF
+version: v2
+plugins:
+  - remote: buf.build/grpc/kotlin
+    out: gen/kotlin
+  - remote: buf.build/connectrpc/kotlin
+    out: gen/kotlin
+EOF
+
+# Generate
+buf generate services/service.proto
+```
+  </Tab>
+
+  <Tab title="Python">
+```bash
+# Install dependencies
+pip install grpcio-tools
+
+# Using protoc directly
+protoc --python_out=gen/python \
+  --grpc_python_out=gen/python \
+  services/service.proto
+
+# Or using buf
+cat > buf.gen.yaml << EOF
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/python
+    out: gen/python
+  - remote: buf.build/grpc/python
+    out: gen/python
+EOF
+
+buf generate services/service.proto
+```
+  </Tab>
+</Tabs>
+
+#### Generate OpenAPI Specification
+
+Generate OpenAPI 3.0 specification for REST-like documentation and tooling:
+
+```bash
+# Install the OpenAPI plugin
+go install connectrpc.com/connect/cmd/protoc-gen-connect-openapi@latest
+
+# Create buf.gen.yaml for OpenAPI
+cat > buf.gen.yaml << EOF
+version: v2
+plugins:
+  - local: protoc-gen-connect-openapi
+    out: gen/openapi
+    opt:
+      - format=yaml
+EOF
+
+# Generate
+buf generate services/service.proto
+```
+
+**Use the generated OpenAPI specification with:**
+
+- **Swagger UI** - Interactive API documentation
+- **Postman** - API testing and collaboration
+- **Redoc** - Beautiful API documentation
+- **Speakeasy** - Advanced SDK generation with retry logic, pagination, etc.
+- **Stainless** - Production-grade SDK generation
 
 ### 5. Use the Client
 
 You can now use the generated client to call your GraphQL API via the Router. The Router acts as the server implementation for your generated service.
 
+<Tabs>
+  <Tab title="TypeScript">
+```typescript
+import { createPromiseClient } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+import { EmployeeService } from "./gen/employee/v1/service_connect";
+
+// Create transport
+const transport = createConnectTransport({
+  baseUrl: "http://localhost:8081",
+});
+
+// Create client
+const client = createPromiseClient(EmployeeService, transport);
+
+// Make request
+const response = await client.getEmployee({
+  id: "1",
+});
+
+console.log(response.employee?.details?.forename); // "John"
+```
+  </Tab>
+
+  <Tab title="Go">
 ```go
 package main
 
@@ -181,12 +400,116 @@ func main() {
         log.Fatal(err)
     }
 
-    log.Printf("Employee: %s %s", 
+    log.Printf("Employee: %s %s",
         resp.Msg.Employee.Details.Forename,
         resp.Msg.Employee.Details.Surname,
     )
 }
 ```
+  </Tab>
+
+  <Tab title="Swift">
+```swift
+import Connect
+
+let client = ProtocolClient(
+    httpClient: URLSessionHTTPClient(),
+    config: ProtocolClientConfig(
+        host: "http://localhost:8081",
+        networkProtocol: .connect
+    )
+)
+
+let request = Employee_V1_GetEmployeeRequest.with {
+    $0.id = "1"
+}
+
+let response = try await client.getEmployee(request: request)
+print(response.employee.details.forename) // "John"
+```
+  </Tab>
+
+  <Tab title="Kotlin">
+```kotlin
+import com.connectrpc.ProtocolClient
+import employee.v1.EmployeeServiceClient
+
+val client = ProtocolClient(
+    httpClient = OkHttpClient(),
+    ProtocolClientConfig(
+        host = "http://localhost:8081",
+        serializationStrategy = ProtobufStrategy()
+    )
+)
+
+val employeeClient = EmployeeServiceClient(client)
+
+val request = GetEmployeeRequest.newBuilder()
+    .setId("1")
+    .build()
+
+val response = employeeClient.getEmployee(request)
+println(response.employee.details.forename) // "John"
+```
+  </Tab>
+</Tabs>
+
+## Protocol Support
+
+ConnectRPC supports multiple protocols and formats with automatic transcoding, allowing clients to use their preferred
+protocol while the Router handles translation to GraphQL operations.
+
+### Supported Protocols
+
+#### 1. Connect Protocol with JSON
+
+The Connect protocol is modern, efficient, and works over HTTP/1.1 or HTTP/2. The `Connect-Protocol-Version` header is optional.
+
+**POST Request:**
+```bash
+curl -X POST http://localhost:8081/employee.v1.EmployeeService/GetEmployee \
+  -H "Content-Type: application/json" \
+  -H "Connect-Protocol-Version: 1" \
+  -d '{"id": "1"}'
+```
+
+**GET Request (for queries - enables CDN caching):**
+```bash
+curl --get \
+  --data-urlencode 'encoding=json' \
+  --data-urlencode 'message={"id":"1"}' \
+  http://localhost:8081/employee.v1.EmployeeService/GetEmployee
+```
+
+#### 2. gRPC Protocol
+
+Binary protobuf over HTTP/2 for maximum efficiency.
+
+```bash
+grpcurl -plaintext \
+  -proto ./services/service.proto \
+  -d '{"id": "1"}' \
+  localhost:8081 \
+  employee.v1.EmployeeService/GetEmployee
+```
+
+#### 3. gRPC-Web Protocol
+
+Browser-compatible gRPC with binary protobuf.
+
+```bash
+buf curl --protocol grpcweb \
+  --schema ./services/service.proto \
+  --data '{"id": "1"}' \
+  http://localhost:8081/employee.v1.EmployeeService/GetEmployee
+```
+
+### Key Features
+
+- **JSON Support**: All protocols support JSON encoding—no binary proto required
+- **GET for Queries**: Query operations can use HTTP GET with `encoding` and `message` query parameters, enabling CDN caching for better performance
+- **POST for Mutations**: Mutation operations must use HTTP POST
+- **Flexible Headers**: The `Connect-Protocol-Version` header is optional for Connect protocol requests
 
 ## Directory Structure & Organization
 
