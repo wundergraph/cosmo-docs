@@ -36,42 +36,127 @@ Using the wgc CLI, convert GraphQL operations into protobuf service definitions.
 Distribute OpenAPI and proto files via Git, your developer portal, or schema registry of your choice to enable API
 consumers to generate type-safe clients in their favourite language.
 
-## Workflow
+## Architecture & Workflow
 
-The typical workflow involves defining your operations, configuring the Router to serve them, and then distributing the Protobuf or OpenAPI definition to consumers who generate their client SDKs.
+### System Context
+
+ConnectRPC enables API providers to expose GraphQL operations as type-safe RPC services that consumers can integrate using standard gRPC/Connect tooling.
+
+```mermaid
+graph TB
+    subgraph "API Provider Organization"
+        Provider[API Provider Team]
+        CLI[Cosmo CLI]
+        Router[Cosmo Router]
+        Graph[Federated GraphQL Graph]
+    end
+    
+    subgraph "API Consumer Organization"
+        Consumer[API Consumer Team]
+        Client[Client Application]
+    end
+    
+    Provider -->|1. Define Operations| CLI
+    CLI -->|2. Generate Proto| Provider
+    Provider -->|3. Configure| Router
+    Router -->|Executes| Graph
+    Provider -.->|4. Distribute Proto/OpenAPI| Consumer
+    Consumer -->|5. Generate SDK| Client
+    Client -->|6. RPC Requests| Router
+    Router -.->|7. Observability| Provider
+    
+    style Provider fill:#e1f5ff
+    style Consumer fill:#fff4e1
+    style Router fill:#f0e1ff
+    style Graph fill:#e1ffe1
+```
+
+### Container View
+
+This diagram shows how the Cosmo Router acts as a protocol bridge between RPC clients and your GraphQL federation.
+
+```mermaid
+graph TB
+    subgraph "Development Time"
+        Ops[GraphQL Operations<br/>.graphql files]
+        WGC[wgc CLI]
+        Proto[service.proto<br/>+ lock file]
+        
+        Ops -->|Input| WGC
+        WGC -->|Generates| Proto
+    end
+    
+    subgraph "Distribution"
+        Proto -.->|Shared via Git/Portal| SDK[SDK Generator<br/>buf/protoc]
+        Proto -.->|Alternative| OpenAPI[OpenAPI Spec<br/>Swagger/Postman]
+    end
+    
+    subgraph "Runtime"
+        SDK -->|Generates| ClientCode[Type-Safe Client Code]
+        ClientCode -->|RPC Calls<br/>Connect/gRPC/gRPC-Web| RouterRPC[Cosmo Router<br/>:8081 RPC Server]
+        RouterRPC -->|Translates to| RouterGQL[GraphQL Engine]
+        RouterGQL -->|Executes| Subgraphs[Federated Subgraphs]
+        Subgraphs -->|Response| RouterGQL
+        RouterGQL -->|Protobuf Response| RouterRPC
+        RouterRPC -->|Returns| ClientCode
+    end
+    
+    subgraph "Observability"
+        RouterRPC -.->|OTEL Metrics & Traces| Monitoring[Monitoring Stack<br/>Grafana/Datadog]
+    end
+    
+    style Ops fill:#e1f5ff
+    style Proto fill:#f0e1ff
+    style ClientCode fill:#fff4e1
+    style RouterRPC fill:#ffe1e1
+    style Monitoring fill:#e1ffe1
+```
+
+### Component Interaction
+
+This detailed view shows the complete request flow from client to federated graph and back.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Provider as API Provider
-    participant CLI as Cosmo CLI (wgc)
-    participant Consumer as API Consumer
-    participant Client as Client SDK
-    participant Router as Cosmo Router
+    participant Client as Client App<br/>(Generated SDK)
+    participant RPC as Router RPC Server<br/>:8081
+    participant Engine as GraphQL Engine
     participant Graph as Federated Graph
+    participant OTEL as Observability<br/>(OTEL/Prometheus)
 
-    Note over Provider, Router: Setup & Configuration
-    Provider->>Provider: Define GraphQL Operations (.graphql)
-    Provider->>CLI: Generate Protobuf (wgc grpc-service generate)
-    CLI->>Provider: service.proto + lock file
-    Provider->>Router: Configure & Start Router with operations
+    Note over Client,Graph: Request Flow
+    Client->>RPC: RPC Request<br/>(Connect/gRPC/gRPC-Web)
+    RPC->>RPC: Validate & Decode Protobuf
+    RPC->>Engine: Map to GraphQL Operation
+    Engine->>Graph: Execute Query/Mutation
+    Graph-->>Engine: GraphQL Response
+    Engine->>RPC: Transform to Protobuf
+    RPC-->>Client: RPC Response
     
-    Note over Provider, Consumer: Distribution
-    Provider->>Consumer: Distribute service.proto / OpenAPI spec
-
-    Note over Consumer, Client: Client Development
-    Consumer->>Consumer: Generate Client SDK (buf/protoc)
-    Consumer->>Client: Integrate SDK into App
-
-    Note over Client, Graph: Runtime
-    Client->>Router: Send RPC Request (Connect/gRPC)
-    Router->>Graph: Execute GraphQL Operation
-    Graph-->>Router: GraphQL Response
-    Router-->>Client: Protobuf Response
-
-    Note over Provider, Router: Observe
-    Router->>Provider: OTEL Metrics / Traces (GraphQL & RPC)
+    Note over RPC,OTEL: Observability
+    RPC->>OTEL: Emit Metrics & Traces<br/>(GraphQL + RPC layers)
 ```
+
+### Key Phases
+
+The ConnectRPC workflow consists of three main phases:
+
+1. **Setup Phase** (API Provider)
+   - Define GraphQL operations as `.graphql` files
+   - Generate Protobuf definitions using `wgc grpc-service generate`
+   - Configure Router with generated proto and operations
+
+2. **Distribution Phase** (Provider → Consumer)
+   - Share `service.proto` via Git, developer portal, or schema registry
+   - Optionally generate and share OpenAPI specifications
+   - Consumers generate type-safe client SDKs in their language
+
+3. **Runtime Phase** (Consumer)
+   - Client applications make RPC calls using generated SDKs
+   - Router translates RPC requests to GraphQL operations
+   - Router returns responses in Protobuf format
+   - Full observability across both RPC and GraphQL layers
 
 ## Usage Example
 
