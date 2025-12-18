@@ -267,6 +267,40 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
 }
 ```
 
+### Access The Error Set In The Router
+
+We expose the `Error()` method as part of the context, which when called will return the error set to `request.error` in expressions.
+
+Note that if you call `Error()` in the hooks, you are most likely to get `nil`, this is as when the hook is called the error has not been set internally yet. The recommended approach is to use a custom response writer, which will be called after the error has been set internally, thus the value from `Error()` being non-nil in error cases. Also do note that `Write` can be called multiple times from the router for the same request.
+
+```go
+type headerCapturingWriter struct {
+	http.ResponseWriter
+	ctx             core.RequestContext
+}
+
+// This will be called by the router when it is calling Write
+// Do note that this can be called multiple times for the same request
+func (w *headerCapturingWriter) Write(b []byte) (int, error) {
+	if err := w.ctx.Error(); err != nil {
+		// error has been successfully set
+		fmt.Println("error detected")
+	}
+	return w.ResponseWriter.Write(b)
+}
+
+func (m *CustomModule) RouterOnRequest(ctx core.RequestContext, next http.Handler) {
+	// Wrap the response writer to intercept writes
+	wrappedWriter := &headerCapturingWriter{
+		ResponseWriter:  ctx.ResponseWriter(),
+		ctx:             ctx,
+	}
+
+	// Call the next handler with the wrapped writer
+	next.ServeHTTP(wrappedWriter, ctx.Request())
+}
+```
+
 ### Request Handler lifecycle
 
 The current module handler allow to intercept and modify request / response subgraphs.
