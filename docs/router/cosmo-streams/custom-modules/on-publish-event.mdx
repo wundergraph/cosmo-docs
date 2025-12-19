@@ -303,3 +303,45 @@ func (m *EventPublishModule) OnPublishEvents(
 	return datasource.NewStreamEvents(eventsWithHeaders), nil
 }
 ```
+
+### Transform events
+
+You can change event data. For example you could change the id of the entity before you emit the event.
+Suppose you have a Cosmo Streams mutation, which lets you create a new user. You can change the name of
+the user before it get's sent as an event to the broker.
+
+```go
+type userCreatedEvent struct {
+	Typename string `json:"__typename"`
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+}
+
+func (m *CosmoStreamsModule) OnPublishEvents(ctx core.StreamPublishEventHandlerContext, events datasource.StreamEvents) (datasource.StreamEvents, error) {
+	if ctx.PublishEventConfiguration().ProviderType() != datasource.ProviderTypeKafka {
+		return events, nil
+	}
+
+	newEvents := make([]datasource.StreamEvent, 0, events.Len())
+
+	for _, event := range events.All() {
+		var evt userCreatedEvent
+		err := json.Unmarshal(event.GetData(), &evt)
+		if err != nil {
+			// handle error
+		}
+
+		// force the events username to be John Doe all the time
+		evt.Username = "John Doe"
+
+		evtPayload, err := json.Marshal(evt)
+		if err != nil {
+			// handle error
+		}
+
+		newEvents = append(newEvents, ctx.NewEvent(evtPayload))
+	}
+
+	return datasource.NewStreamEvents(newEvents), nil
+}
+```
