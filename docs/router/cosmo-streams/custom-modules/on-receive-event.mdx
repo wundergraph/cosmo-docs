@@ -430,7 +430,7 @@ func (m *CosmoStreamsModule) OnReceiveEvents(ctx core.StreamReceiveEventHandlerC
 			// handle error here
 		}
 
-		// force to event to reference the dog entity with id 3
+		// force to event to reference the cat entity with id 3
 		evt.Typename = "Cat"
 		evt.ID = 3
 
@@ -446,4 +446,4 @@ func (m *CosmoStreamsModule) OnReceiveEvents(ctx core.StreamReceiveEventHandlerC
 }
 ```
 
-This will lead the router to fetch and resolve the `Dog` entity with id 3, no matter what the event originally references.
+This will lead the router to fetch and resolve the `Cat` entity with id 3, no matter what the event originally references.
