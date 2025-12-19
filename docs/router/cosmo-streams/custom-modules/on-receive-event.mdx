@@ -364,3 +364,86 @@ func (m *HeaderFilterModule) OnReceiveEvents(
     return datasource.NewStreamEvents(filteredEvents), nil
 }
 ```
+
+### Transform events
+
+You can change event data. For example you could change the id of the entity
+you want to resolve for a client.
+
+```go
+type myEvent struct {
+	Typename string `json:"__typename"`
+	ID       int    `json:"id"` // this is the entity key
+}
+
+func (m *CosmoStreamsModule) OnReceiveEvents(ctx core.StreamReceiveEventHandlerContext, events datasource.StreamEvents) (datasource.StreamEvents, error) {
+	if ctx.SubscriptionEventConfiguration().ProviderType() != datasource.ProviderTypeKafka {
+		return events, nil
+	}
+
+	newEvents := make([]datasource.StreamEvent, 0, events.Len())
+
+	for _, event := range events.All() {
+		var evt myEvent
+		err := json.Unmarshal(event.GetData(), &evt)
+		if err != nil {
+			// handle error
+		}
+
+		// force to event to reference entity with id 2
+		evt.ID = 2
+
+		evtPayload, err := json.Marshal(evt)
+		if err != nil {
+			// handle error
+		}
+
+		newEvents = append(newEvents, ctx.NewEvent(evtPayload))
+	}
+
+	return datasource.NewStreamEvents(newEvents), nil
+}
+```
+
+Or if your schema defines a union as the return type of a subscription, you can choose to resolve a different entity
+
+```graphql
+union Animal = Cat | Dog
+
+type Subscription {
+  AnimalBorn: Animal
+}
+```
+
+```go
+func (m *CosmoStreamsModule) OnReceiveEvents(ctx core.StreamReceiveEventHandlerContext, events datasource.StreamEvents) (datasource.StreamEvents, error) {
+	if ctx.SubscriptionEventConfiguration().ProviderType() != datasource.ProviderTypeKafka {
+		return events, nil
+	}
+
+	newEvents := make([]datasource.StreamEvent, 0, events.Len())
+
+	for _, event := range events.All() {
+		var evt myEvent
+		err := json.Unmarshal(event.GetData(), &evt)
+		if err != nil {
+			// handle error here
+		}
+
+		// force to event to reference the dog entity with id 3
+		evt.Typename = "Cat"
+		evt.ID = 3
+
+		evtPayload, err := json.Marshal(evt)
+		if err != nil {
+			// handle error
+		}
+
+		newEvents = append(newEvents, ctx.NewEvent(evtPayload))
+	}
+
+	return datasource.NewStreamEvents(newEvents), nil
+}
+```
+
+This will lead the router to fetch and resolve the `Dog` entity with id 3, no matter what the event originally references.
