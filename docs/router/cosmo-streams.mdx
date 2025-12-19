@@ -20,11 +20,11 @@ Cosmo Streams doesn't try to make traditional GraphQL subscriptions less painful
 
 GraphQL subscriptions are notoriously difficult to build and operate at scale.
 
-In a classic setup, you're expected to run a dedicated subscription service yourself. That service must keep long-lived WebSocket connections, implement the correct GraphQL subprotocol, manage heartbeats and reconnects, listen for domain events, fetch and compose data from other services, and finally fan out updates to thousands of connected clients — all in real time.
+In a classic setup, you're expected to run a dedicated subscription service yourself. That service must keep **long-lived WebSocket connections**, implement the correct GraphQL subprotocol, manage heartbeats and reconnects, listen for domain events, fetch and compose data from other services, and finally fan out updates to thousands of connected clients — all in real time.
 
-This architecture is inherently stateful. Every active subscription lives somewhere in memory. As traffic grows, so does connection overhead, memory pressure, and operational complexity. Subtle performance issues and edge-case failures are common, especially once you move beyond a few hundred clients.
+This architecture is inherently **stateful**. Every active subscription lives somewhere in memory. As traffic grows, so does connection overhead, memory pressure, and operational complexity. Subtle performance issues and edge-case failures are common, especially once you move beyond a few hundred clients.
 
-Federation makes things even harder. Now the router is no longer the only place dealing with subscriptions — your subgraphs must participate too. They often need to hold WebSocket connections, implement subscription loops, or support proprietary callback protocols. This creates tight coupling between your graph architecture and your runtime environment, making serverless deployments difficult or outright impossible.
+Federation makes things even harder. Now the router is no longer the only place dealing with subscriptions — **your subgraphs must participate too**. They often need to hold WebSocket connections, implement subscription loops, or support proprietary callback protocols. This creates tight coupling between your graph architecture and your runtime environment, making serverless deployments difficult or outright impossible.
 
 In short: traditional GraphQL subscriptions push state, complexity, and scalability concerns deep into every layer of your system.
 
@@ -32,23 +32,23 @@ In short: traditional GraphQL subscriptions push state, complexity, and scalabil
 
 Cosmo Streams takes a fundamentally different approach.
 
-Instead of asking subgraphs to host subscriptions, Cosmo Streams treats subscriptions as an event-driven problem, not a connection-driven one.
+Instead of asking subgraphs to host subscriptions, Cosmo Streams treats subscriptions as an **event-driven problem**, not a connection-driven one.
 
-Subgraphs remain completely stateless. They don't manage WebSockets. They don't track subscriptions. They don't run subscription loops. When something changes, they simply emit an event to an existing message broker like Apache Kafka, NATS, or Redis — infrastructure most event-driven systems already rely on.
+Subgraphs remain **completely stateless**. They don't manage WebSockets. They don't track subscriptions. They don't run subscription loops. When something changes, they simply emit an event to an existing message broker like **Apache Kafka, NATS, or Redis** — infrastructure most event-driven systems already rely on.
 
 The Cosmo Router listens to those events.
 
-When an event arrives, the router determines which active subscriptions are affected, efficiently deduplicates work, and fetches the required data from subgraphs using plain HTTP requests. The updated results are then broadcast to clients over WebSockets, SSE, or multipart responses — all fully managed at the gateway layer.
+When an event arrives, the router determines which active subscriptions are affected, efficiently deduplicates work, and fetches the required data from subgraphs using **plain HTTP requests**. The updated results are then broadcast to clients over WebSockets, SSE, or multipart responses — all fully managed at the gateway layer.
 
 ### Why This Matters
 
 This shift has important consequences:
 
-- Stateless subgraphs Subgraphs don't hold connections or subscription state, making them ideal for Lambda, Cloud Run, or any serverless environment.
-- Centralized connection management All client connections live in the router, where they can be optimized, monitored, and scaled efficiently.
-- Event-native architecture Subscriptions integrate naturally with Kafka, NATS, or Redis instead of introducing yet another stateful protocol.
-- Better performance at scale The router deduplicates subscriptions, minimizes fetches, and uses highly efficient I/O primitives to handle tens of thousands of concurrent clients with low memory overhead.
-- Zero subscription logic in subgraphs No WebSocket servers, no callback protocols, no proprietary APIs — just HTTP.
+- **Stateless subgraphs** Subgraphs don't hold connections or subscription state, making them ideal for Lambda, Cloud Run, or any serverless environment.
+- **Centralized connection management** All client connections live in the router, where they can be optimized, monitored, and scaled efficiently.
+- **Event-native architecture** Subscriptions integrate naturally with Kafka, NATS, or Redis instead of introducing yet another stateful protocol.
+- **Better performance at scale** The router deduplicates subscriptions, minimizes fetches, and uses highly efficient I/O primitives to handle tens of thousands of concurrent clients with low memory overhead.
+- **Zero subscription logic in subgraphs** No WebSocket servers, no callback protocols, no proprietary APIs — just HTTP.
 
 ## In More Detail
 
