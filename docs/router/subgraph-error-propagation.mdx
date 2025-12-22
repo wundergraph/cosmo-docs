@@ -136,6 +136,9 @@ If `omit_extensions` is set to `true` (default is `false`), `extensions` will no
 
 If `omit_locations` is set to `true` (default is `false`), `locations` will not be propagated. This is useful because the locations of a Subgraph error is internal to the Subgraph and not relevant to the client.
 
+However as of [router version 0.273.3](https://github.com/wundergraph/cosmo/releases/tag/router%400.273.3), if `omit_locations` is set to "false", we will still gracefully omit any invalid locations. Invalid locations are any location elements that do not have a "line" and "column" attribute with a value of 1 or greater.
+
+
 ### Propagate only selected error extension fields
 
 You can select which fields are propagated with `allowed_extension_fields`. The following fields are propagated by default:
