@@ -375,6 +375,30 @@ The MCP server converts each operation into a corresponding tool:
 
 Operations are converted to snake_case for tool naming consistency.
 
+#### Custom Tool Names
+
+You can override the default tool name by adding the `@mcpTool` directive to your operation:
+
+```graphql
+"""
+Returns employee details by their unique ID.
+"""
+query GetEmployee($id: Int!) @mcpTool(name: "get_employee_by_id") {
+  employee(id: $id) {
+    id
+    name
+    role
+  }
+}
+```
+
+With this directive, the tool will be named `get_employee_by_id` instead of the default `execute_operation_get_employee`.
+
+Key points about the `@mcpTool` directive:
+
+- The directive is automatically stripped before schema validation, so you don't need to define it in your GraphQL schema
+- If the directive is absent or the name is empty, the default naming convention is used
+
 ### Best Practices
 
 1. **Meaningful names**: Give operations clear, action-oriented names that describe what they do.
