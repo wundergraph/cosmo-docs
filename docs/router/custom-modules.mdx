@@ -271,7 +271,11 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
 
 We expose the `Error()` method as part of the context, which when called will return the error set to `request.error` in expressions.
 
-Note that if you call `Error()` in the hooks, you are most likely to get `nil`, this is as when the hook is called the error has not been set internally yet. The recommended approach is to use a custom response writer, which will be called after the error has been set internally, thus the value from `Error()` being non-nil in error cases. Also do note that `Write` can be called multiple times from the router for the same request.
+Note that if you call `Error()` in the hooks, you are most likely to get `nil`. This is because when the hook is called, the error has not been set internally yet. The recommended approach is to use a custom response writer, which will be called after the error has been set internally, thus the value from `Error()` will be non-nil when called from the custom response writer. When using a custom response writer, we recommend wrapping the writer in the `RouterOnRequest` hook (see example below), as this is the first hook that is called in a request lifecycle.
+
+<Note>
+The `Write` method in the custom response writer can be called multiple times from the router for the same request.
+</Note>
 
 ```go
 type headerCapturingWriter struct {
