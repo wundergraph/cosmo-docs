@@ -30,7 +30,7 @@ By default, the routers exports OTEL data **every** 15 seconds.
 
 We collect the following metrics to get useful insights in the HTTP traffic:
 
-* `router.http.requests`: Total count of incoming requests.
+* `router.http.requests`: Total count of incoming and outgoing requests. Incoming requests are requests that the router receives from the clients and outgoing requests are requests that the router makes to the subgraphs. The outgoing requests have the `wg_subgraph_id` dimension attached.
 
 * `router.http.response.content_length`: Total bytes of incoming requests
 
