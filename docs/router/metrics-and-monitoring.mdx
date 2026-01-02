@@ -228,8 +228,8 @@ telemetry:
 
 #### Metrics
 
-* `router.streams.sent.messages`: Counter of messages produced/sent to the messaging backend
 * `router.streams.received.messages`: Counter of messages consumed/received directly by the router from the messaging backend.
+* `router.streams.sent.messages`: Counter of messages produced/sent to the messaging backend, this happens when a mutation decorated with the `@edfs__xPublish` directive is executed.
 
 The following attributes are attached to both metrics:
 
