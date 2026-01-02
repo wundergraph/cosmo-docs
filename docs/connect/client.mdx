@@ -1,0 +1,231 @@
+---
+title: "Connect RPC"
+description: "Generate type-safe clients and OpenAPI specs from GraphQL operations"
+icon: "code"
+---
+
+<Warning>
+  **Alpha Feature**: The Connect RPC capability is currently in alpha. APIs and functionality may change as we gather feedback.
+</Warning>
+
+Connect RPC enables you to generate type-safe gRPC/Connect clients and OpenAPI specifications directly from your GraphQL operations. This allows you to consume your GraphQL API using standard gRPC tooling in any language, or expose REST APIs via OpenAPI without writing manual adapters.
+
+## What is ConnectRPC?
+
+ConnectRPC enables Platform Engineering teams to distribute GraphQL-backed APIs as governed, versioned API products using protobuf. API Providers define a fixed set of GraphQL queries and mutations (Trusted Documents) that represent the supported API surface, which are then converted into protobuf service definitions and distributed as OpenAPI and proto files.
+
+## How It Works
+
+ConnectRPC acts as a protocol translation layer:
+
+1. **Define Operations**: Create named GraphQL operations (Trusted Documents) as `.graphql` files
+2. **Generate Proto**: Use [`wgc`](/cli/grpc-service/generate) to convert operations into protobuf service definitions
+3. **Start Router**: Configure the router to load your proto files and operations
+4. **Consume**: Clients call RPC methods, router translates to GraphQL, executes, and returns typed responses
+
+The router handles all protocol translation automatically - no server-side code required.
+
+## Quickstart
+
+<Note>
+  **Prerequisites**: You need a working Cosmo environment with a federated graph. See the [Cosmo Cloud Onboarding guide](/getting-started/cosmo-cloud-onboarding#create-the-demo) to set up the demo environment.
+</Note>
+
+<Card
+  title="Complete Tutorial"
+  icon="book"
+  href="https://github.com/wundergraph/connectrpc-demo"
+  horizontal
+>
+  For a comprehensive, step-by-step tutorial with detailed explanations, see the **ConnectRPC Demo Repository**. The quickstart below provides a condensed overview.
+</Card>
+
+### 1. Create Named Operations
+
+Create a directory for your operations (e.g., [`services/`](https://github.com/wundergraph/connectrpc-demo/tree/main/services)). Each `.graphql` file should contain one named operation:
+
+```graphql services/GetEmployee.graphql
+query GetEmployee($id: Int!) {
+  employee(id: $id) {
+    id
+    details {
+      forename
+      surname
+    }
+  }
+}
+```
+
+<Note>
+  Operations must use PascalCase naming (e.g., `GetEmployee`), one operation per file, and no root-level aliases.
+</Note>
+
+### 2. Generate Proto Service
+
+Use [`wgc`](/cli/grpc-service/generate) to generate a protobuf service from your operations:
+
+```bash
+wgc grpc-service generate \
+  --input schema.graphql \
+  --output ./services \
+  --with-operations ./services \
+  --package-name "employee.v1" \
+  HRService
+```
+
+This creates [`service.proto`](https://github.com/wundergraph/connectrpc-demo/blob/main/services/service.proto) and `service.proto.lock.json` in the `./services` directory.
+
+### 3. Start the Router
+
+Configure the router to load your proto services:
+
+```yaml config.yaml
+connect_rpc:
+  enabled: true
+  server:
+    listen_addr: "0.0.0.0:8081"
+  services_provider_id: "fs-services"
+
+storage_providers:
+  file_system:
+    - id: "fs-services"
+      path: "./services"
+```
+
+Start the router and verify it loads your service:
+
+```bash
+# Look for these log messages:
+# INFO discovered service {"service": "HRService", "operations": 1}
+# INFO ConnectRPC server ready {"addr": "0.0.0.0:8081"}
+```
+
+Test with curl:
+
+```bash
+curl -X POST http://localhost:8081/employee.v1.HRService/GetEmployee \
+  -H "Content-Type: application/json" \
+  -H "Connect-Protocol-Version: 1" \
+  -d '{"id": "1"}'
+```
+
+### Next Steps
+
+- **Generate SDKs**: Use [buf](https://buf.build/) to generate TypeScript, Go, Swift, Kotlin, or Python clients
+- **Generate OpenAPI**: Create OpenAPI specs for documentation and tooling
+- **Learn More**: Follow the [complete tutorial](https://github.com/wundergraph/connectrpc-demo) for detailed examples
+
+<Tabs>
+  <Tab title="TypeScript SDK">
+```bash
+npm install @bufbuild/protoc-gen-es @connectrpc/protoc-gen-connect-es
+buf generate services/service.proto
+```
+  </Tab>
+  <Tab title="Go SDK">
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
+buf generate services/service.proto
+```
+  </Tab>
+  <Tab title="OpenAPI">
+```bash
+go install connectrpc.com/connect/cmd/protoc-gen-connect-openapi@latest
+buf generate services/service.proto
+```
+  </Tab>
+</Tabs>
+
+## Reference
+
+### Protocol Support
+
+The router supports multiple protocols with automatic transcoding:
+
+- **Connect Protocol** - HTTP/1.1 or HTTP/2 with JSON or binary protobuf
+- **gRPC** - Binary protobuf over HTTP/2
+- **gRPC-Web** - Browser-compatible gRPC
+
+**Key Features:**
+- Query operations support HTTP GET (enables CDN caching)
+- Mutation operations require HTTP POST
+- All protocols support JSON encoding
+
+### Operation Requirements
+
+**Naming**: Use PascalCase (e.g., `GetEmployee`, `UpdateEmployee`)
+
+**File Structure**: One operation per `.graphql` file
+
+**Aliases**: No root-level aliases (nested aliases are allowed)
+
+```graphql
+# ❌ Invalid
+query GetEmployee($id: ID!) {
+  emp: employee(id: $id) { id }
+}
+
+# ✅ Valid
+query GetEmployee($id: ID!) {
+  employee(id: $id) {
+    id
+    fullName: name  # Nested aliases OK
+  }
+}
+```
+
+### Directory Structure
+
+The router recursively discovers proto files and operations. Recommended structure:
+
+```
+services/
+└── employee.v1/
+    ├── service.proto
+    ├── service.proto.lock.json
+    ├── GetEmployee.graphql
+    └── UpdateEmployee.graphql
+```
+
+For multiple services in the same package:
+
+```
+services/
+└── company.v1/
+    ├── EmployeeService/
+    │   ├── employee.proto
+    │   └── operations/
+    └── DepartmentService/
+        ├── department.proto
+        └── operations/
+```
+
+<Note>
+  The combination of proto package name and service name must be unique. Nested proto files in subdirectories are not discovered if a parent directory contains a proto file.
+</Note>
+
+### Forward Compatibility
+
+The `service.proto.lock.json` file maintains field number stability across regenerations. **Always commit this file to version control.**
+
+When you modify operations:
+- Existing fields retain their protobuf field numbers
+- New fields get new numbers
+- Binary compatibility is maintained for deployed clients
+
+### CLI Reference
+
+For complete command options and advanced configuration:
+
+- [`wgc grpc-service generate`](/cli/grpc-service/generate) - Generate proto from GraphQL operations
+- [Storage Providers](/router/storage-providers) - Configure file system and remote storage
+
+## Roadmap
+
+Planned features for future releases:
+
+1. **Enhanced OpenAPI Generation** - Descriptions, summaries, deprecated fields, and tags
+2. **Subscription Support** - GraphQL subscriptions as gRPC streams
+3. **Multiple Root Fields** - Operations with multiple root selection set fields
+4. **Field Aliases** - GraphQL aliases to customize API surface

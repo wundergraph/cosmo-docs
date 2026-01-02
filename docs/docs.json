@@ -68,6 +68,7 @@
             "group": "Cosmo Connect",
             "pages": [
               "connect/overview",
+              "connect/client",
               "connect/plugins",
               "connect/grpc-services"
             ]

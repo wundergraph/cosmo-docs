@@ -10,6 +10,10 @@ description: "Generate a protobuf definition for a gRPC service from a GraphQL s
 The `generate` command generates a protobuf definition and mapping file for a gRPC service from a GraphQL schema,
 which can be used to implement a gRPC service and can be used for the composition.
 
+It supports two modes:
+1. **Schema Mode**: Generates a protobuf definition that mirrors the GraphQL schema. Used for implementing Subgraphs in gRPC (Connect Backend).
+2. **Operations Mode**: Generates a protobuf definition based on a set of GraphQL operations. Used for generating client SDKs (Connect Client).
+
 ## Usage
 
 ```bash
@@ -30,6 +34,11 @@ wgc grpc-service generate [options] [service-name]
 | `-o, --output <path-to-output>` | The output directory for the protobuf schema | `.` |
 | `-p, --package-name <name>` | The name of the proto package | `service.v1` |
 | `-g, --go-package <name>` | Adds an `option go_package` to the proto file | None |
+| `-w, --with-operations <path>` | Path to directory containing GraphQL operation files. Enables **Operations Mode**. | None |
+| `-l, --proto-lock <path>` | Path to existing proto lock file. | `<outdir>/service.proto.lock.json` |
+| `--custom-scalar-mapping <json>` | Custom scalar type mappings as JSON string. Example: `{"DateTime":"google.protobuf.Timestamp"}` | None |
+| `--custom-scalar-mapping-file <path>` | Path to JSON file containing custom scalar type mappings. | None |
+| `--max-depth <number>` | Maximum recursion depth for processing nested selections. | `50` |
 
 ## Description
 
@@ -37,10 +46,21 @@ This command generates a protobuf definition for a gRPC service from a GraphQL s
 
 ## Examples
 
-### Generate a protobuf definition for a gRPC service from a GraphQL schema
+### Generate a protobuf definition for a gRPC service from a GraphQL schema (Schema Mode)
 
 ```bash
 wgc grpc-service generate -i ./schema.graphql -o ./service MyService
+```
+
+### Generate a protobuf definition from operations (Operations Mode)
+
+```bash
+wgc grpc-service generate \
+  -i ./schema.graphql \
+  -o ./gen \
+  --with-operations ./operations \
+  --package-name my.service.v1 \
+  MyService
 ```
 
 ### Define a custom package name
@@ -60,10 +80,10 @@ wgc grpc-service generate -i ./schema.graphql -o ./service MyService --go-packag
 The command generates multiple files in the output directory:
 
 - `service.proto`: The protobuf definition for the gRPC service
-- `service.mapping.json`: The mapping file for the gRPC service
+- `service.mapping.json`: The mapping file for the gRPC service (Schema Mode only)
 - `service.proto.lock.json`: The lock file for the protobuf definition
 
-The generated protobuf definition can be used to implement a gRPC service in any language that supports protobuf.
+The generated protobuf definition can be used to implement a gRPC service in any language that supports protobuf, or to generate client SDKs.
 
 The mapping and the protobuf definition is needed for the composition part.
 
