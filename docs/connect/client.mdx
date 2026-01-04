@@ -34,7 +34,7 @@ The router handles all protocol translation automatically - no server-side code 
 <Card
   title="Complete Tutorial"
   icon="book"
-  href="https://github.com/wundergraph/connectrpc-demo"
+  href="https://github.com/wundergraph/connectrpc-tutorial"
   horizontal
 >
   For a comprehensive, step-by-step tutorial with detailed explanations, see the **ConnectRPC Demo Repository**. The quickstart below provides a condensed overview.
@@ -42,7 +42,7 @@ The router handles all protocol translation automatically - no server-side code 
 
 ### 1. Create Named Operations
 
-Create a directory for your operations (e.g., [`services/`](https://github.com/wundergraph/connectrpc-demo/tree/main/services)). Each `.graphql` file should contain one named operation:
+Create a directory for your operations (e.g., [`services/`](https://github.com/wundergraph/connectrpc-tutorial/tree/main/services)). Each `.graphql` file should contain one named operation:
 
 ```graphql services/GetEmployee.graphql
 query GetEmployee($id: Int!) {
@@ -73,7 +73,7 @@ wgc grpc-service generate \
   HRService
 ```
 
-This creates [`service.proto`](https://github.com/wundergraph/connectrpc-demo/blob/main/services/service.proto) and `service.proto.lock.json` in the `./services` directory.
+This creates [`service.proto`](https://github.com/wundergraph/connectrpc-tutorial/blob/main/services/service.proto) and `service.proto.lock.json` in the `./services` directory.
 
 ### 3. Start the Router
 
@@ -113,7 +113,7 @@ curl -X POST http://localhost:8081/employee.v1.HRService/GetEmployee \
 
 - **Generate SDKs**: Use [buf](https://buf.build/) to generate TypeScript, Go, Swift, Kotlin, or Python clients
 - **Generate OpenAPI**: Create OpenAPI specs for documentation and tooling
-- **Learn More**: Follow the [complete tutorial](https://github.com/wundergraph/connectrpc-demo) for detailed examples
+- **Learn More**: Follow the [complete tutorial](https://github.com/wundergraph/connectrpc-tutorial) for detailed examples
 
 <Tabs>
   <Tab title="TypeScript SDK">
