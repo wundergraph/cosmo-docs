@@ -216,7 +216,7 @@ mcp:
   exclude_mutations: true
   enable_arbitrary_operations: false
   expose_schema: false
-  omit_operation_prefix: false  # When true: GetUser → get_user (no execute_operation_ prefix)
+  strip_tool_name_prefix: false  # When true: GetUser → get_user (no execute_operation_ prefix)
 
 # Configure storage providers
 storage_providers:
@@ -238,7 +238,7 @@ storage_providers:
 | `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`          |
 | `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`          |
 | `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`          |
-| `omit_operation_prefix`       | When true, MCP tool names are generated without the `execute_operation_` prefix (e.g., `GetUser` → `get_user` instead of `execute_operation_get_user`). Can also be set via `MCP_OMIT_OPERATION_PREFIX` environment variable. | `false`          |
+| `strip_tool_name_prefix`      | When true, MCP tool names are generated without the `execute_operation_` prefix (e.g., `GetUser` → `get_user` instead of `execute_operation_get_user`). Can also be set via `MCP_STRIP_TOOL_NAME_PREFIX` environment variable. | `false`          |
 
 ## Session Handling
 
@@ -377,14 +377,14 @@ The MCP server converts each operation into a corresponding tool:
 
 Operations are converted to snake_case for tool naming consistency.
 
-#### Omitting the Operation Prefix
+#### Stripping the Tool Name Prefix
 
-By default, all operation tools include the `execute_operation_` prefix. If you prefer shorter, cleaner tool names, enable the `omit_operation_prefix` configuration option:
+By default, all operation tools include the `execute_operation_` prefix. If you prefer shorter, cleaner tool names, enable the `strip_tool_name_prefix` configuration option:
 
 ```yaml
 mcp:
   enabled: true
-  omit_operation_prefix: true
+  strip_tool_name_prefix: true
 ```
 
 With this option enabled:
