@@ -48,8 +48,8 @@ The lifecycle moves from GraphQL contract definition to multi-protocol consumpti
 
 ```mermaid
 flowchart TB
-    A[1\. Define Contracts] --> B[2\. Generate & Distribute SDKs]
-    B --> C[3\. Configure Router]
+    A[1\. Define Contracts] --> B[2\. Configure Router]
+    B --> C[3\. Generate & Distribute SDKs]
     C --> D[4a\. Consume via SDKs]
     C --> E[4b\. Consume via REST/OpenAPI]
     C --> F[4c\. Consume via gRPC]
@@ -60,8 +60,8 @@ flowchart TB
     end
 
     click A "/connect/api-consumption/produce-define-contracts" "Go to Define Contracts"
-    click B "/connect/api-consumption/produce-generate-distribute-sdks" "Go to Generate & Distribute SDKs"
-    click C "/connect/api-consumption/produce-configure-router" "Go to Configure Router"
+    click B "/connect/api-consumption/produce-configure-router" "Go to Configure Router"
+    click C "/connect/api-consumption/produce-generate-distribute-sdks" "Go to Generate & Distribute SDKs"
     click D "/connect/api-consumption/consume-via-sdks" "Go to Consume via SDKs"
     click E "/connect/api-consumption/consume-via-rest-openapi" "Go to Consume via REST/OpenAPI"
     click F "/connect/api-consumption/consume-via-grpc" "Go to Consume via gRPC"
@@ -79,9 +79,9 @@ flowchart TB
 
 1. **Define Contracts**: Create named GraphQL operations (Trusted Documents) and compile them into Protocol Buffer definitions that act as stable, versioned API contracts.
 
-2. **Generate &amp; Distribute SDKs**: Generate type-safe client SDKs (in languages like Go and TypeScript) and OpenAPI specifications from your definitions, ready for distribution.
+2. **Configure Router**: Load the proto definitions into the Cosmo Router, which handles protocol translation automatically without server-side code.
 
-3. **Configure Router**: Load the proto definitions into the Cosmo Router, which handles protocol translation automatically without server-side code.
+3. **Generate &amp; Distribute SDKs**: Generate type-safe client SDKs (in languages like Go and TypeScript) and OpenAPI specifications from your definitions, ready for distribution.
 
 4. **Consume**: Developers install generated SDKs or use standard HTTP clients to interact with the API in their preferred language and protocol.
 
