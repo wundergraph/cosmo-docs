@@ -98,7 +98,112 @@ The generator automatically maps GraphQL concepts to protobuf:
 
 - Query operations are marked with an `idempotency_level = NO_SIDE_EFFECTS` option, enabling support for HTTP GET requests.
 
-## 3. Versioning &amp; Stability
+## 3. Organizing Multiple Services
+
+The Cosmo Router supports serving multiple gRPC services and packages simultaneously. It achieves this by recursively walking the directory specified in your router configuration to discover `.proto` files and their associated `.graphql` operations.
+
+Because discovery is recursive and based on the package declaration within the generated `.proto` files, you have flexibility in how you organize your directories.
+
+### Standard Package Organization
+
+A common pattern is to organize services by their package name.
+
+Example: Single Service per Package
+
+```mermaid
+flowchart LR
+  services["services/"]
+  
+  services --> employee_v1["employee.v1/"]
+  employee_v1 --> employee_proto["employee.proto"]
+  employee_v1 --> get_employee["GetEmployee.graphql"]
+  employee_v1 --> update_employee["UpdateEmployee.graphql"]
+  
+  classDef dir fill:#f6f8fa,stroke:#d0d7de,color:#24292f;
+  classDef file fill:#ffffff,stroke:#d0d7de,color:#24292f;
+  
+  class services,employee_v1 dir;
+  class employee_proto,get_employee,update_employee file;
+```
+
+Example: Multiple Services per Package You can group multiple services that share the same proto package into subdirectories.
+
+```mermaid
+flowchart LR
+  services["services/"]
+  
+  services --> company_v1["company.v1/"]
+  
+  company_v1 --> employee_service["EmployeeService/"]
+  employee_service --> employee_proto["employee.proto"]
+  employee_service --> employee_graphql["...graphql files"]
+  
+  company_v1 --> department_service["DepartmentService/"]
+  department_service --> department_proto["department.proto"]
+  department_service --> department_graphql["...graphql files"]
+  
+  classDef dir fill:#f6f8fa,stroke:#d0d7de,color:#24292f;
+  classDef file fill:#ffffff,stroke:#d0d7de,color:#24292f;
+  
+  class services,company_v1,employee_service,department_service dir;
+  class employee_proto,employee_graphql,department_proto,department_graphql file;
+```
+
+### Flexible Organization
+
+Since the router relies on the package declaration in the proto file and not the directory name, you can organize directories for convenience.
+
+```mermaid
+flowchart LR
+  services["services/"]
+  
+  services --> foo["foo/"]
+  foo --> employee_proto["employee.proto"]
+  foo --> foo_graphql["...graphql files"]
+  
+  services --> bar["bar/"]
+  bar --> department_proto["department.proto"]
+  bar --> bar_graphql["...graphql files"]
+  
+  classDef dir fill:#f6f8fa,stroke:#d0d7de,color:#24292f;
+  classDef file fill:#ffffff,stroke:#d0d7de,color:#24292f;
+  
+  class services,foo,bar dir;
+  class employee_proto,foo_graphql,department_proto,bar_graphql file;
+```
+
+#### Important: Nested Discovery Rules
+
+While the router searches recursively, it has a specific rule regarding nested proto files: Nested proto files are not discovered if a parent directory already contains a proto file.
+
+Once the router finds a .proto file in a directory, it stops searching deeper in that specific branch.
+
+```mermaid
+flowchart LR
+  services["services/"]
+  
+  services --> employee_v1["employee.v1/"]
+  employee_v1 --> employee_proto["employee.proto ✅"]
+  employee_v1 --> op1["op1.graphql ✅"]
+  employee_v1 --> nested["nested/"]
+  
+  nested --> other_proto["other.proto ❌"]
+  nested --> op2["op2.graphql ✅"]
+  
+  classDef dir fill:#f6f8fa,stroke:#d0d7de,color:#24292f;
+  classDef fileDiscovered fill:#d1f4e0,stroke:#2da44e,color:#24292f;
+  classDef fileNotDiscovered fill:#ffd8d8,stroke:#cf222e,color:#24292f;
+  
+  class services,employee_v1,nested dir;
+  class employee_proto,op1,op2 fileDiscovered;
+  class other_proto fileNotDiscovered;
+```
+
+**Key:**
+- ✅ **Green files**: Discovered and used
+- ❌ **Red files**: Not discovered (parent directory already contains a proto file)
+
+## 4. Versioning &amp; Stability
 
 Versioning and compatibility are handled automatically so you can safely evolve your API without manually managing protobuf field numbers.
 

@@ -76,8 +76,8 @@
                 "pages": [
                   "connect/api-consumption/overview",
                   "connect/api-consumption/produce-define-contracts",
-                  "connect/api-consumption/produce-generate-distribute-sdks",
                   "connect/api-consumption/produce-configure-router",
+                  "connect/api-consumption/produce-generate-distribute-sdks",
                   "connect/api-consumption/consume-via-sdks",
                   "connect/api-consumption/consume-via-rest-openapi",
                   "connect/api-consumption/consume-via-grpc"
