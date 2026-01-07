@@ -180,6 +180,7 @@ This approach provides:
 The lifecycle moves from GraphQL contract definition to multi-protocol consumption, without introducing additional API layers.
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#0284c7','primaryTextColor':'#fff','primaryBorderColor':'#0c4a6e','lineColor':'#64748b','secondaryColor':'#ea580c','secondaryTextColor':'#fff','secondaryBorderColor':'#9a3412','tertiaryColor':'#1e293b','tertiaryTextColor':'#e2e8f0','tertiaryBorderColor':'#475569','clusterBkg':'transparent','clusterBorder':'#64748b','titleColor':'#64748b'}}}%%
 flowchart TB
     A[1\. Define Contracts] --> B[2\. Configure Router]
     B --> C[3\. Generate & Distribute SDKs]
@@ -199,15 +200,15 @@ flowchart TB
     click E "/connect/api-consumption/consume-via-rest-openapi" "Go to Consume via REST/OpenAPI"
     click F "/connect/api-consumption/consume-via-grpc" "Go to Consume via gRPC"
 
-    style A fill:#e1f5fe,stroke:#01579b
-    style B fill:#e1f5fe,stroke:#01579b
-    style C fill:#e1f5fe,stroke:#01579b
-    style D fill:#fff3e0,stroke:#e65100
-    style E fill:#fff3e0,stroke:#e65100
-    style F fill:#fff3e0,stroke:#e65100
-    style L1 fill:#e1f5fe,stroke:#01579b
-    style L2 fill:#fff3e0,stroke:#e65100
-    style Legend fill:none,stroke:none
+    style A fill:#0284c7,stroke:#0c4a6e,color:#fff
+    style B fill:#0284c7,stroke:#0c4a6e,color:#fff
+    style C fill:#0284c7,stroke:#0c4a6e,color:#fff
+    style D fill:#ea580c,stroke:#9a3412,color:#fff
+    style E fill:#ea580c,stroke:#9a3412,color:#fff
+    style F fill:#ea580c,stroke:#9a3412,color:#fff
+    style L1 fill:#0284c7,stroke:#0c4a6e,color:#fff
+    style L2 fill:#ea580c,stroke:#9a3412,color:#fff
+    style Legend fill:transparent,stroke:#64748b,color:#64748b
 ```
 
 1. **Define Contracts**: Create named GraphQL operations (Trusted Documents) and compile them into Protocol Buffer definitions that act as stable, versioned API contracts.
