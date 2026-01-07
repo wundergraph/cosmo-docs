@@ -4,13 +4,146 @@ description: "Expose your GraphQL API as gRPC, REST, and typed SDKs - without wr
 icon: "circle-info"
 ---
 
-While GraphQL offers powerful composition for platform teams, it is not universally consumable. 
+Cosmo Connect allows platform teams to define an API once in GraphQL and expose it through multiple consumption interfaces without writing adapters or duplicate servers.
 
-Many API consumers - due to legacy systems, security policies, or preference - rely on REST, RPC, or generated SDKs rather than constructing GraphQL queries.
+The following example shows how the same `GetEmployeeById` GraphQL operation can be consumed in multiple ways - all generated from a single GraphQL operation.
 
-Teams often solve this by maintaining parallel REST or RPC APIs, duplicating schemas, business logic, and validation - leading to drift, inconsistent behavior, and higher operational cost.
+<Tabs>
+  <Tab title="GraphQL Operation">
+    The source GraphQL operation that defines the API contract:
 
-Cosmo ConnectRPC bridges this gap by letting platform teams to work with one authoritative API contract in GraphQL and automatically expose it as gRPC, REST, and typed SDKs - without writing or maintaining protocol-specific servers.
+    ```graphql
+    query GetEmployeeById($id: Int!) {
+      employee(id: $id) {
+        id
+        details {
+          forename
+          surname
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="OpenAPI">
+    The automatically generated OpenAPI specification entry:
+
+    ```yaml
+    /employees.v1.HrService/GetEmployeeById:
+      get:
+        operationId: GetEmployeeById
+        parameters:
+          - name: id
+            in: query
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    employee:
+                      type: object
+    ```
+  </Tab>
+  <Tab title="curl">
+    Standard HTTP request using curl:
+
+    ```bash
+    curl --get \
+      --data-urlencode 'encoding=json' \
+      --data-urlencode 'message={"id": 1}' \
+      --data-urlencode 'connect=v1' \
+      http://localhost:5026/employees.v1.HrService/GetEmployeeById
+    ```
+  </Tab>
+  <Tab title="proto">
+    The generated Protocol Buffer service definition:
+
+    ```protobuf
+    service HrService {
+      rpc GetEmployeeById(GetEmployeeByIdRequest)
+        returns (GetEmployeeByIdResponse) {
+        option idempotency_level = NO_SIDE_EFFECTS;
+      }
+    }
+
+    message GetEmployeeByIdRequest {
+      int32 id = 1;
+    }
+
+    message GetEmployeeByIdResponse {
+      Employee employee = 1;
+    }
+    ```
+  </Tab>
+  <Tab title="grpcurl">
+    gRPC request using grpcurl:
+
+    ```bash
+    grpcurl -plaintext \
+      -proto ./services/service.proto \
+      -d '{"id": 1}' \
+      localhost:5026 \
+      employees.v1.HrService/GetEmployeeById
+    ```
+  </Tab>
+  <Tab title="Go SDK">
+    Type-safe Go client code:
+
+    ```go
+    import (
+        "context"
+        "connectrpc.com/connect"
+        employeesv1 "github.com/my-org/sdk/gen/go/employees/v1"
+        "github.com/my-org/sdk/gen/go/employees/v1/employeesv1connect"
+    )
+
+    client := employeesv1connect.NewHrServiceClient(
+        http.DefaultClient,
+        "http://localhost:5026",
+    )
+
+    req := connect.NewRequest(&employeesv1.GetEmployeeByIdRequest{
+        Id: 1,
+    })
+
+    res, err := client.GetEmployeeById(context.Background(), req)
+    // Response is strongly typed
+    fmt.Printf("Employee: %s\n", res.Msg.Employee.Details.Forename)
+    ```
+  </Tab>
+  <Tab title="TypeScript SDK">
+    Type-safe TypeScript client code:
+
+    ```ts
+    import { createPromiseClient } from "@connectrpc/connect";
+    import { createConnectTransport } from "@connectrpc/connect-web";
+    import { HrService } from "@my-org/sdk/employees/v1/service_connect";
+
+    const transport = createConnectTransport({
+      baseUrl: "http://localhost:5026",
+    });
+
+    const client = createPromiseClient(HrService, transport);
+
+    // Request and response are fully typed
+    const response = await client.getEmployeeById({ id: 1 });
+    console.log(`Employee: ${response.employee?.details?.forename}`);
+    ```
+  </Tab>
+</Tabs>
+
+### Why This Matters
+
+While GraphQL is an excellent interface for schema design and composition, it is not universally consumable.
+
+Many API consumers - due to existing tooling, security policies, performance requirements, or language ecosystems - rely on REST, RPC, or generated SDKs rather than constructing GraphQL queries directly.
+
+Without a unified approach, platform teams often end up maintaining parallel APIs and duplicated contracts, leading to drift, inconsistent behavior, and higher operational overhead.
 
 ## One API, Multiple Interfaces
 
