@@ -238,7 +238,7 @@ storage_providers:
 | `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`          |
 | `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`          |
 | `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`          |
-| `strip_tool_name_prefix`      | When enabled, MCP tool names generated from GraphQL operations omit the `execute_operation_` prefix. For example, the GraphQL operation `GetUser` results in a tool named `get_user` instead of `execute_operation_get_user`. This produces cleaner tool names for AI models. Can also be set via `MCP_STRIP_TOOL_NAME_PREFIX` environment variable. | `false`          |
+| `strip_tool_name_prefix`      | When enabled, MCP tool names generated from GraphQL operations omit the `execute_operation_` prefix. For example, the GraphQL operation `GetUser` results in a tool named `get_user` instead of `execute_operation_get_user`. This produces shorter tool names and is entirely optional. Can also be set via `MCP_STRIP_TOOL_NAME_PREFIX` environment variable. | `false`          |
 
 ## Session Handling
 
