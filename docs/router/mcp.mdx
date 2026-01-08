@@ -396,6 +396,10 @@ With this option enabled:
 Enabling this option changes all tool names and may break existing integrations that rely on the `execute_operation_` prefix. Only enable this for new deployments or when you can update all dependent systems.
 </Warning>
 
+<Info>
+Operations with names that would collide with built-in MCP tools (`get_schema`, `execute_graphql`, `get_operation_info`) automatically retain the `execute_operation_` prefix to prevent conflicts.
+</Info>
+
 ### Best Practices
 
 1. **Meaningful names**: Give operations clear, action-oriented names that describe what they do.
