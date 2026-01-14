@@ -27,7 +27,7 @@ The `wgc grpc-service create` command allows you to create a new gRPC subgraph w
 
 ## Options
 
-- `-r, --routing-url <url>`: The routing URL of your subgraph. This is the URL at which the subgraph will be accessible.
+- `-r, --routing-url <url>`: The routing URL of your subgraph. This is the gRPC endpoint where requests will be directed, and should follow the format from the gRPC protocol (https://grpc.github.io/grpc/core/md_doc_naming.html).
 
 - `-n, --namespace [string]`: The namespace of the gRPC subgraph (Default: "default").
 
@@ -42,25 +42,25 @@ The `wgc grpc-service create` command allows you to create a new gRPC subgraph w
 - Create a new gRPC subgraph named "users-service" with a routing URL:
 
 ```bash
-wgc grpc-service create users-service -r http://localhost:4001/graphql
+wgc grpc-service create users-service -r dns:///localhost:4001/
 ```
 
 - Create a new gRPC subgraph with labels:
 
 ```bash
-wgc grpc-service create users-service -r http://localhost:4001/graphql --label team=backend
+wgc grpc-service create users-service -r dns:///localhost:4001/ --label team=backend
 ```
 
 - Create a new gRPC subgraph with a readme file:
 
 ```bash
-wgc grpc-service create users-service -r http://localhost:4001/graphql --readme ./service-readme.md
+wgc grpc-service create users-service -r dns:///localhost:4001/ --readme ./service-readme.md
 ```
 
 - Create a gRPC subgraph in a specific namespace:
 
 ```bash
-wgc grpc-service create users-service -r http://localhost:4001/graphql --namespace production
+wgc grpc-service create users-service -r dns:///localhost:4001/ --namespace production
 ```
 
 ## Notes
