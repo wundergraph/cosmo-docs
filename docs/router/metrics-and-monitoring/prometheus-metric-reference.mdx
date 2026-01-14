@@ -25,7 +25,7 @@ These metrics ensure efficient request handling, operation planning, and system 
 
   * **Potential Overload:** Excessive in-flight requests can overwhelm the application, causing resource exhaustion, degraded performance, or even service outages.
 
-* [`router_http_request_duration_milliseconds`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_request_duration_milliseconds_-sum-count): Measures average request duration to detect latency issues.
+* [`router_http_request_duration_milliseconds`](/router/metrics-and-monitoring/prometheus-metric-reference#router_http_request_duration_milliseconds_-sum-count): Measures average request duration to detect latency issues. The maximum duration that can be tracked is 10 seconds, so requests taking longer than will still be counted as taking 10s.
 
   * **Backend Performance Issues:** Prolonged durations can signal bottlenecks in the application or database, requiring investigation and optimization.
 
@@ -283,7 +283,7 @@ histogram_quantile(0.95, sum by (wg_operation_name, le)(rate(router_graphql_oper
 
 ## `router_http_request_duration_milliseconds_{sum,count}`
 
-**Description:** The request duration in milliseconds.
+**Description:** The request duration in milliseconds. The maximum duration that can be tracked is 10 seconds, so requests taking longer than will still be counted as taking 10s.
 
 **Example PromQL Query:**
 
@@ -760,4 +760,3 @@ go_goroutines
 <Note>
   **Note:** When crafting PromQL queries using range vectors, ensure that you adjust the time range according to your specific monitoring needs and system performance characteristics for accurate observability.
 </Note>
-

@@ -36,7 +36,7 @@ We collect the following metrics to get useful insights in the HTTP traffic:
 
 * `router.http.request.content_length`: Total bytes of outgoing responses
 
-* `router.http.request.duration_milliseconds`: End-to-end duration of incoming requests in (histogram)
+* `router.http.request.duration_milliseconds`: End-to-end duration of incoming requests in (histogram). The bucket top boundary is of 10s, i.e., requests taking longer than 10s are counted in the last bucket.
 
 * `router.http.requests.in_flight`: Number of in-flight requests. (Only static and subgraph dimensions are attached)
 
