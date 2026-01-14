@@ -30,9 +30,10 @@ The `npx wgc subgraph update` command allows you to update an existing subgraph 
 
 * `-n, --namespace` : The namespace of the monograph (Default: "default").
 
-* `-r, --routing-url <url>`: The updated routing URL of your subgraph. This URL defines the endpoint where the subgraph will fetch data from. Use this option to change the subgraph's data source URL. Will produce an error if the subgraph is an [Event-Driven Graph](/federation/event-driven-federated-subscriptions).
+* `-r, --routing-url <url>`: The updated routing URL of your subgraph. This URL defines the endpoint where the subgraph will fetch data from. Use this option to change the subgraph's data source URL. If the subgraph is a gRPC service, must follow the format from the gRPC protocol (https://grpc.github.io/grpc/core/md_doc_naming.html). Will produce an error if the subgraph is an [Event-Driven Graph](/federation/event-driven-federated-subscriptions).
 
-  * Example: `--routing-url http://new-domain.com/graphql`
+  * Example for a GraphQL subgraph: `--routing-url http://new-domain.com/graphql`
+  * Example for a gRPC service: `--routing-url dns:///new-domain.com:1300/`
 
 * `--label [labels...]`: The labels to apply or change for the subgraph. Labels are passed in the format `<key>=<value> <key>=<value>`, where each `<key>=<value>` pair represents a label key and its corresponding value. Use this option to update the subgraph's metadata.
 
@@ -75,4 +76,3 @@ The `npx wgc subgraph update` command allows you to update an existing subgraph 
 * The `npx wgc subgraph update` command interacts with the Cosmo platform's control plane to update the specified subgraph.
 
 * If you want to update both the routing URL and labels, you can combine the options in a single command as demonstrated in the examples.
-
