@@ -18,7 +18,7 @@ The average requests per minute for the selected time range.
 
 ### P95 latency
 
-The average p95 latency for the selected time range. The maximum value tracked is 10s, so even if a request takes longer than that it will be counted as taking 10s.
+The average p95 latency for the selected time range. The top boundary of the buckets is 10s, so requests taking longer than 10s will still be counted as taking 10s.
 
 ### Error rate
 
