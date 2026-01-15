@@ -32,45 +32,50 @@ scalar openfed__Scope
 
 The "scopes" argument requires an array (GraphQL List) of nested arrays.
 
-The outmost array represents a set of OR scopes.
+The outermost array represents a set of OR scopes.
 
 Each nested array sibling represents a set of AND scopes.
 
-Each element in the AND scopes array should be an "openfed__Scope" scalar, which is an instance of permissions as defined in your authentication token. For example, "read:field".
+Each element in the AND scopes array should be an `openfed__Scope` Scalar, which is an instance of permissions as
+defined in your authentication token.
+For example, `"read:field"`.
 
 ## Declaration
 
 ### OR Scopes
 
-Consider the following @requiresScopes declared on Query.fieldOne:
+Consider the following `@requiresScopes declared` on Query.a:
 
 ```graphql
 type Query {
-  fieldOne: String! @requiresScopes(scopes: [["read:field"], ["read:scalar"]])
+  a: String! @requiresScopes(scopes: [["read:field"], ["read:scalar"]])
 }
 ```
 
-If an agent wished to select Query.fieldOne, it would require EITHER the "read:field" permission OR the "read:scalar" permission.
+If an agent wished to select `Query.a`, it would require EITHER the `"read:field"` permission OR the `"read:scalar"`
+permission.
 
 ### AND Scopes
 
-Consider the following @requiresScopes declared on Query.fieldTwo
+Consider the following @requiresScopes declared on `Query.b`:
 
 ```graphql
 type Query {
-  fieldTwo: String! @requiresScopes(scopes: [["read:field", "read:scalar"]])
+  b: String! @requiresScopes(scopes: [["read:field", "read:scalar"]])
 }
 ```
 
-If an agent wished to select Query.fieldTwo, it would require BOTH the "read:field" permission and the "read:scalar" permission. Lack of one or both would return an authorization error.
+If an agent wished to select `Query.b`, it would require BOTH the `"read:field"` permission and the `"read:scalar"`
+permission.
+Lack of one or both would return an authorization error.
 
-### Combining OR and AND Scopes
+### Multiple OR scopes with multiple AND scopes
 
-Consider the following @requiresScopes declared on Query.fieldThree
+Consider the following `@requiresScopes` declared on `Query.c`:
 
 ```graphql
 type Query {
-  fieldThree: String! @requiresScopes(scopes: [
+  c: String! @requiresScopes(scopes: [
     ["read:field", "read:scalar"],
     ["read:query", "read:private"],
     ["read:all"]
@@ -78,533 +83,367 @@ type Query {
 }
 ```
 
-If an agent wished to select Query.fieldThree, it would require at least one of the following sets of scopes: (("read:field" AND "read:scalar") OR ("read:query" AND "read:private") OR ("read:all"))
+If an agent wished to select `Query.c`, it would require at least one of the following sets of scopes:
+((`"read:field"` AND `"read:scalar"`) OR (`"read:query"` AND `"read:private"`) OR (`"read:all"`))
 
 ## Declaration
 
-The @requiresScopes directive can be declared on enums, field definitions, interfaces, objects, and scalars. However, there are some differences between declaration on leaf definitions and parent definitions.
+The `@requiresScopes` directive can be declared on Enums, field definitions, Interfaces, Objects, and Scalars.
 
-### Declaration on leaf definitions (enums and scalars)
+### Declaration on field definitions (Interface and Object fields)
 
-When @requiresScopes is declared on a leaf definition, the @requiresScopes directive (including its scopes) will be applied to _all_ field definitions whose named type name (the innermost response type name) is the respective leaf definition **_within that subgraph_**.
+When `@requiresScopes` is declared on an Object field definition, that specific field will be protected (require
+the specified scopes).
 
-If the same leaf definition is defined in another subgraph without @requiresScopes, the corresponding field definitions **_unique_** to that **_that_** subgraph will be unaffected. But note that @requiresScopes could be applied to those field definitions through other means.
-
-If at least one instance of a shared field is declared with @requiresScopes, that field definition will be declared with @requiresScopes in the federated graph (see [Federation](/federation/directives/requiresscopes#federation)). Consider the following example:
+For example, given the following federated schema:
 
 ```graphql
-# subgraph-a (raw)
+type Query {
+  ids: [ID!]! @requiresScopes(scopes: [["read:id"]])
+  names: [String!]!
+}
+```
+
+The field `Query.ids` would be protected in the following operation:
+
+```graphql
+query {
+  ids # requires scopes "read:id"
+  names # does not require any scopes
+}
+```
+
+The behavior is similar for Interfaces.
+For example, given the following federated schema:
+
+```graphql
+interface Interface {
+  id: ID! @requiresScopes(scopes: [["read:id"]])
+  name: String!
+}
+
+type Object implements Interface {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  interfaces: [Interface!]!
+  objects: [Object!]!
+}
+```
+
+The field `Interface.id` would be protected in the following operation
+(but note that `@requiresScopes` declared on an Interface field does _not_ protect the fields of its implementations):
+```graphql
+query {
+  interface {
+    id # this field requires scopes "read:id"
+    name # this field would not require any scopes
+  }
+  objects {
+    id # this field would not require any scopes
+    name # this field would not require any scopes
+  }
+}
+```
+
+### Declaration on the "type level" (Enums, Interfaces, Objects, and Scalars)
+
+When `@requiresScopes` is declared on the "type level", _all_ field definitions with that named type (the innermost
+response type name) will require those scopes to access.
+For example, consider the following federated schema:
+
+```graphql
 enum Enum @requiresScopes(scopes: [["read:enum"]]) {
-  VALUE
+  A
+}
+
+interface Interface @requiresScopes(scopes: [["read:interface"]]) {
+  id: ID
+}
+
+type ObjectA implements Interface {
+  enum: Enum!
+  id: ID
+  scalar: Scalar!
+}
+
+type ObjectB @@requiresScopes(scopes: [["read:object"]]) {
+  id: ID
+  name: String!
 }
 
 scalar Scalar @requiresScopes(scopes: [["read:scalar"]])
 
 type Query {
-  enumQuery: Enum!
-  objectQuery: [Object!]!
-  scalarQuery: Scalar!
-}
-
-type Object {
-  enumField: Enum!
-  scalarField: Scalar!
+  enums: [Enum!]!
+  interfaces: [Interface!]!
+  objectAs: [ObjectA!]!
+  objectBs: [ObjectB!]!
+  scalars:[Scalar!]!
 }
 ```
 
-In subgraph-a, above, @requiresScopes has been declared on two leaf definitions:
+Above, `@requiresScopes` has been declared on:
 
-1. The enum "Enum"
-2. The scalar "Scalar"
+1. The Enum "Enum"
+2. The Interface "Interface"
+3. The Object "ObjectB"
+4. The Scalar "Scalar"
 
-And those leaf definitions are returned at the following field paths:
-
-1. Query.enumQuery (named type name is "Enum")
-2. Query.scalarQuery (named type name is "Scalar")
-3. Object.enumField (named type name is "Enum")
-4. Object.scalarField (named type name is "Scalar")
-
-Consequently, @requiresScopes would be applied to all field definitions at the paths listed above. The normalized graph would look like so:
-
+Consider now the following operation:
 ```graphql
-# subgraph-a (normalized)
-enum Enum {
-  VALUE
-}
-
-scalar Scalar
-
-type Query {
-  enumQuery: Enum! @requiresScopes(scopes: [["read:enum"]])
-  objectsQuery: [Object!]!
-  scalarQuery: Scalar! @requiresScopes(scopes: [["read:scalar"]])
-}
-
-type Object {
-  enumField: Enum! @requiresScopes(scopes: [["read:enum"]])
-  scalarField: Scalar! @requiresScopes(scopes: [["read:scalar"]])
-}
-```
-
-### Declaration on object definitions
-
-When @requiresScopes is declared on an object definition, the @requiresScopes directive (including its scopes) will be applied to _all_ field definitions defined on the object definition **_within that subgraph_**.
-
-If the same object definition is defined in another subgraph without @requiresScopes, the corresponding field definitions **_unique_** to that **_that_** subgraph will be unaffected. But note that @requiresScopes could be applied to those field definitions through other means.
-
-If at least one instance of a shared field is declared with @requiresScopes, that field definition will be declared with @requiresScopes in the federated graph (see [Federation](/federation/directives/requiresscopes#federation)). Consider the following example:
-
-```graphql
-# subgraph-b (raw)
-type Query @requiresScopes(scopes: [["read:query"]]) {
-  objectQuery: Object!
-  objectsQuery: [Object!]!
-}
-
-type Object @requiresScopes(scopes: [["read:object"]]) {
-  intField: Int!
-  stringField: String!
+query {
+  enums # requires scopes "read:enum"
+  interfaces { # requires scopes "read:interface"
+    id # does not require any scopes
+  }
+  objectAs {
+    enum # requires scopes "read:enum"
+    id # does not require any scopes
+    scalar # requires scopes "read:scalar"
+  }
+  objectBs { # requires scopes "read:object"
+    id # does not require any scopes
+    name # does not require any scopes
+  }
+  scalars # requires scopes "read:scalar"
 }
 ```
 
-In subgraph-b, above, @requiresScopes has been declared on two object definitions:
-
-1. The root object "Query"
-2. The object "Object"
-
-And those object definitions define the following field definitions:
-
-1. Query.objectQuery
-2. Query.objectsQuery
-3. Object.intField
-4. Object.stringField
-
-Consequently, the @requiresScopes directive (including its defined scopes) would be applied to all field definitions at the paths listed above. The normalized graph would look like so:
-
-```graphql
-# subgraph-b (normalized)
-type Query {
-  objectQuery: Object! @requiresScopes(scopes: [["read:query"]]
-  objectsQuery: [Object!]! @requiresScopes(scopes: [["read:query"]]
-}
-
-type Object {
-  intField: Int! @requiresScopes(scopes: [["read:object"]])
-  stringField: String! @requiresScopes(scopes: [["read:object"]])
-}
-```
-
-### Declaration on interface definitions
-
-When @requiresScopes is declared on an interface definition, the @requiresScopes directive (including its scopes) will be applied to _all_ field definitions defined on the interface definition **_within that subgraph_**.
-
-If the same interface definition is defined in another subgraph without @authenticated, the corresponding field definitions **_unique_** to **_that_** subgraph be unaffected. But note that @requiresScopes could be applied to those field definitions through other means.
-
-In addition, @requiresScopes will be applied to the corresponding field definitions defined on the objects that implement that interface **_within that subgraph_**.
-
-If at least one instance of a shared field is declared with @requiresScopes, that field definition will be declared with @requiresScopes in the federated graph (see [Federation](/federation/directives/requiresscopes#federation)). Consider the following example:
-
-```graphql
-# subgraph-c (raw)
-type Query {
-  interfacesQuery: [Interface!]!
-}
-
-type Interface @requiresScopes([["read:field"]]) {
-  intField: Int!
-  stringField: String!
-}
-
-type Object implements Interface {
-  intField: Int!
-  stringField: String!
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int!
-  stringField: String!
-  anotherObjectOnlyField: Float!
-}
-```
-
-In subgraph-c, above, @requiresScopes has been declared on the interface definition "Interface", which is implemented by two object definitions:
-
-1. Object
-2. AnotherObject
-
-This interface defines the following field definitions:
-
-1. Interface.intField
-2. Interface.stringField
-
-Consequently, the @requiresScopes directive (including its defined scopes) would be applied to all field definitions at the paths listed above, in addition to the same field definitions that are defined on the object definitions that implement that interface.
-
-The normalized graph would look like so:
-
-```graphql
-# subgraph-c (normalized)
-type Query {
-  interfacesQuery: [Interface!]!
-}
-
-type Interface {
-  intField: Int! @requiresScopes(scopes: [["read:field"]])
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-}
-
-type Object implements Interface {
-  intField: Int! @requiresScopes(scopes: [["read:field"]])
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int! @requiresScopes(scopes: [["read:field"]])
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-  anotherObjectOnlyField: Float!
-}
-```
-
-When @requiresScopes is declared on an interface field definition directly, the corresponding field definitions on the object types that implement that interface **_within that subgraph_** will also declare @requiresScopes (including its defined scopes). For example:
-
-```graphql
-# subgraph-d (raw)
-type Interface {
-  intField: Int!
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-}
-
-type Object implements Interface {
-  intField: Int!
-  stringField: String!
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int!
-  stringField: String!
-  anotherObjectOnlyField: Float!
-}
-```
-
-The subgraph above, subgraph-d, would normalize into the following subgraph:
-
-```graphql
-# subgraph-d (normalized)
-type Interface {
-  intField: Int!
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-}
-
-type Object implements Interface {
-  intField: Int!
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int!
-  stringField: String! @requiresScopes(scopes: [["read:field"]])
-  anotherObjectOnlyField: Float!
-}
-```
-
-## Combining multiple scopes (matrix multiplication)
-
-Sometimes, a field definition must combine multiple declarations of @requiresScopes.
-
-Consider the following example:
-
-```graphql
-# subgraph-e (raw)
-type Query @requiresScopes(scopes: [["read:query"]]) {
-  enumField: Enum! @requiresScopes(scopes: [["read:private"]])
-}
-
-enum Enum @requiresScopes(scopes: [["read:enum"]]) {
-  VALUE
-}
-```
-
-In this instance, the field definition Query.enumField is "inheriting" two other sets of scopes ("read:query" and "read:enum") in addition to its own set of scopes ("read:private").
-
-These scopes are combined through the "AND" operator:
-
-```graphql
-# subgraph-e (normalized)
-type Query {
-  enumField: Enum! @requiresScopes(scopes: [
-    ["read:private", "read:query", "read:enum"]
-  ])
-}
-
-enum Enum {
-  VALUE
-}
-```
-
-But sometimes, a field definition must combine more complicated declarations of @requiresScopes. These such cases are combined through matrix multiplication to ensure all contributed scopes are respected simultaneously.
-
-Consider the following example:
-
-```graphql
-# subgraph-f (raw)
-type Query @requiresScopes(scopes: [["read:query"], ["read:root"]]) {
-  enumField: Enum! @requiresScopes(scopes: [
-    ["read:private", "read:field"],
-    ["read:private", "read:object"]
-  ])
-}
-
-enum Enum @requiresScopes(scopes: [["read:enum"]]) {
-  VALUE
-}
-```
-
-In this instance, the field definition Query.enumField is once again "inheriting" two more declarations of @requiresScopes. But this time, there are multiple sets of OR and AND scopes, and each set of OR scopes is required by each _other_ set of OR scopes.
-
-Consequently, the "read:query" AND scope declared on Query must be added to both sets of OR scopes declared on Query.enumField. And the same again should happen with the "read:root" AND scope.
-
-Finally, the scopes defined on Enum must also be applied. In this case, it's just a single AND scope ("read:enum"), so it can be applied without creating any new sets. In the event that Enum defined several OR scopes, a new set of scopes would be created for each.
-
-The results are four new sets representing AND scopes, and each set of AND scopes represents an entire OR scope:
-
-1. ```json
-   ["read:private", "read:field", "read:query", "read:enum"]
-   ```
-2. ```json
-   ["read:private", "read:field", "read:root", "read:enum"]
-   ```
-3. ```json
-   ["read:private", "read:object", "read:query", "read:enum"]
-   ```
-4. ```json
-   ["read:private", "read:object", "read:root", "read:enum"]
-   ```
-
-Which would appear in the normalized subgraph like so:
-
-```graphql
-# subgraph-f (normalized)
-type Query {
-  enumField: Enum! @requiresScopes(scopes: [
-    ["read:private", "read:field", "read:query", "read:enum"],
-    ["read:private", "read:field", "read:root", "read:enum"],
-    ["read:private", "read:object", "read:query", "read:enum"],
-    ["read:private", "read:object", "read:root", "read:enum"]
-  ])
-}
-
-enum Enum {
-  VALUE
-}
-```
+1. `Query.enums` requires scopes because it returns type "Enum", which requires the scopes `"read:enum"`.
+2. `Query.interfaces` requires scopes because it returns type "Interface", which requires the scopes `"read:interface"`.
+3. `Query.objectAs.enum` requires scopes because it returns type "Enum", which requires the scopes `"read:enum"`.
+4. `Query.objectAs.scalar` requires scopes because it returns type "Scalar", which requires the scopes `"read:scalar"`.
+5. `Query.objectBs` requires scopes because it returns type "ObjectB", which requires the scopes `"read:object"`.
+6. `Query.scalars` requires scopes because it returns type "Scalar", which requires the scopes `"read:scalar"`.
 
 ## Federation
+The `@requiresScopes` directive will always persist in the federated schema.
 
-The @requiresScopes directive will persist in the federated schema. Consequently, if @requiresScopes is declared on a field definition in one graph, and the same field definition (a shared field) is defined in another graph without @requiresScopes, then @requiresScopes will still be declared on the federated field. This also means selecting this field will always require the relevant permissions, regardless of whether it would be resolved from a subgraph that did not declare @requiresScopes. Consider the following two subgraphs and the resulting federated graph. The federated graph includes descriptions explaining how each @requiresScopes directive has persisted.
+### Shared fields
+If `@requiresScopes` is declared on a field definition in one subgraph, and another instance of the same
+field definition (a shared field) is defined in another subgraph _without_ `@requiresScopes`, then `@requiresScopes`
+will still be declared on the federated field.
+This also means that selecting this field will always require the defined scopes, regardless of whether it would be
+resolved from a subgraph that did not declare `@requiresScopes`.
+This is shown in the example below:
 
 ```graphql
-# subgraph-g (raw)
-type Query {
-  enumQuery: Enum!
-  interfacesQuery: [Interface!]!
-}
-
-enum Enum @requiresScopes(scopes: [["read:enum"]]) {
-  VALUE
-}
-
-type Interface {
-  intField: Int!
-  stringField: String! @requiresScopes(scopes: [["read:string"], ["read:scalar"]])
-}
-
-type Object implements Interface @key(fields: "id") {
-  id: ID!
-  intField: Int!
-  objectOnlyEnumField: Enum!
-  stringField: String! @shareable
-}
-
-type AnotherObject implements Interface @key(fields: "id") {
-  id: ID!
-  intField: Int!
-  stringField: String! @shareable
+# subgraph-a
+type Query @shareable {
+  ids: [ID!]! @requiresScopes(scopes: [["read:id"]])
 }
 ```
 
 ```graphql
-# subgraph-h (raw)
-type Query {
-  scalarQuery: Scalar!
-}
-
-scalar Scalar @requiresScopes(scopes: [["read:scalar", "read:private"]])
-
-enum Enum {
-  VALUE
-}
-
-type Interface @requiresScopes(scopes: [["read:interface", "read:object"], ["read:all"]] {
-  booleanField: Boolean!
-  enumField: Enum!
-}
-
-type Object implements Interface @key(fields: "id") {
-  booleanField: Boolean!
-  enumField: Enum!
-  id: ID!
-  objectOnlyBooleanField: Boolean!
-  scalarField: Scalar!
-  stringField: String! @shareable
-}
-
-type AnotherObject implements Interface @key(fields: "id") @requiresScopes(scopes: [["read:anotherobject"]]) {
-  anotherObjectOnlyFloatField: Float!
-  anotherObjectOnlyScalarField: Scalar!
-  booleanField: Boolean!
-  enumField: Enum!
-  id: ID!
-  intField: Int!
-  stringField: String! @shareable
+# subgraph-b
+type Query @shareable {
+  ids: [ID!]!
 }
 ```
 
 ```graphql
 # federated graph
-directive @requiresScopes(scopes: [[openfed__Scope!]!]!) on ENUM | FIELD_DEFINITION | INTERFACE | OBJECT | SCALAR
-
-scalar openfed__Scope
-
 type Query {
-  "Query.enumQuery @requiresScopes: read:enum from subgraph-g Enum"
-  enumQuery: Enum! @requiresScopes(scopes: [["read:enum"]])
-  interfacesQuery: [Interface!]!
-  """
-    Scalar.enumQuery
-    @requiresScopes: read:scalar AND read:private from subgraph-h Scalar
-  """
-  scalarQuery: Scalar @requiresScopes(scopes: [["read:scalar", "read:private"]])
+  ids: [ID!]! @requiresScopes(scopes: [["read:id"]]) # @requiresScopes is persisted from subgraph-a
+}
+```
+
+### Combining scopes in the same subgraph (matrix multiplication)
+Disparate sets of OR scopes affecting a single field will always combine through a multiplication matrix.
+This is to ensure data cannot be accessed without all appropriate permissions.
+
+<Warning>
+  The maximum total number of scopes that can apply to a single field both directly and indirectly is 16.
+</Warning>
+
+If one set of AND scopes are declared on a field definition and another set of AND scopes are defined on the
+"type level", the scopes will be multiplied together resulting in both sets of AND scopes being required.
+
+For instance, consider the following federated graph:
+
+```graphql
+# federated graph
+type Query {
+  scalars: [Scalar!]! @requiresScopes(scopes: [["read:query"]]) # scopes defined in the field level
 }
 
-"""
-  Scalar
-  @requiresScopes: (read:scalar AND read:private) initially added by subgraph-h Scalar
-  @requiresScopes applied to relevant field definitions and removed here
-"""
-scalar Scalar
+scalar Scalar @requiresScopes(scopes: [["read:scalar"]]) # scopes defined on the type level
+```
 
-"""
-  Enum @requiresScopes: read:enum initially added by subgraph-g Enum
-  @requiresScopes applied to relevant field definitions and removed here
-"""
-enum Enum {
-  VALUE
+Selecting the field `Query.scalars` would require the permissions `"read:query"` AND `"read:scalar"`.
+This is effectively the same as a single set of AND scopes defined as `[["read:query", "read:scalar"]]`.
+
+If there are multiple sets of AND scopes (multiple OR scopes), each set of AND scopes on the "field level" are
+multiplied against each set of AND scopes on the "type level".
+Consider the following federated graph:
+
+```graphql
+# federated graph
+type Query {
+  scalars: [Scalar!]! @requiresScopes(scopes: [["read:query"], ["read:private"]])
 }
 
-"""
-  Interface
-  @requiresScopes: ((read:interface AND read:object) OR (read:all))
-  initially added by subgraph-h Interface
-  @requiresScopes applied to relevant field definitions and removed here
-"""
-type Interface {
-  """
-  Interface.booleanField @requiresScopes:
-  ((read:interface AND read:object) OR (read:all)) from subgraph-h Interface
-  """
-  booleanField: Boolean! @requiresScopes(scopes: [["read:interface", "read:object"],["read:all"]])
-  """
-    Interface.enumField @requiresScopes:
-    ((read:interface AND read:object) OR (read:all)) from subgraph-h Interface
-  """
-  enumField: Enum! @requiresScopes(scopes: [["read:interface", "read:object"],["read:all"]])
-  intField: Int!
-  """
-    Interface.stringField @requiresScopes:
-    ((read:string) OR (read:scalar)) from subgraph-h Interface.stringField
-  """
-  stringField: String! @requiresScopes(scopes: [["read:string"], ["read:scalar"]])
+scalar Scalar @requiresScopes(scopes: [["read:scalar"]])
+```
+
+Selecting the field `Query.scalars` would require the permissions (`"read:query"` AND `"read:scalar"`) OR
+(`"read:scalar"` AND `"read:private"`).
+This is effectively the same as a single set of OR scopes defined as
+`[["read:query", "read:scalar"], ["read:private", "read:scalar"]]`.
+
+
+Each set of AND scopes on the "field level" will be added to each set of AND scopes on the "type level".
+Typically, the number of resultant scopes will be \<number of AND scopes on field level> *
+\<number of AND scopes on type level>.
+Consider the following federated graph:
+
+```graphql
+# federated graph
+type Query {
+  scalars: [Scalar!]! @requiresScopes(scopes: [["read:query", "read:field"], ["read:private"], ["read:list"]])
 }
 
-type Object implements Interface {
-   """
-    Object.booleanField @requiresScopes:
-    ((read:interface AND read:object) OR (read:all)) from subgraph-h Interface
-  """
-  booleanField: @requiresScopes(scopes: [["read:interface", "read:object"],["read:all"]])
-    """
-    Object.enumField @requiresScopes:
-    ((read:interface AND read:object) OR (read:all)) from subgraph-h Interface
-  """
-  enumField: Enum! @requiresScopes(scopes: [["read:interface", "read:object"],["read:all"]])
+scalar Scalar @requiresScopes(scopes: [["read:scalar", "read:custom"], ["read:sensitive"]])
+```
+
+In the example above, each set of AND scopes defined at the "field level" would be ANDed together with each set of AND
+scopes defined at the "type level".
+To break this down:
+1. `["read:query", "read:field"]` from the "field level" would be added to `["read:scalar", "read:custom"]` from the
+"type level", producing `["read:query", "read:field", "read:scalar", "read:custom"]`.
+2. `["read:query", "read:field"]` from the "field level" would be added to `["read:sensitive"]` from the "type level",
+producing `["read:query", "read:field", "read:sensitive"]`.
+3. `["read:private"]` from the "field level" would be added to `["read:scalar", "read:custom"]` from the
+"type level", producing `["read:private", "read:scalar", "read:custom"]`.
+4. `["read:private"]` from the "field level" would be added to `["read:sensitive"]` from the "type level", producing
+`["read:private", "read:sensitive"]`.
+5. `["read:list"]` from the "field level" would be added to `["read:scalar", "read:custom"]` from the
+"type level", producing `["read:list", "read:scalar", "read:custom"]`.
+6. `["read:list"]` from the "field level" would be added to `["read:sensitive"]` from the "type level", producing
+`["read:list", "read:sensitive"]`.
+
+This is effectively the same as a single set of scopes defined as:
+```js
+[
+  ["read:query", "read:field", "read:scalar", "read:custom"],
+  ["read:query", "read:field", "read:sensitive"],
+  ["read:private", "read:scalar", "read:custom"],
+  ["read:private", "read:sensitive"],
+  ["read:list", "read:scalar", "read:custom"],
+  ["read:list", "read:sensitive"]
+]
+```
+
+### Combining scopes across subgraphs (matrix multiplication)
+If multiple instances of a field (shared field) or type define scopes, those scopes will also be multiplied together.
+
+Consider the following subgraphs:
+```graphql
+# subgraph-a
+type Query @shareable {
+  ids: [ID!]! @requiresScopes(scopes: [["read:id"], ["read:private"]])
+  objects: [Object!]!
+}
+
+type Object @shareable @requiresScopes(scopes: [["read:object"]]]) {
   id: ID!
-  intField: Int!
-  objectOnlyBooleanField: Boolean!
-  "Object.objectOnlyEnumField @requiresScopes: read:enum from subgraph-g Enum"
-  objectOnlyEnumField: Enum! @requiresScopes(scopes: [["read:enum"]])
-  """
-    Object.scalarField
-    @requiresScopes: (read:scalar AND read:private) from subgraph-h Scalar
-  """
-  scalarField: Scalar! @requiresScopes(scopes: [["read:scalar", "read:private"]])
-  """
-    Object.stringField @requiresScopes:
-    ((read:string) OR (read:scalar)) from subgraph-h Interface.stringField
-  """
-  stringField: String! @requiresScopes(scopes: [["read:string"], ["read:scalar"]])
+}
+```
+
+```graphql
+# subgraph-b
+type Query @shareable {
+  ids: [ID!]! @requiresScopes(scopes: [["read:field"], ["read:sensitive"]])
 }
 
-"""
-  AnotherObject
-  @requiresScopes: "read:anotherobject" initially added by subgraph-f AnotherObject
-  @requiresScopes applied to relevant field definitions and removed here
-"""
-type AnotherObject implements Interface {
-  """
-    AnotherObject.anotherObjectOnlyFloatField @requiresScopes:
-    read:anotherobject from subgraph-h AnotherObject
-  """
-  anotherObjectOnlyFloatField: Float! @requiresScopes(scopes: [["read:anotherobject]])
-  """
-    AnotherObject.anotherObjectOnlyScalarField @requiresScopes:
-    read:anotherobject from subgraph-h AnotherObject
-    (read:scalar AND read:private) from subgraph-h Scalar
-  """
-  anotherObjectOnlyScalarField: Scalar! @requiresScopes(scopes: [["read:anotherobject", "read:scalar", "read:private"]])
-  """
-    AnotherObject.booleanField @requiresScopes:
-    read:anotherobject from subgraph-h AnotherObject
-    ((read:interface AND read:object) OR (read:all)) from subgraph-h Interface
-  """
-  booleanField: @requiresScopes(scopes: [["read:anotherobject", "read:interface", "read:object"], ["read:anotherobject", "read:all"]])
-  """
-    AnotherObject.enumField @requiresScopes:
-    read:anotherobject from subgraph-h AnotherObject
-    ((read:interface AND read:object) OR (read:all)) from subgraph-h Interface
-  """
-  enumField: Enum! @requiresScopes(scopes: [["read:anotherobject", "read:interface", "read:object"], ["read:anotherobject", "read:all"]])
-  "AnotherObject.id @requiresScopes: read:anotherobject from subgraph-h AnotherObject"
-  id: ID! @requiresScopes(scopes: [["read:anotherobject]])
-  """
-    AnotherObject.intField
-    @requiresScopes: read:anotherobject from subgraph-h AnotherObject
-  """
-  intField: Int! @requiresScopes(scopes: [["read:anotherobject]])
-  """
-    AnotherObject.stringField @requiresScopes:
-    ((read:string) OR (read:scalar)) from subgraph-g Interface.stringField
-    read:anotherobject from subgraph subgraph-h AnotherObject
-  """
-  stringField: String! @requiresScopes(scopes: [["read:anotherobject", "read:string"], ["read:anotherobject", "read:scalar"]])
+type Object @shareable @requiresScopes(scopes: [["read:type"], ["read:private"]]) {
+  id: ID!
+}
+```
+
+The scopes defined by each instance of the field will be multiplied together, and the resulting product will be shown
+in the federated graph:
+```graphql
+type Query {
+  ids: [ID!]! @requiresScopes(scopes: [
+    ["read:id", "read:field"],
+    ["read:id", "read:sensitive"],
+    ["read:private", "read:field"],
+    ["read:private", "read:sensitive"],
+  ])
+  objects: [Object!]!
+}
+
+type Object @requiresScopes(scopes: [
+    ["read:object", "read:type"],
+    ["read:object", "read:private"],
+  ]) {
+  id: ID!
+}
+```
+
+Note that the federated graph will show the combined result of scopes for a specific field or type.
+The _effective_ scopes, _i.e._, the "type level" scopes affecting a field, will not be reflected in the federated graph.
+
+### Combining scopes (superset scope reduction)
+In the event that combining scopes would produce superfluous scopes, they will be removed.
+Consider the following subgraphs:
+
+```graphql
+# subgraph-a
+type Query @shareable {
+  ids: [ID!]! @requiresScopes(scopes: [["read:id"], ["read:field"], ["read:private"]])
+}
+```
+
+```graphql
+# subgraph-b
+type Query @shareable {
+  ids: [ID!]! @requiresScopes(scopes: [["read:id"], ["read:field"]])
+}
+```
+
+One might assume the scopes would merge thus:
+```graphql
+# federated graph
+type Query {
+  ids: [ID!]! @requiresScopes(scopes: [
+    ["read:id"],
+    ["read:id", "read:field"],
+    ["read:field", "read:id"],
+    ["read:field"],
+    ["read:private", "read:id"],
+    ["read:private", "read:field"]
+  ])
+}
+```
+
+However, upon closer inspection, it becomes apparent that many of these scopes are either repeated or supersets of
+other scopes.
+Consequently, the merge result remove any scopes that are supersets of other scopes.
+For example, the scope `"read:private"` now only exists with either `"read:id"` or `"read:field"`.
+This makes `"read:private"` redundant because if one has either the `"read:id"` or `"read:field"` permissions, this is
+sufficient to access the field.
+This the same case for the combined scopes of `"read:id"` and `"read:field"`; just one is sufficient.
+And so, the resulting federated graph is actually shown below (note that `"read:private"` is removed):
+```graphql
+# federated graph
+type Query {
+  ids: [ID!]! @requiresScopes(scopes: [
+    ["read:id"],
+    ["read:field"],
+  ])
 }
 ```
 
 ## Errors
 
-In the event that an agent without relevant permissions selects a **_non-nullable_** field that is declared with @requiresScopes, an authorization error will be returned, and the **_entire_** data will be null (see [Non-nullable authenticated data requested among unauthenticated data](/federation/directives/requiresscopes#non-nullable-authenticated-data-requested-among-unauthenticated-data)).
+In the event that an agent without relevant permissions selects a **_non-nullable_** field that is declared with
+`@requiresScopes`, an authorization error will be returned, and the **_entire_** data will be null
+(see [Non-nullable authenticated data requested among unauthenticated data](/federation/directives/requiresscopes#non-nullable-authenticated-data-requested-among-unauthenticated-data)).
 
 ```json
 {
@@ -616,7 +455,9 @@ In the event that an agent without relevant permissions selects a **_non-nullabl
 }
 ```
 
-In the event that an agent without relevant permissions selects a **_nullable_** field that is declared with @requiresScopes, an authorization error will be returned, and the **_specific field_** will be null (see [Partial data](/federation/directives/requiresscopes#partial-data-nullable-authenticated-data)):
+In the event that an agent without relevant permissions selects a **_nullable_** field that is declared with
+`@requiresScopes`, an authorization error will be returned, and the **_specific field_** will be null
+(see [Partial data](/federation/directives/requiresscopes#partial-data-nullable-authenticated-data)):
 
 ```json
 {
@@ -638,9 +479,9 @@ Imagine an agent without relevant permissions selects a field that is declared w
 # federated graph
 type Query {
   """Note that Query.intField is nullable"""
-  intField: Int @requiresScope(scopes: [["read:int"]])
+  intField: Int @requiresScopes(scopes: [["read:int"]])
   """Note that Query.floatField is non-nullable"""
-  floatField: Float! @authenticated(scopes: [["read:float"]])
+  floatField: Float! @requiresScopes(scopes: [["read:float"]])
   stringField: String! # note that this field does not require any permissions
 }
 ```
@@ -667,49 +508,53 @@ An agent without any permissions sending the query above would receive something
 }
 ```
 
-### Non-nullable authenticated data requested among unauthenticated data
+### Non-nullable data requiring scopes requested among data not requiring scopes
 
-In the event an agent without relevant permissions selects any non-nullable fields that declare @requiresScopes and therefore require one or more permissions, an authorization error will be returned, and the **_entire_** data will return null. This is true even if one or more field selections did not require permissions or are nullable. Consider the following federated graph and corresponding query:
+In the event an agent without relevant permissions selects any non-nullable fields that declare `@requiresScopes` (and
+therefore require one or more permissions), an authorization error will be returned, and the **_entire_** data will
+return null.
+This is true even if one or more field selections did not require permissions or are nullable.
+Consider the following federated graph and corresponding query:
 
 ```graphql
 # federated graph
-type Query {
-  objectField: Object!
-  stringField: String!
+type NestedObject {
+  """Note that NestedObject.scopedInt is non-nullable"""
+  scopedInt: Int! @requiresScopes(scopes: [["read:int"]])
+  unscopedId: Id!
 }
 
 type Object {
-  uauthenticatedObjectField: String!
-  unauthenticatedNestedObject: NestedObject!
+  unscopedString: String!
+  unscopedNestedObject: NestedObject!
 }
 
-type NestedObject {
-  """Note that NestedObject.authenticatedIntField is non-nullable"""
-  authenticatedIntField: Int! @requiresScopes(scopes: [["read:int"]])
-  unauthenticatedStringField: String!
+type Query {
+  objects: [Object!]!
+  strings: [String!]!
 }
 ```
 
 ```graphql
 query {
-  stringField
-  objectField {
-    unauthenticatedObjectField
-    unauthenticatedNestedObjectField {
-      authenticatedNonNullableIntField # only this field requires permissions
-      unauthenticatedStringField
+  strings
+  objects {
+    unscopedString
+    unscopedNestedObject {
+      scopedInt # only this field requires permissions
+      unscopedId
     }
   }
 }
 ```
 
-An agent without the "read:int" permission sending the query above would receive something like the following:
+An agent without the `"read:int"` permission sending the query above would receive something like the following:
 
 ```json
 {
   "errors":[{
-    "message":"Unauthorized to load field 'Query.objectField.unauthenticatedNestedObjectField.authenticatedNonNullableIntField'. Reason: required scopes: 'read:int', actual scopes: <none>",
-    "path":["objectField","unauthenticatedNestedObectField","authenticatedNonNullableIntField"]
+    "message":"Unauthorized to load field 'Query.objects.unscopedNestedObject.scopedInt'. Reason: required scopes: 'read:int', actual scopes: <none>",
+    "path":["objects","unscopedNestedObject","scopedInt"]
   }],
   "data":null
 }
@@ -717,7 +562,9 @@ An agent without the "read:int" permission sending the query above would receive
 
 ### Partial permissions
 
-An agent must have **_all_** relevant permissions within at least one entire set of AND scopes among the OR scopes declared through @requiresScopes for a selected field to return data. In the event that the agent has some but not all permissions, the error message will be transparent:
+An agent must have **_all_** relevant permissions within at least one entire set of AND scopes among the OR scopes
+declared through `@requiresScopes` for a selected field to return data.
+In the event that the agent has some but not all permissions, the error message will be transparent:
 
 ```json
 {
