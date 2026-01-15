@@ -47,7 +47,7 @@ For applications that serve multiple tenants, Schema Contracts enable you to cre
 
 ### Functionality
 
-Schema Contracts work by filtering the Source Graph to create a subset of that graph, known as the Contract Graph. This subset includes only the parts of the Source Graph that are relevant and accessible to a specific client or tenant. By defining filtering rules with `@tags` and leveraging the Router Schema, Schema Contracts ensure that only the required data is exposed while maintaining the integrity and security of the source data. This allows you to create customized views for different clients or tenants without duplicating schemas or risking cross-tenant data leaks.
+Schema Contracts work by filtering the Source Graph to create a subset of that graph, known as the Contract Graph. This subset includes only the parts of the Source Graph that are relevant and accessible to a specific client or tenant. By defining filtering rules with `@tag` and leveraging the Router Schema, Schema Contracts ensure that only the required data is exposed while maintaining the integrity and security of the source data. This allows you to create customized views for different clients or tenants without duplicating schemas or risking cross-tenant data leaks.
 
 ### Interaction with Other Features
 
@@ -68,7 +68,7 @@ Schema Contracts work by filtering the Source Graph to create a subset of that g
 
 ## How to Create a Schema Contract
 
-Getting started with Schema Contracts is a three-step process. First, add `@tags` to your subgraph schemas to define filtering rules. Second, publish the updated subgraph schemas to WunderGraph Cosmo using the WunderGraph Cosmo CLI. Third, create a Schema Contract using the WunderGraph Cosmo CLI, specifying the `@tag`-based filtering rules you defined in the first step. Thereafter, you will be ready to deploy your Contract Schema to a WunderGraph Cosmo Router and start serving traffic.
+Getting started with Schema Contracts is a three-step process. First, add `@tag` to your subgraph schemas to define filtering rules. Second, publish the updated subgraph schemas to WunderGraph Cosmo using the WunderGraph Cosmo CLI. Third, create a Schema Contract using the WunderGraph Cosmo CLI, specifying the `@tag`-based filtering rules you defined in the first step. Thereafter, you will be ready to deploy your Contract Schema to a WunderGraph Cosmo Router and start serving traffic.
 
 Follow along with the steps below as we create a Schema Contract for an existing Federated Graph presently in use at a fictional, professional racing series to learn how you can do the same in your organization.
 
@@ -113,9 +113,9 @@ A browser window will automatically open, prompting you to grant access to the C
 
 ## Getting Started
 
-### Add `@tags` to Subgraph Schemas to Define Filtering Rules
+### Add `@tag` to Subgraph Schemas to Define Filtering Rules
 
-To create a Schema Contract, you must first define filtering rules using `@tags` in your subgraph schemas. Consider the following schema for a `Driver` subgraph: **Drivers Subgraph**
+To create a Schema Contract, you must first define filtering rules using `@tag` in your subgraph schemas. Consider the following schema for a `Driver` subgraph: **Drivers Subgraph**
 
 ```graphql
 type Query {
@@ -169,7 +169,7 @@ In this example, the `getDriverById` query is tagged as "public", meaning it cou
 
 ### Publish Updated Schemas to WunderGraph Cosmo using the WunderGraph Cosmo CLI
 
-Once we've finished annotating our subgraph schemas with `@tags`, we can publish the updated schemas to WunderGraph. First, let's run a Schema Check to ensure that our new schema is valid:
+Once we've finished annotating our subgraph schemas with `@tag`, we can publish the updated schemas to WunderGraph. First, let's run a Schema Check to ensure that our new schema is valid:
 
 ```bash
 wgc subgraph check drivers --schema ./schema.graphql
@@ -183,13 +183,13 @@ wgc subgraph publish drivers --schema ./schema.graphql
 
 If all goes well, we'll see a `✔ Subgraph published successfully` message in the terminal.
 
-Note that the changes will be reflected in the WunderGraph Cosmo Studio when we publish our updated subgraph schema. However, at this point, we have only added @tags to our schema and published the updated schema. We haven't yet created a Schema Contract that uses these tags to filter the schema.
+Note that the changes will be reflected in the WunderGraph Cosmo Studio when we publish our updated subgraph schema. However, at this point, we have only added @tag to our schema and published the updated schema. We haven't yet created a Schema Contract that uses these tags to filter the schema.
 
-Therefore, while we can see the `@tags` in the schema in the Studio schema, there will be no functional changes to our API. The tags are merely annotations and do not have any effect until they are used in a Schema Contract. The actual filtering of the schema based on the @tags will only happen when we create a Schema Contract and specify which tags to filter. The functional changes will occur once the Schema Contract is created and deployed, and our API will start serving the filtered schema. Let's do it\!
+Therefore, while we can see the `@tag` in the schema in the Studio schema, there will be no functional changes to our API. The tags are merely annotations and do not have any effect until they are used in a Schema Contract. The actual filtering of the schema based on the @tags will only happen when we create a Schema Contract and specify which tags to filter. The functional changes will occur once the Schema Contract is created and deployed, and our API will start serving the filtered schema. Let's do it\!
 
 ### Create a Schema Contract using the WonderGraph Cosmo CLI
 
-Now that we've added `@tags` to our subgraph schemas and published the updated schemas to WunderGraph Cosmo, we're ready to create a Schema Contract\! We create a Schema Contract for our organization using the WunderGraph Cosmo CLI `contract create` command. When creating the Schema Contract, we specify which tags to filter. WunderGraph Cosmo then generates a Schema Contract that filters the tagged queries accordingly.
+Now that we've added `@tag` to our subgraph schemas and published the updated schemas to WunderGraph Cosmo, we're ready to create a Schema Contract\! We create a Schema Contract for our organization using the WunderGraph Cosmo CLI `contract create` command. When creating the Schema Contract, we specify which tags to filter. WunderGraph Cosmo then generates a Schema Contract that filters the tagged queries accordingly.
 
 To create Schema Contracts for our `drivers` subgraph, we can use the following command:
 

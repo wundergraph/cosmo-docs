@@ -16,406 +16,185 @@ Make sure you have correctly set up [Authentication & Authorization](/router/aut
 
 ## Definition
 
-```bash
+```graphql
 directive @authenticated on ENUM | FIELD_DEFINITION | INTERFACE | OBJECT | SCALAR
 ```
 
 ## Declaration
 
-The @authenticated directive can be declared on enums, field definitions, interfaces, objects, and scalars. However, there are some differences between declaration on leaf definitions and parent definitions.
+The `@authenticated` directive can be declared on Enums, field definitions, Interfaces, Objects, and Scalars.
 
-### Declaration on leaf definitions (enums and scalars)
+### Declaration on field definitions (Interface and Object fields)
 
-When @authenticated is declared on a leaf definition, @authenticated will be applied to _all_ field definitions whose named type (the innermost response type name) is the respective leaf definition **_within that subgraph_**.
+When `@authenticated` is declared on an Object field definition, that specific field will be protected (require
+authentication).
 
-If the same leaf definition is defined in another subgraph without @authenticated, the corresponding field definitions **_unique_** to that **_that_** subgraph will be unaffected. But note that @authenticated could be applied to those field definitions through other means.
-
-If at least one instance of a shared field is declared @authenticated, that field will be declared @authenticated in the federated graph (see [Federation](/federation/directives/authenticated#federation)). Consider the following example:
+For example, given the following federated schema:
 
 ```graphql
-# subgraph-a (raw)
+type Object {
+  id: ID! @authenticated
+  name: String!
+}
+
+type Query {
+  objects: [Object!]!
+}
+```
+
+The field `Object.id` would be protected in the following operation:
+
+```graphql
+query {
+  objects {
+    id # this field requires authentication
+    name # this field would not require authentication
+  }
+}
+```
+
+The behavior is similar for Interfaces.
+For example, given the following federated schema:
+
+```graphql
+interface Interface {
+  id: ID! @authenticated
+  name: String!
+}
+
+type Object implements Interface {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  interfaces: [Interface!]!
+  objects: [Object!]!
+}
+```
+
+The field `Interface.id` would be protected in the following operation
+(but note that `@authenticated` declared on an Interface field does _not_ protect the fields of its implementations):
+```graphql
+query {
+  interface {
+    id # this field requires authentication
+    name # this field would not require authentication
+  }
+  objects {
+    id # this field would not require authentication
+    name # this field would not require authentication
+  }
+}
+```
+
+### Declaration on the "type level" (Enums, Interfaces, Objects, and Scalars)
+
+When `@authenticated` is declared on the "type level", _all_ field definitions with that named type (the innermost
+response type name) will require authentication to access.
+For example, consider the following federated schema:
+
+```graphql
 enum Enum @authenticated {
-  VALUE
+  A
+}
+
+interface Interface @authenticated {
+  id: ID
+}
+
+type ObjectA implements Interface {
+  enum: Enum!
+  id: ID
+  scalar: Scalar!
+}
+
+type ObjectB @authenticated {
+  id: ID
+  name: String!
 }
 
 scalar Scalar @authenticated
 
 type Query {
-  enumQuery: Enum!
-  objectQuery: [Object!]!
-  scalarQuery: Scalar!
-}
-
-type Object {
-  enumField: Enum!
-  scalarField: Scalar!
+  enums: [Enum!]!
+  interfaces: [Interface!]!
+  objectAs: [ObjectA!]!
+  objectBs: [ObjectB!]!
+  scalars:[Scalar!]!
 }
 ```
 
-In subgraph-a, above, @authenticated has been declared on two leaf definitions:
+Above, `@authenticated` has been declared on:
 
-1. The enum "Enum"
-2. The scalar "Scalar"
+1. The Enum "Enum"
+2. The Interface "Interface"
+3. The Object "ObjectB"
+4. The Scalar "Scalar"
 
-And those leaf definitions are returned at the following field paths:
-
-1. Query.enumQuery (named type name is "Enum")
-2. Query.scalarQuery (named type name is "Scalar")
-3. Object.enumField (named type name is "Enum")
-4. Object.scalarField (named type name is "Scalar")
-
-Consequently, @authenticated would be applied to all field definitions at the paths listed above. The normalized graph would look like so:
-
+Consider now the following operation:
 ```graphql
-# subgraph-a (normalized)
-enum Enum {
-  VALUE
-}
-
-scalar Scalar
-
-type Query {
-  enumQuery: Enum! @authenticated
-  objectsQuery: [Object!]!
-  scalarQuery: Scalar! @authenticated
-}
-
-type Object {
-  enumField: Enum! @authenticated
-  scalarField: Scalar! @authenticated
-}
-```
-
-### Declaration on object definitions
-
-When @authenticated is declared on an object definition, @authenticated will be applied to _all_ field definitions defined on the object definition **_within that subgraph_**.
-
-If the same object definition is defined in another subgraph without @authenticated, the corresponding field definitions **_unique_** to **_that_** subgraph be unaffected. But note that @authenticated could be applied to those field definitions through other means.
-
-If at least one instance of a shared field is declared @authenticated, that field definition will be declared @authenticated in the federated graph (see [Federation](/federation/directives/authenticated#federation)). Consider the following example:
-
-```graphql
-# subgraph-b (raw)
-type Query @authenticated {
-  objectQuery: Object!
-  objectsQuery: [Object!]!
-}
-
-type Object @authenticated {
-  intField: Int!
-  stringField: String!
+query {
+  enums # requires authentication
+  interfaces { # requires authentication
+    id # does not require authentication
+  }
+  objectAs {
+    enum # requires authentication
+    id # does not require authentication
+    scalar # requires authentication
+  }
+  objectBs { # requires authentication
+    id # does not require authentication
+    name # does not require authentication
+  }
+  scalars # requires authentication
 }
 ```
 
-In subgraph-b, above, @authenticated has been declared on two object definitions:
-
-1. The root object "Query"
-2. The object "Object"
-
-And those object definitions define the following field definitions:
-
-1. Query.objectQuery
-2. Query.objectsQuery
-3. Object.intField
-4. Object.stringField
-
-Consequently, @authenticated would be applied to all field definitions at the paths listed above. The normalized graph would look like so:
-
-```graphql
-# subgraph-b (normalized)
-type Query {
-  objectQuery: Object! @authenticated
-  objectsQuery: [Object!]! @authenticated
-}
-
-type Object {
-  intField: Int! @authenticated
-  stringField: String! @authenticated
-}
-```
-
-### Declaration on interface definitions
-
-When @authenticated is declared on an interface definition, @authenticated will be applied to _all_ field definitions defined on the interface definition **_within that subgraph_**.
-
-If the same interface definition is defined in another subgraph without @authenticated, the corresponding field definitions **_unique_** to **_that_** subgraph be unaffected. But note that @authenticated could be applied to those field definitions through other means.
-
-In addition, @authenticated will be applied to the corresponding field definitions defined on the objects that implement that interface  **_within that subgraph_**.
-
-If at least one instance of a shared field is declared @authenticated, that field definition will be declared @authenticated in the federated graph (see [Federation](/federation/directives/authenticated#federation)). Consider the following example:
-
-```graphql
-# subgraph-c (raw)
-type Query {
-  interfacesQuery: [Interface!]!
-}
-
-type Interface @authenticated {
-  intField: Int!
-  stringField: String!
-}
-
-type Object implements Interface {
-  intField: Int!
-  stringField: String!
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int!
-  stringField: String!
-  anotherObjectOnlyField: Float!
-}
-```
-
-In subgraph-c, above, @authenticated has been declared on the interface definition "Interface", which is implemented by two object definitions:
-
-1. Object
-2. AnotherObject
-
-This interface defines the following field definitions:
-
-1. Interface.intField
-2. Interface.stringField
-
-Consequently, @authenticated would be applied to all field definitions at the paths listed above, in addition to the same field definitions that are defined on the object definitions that implement that interface.
-
-The normalized subgraph would look like so:
-
-```graphql
-# subgraph-c (normalized)
-type Query {
-  interfacesQuery: [Interface!]!
-}
-
-type Interface {
-  intField: Int! @authenticated
-  stringField: String! @authenticated
-}
-
-type Object implements Interface {
-  intField: Int! @authenticated
-  stringField: String! @authenticated
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int! @authenticated
-  stringField: String! @authenticated
-  anotherObjectOnlyField: Float!
-}
-```
-
-When @authenticated is declared on an interface field definition directly, the corresponding field definitions on the object types that implement that interface **_within that subgraph_** will also declare @authenticated. For example:
-
-```graphql
-# subgraph-d (raw)
-type Interface {
-  intField: Int!
-  stringField: String! @authenticated
-}
-
-type Object implements Interface {
-  intField: Int!
-  stringField: String!
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int!
-  stringField: String!
-  anotherObjectOnlyField: Float!
-}
-```
-
-The subgraph above, subgraph-d, would normalize into the following subgraph:
-
-```graphql
-# subgraph-d (normalized)
-type Interface {
-  intField: Int!
-  stringField: String! @authenticated
-}
-
-type Object implements Interface {
-  intField: Int!
-  stringField: String! @authenticated
-  objectOnlyField: Boolean!
-}
-
-type AnotherObject implements Interface {
-  intField: Int!
-  stringField: String! @authenticated
-  anotherObjectOnlyField: Float!
-}
-```
+1. `Query.enums` requires authentication because it returns type "Enum", which is declared `@authenticated`.
+2. `Query.interfaces` requires authentication because it returns type "Interface", which is declared `@authenticated`.
+3. `Query.objectAs.enum` requires authentication because it returns type "Enum", which is declared `@authenticated`.
+4. `Query.objectAs.scalar` requires authentication because it returns type "Scalar", which is declared `@authenticated`.
+5. `Query.objectBs` requires authentication because it returns type "ObjectB", which is declared `@authenticated`.
+6. `Query.scalars` requires authentication because it returns type "Scalar", which is declared `@authenticated`.
 
 ## Federation
 
-The @authenticated directive will persist in the federated schema. Consequently, if @authenticated is declared on a field definition in one graph, and the same field definition (a shared field) is defined in another graph without @authenticated, then @authenticated will be declared on the federated field. This also means selecting this field will always require authentication, regardless of whether it would be resolved from a subgraph that did not declare @authenticated. Consider the following two subgraphs and the resulting federated graph. The federated graph includes descriptions explaining how each @authenticated directive has persisted.
+The `@authenticated` directive will always persist in the federated schema.
+Consequently, if `@authenticated` is declared on a field definition in one subgraph, and another instance of the same
+field definition (a shared field) is defined in another subgraph _without_ `@authenticated`, then `@authenticated` will
+still be declared on the federated field.
+This also means that selecting this field will always require authentication, regardless of whether it would be
+resolved from a subgraph that did not declare `@authenticated`.
+This is shown in the example below:
 
-```js
-# subgraph-e (raw)
-type Query {
-  enumQuery: Enum!
-  interfacesQuery: [Interface!]!
-}
-
-enum Enum @authenticated {
-  VALUE
-}
-
-type Interface {
-  intField: Int!
-  stringField: String! @authenticated
-}
-
-type Object implements Interface @key(fields: "id") {
-  id: ID!
-  intField: Int!
-  objectOnlyEnumField: Enum!
-  stringField: String! @shareable
-}
-
-type AnotherObject implements Interface @key(fields: "id") {
-  id: ID!
-  intField: Int!
-  stringField: String! @shareable
+```graphql
+# subgraph-a
+type Query @shareable {
+  ids: [ID!]! @authenticated
 }
 ```
 
 ```graphql
-# subgraph-f (raw)
-type Query {
-  scalarQuery: Scalar!
-}
-
-scalar Scalar @authenticated
-
-enum Enum {
-  VALUE
-}
-
-type Interface @authenticated {
-  booleanField: Boolean!
-  enumField: Enum!
-}
-
-type Object implements Interface @key(fields: "id") {
-  booleanField: Boolean!
-  enumField: Enum!
-  id: ID!
-  objectOnlyBooleanField: Boolean!
-  scalarField: Scalar!
-  stringField: String! @shareable
-}
-
-type AnotherObject implements Interface @key(fields: "id") @authenticated {
-  anotherObjectOnlyFloatField: Float!
-  anotherObjectOnlyScalarField: Scalar!
-  booleanField: Boolean!
-  enumField: Enum!
-  id: ID!
-  intField: Int!
-  stringField: String! @shareable
+# subgraph-b
+type Query @shareable {
+  ids: [ID!]!
 }
 ```
 
 ```graphql
 # federated graph
-directive @authenticated on ENUM | FIELD_DEFINITION | INTERFACE | OBJECT | SCALAR
-
 type Query {
-  "Query.enumQuery @authenticated: subgraph-e Enum"
-  enumQuery: Enum! @authenticated
-  interfacesQuery: [Interface!]!
-  "Scalar.enumQuery @authenticated: subgraph-f Scalar"
-  scalarQuery: Scalar @authenticated
-}
-
-"""
-  Scalar
-  @authenticated initially added by subgraph-f Scalar
-  @authenticated applied to relevant field definitions and removed here
-"""
-scalar Scalar
-
-"""
-  Enum @authenticated initially added by subgraph-e Enum
-  @authenticated applied to relevant field definitions and removed here
-"""
-enum Enum {
-  VALUE
-}
-
-"""
-  Interface @authenticated initially added by subgraph-f Interface
-  @authenticated applied to relevant field definitions and removed here
-"""
-type Interface {
-  "Interface.booleanField @authenticated: subgraph-f Interface"
-  booleanField: Boolean! @authenticated
-  "Interface.enumField @authenticated: subgraph-f Interface"
-  enumField: Enum! @authenticated
-  intField: Int!
-  "Interface.stringField @authenticated: subgraph-f Interface.stringField"
-  stringField: String! @authenticated
-}
-
-type Object implements Interface {
-  "Object.booleanField @authenticated: subgraph-f Interface"
-  booleanField: @authenticated
-  "Object.enumField @authenticated: subgraph-f Interface"
-  enumField: Enum! @authenticated
-  id: ID!
-  intField: Int!
-  objectOnlyBooleanField: Boolean!
-  "Object.objectOnlyEnumField @authenticated: subgraph-e Enum"
-  objectOnlyEnumField: Enum! @authenticated
-  "Object.scalarField @authenticated: subgraph-f Scalar"
-  scalarField: Scalar! @authenticated
-  "Object.stringField @authenticated: subgraph-e Interface.stringField"
-  stringField: String! @authenticated
-}
-
-"""
-  AnotherObject
-  @authenticated initially added by subgraph-f AnotherObject
-  @authenticated applied to relevant field definitions and removed here
-"""
-type AnotherObject implements Interface {
-  "AnotherObject.anotherObjectOnlyFloatField @authenticated: subgraph-f AnotherObject"
-  anotherObjectOnlyFloatField: Float! @authenticated
-  """
-    AnotherObject.anotherObjectOnlyScalarField
-    @authenticated: subgraph-f AnotherObject, subgraph-f Scalar
-  """
-  anotherObjectOnlyScalarField: Scalar! @authenticated
-  """
-     AnotherObject.booleanField
-     @authenticated: subgraph-f AnotherObject, subgraph-f Interface
-   """
-  booleanField: @authenticated
-  """
-    AnotherObject.enumField
-    @authenticated: subgraph-f AnotherObject, subgraph-f Interface
-  """
-  enumField: Enum! @authenticated
-  "AnotherObject.id @authenticated: subgraph-f AnotherObject"
-  id: ID! @authenticated
-  "AnotherObject.intField @authenticated: subgraph-f AnotherObject"
-  intField: Int! @authenticated
-  """
-    AnotherObject.stringField
-    @authenticated: subgraph-e Interface.stringField, subgraph-f AnotherObject
-  """
-  stringField: String! @authenticated
+  ids: [ID!]! @authenticated # @authenticated is persisted from subgraph-a
 }
 ```
 
 ## Errors
 
-In the event that an unauthenticated agent selects a **_non-nullable_** field that is declared @authenticated, an authorization error will be returned, and the **_entire_** data will be null (see [Non-nullable authenticated data requested among unauthenticated data](/federation/directives/authenticated#non-nullable-authenticated-data-requested-among-unauthenticated-data)).
+In the event that an unauthenticated agent selects a **_non-nullable_** field that is declared @authenticated, an
+authorization error will be returned, and the **_entire_** data will be null (see
+[Non-nullable authenticated data requested among unauthenticated data](/federation/directives/authenticated#non-nullable-authenticated-data-requested-among-unauthenticated-data)).
 
 ```json
 {
@@ -427,7 +206,9 @@ In the event that an unauthenticated agent selects a **_non-nullable_** field th
 }
 ```
 
-In the event that an unauthenticated agent selects a **_nullable_** field that is declared @authenticated, an authorization error will be returned, and the **_specific field_** will be null (see [Partial data](/federation/directives/authenticated#partial-data-nullable-authenticated-data)):
+In the event that an unauthenticated agent selects a **_nullable_** field that is declared @authenticated, an
+authorization error will be returned, and the **_specific field_** will be null (see
+[Partial data](/federation/directives/authenticated#partial-data-nullable-authenticated-data)):
 
 ```json
 {
@@ -443,7 +224,12 @@ In the event that an unauthenticated agent selects a **_nullable_** field that i
 
 ### Partial data (nullable authenticated data)
 
-Imagine an unauthenticated agent selects a field that is declared @authenticated and the response type of that field is nullable. However, the agent also queries a field that is not declared @authenticated (nor are any potential nested fields). In this event, an authorization error will still be returned, but the specific data that requires authentication will be null, while the data not requiring authentication will be returned. Consider the following federated graph and corresponding query:
+Imagine an unauthenticated agent selects a field that is declared `@authenticated` and the response type of that field is
+nullable.
+However, the agent also queries a field that is not declared `@authenticated` (nor are any potential nested fields).
+In this event, an authorization error will still be returned, but the specific data that requires authentication will
+be null, while the data not requiring authentication will be returned.
+Consider the following federated graph and corresponding query:
 
 ```graphql
 # federated graph
@@ -478,7 +264,10 @@ An unauthenticated agent sending the query above would receive something like th
 
 ### Non-nullable authenticated data requested among unauthenticated data
 
-In the event an unauthenticated agent selects any non-nullable fields that require authentication, an authorization error will be returned, and the **_entire_** data will return null. This is true even if one or more field selections did not require authentication or are nullable. Consider the following federated graph and corresponding query:
+In the event an unauthenticated agent selects any non-nullable fields that require authentication, an authorization
+error will be returned, and the **_entire_** data will return null.
+This is true even if one or more field selections did not require authentication or are nullable.
+Consider the following federated graph and corresponding query:
 
 ```graphql
 # federated graph
@@ -488,7 +277,7 @@ type Query {
 }
 
 type Object {
-  uauthenticatedObjectField: String!
+  unauthenticatedObjectField: String!
   unauthenticatedNestedObject: NestedObject!
 }
 
