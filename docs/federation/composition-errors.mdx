@@ -6,15 +6,13 @@ sidebarTitle: "Composition errors"
 
 ## Enum was used as both an input and output but was inconsistently defined across inclusive subgraphs
 
-When you get an error like `Enum X was used as both an input and output but was inconsistently defined across inclusive subgraphs` that means that you are publishing a change to an enum that is used in more than one subgraph.
+When you receive an error like `Enum X was used as both an input and output but was inconsistently defined across inclusive subgraphs` it means you are publishing a change to an enum that is used as both an input and an output.
 
 When pushing the change to a single subgraph, you could generate situations of incompatibilities (think about this: if you return an enum value that the other subgraph accepts as an input, both subgraphs should know about it!).
 
 To solve this issue you should proceed as follows:
-- in the origin graph, adds @inaccessible to Enum.NewValue
-- in each other graph that defines the enum, defines Enum.NewValue (no directive)
-- after you have published the change to all the subgraphs that need that enum, remove @inaccessible from the origin graph and publish the change
+- in the origin graph, add  @inaccessible  to  Enum.NewValue_
+- in each other subgraph that define the enum, define  Enum.NewValue (no directive)
+- after you have published the change to all subgraphs that define that enum, remove  @inaccessible  from the origin subgraph and publish the change
 
-Doing it in this way will always guarantee that the contract is respected in all the phases.
-
-An easier way would be to publish the changes in all the subgraphs, ignoring the composition errors.
+This migration approach, while cumbersome, ensures that the federated contract is respected at all times, keeping your router safe from any run-time errors.
