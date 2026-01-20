@@ -472,7 +472,9 @@
                   "cli/subgraph/fetch",
                   "cli/subgraph/move",
                   "cli/subgraph/introspect",
-                  "cli/subgraph/fix"
+                  "cli/subgraph/fix",
+                  "cli/subgraph/link",
+                  "cli/subgraph/unlink"
                 ]
               },
               {
