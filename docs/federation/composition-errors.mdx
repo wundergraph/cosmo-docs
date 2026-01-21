@@ -8,7 +8,7 @@ sidebarTitle: "Composition errors"
 
 When you receive an error like `Enum X was used as both an input and output but was inconsistently defined across inclusive subgraphs` it means you are publishing a change to an enum that is used as both an input and an output.
 
-When pushing the change to a single subgraph, you could generate situations of incompatibilities (think about this: if you return an enum value that the other subgraph accepts as an input, both subgraphs should know about it!).
+When publishing a new enum value to a subgraph, depending on whether that enum is used as an input, output, or both, incompatibilities and run-time issues could arise. For example, imagine _Subgraph A_ defines an enum with value _A_, and it is used as an input. However, _Subgraph B_ defines the same enum with values _A_ and _B_, and it is used as an output. Composition cannot remove value _B_ from the federated graph because then returning _B_ from _Subgraph B_ would be invalid. Similarly, composition cannot add value _A_ to the federated graph because _Subgraph A_ is unaware of value _B_ and cannot accept it as a valid input.
 
 To solve this issue you should proceed as follows:
 - in the origin graph, add _@inaccessible_ to _Enum.NewValue_
