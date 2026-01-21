@@ -38,6 +38,8 @@ This will behave similarly to the CDN polling with regard to router lifecycle.
 
 WebSocket or SSE (Server-Sent Events) connections are long-lived and will be closed immediately after the active graph instance is shut down. Clients must reconnect to restore the connection.
 
-### Latency Implications
+### Latency Implications and Cache Warming
 
-When the configuration is swapped, a new graph is created internally. This implies that the planner cache is invalidated, as a plan is coupled to a specific graph. In high-traffic scenarios, this can increase latency. We are currently working on a solution to mitigate this by warming up the cache with the latest top 100 operations during the initial router start and configuration changes.
+When the configuration is swapped, a new graph is created internally. This implies that the planner cache is invalidated, as a plan is coupled to a specific graph. In high-traffic scenarios, this can increase latency.
+
+To mitigate this issue, the router supports **cache warming**. For more details on cache warming, see the [Cache Warmer documentation](/concepts/cache-warmer).

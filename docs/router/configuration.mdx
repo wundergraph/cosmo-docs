@@ -2173,13 +2173,14 @@ apollo_router_compatibility_flags:
 
 ## Cache warmer
 
-| Environment Variable | YAML             | Required               | Description                                                                                                                                                                                                                                                           | Default Value |
-| -------------------- | ---------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-|                      | enabled          | <Icon icon="square" /> | Enable the cache warmer.                                                                                                                                                                                                                                              | false         |
-|                      | workers          | <Icon icon="square" /> | The number of workers for the cache warmup to run in parallel. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                             | 8             |
-|                      | items_per_second | <Icon icon="square" /> | The number of cache warmup items to process per second. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                                    | 50            |
-|                      | timeout          | <Icon icon="square" /> | The timeout for warming up the cache. This can be used to limit the amount of time cache warming will block deploying a new config. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 30s           |
-|                      | source           | <Icon icon="square" /> | The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.                                                                                                                |               |
+| Environment Variable                                | YAML                           | Required               | Description                                                                                                                                                                                                                                                                                  | Default Value |
+| --------------------------------------------------- | ------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| CACHE_WARMUP_ENABLED                                | enabled                        | <Icon icon="square" /> | Enable the cache warmer.                                                                                                                                                                                                                                                                     | false         |
+| CACHE_WARMUP_ITEMS_PER_SECOND                       | items_per_second               | <Icon icon="square" /> | The number of cache warmup items to process per second. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                                                           | 50            |
+| CACHE_WARMUP_TIMEOUT                                | timeout                        | <Icon icon="square" /> | The timeout for warming up the cache. This can be used to limit the amount of time cache warming will block deploying a new config. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                        | 30s           |
+| CACHE_WARMUP_WORKERS                                | workers                        | <Icon icon="square" /> | The number of workers for the cache warmup to run in parallel. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                                                    | 8             |
+|                                                     | source                         | <Icon icon="square" /> | The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.                                                                                                                                       |               |
+| CACHE_WARMUP_IN_MEMORY_SWITCHOVER_FALLBACK_ENABLED  | in_memory_switchover_fallback  | <Icon icon="square" /> | Enable in-memory switchover fallback that persists the plan cache across router restarts. When enabled, the router will use queries from the previous instance's plan cache to warm up the new cache on restart. Applicable when Cosmo is used but the cache warmer on cosmo is not enabled. | true          |
 
 ### Example YAML config:
 
@@ -2191,15 +2192,16 @@ cache_warmup:
   workers: 8
   items_per_second: 50
   timeout: 30s
+  in_memory_switchover_fallback: true
 ```
 
 ### Source
 
 The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.
 
-| Environment Variable | YAML | Required               | Description                                                  | Default Value |
-| -------------------- | ---- | ---------------------- | ------------------------------------------------------------ | ------------- |
-|                      | path | <Icon icon="square" /> | The path to the directory containing the cache warmup items. |               |
+| Environment Variable | YAML            | Required               | Description                                                  | Default Value |
+| -------------------- | --------------  | ---------------------- | ------------------------------------------------------------ | ------------- |
+|                      | filesystem.path | <Icon icon="square" /> | The path to the directory containing the cache warmup items. |               |
 
 ### Example YAML config:
 
@@ -2211,6 +2213,8 @@ cache_warmup:
   workers: 8
   items_per_second: 50
   timeout: 30s
+  in_memory_switchover_fallback: true
   source:
-    path: "./cache-warmer/operations"
+    filesystem:
+      path: "./cache-warmer/operations"
 ```
