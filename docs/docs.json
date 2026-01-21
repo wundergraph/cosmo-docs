@@ -112,9 +112,7 @@
                       {
                         "group": "TypeScript Plugins",
                         "icon": "t",
-                        "pages": [
-                          "router/gRPC/plugins/ts-plugin/overview"
-                        ]
+                        "pages": ["router/gRPC/plugins/ts-plugin/overview"]
                       }
                     ]
                   },
@@ -399,7 +397,8 @@
                   "federation/event-driven-federated-subscriptions/redis",
                   "federation/event-driven-federated-subscriptions/composition-rules"
                 ]
-              }
+              },
+              "federation/composition-errors"
             ]
           },
           {
