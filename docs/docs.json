@@ -471,7 +471,9 @@
                   "cli/subgraph/fetch",
                   "cli/subgraph/move",
                   "cli/subgraph/introspect",
-                  "cli/subgraph/fix"
+                  "cli/subgraph/fix",
+                  "cli/subgraph/link",
+                  "cli/subgraph/unlink"
                 ]
               },
               {
@@ -756,9 +758,6 @@
     },
     "plausible": {
       "domain": "cosmo-docs.wundergraph.com"
-    },
-    "osano": {
-      "scriptSource": "https://cmp.osano.com/useYQdd6k1/6006b494-d3ca-4de7-860d-e8e78f744c5f/osano.js"
     },
     "posthog": {
       "apiKey": "phc_CEnvoyw3KcTuC5E1seDPrgvAamgGRDLfzPi1e7RU1G1",
