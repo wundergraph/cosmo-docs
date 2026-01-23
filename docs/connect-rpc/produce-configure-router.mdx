@@ -26,34 +26,83 @@ The router uses a storage provider to specify the **root services directory**. T
 Add the following configuration blocks:
 
 ```yaml
-connect_rpc:
-  enabled: true
-  server:
-    # The address and port the RPC server will listen on
-    listen_addr: "0.0.0.0:5026"
-  # The ID of the storage provider that contains the proto files
-  services_provider_id: "fs-services"
-
-# Define where the router looks for files
+# Storage providers must be defined first
 storage_providers:
   file_system:
-    # This ID must match services_provider_id above
     - id: "fs-services"
-      # The local path to the directory containing .proto and .graphql files
       path: "./services"
+
+# ConnectRPC configuration
+connect_rpc:
+  enabled: true
+  storage:
+    provider_id: "fs-services"  # Must match a storage_providers.file_system[].id
+```
+
+### Full Configuration
+
+For production deployments, you may want to customize the server settings:
+
+```yaml
+storage_providers:
+  file_system:
+    - id: "fs-services"
+      path: "/var/lib/cosmo/services"
+
+connect_rpc:
+  enabled: true
+  
+  # Storage configuration (required when enabled)
+  storage:
+    provider_id: "fs-services"
+  
+  # Server settings (optional)
+  server:
+    listen_addr: "0.0.0.0:5026"  # Default: localhost:5026
+    base_url: "https://connect.example.com"
+  
+  # GraphQL endpoint (optional)
+  graphql_endpoint: "https://api.example.com/graphql"
 ```
 
 No additional GraphQL resolvers or REST handlers are required.
 
-### Configuration Breakdown
+### Configuration Fields
 
-- `connect_rpc.enabled`: Set to true to activate the sidecar server.
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `connect_rpc.enabled` | boolean | Yes | `false` | Enable the ConnectRPC server |
+| `connect_rpc.storage.provider_id` | string | Yes* | - | ID of the storage provider. Must match a `storage_providers.file_system[].id` |
+| `connect_rpc.server.listen_addr` | string | No | `localhost:5026` | Address on which the ConnectRPC server listens |
+| `connect_rpc.server.base_url` | string | No | - | Base URL for service reflection and documentation |
+| `connect_rpc.graphql_endpoint` | string | No | - | Custom GraphQL endpoint URL (use when router is behind a proxy) |
 
-- `server.listen_addr`: The host and port where the gRPC/REST endpoints will be served.
+<Note>* The `storage` object is required when `enabled: true`</Note>
 
-- `services_provider_id`: References the storage provider ID that contains your generated files.
+### Environment Variables
 
-- `storage_providers.file_system.path`: The root directory path. The router recursively searches here for any .proto and .graphql files to register as services.
+All configuration fields can be set via environment variables:
+
+```bash
+# Enable ConnectRPC
+CONNECT_RPC_ENABLED=true
+
+# Storage provider ID
+CONNECT_RPC_STORAGE_PROVIDER_ID=fs-services
+
+# Server configuration
+CONNECT_RPC_SERVER_LISTEN_ADDR=localhost:5026
+CONNECT_RPC_SERVER_BASE_URL=http://localhost:5026
+
+# GraphQL endpoint
+CONNECT_RPC_GRAPHQL_ENDPOINT=http://localhost:3002/graphql
+```
+
+### How Storage Works
+
+The storage provider points to the **root services directory**. The router recursively discovers all proto files and their associated GraphQL operations within this directory structure.
+
+Only **file system** storage providers are supported for ConnectRPC.
 
 ## 2. Run the router (docker example)
 
