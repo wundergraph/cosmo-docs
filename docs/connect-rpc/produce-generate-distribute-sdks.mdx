@@ -121,24 +121,14 @@ Buf will discover the `.proto` files in your `services/` directory (based on the
 
 You will see a new `gen/` directory with your distributable artifacts:
 
-```mermaid
-flowchart LR
-  gen["gen/"]
-  
-  gen --> go["go/"]
-  go --> go_files["..."]
-  
-  gen --> openapi["openapi/"]
-  openapi --> openapi_yaml["service.openapi.yaml"]
-  
-  gen --> ts["ts/"]
-  ts --> ts_files["..."]
-  
-  classDef dir fill:#f6f8fa,stroke:#d0d7de,color:#24292f;
-  classDef file fill:#ffffff,stroke:#d0d7de,color:#24292f;
-  
-  class gen,go,openapi,ts dir;
-  class go_files,openapi_yaml,ts_files file;
+```
+gen/
+├── go/
+│   └── ...
+├── openapi/
+│   └── service.openapi.yaml
+└── ts/
+    └── ...
 ```
 
 ## 4. Distribution Strategy &amp; CI/CD Integration

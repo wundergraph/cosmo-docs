@@ -73,7 +73,7 @@ mutation UpdateEmployeeMood($id: Int!, $mood: Mood!) {
 
 ## 2. Generating Proto Definitions
 
-Once your operations are defined, use the `wgc` CLI to generate the corresponding Protocol Buffer service definition.
+Once your operations are defined, use the [`wgc` CLI](/cli/essentials) to generate the corresponding Protocol Buffer service definition.
 
 This process compiles your operations and schema into a `.proto` file that defines the services, methods and message types.
 
@@ -88,17 +88,7 @@ wgc grpc-service generate \
   HRService
 ```
 
-### Command Flags
-
-- `--input`: The path to your federated graph's schema file (e.g. `schema.graphqls`).
-
-- `--output`: The directory where the generated `.proto` and lock files will be saved.
-
-- `--with-operations`: The directory containing your source `.graphql` operation files.
-
-- `--package-name`: The protobuf package namespace. Use reverse domain notation and include a version (e.g., employees.v1).
-
-- HRService: The name of the gRPC service to generate.
+For the complete list of available command flags and options, see the [CLI reference documentation](/cli/essentials).
 
 This command will generate two files in your output directory: `service.proto` and `service.proto.lock.json`.
 
