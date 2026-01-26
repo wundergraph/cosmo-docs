@@ -135,13 +135,58 @@ Many API consumers - due to existing tooling, security policies, performance req
 
 Without a unified approach, platform teams often end up maintaining parallel APIs and duplicated contracts, leading to drift, inconsistent behavior, and higher operational overhead.
 
+## Architectural Benefits
+
+ConnectRPC addresses fundamental infrastructure and operational challenges by leveraging Protocol Buffers as the intermediate representation between GraphQL and consumption interfaces.
+
+### Performance
+
+Protocol Buffer encoding delivers significant efficiency gains over JSON-based GraphQL responses:
+
+- **Compact wire format**: Binary serialization reduces payload sizes, lowering bandwidth consumption and improving response times
+- **Optimized parsing**: Generated code eliminates runtime reflection and dynamic parsing overhead
+- **HTTP caching**: GET-based queries enable standard HTTP caching layers and CDN integration
+
+### Reliability
+
+The architecture inherently improves system reliability through contract enforcement:
+
+- **Schema-driven validation**: All requests are validated against compiled Protocol Buffer definitions before execution
+- **Deterministic behavior**: <Tooltip tip="Pre-approved, named GraphQL operations registered with the system. Also known as persisted operations or persisted queries." href="/router/persisted-queries/persisted-operations">Trusted Documents</Tooltip> eliminate query variability, making performance characteristics predictable
+- **Infrastructure observability**: Standard RPC semantics integrate with existing metrics, tracing, and monitoring infrastructure
+
+### Operational Efficiency
+
+The approach eliminates common sources of operational complexity:
+
+- **No manual glue code**: The router handles protocol translation automatically—no custom ingress controllers, API gateways, or translation layers required
+- **Single source of truth**: GraphQL operations define the contract once; all downstream artifacts are generated, not maintained
+- **Breaking change detection**: Schema changes are validated against defined operations at compile time, surfacing incompatibilities before deployment
+- **Reduced attack surface**: Only explicitly defined operations are exposed—arbitrary query construction is not possible at runtime
+
+### API Abstraction
+
+Consumers interact through stable, well-defined interfaces rather than raw query languages:
+
+- **No exposed GraphQL**: API consumers use generated SDKs or standard REST/RPC calls—they never construct or see GraphQL queries
+- **Implementation independence**: The underlying GraphQL layer becomes an internal implementation detail, not a public contract
+- **Simplified onboarding**: Consumers integrate using familiar patterns (REST, gRPC, typed and generated clients) without GraphQL expertise
+
+### Security Model
+
+All API paths are explicitly bounded by design:
+
+- **Enclosed execution paths**: Consumers can only invoke operations that have been pre-defined and compiled into the system
+- **No query injection**: Unlike open GraphQL endpoints, there is no mechanism for clients to construct arbitrary queries
+- **Auditable contracts**: Every exposed operation is traceable to a named, versioned definition in source control
+
 ## One API, Multiple Interfaces
 
 The core concept of API Consumption in Cosmo is simple:
 
 > GraphQL is your interface for design and governance; RPC and REST are your interfaces for consumption.
 
-Platform teams define collections of "Trusted Documents" - named GraphQL queries and mutations that represent the supported API surface. 
+Platform teams define collections of <Tooltip tip="Pre-approved, named GraphQL operations registered with the system. Also known as persisted operations or persisted queries." href="/router/persisted-queries/persisted-operations">Trusted Documents</Tooltip> - named GraphQL queries and mutations that represent the supported API surface. 
 
 ```graphql
 query GetUser($id: ID!) {
@@ -201,7 +246,7 @@ flowchart TB
     style Legend fill:transparent,stroke:#64748b,color:#64748b
 ```
 
-1. **Define Contracts**: Create named GraphQL operations (Trusted Documents) and compile them into Protocol Buffer definitions that act as stable, versioned API contracts.
+1. **Define Contracts**: Create named GraphQL operations (<Tooltip tip="Pre-approved, named GraphQL operations registered with the system. Also known as persisted operations or persisted queries." href="/router/persisted-queries/persisted-operations">Trusted Documents</Tooltip>) and compile them into Protocol Buffer definitions that act as stable, versioned API contracts.
 
 2. **Configure Router**: Load the proto definitions into the Cosmo Router, which handles protocol translation automatically without server-side code.
 
