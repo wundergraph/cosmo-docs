@@ -379,7 +379,12 @@ Operations are converted to snake_case for tool naming consistency.
 
 #### Omitting the Tool Name Prefix
 
-By default, all operation tools include the `execute_operation_` prefix. If you prefer shorter, cleaner tool names, enable the `omit_tool_name_prefix` configuration option:
+By default, all operation tools include the `execute_operation_` prefix:
+
+- `GetUsers` becomes `execute_operation_get_users`
+- `CreateUser` becomes `execute_operation_create_user`
+
+When enabled, the `omit_tool_name_prefix` option generates tool names without this prefix:
 
 ```yaml
 mcp:
@@ -387,10 +392,8 @@ mcp:
   omit_tool_name_prefix: true
 ```
 
-With this option enabled:
-
-- Operation name: `GetUsers` → Tool name: `get_users`
-- Operation name: `CreateUser` → Tool name: `create_user`
+- `GetUsers` becomes `get_users`
+- `CreateUser` becomes `create_user`
 
 <Warning>
 Enabling this option changes all tool names and may break existing integrations that rely on the `execute_operation_` prefix. Only enable this for new deployments or when you can update all dependent systems.
