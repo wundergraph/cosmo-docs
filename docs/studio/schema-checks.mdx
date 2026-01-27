@@ -11,7 +11,7 @@ A schema check allows you to validate if a proposed schema change will produce a
     Describes if the proposed schema can be composed with all other subgraphs in the federated graph. It will never be possible to publish a schema that has composition errors because it would result in a non-executable plan for the router.
   </Card>
   <Card title="Breaking Change Detection" icon="square-2">
-    Describes if the proposed schema is free of changes that break existing client operations. You can't ship breaking changes except you force them manually through an override or automatically by using "[Operations Check](/studio/schema-checks#operation-checks)" see below.
+    Indicates whether the proposed schema is free of changes that break existing client operations. Breaking changes cannot be published unless you force them manually through an override or automatically by using "[Operations Check](/studio/schema-checks#operation-checks)", see below.
   </Card>
   <Card title="Operations Check" icon="square-3">
     Describes if the proposed schema affects any client operations based on real usage data. This is done by sending schema usage traffic to [Cosmo Cloud](/deployments-and-hosting/cosmo-cloud) from your routers. If you propose a breaking change and no active clients use the affected schema changes the check will pass.
@@ -71,7 +71,7 @@ Understand which operations and clients are affected by the breaking changes. Yo
 
 #### Operation Check Overrides
 
-You can apply overrides so future checks ignore specific breaking changes for operations. Learn more by clicking on the link below.
+You can apply overrides so future checks ignore specific breaking changes for operations. Learn more by clicking the link below.
 
 <CardGroup>
   <Card title="Overrides" icon="overline" href="/studio/overrides" horizontal/>
