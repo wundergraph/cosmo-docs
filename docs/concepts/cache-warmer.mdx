@@ -69,3 +69,41 @@ Users can manually recompute slow queries from the Cosmo Studio. Currently, reco
 <Frame>
 <img src="/images/concepts/image-4.png" />
 </Frame>
+
+## In-Memory Switchover Cache Warming
+
+The in-memory switchover feature provides automatic cache persistence across router restarts, ensuring zero cold starts when deploying new configurations or updates.
+
+### How It Works
+
+The router can restart due to two reasons, either due to a config change or due to a schema change. Due to the structure of the router internals we have two slight variations on how we handle the in-memory switchover cache warming:
+
+1. **Before Shutdown**: In case of config changes, the router extracts all queries from the current plan cache, preserving the "hot" queries that were actively being used.
+
+2. **During Startup**: The router with the updated config receives the queries from the previous plan cache and uses them to warm up its plan cache before serving traffic.
+
+3. **Result**: The updated router starts with a fully warmed cache, eliminating latency spikes that would normally occur during cold starts.
+
+When using the in memory switchover, the first start will still experience a cold start, as there is no prior populated planner cache. Subsequent restarts will benefit from the in-memory switchover.
+
+### When can you use the In-Memory Switchover
+
+The in-memory switchover is a fallback method. Which means if your cosmo account has access to the Cosmo Cloud CDN cache warmer, that will be used instead of the in-memory switchover. However, if this is not the case, the in-memory switchover will be used as the primary cache warming method.
+
+<Note>
+    The in-memory switchover won't be used as a fallback for sources other than the Cosmo Cloud CDN cache warmer, which is the default source.
+</Note>
+
+### Configuration
+
+The in-memory switchover is **enabled by default when cache warming is enabled**. It automatically activates when:
+
+* Cache warming is enabled on the router configuration (`cache_warmup.enabled: true`)
+* Cosmo CDN cache warmer is not available or disabled for the account
+* `in_memory_switchover_fallback` is set to `true` (default)
+
+```yaml
+cache_warmup:
+  enabled: true
+  in_memory_switchover_fallback: true  # Enabled by default
+```
