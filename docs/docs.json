@@ -200,7 +200,8 @@
                   "router/security",
                   "router/security/tls",
                   "router/security/config-validation-and-signing",
-                  "router/security/hardening-guide"
+                  "router/security/hardening-guide",
+                  "router/security/cost-control"
                 ]
               },
               {
