@@ -1,31 +1,44 @@
 ---
 title: "Cost Analysis"
-description: "Protect your API from expensive operations by estimating query complexity before execution using @cost and @listSize directives"
+description: "Protect the API from expensive operations by estimating query complexity before execution using @cost and @listSize directives"
 icon: scale-balanced
 ---
 
 ## Overview
 
 Some GraphQL queries are more expensive than others. A query requesting deeply nested lists can generate
-thousands of resolver calls and overwhelm your subgraphs, while a simple field lookup costs almost nothing.
-Cost analysis lets you assign weights to fields and estimate query complexity *before* execution begins.
+thousands of resolver calls and overwhelm subgraphs, while a simple field lookup costs almost nothing.
+Cost analysis allows assigning weights to fields and estimating query complexity *before* execution begins.
 
 When cost analysis is enabled, the router calculates an estimated cost for each incoming operation based
 on the fields requested, their configured weights, and expected list sizes.
-Operations exceeding your limit are rejected immediately, no subgraph requests are made,
-protecting your infrastructure from resource exhaustion.
+Operations exceeding the configured limit are rejected immediately — no subgraph requests are made,
+protecting the infrastructure from resource exhaustion.
 
 This feature implements the [IBM GraphQL Cost Directive Specification](https://ibm.github.io/graphql-specs/cost-spec.html),
 adapted for GraphQL Federation.
 
+### Key differences from the IBM specification
+
+Specification does not take into account the federation aspect. Some implementation details to
+explain how we calculate static costs. Static cost value is based on the query plan. Query plan
+use a federation of subgraphs to create a chain of fetches. This chain of fetches is invisible
+(on the supergraph level) and could happen because of entity calls, `@requires` fetches, etc.
+We account for those because they all make some type of queries more expensive.
+
+We do not use stringified floats for weights, but rather plan integer values.
+
+Router supports calculation of static (estimated) costs only at this moment.
+Dynamic (runtime) cost calculated on the actual data returned from the subgraphs, is in active
+development.
+
 ## How Cost is Calculated
 
-The router walks through your query and sums up the cost of each field. By default:
+The router walks through the query and sums up the cost of each field. This is a simplified abstraction,
+but this should be used to estimate how expensive queries will be as a basis.
 
-- **Object types** (including interfaces and unions) cost **1**
-- **Scalar and enum fields** cost **0**
-
-For example, this query has a cost of 4:
+By default, object types (including interfaces and unions) cost `1`, scalar and enum fields cost `0`.
+For example, this query has a cost of `4`:
 
 ```graphql
 query {
@@ -42,6 +55,9 @@ query {
   }
 }
 ```
+In reality, router takes into account the possible weights assigned to the same field coordinate
+in different subgraphs.
+It is possible to make particular field resolvers on particular subgraphs more expensive.
 
 ### List Fields Multiply Cost
 
@@ -63,7 +79,7 @@ With a default list size of 10, this query costs: `10 × (1 Employee + 1 Departm
 
 ## Configuration
 
-Enable cost analysis in your router configuration:
+Cost analysis is enabled in the router configuration:
 
 ```yaml
 security:
@@ -75,11 +91,15 @@ security:
 
 ### Configuration Options
 
-**`enabled`** — When true, the router calculates static cost for every operation. This is required to use `static_limit` or to access cost from custom modules.
+**`enabled`** — When true, the router calculates static cost for every operation.
+This is required to use `static_limit` or to access cost from custom modules.
 
-**`static_limit`** — The maximum allowed cost. Operations exceeding this limit receive a 400 error before execution. Set to 0 to calculate costs without enforcing a limit (useful for monitoring).
+**`static_limit`** — The maximum allowed cost.
+Operations exceeding this limit receive a 400 error before execution.
+Set to 0 to calculate costs without enforcing a limit (useful for monitoring).
 
-**`list_size`** — The default assumed size for list fields when no `@listSize` directive is specified. Choose a value that reflects typical list sizes in your API.
+**`list_size`** — The default assumed size for list fields when no `@listSize` directive is specified.
+Should reflect typical list sizes in the API.
 
 ### Environment Variables
 
@@ -93,11 +113,12 @@ All options can be configured via environment variables:
 
 ## Customizing Cost with Directives
 
-Default weights work for many APIs, but you can fine-tune cost calculation using the `@cost` and `@listSize` directives in your schema.
+Default weights work for many APIs,
+but cost calculation can be fine-tuned using the `@cost` and `@listSize` directives in the schema.
 
 ### The @cost Directive
 
-Use `@cost` to assign custom weights to types, fields, or arguments that are more expensive than average.
+`@cost` assigns custom weights to types, fields, or arguments that are more expensive than average.
 
 **On a type** — All fields returning this type inherit the weight:
 
@@ -127,9 +148,9 @@ type Query {
 
 ### The @listSize Directive
 
-Use `@listSize` to provide better list size estimates than the global default.
+`@listSize` provides better list size estimates than the global default.
 
-**Static size with `assumedSize`** — When you know a field always returns roughly the same number of items:
+**Static size with `assumedSize`** — When a field always returns roughly the same number of items:
 
 ```graphql
 type Query {
@@ -164,7 +185,7 @@ When multiple slicing arguments are provided, the router uses the maximum value 
 
 ## Accessing Cost in Custom Modules
 
-When building custom modules, you can access the calculated cost through the operation context:
+In custom modules, the calculated cost is accessible through the operation context:
 
 ```go
 func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
@@ -206,7 +227,7 @@ When a query exceeds the static limit, the router returns a 400 status with an e
 
 ## Differences from Apollo Demand Control
 
-If you're familiar with Apollo Router's demand control feature, here are the key differences:
+For those familiar with Apollo Router's demand control feature, here are the key differences:
 
 | Aspect | Apollo | Cosmo |
 |--------|--------|-------|
@@ -229,7 +250,8 @@ The following features from Apollo's demand control are not yet available:
 
 ### Start with Monitoring
 
-Enable cost analysis with `static_limit: 0` first. This calculates costs without rejecting any queries, allowing you to understand your traffic patterns before setting limits.
+Start with `static_limit: 0` to calculate costs without rejecting any queries.
+This allows traffic patterns to be understood before setting limits.
 
 ```yaml
 security:
@@ -241,14 +263,16 @@ security:
 
 ### Choose list_size Carefully
 
-The default list size significantly impacts cost calculations. If your lists typically return 5-20 items, a default of 10 is reasonable. If you have fields that return large lists (100+ items), consider:
+The default list size significantly impacts cost calculations.
+If lists typically return 5-20 items, a default of 10 is reasonable.
+For fields that return large lists (100+ items), consider:
 
 1. Using `@listSize(assumedSize: N)` on those specific fields
 2. Requiring pagination with `slicingArguments`
 
 ### Annotate Expensive Resolvers
 
-Use `@cost` on fields that trigger expensive operations:
+`@cost` should be applied to fields that trigger expensive operations:
 
 - External API calls
 - Complex computations
@@ -267,7 +291,8 @@ type Query {
 
 ### Design for Pagination
 
-APIs with pagination provide better cost estimation. Use `slicingArguments` to give the router accurate multipliers based on what clients actually request:
+APIs with pagination provide better cost estimation.
+`slicingArguments` gives the router accurate multipliers based on what clients actually request:
 
 ```graphql
 type Query {
@@ -282,7 +307,7 @@ type Query {
 
 ### Nested Lists
 
-Be especially careful with nested list fields, as costs multiply:
+Nested list fields require special attention, as costs multiply:
 
 ```graphql
 query {
@@ -298,4 +323,5 @@ query {
 }
 ```
 
-With default list size of 10, this query has a cost of over 10,000. Use `@listSize` to provide realistic estimates for deeply nested structures.
+With default list size of 10, this query has a cost of over 10,000.
+`@listSize` should be used to provide realistic estimates for deeply nested structures.
