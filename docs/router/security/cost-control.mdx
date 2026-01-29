@@ -26,7 +26,7 @@ use a federation of subgraphs to create a chain of fetches. This chain of fetche
 (on the supergraph level) and could happen because of entity calls, `@requires` fetches, etc.
 We account for those because they all make some type of queries more expensive.
 
-We do not use stringified floats for weights, but rather plan integer values.
+We do not use stringified floats for weights but rather plan integer values.
 
 Router supports calculation of static (estimated) costs only at this moment.
 Dynamic (runtime) cost calculated on the actual data returned from the subgraphs, is in active
@@ -35,7 +35,7 @@ development.
 ## How Cost is Calculated
 
 The router walks through the query and sums up the cost of each field. This is a simplified abstraction,
-but this should be used to estimate how expensive queries will be as a basis.
+but this should be used as a basis to estimate how expensive queries are.
 
 By default, object types (including interfaces and unions) cost `1`, scalar and enum fields cost `0`.
 For example, this query has a cost of `4`:
@@ -89,27 +89,11 @@ security:
     list_size: 10
 ```
 
-### Configuration Options
-
-**`enabled`** — When true, the router calculates static cost for every operation.
-This is required to use `static_limit` or to access cost from custom modules.
-
-**`static_limit`** — The maximum allowed cost.
-Operations exceeding this limit receive a 400 error before execution.
-Set to 0 to calculate costs without enforcing a limit (useful for monitoring).
-
-**`list_size`** — The default assumed size for list fields when no `@listSize` directive is specified.
-Should reflect typical list sizes in the API.
-
-### Environment Variables
-
-All options can be configured via environment variables:
-
-| Option | Environment Variable |
-|--------|---------------------|
-| `enabled` | `SECURITY_COST_ANALYSIS_ENABLED` |
-| `static_limit` | `SECURITY_COST_ANALYSIS_STATIC_LIMIT` |
-| `list_size` | `SECURITY_COST_ANALYSIS_LIST_SIZE` |
+| Option         | Environment Variable                  | Description                                                                                                                                               |
+|----------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled`      | `SECURITY_COST_ANALYSIS_ENABLED`      | When true, the router calculates static cost for every operation. Required to use to access cost from custom modules.                                     |
+| `static_limit` | `SECURITY_COST_ANALYSIS_STATIC_LIMIT` | Maximum allowed cost. Operations exceeding this limit receive a 400 error. Set to 0 to calculate costs without enforcing a limit (useful for monitoring). |
+| `list_size`    | `SECURITY_COST_ANALYSIS_LIST_SIZE`    | Default assumed size for list fields when no `@listSize` directive is specified. Should reflect typical list sizes in the API.                            |
 
 ## Customizing Cost with Directives
 
@@ -118,9 +102,9 @@ but cost calculation can be fine-tuned using the `@cost` and `@listSize` directi
 
 ### The @cost Directive
 
-`@cost` assigns custom weights to types, fields, or arguments that are more expensive than average.
+`@cost` assigns custom weights to types, fields or arguments that are more expensive than average.
 
-**On a type** — All fields returning this type inherit the weight:
+When specified **on a type** — all fields returning this type inherit the weight:
 
 ```graphql
 type Address @cost(weight: 5) {
@@ -130,7 +114,7 @@ type Address @cost(weight: 5) {
 }
 ```
 
-**On a field** — Override the cost for a specific field:
+When specified **on a field** — only specific field has this weight:
 
 ```graphql
 type Query {
@@ -138,7 +122,7 @@ type Query {
 }
 ```
 
-**On an argument** — Add cost for expensive argument processing:
+When specified **on an argument** — add cost for expensive argument processing:
 
 ```graphql
 type Query {
@@ -150,7 +134,7 @@ type Query {
 
 `@listSize` provides better list size estimates than the global default.
 
-**Static size with `assumedSize`** — When a field always returns roughly the same number of items:
+**Static size with `assumedSize`** — when a field always returns roughly the same number of items:
 
 ```graphql
 type Query {
@@ -159,7 +143,7 @@ type Query {
 }
 ```
 
-**Dynamic size with `slicingArguments`** — When the list size is controlled by a pagination argument:
+**Dynamic size with `slicingArguments`** — when the list size is controlled by a pagination argument:
 
 ```graphql
 type Query {
@@ -209,7 +193,7 @@ This enables use cases like:
 - Custom rate limiting based on query cost
 - Logging expensive operations for analysis
 - Billing based on query complexity
-- Dynamic throttling during high load
+- Dynamic throttling during high-load peaks
 
 ## Error Responses
 
@@ -219,32 +203,11 @@ When a query exceeds the static limit, the router returns a 400 status with an e
 {
   "errors": [
     {
-      "message": "operation cost 1500 exceeds the maximum allowed static cost of 1000"
+      "message": "The estimated query cost 1540 exceeds the maximum allowed static cost 1500"
     }
   ]
 }
 ```
-
-## Differences from Apollo Demand Control
-
-For those familiar with Apollo Router's demand control feature, here are the key differences:
-
-| Aspect | Apollo | Cosmo |
-|--------|--------|-------|
-| Configuration location | `demand_control` | `security.cost_analysis` |
-| Limit setting | `strategy.static_estimated.max` | `static_limit` |
-| Measure-only mode | `mode: measure` | Set `static_limit: 0` with `enabled: true` |
-
-### Features Not Yet Implemented
-
-The following features from Apollo's demand control are not yet available:
-
-- **Actual cost measurement** — Measuring real cost after execution based on actual list sizes returned by subgraphs
-- **Cost delta** — The difference between estimated and actual cost
-- **Cost telemetry** — OTEL metrics and span attributes for cost values (`cost.estimated`, `cost.actual`, `cost.delta`)
-- **`sizedFields` in @listSize** — Applying list size estimates to specific child fields rather than all list children
-- **Operation type base costs** — Extra base cost for mutations (Apollo adds 10 for mutations)
-- **Response header exposure** — Exposing cost values in response headers via Rhai scripts
 
 ## Best Practices
 
@@ -261,10 +224,10 @@ security:
     list_size: 10
 ```
 
-### Choose list_size Carefully
+### Pick Parameters for @list_size Carefully
 
 The default list size significantly impacts cost calculations.
-If lists typically return 5-20 items, a default of 10 is reasonable.
+If lists typically return 5–20 items, a default of 10 is reasonable.
 For fields that return large lists (100+ items), consider:
 
 1. Using `@listSize(assumedSize: N)` on those specific fields
@@ -325,3 +288,13 @@ query {
 
 With default list size of 10, this query has a cost of over 10,000.
 `@listSize` should be used to provide realistic estimates for deeply nested structures.
+
+## Features Not Yet Implemented
+
+- **Runtime or dynamic cost measurement** after execution based on actual list sizes returned by subgraphs
+- **Cost telemetry** — OTEL metrics and span attributes for cost values (`cost.estimated`, `cost.actual`, `cost.delta`)
+- `sizedFields` in @listSize for applying list size estimates to specific child fields rather than all children
+- `requireOneSlicingArgument` for validation of queries
+- **Input object fields** when used as parameters of fields
+- **Arguments of directives** are not accounted for weights
+
