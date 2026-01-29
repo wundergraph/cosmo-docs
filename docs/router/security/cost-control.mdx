@@ -11,26 +11,29 @@ thousands of resolver calls and overwhelm subgraphs, while a simple field lookup
 Cost analysis allows assigning weights to fields and estimating query complexity *before* execution begins.
 
 When cost analysis is enabled, the router calculates an estimated cost for each incoming operation based
-on the fields requested, their configured weights, and expected list sizes.
+on the fields requested, their configured weights and expected list sizes.
 Operations exceeding the configured limit are rejected immediately — no subgraph requests are made,
 protecting the infrastructure from resource exhaustion.
 
-This feature implements the [IBM GraphQL Cost Directive Specification](https://ibm.github.io/graphql-specs/cost-spec.html),
+Cosmo router implements the [IBM GraphQL Cost Directive Specification](https://ibm.github.io/graphql-specs/cost-spec.html),
 adapted for GraphQL Federation.
 
 ### Key differences from the IBM specification
 
-Specification does not take into account the federation aspect. Some implementation details to
-explain how we calculate static costs. Static cost value is based on the query plan. Query plan
-use a federation of subgraphs to create a chain of fetches. This chain of fetches is invisible
-(on the supergraph level) and could happen because of entity calls, `@requires` fetches, etc.
-We account for those because they all make some type of queries more expensive.
+Weights are plain integers instead of stringified floats as defined in the IBM spec.
 
-We do not use stringified floats for weights but rather plan integer values.
+The IBM specification does not account for federation. Static cost is calculated based on the query plan,
+which uses a federation of subgraphs to create a chain of fetches. This chain is invisible at the supergraph
+level and may include entity calls, `@requires` fetches, etc. These are accounted for because they make
+certain queries more expensive.
 
-Router supports calculation of static (estimated) costs only at this moment.
-Dynamic (runtime) cost calculated on the actual data returned from the subgraphs, is in active
-development.
+When a field returns a list of objects with a type weight, the IBM spec does not multiply the type's own weight
+by the list size — only the children's costs are multiplied. Our implementation multiplies both the type weight
+and children's costs by the list size, resulting in higher cost estimates for list fields with weighted types.
+This is done because federation may trigger entity fetches between subgraphs.
+
+Currently, only static (estimated) costs are supported.
+Dynamic (runtime) cost, calculated from actual data returned by subgraphs, is in active development.
 
 ## How Cost is Calculated
 
