@@ -90,11 +90,11 @@ security:
     list_size: 10
 ```
 
-| Option         | Environment Variable                  | Description                                                                                                                                               |
-|----------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enabled`      | `SECURITY_COST_ANALYSIS_ENABLED`      | When true, the router calculates static cost for every operation. Required to access cost from custom modules.                                            |
-| `static_limit` | `SECURITY_COST_ANALYSIS_STATIC_LIMIT` | Maximum allowed cost. Operations exceeding this limit receive a 400 error. Set to 0 to calculate costs without enforcing a limit (useful for monitoring). |
-| `list_size`    | `SECURITY_COST_ANALYSIS_LIST_SIZE`    | Default assumed size for list fields when no `@listSize` directive is specified. Should reflect typical list sizes in the API.                            |
+| Option         | Environment Variable                  | Default | Description                                                                                                       |
+|----------------|---------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------|
+| `enabled`      | `SECURITY_COST_ANALYSIS_ENABLED`      | `false` | When true, the router calculates static cost for every operation. Required to access cost from custom modules.    |
+| `static_limit` | `SECURITY_COST_ANALYSIS_STATIC_LIMIT` | `0`     | Maximum allowed cost. Operations exceeding this limit receive a 400 error. 0 disables enforcement.                |
+| `list_size`    | `SECURITY_COST_ANALYSIS_LIST_SIZE`    | `10`    | Default assumed size for list fields when no `@listSize` directive is specified.                                  |
 
 ## Customizing Cost with Directives
 
@@ -285,7 +285,7 @@ query {
 }
 ```
 
-With default list size of 10, this query costs over 10,000.
+With a default list size of 10, this query costs over 10,000.
 Use `@listSize` to provide realistic estimates for deeply nested structures.
 
 ## Features Not Yet Implemented
