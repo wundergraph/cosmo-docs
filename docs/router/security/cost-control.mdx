@@ -37,8 +37,7 @@ Dynamic (runtime) cost, calculated from actual data returned by subgraphs, is in
 
 ## How Cost is Calculated
 
-The router walks through the query and sums up the cost of each field. This is a simplified abstraction,
-but this should be used as a basis to estimate how expensive queries are.
+The router walks through the query and sums the cost of each field.
 
 By default, object types (including interfaces and unions) cost `1`, scalar and enum fields cost `0`.
 For example, this query has a cost of `4`:
@@ -58,9 +57,8 @@ query {
   }
 }
 ```
-In reality, router takes into account the possible weights assigned to the same field coordinate
-in different subgraphs.
-It is possible to make particular field resolvers on particular subgraphs more expensive.
+The router also accounts for weights assigned to the same field coordinate in different subgraphs,
+allowing specific resolvers to be weighted differently per subgraph.
 
 ### List Fields Multiply Cost
 
@@ -94,14 +92,13 @@ security:
 
 | Option         | Environment Variable                  | Description                                                                                                                                               |
 |----------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enabled`      | `SECURITY_COST_ANALYSIS_ENABLED`      | When true, the router calculates static cost for every operation. Required to use to access cost from custom modules.                                     |
+| `enabled`      | `SECURITY_COST_ANALYSIS_ENABLED`      | When true, the router calculates static cost for every operation. Required to access cost from custom modules.                                            |
 | `static_limit` | `SECURITY_COST_ANALYSIS_STATIC_LIMIT` | Maximum allowed cost. Operations exceeding this limit receive a 400 error. Set to 0 to calculate costs without enforcing a limit (useful for monitoring). |
 | `list_size`    | `SECURITY_COST_ANALYSIS_LIST_SIZE`    | Default assumed size for list fields when no `@listSize` directive is specified. Should reflect typical list sizes in the API.                            |
 
 ## Customizing Cost with Directives
 
-Default weights work for many APIs,
-but cost calculation can be fine-tuned using the `@cost` and `@listSize` directives in the schema.
+Default weights work for many APIs, but the `@cost` and `@listSize` directives allow fine-tuning.
 
 ### The @cost Directive
 
@@ -117,7 +114,7 @@ type Address @cost(weight: 5) {
 }
 ```
 
-When specified **on a field** — only specific field has this weight:
+When specified **on a field** — only that field carries the weight:
 
 ```graphql
 type Query {
@@ -125,7 +122,7 @@ type Query {
 }
 ```
 
-When specified **on an argument** — add cost for expensive argument processing:
+When specified **on an argument** — adds cost for expensive argument processing:
 
 ```graphql
 type Query {
@@ -191,7 +188,7 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
 }
 ```
 
-This enables use cases like:
+Use cases:
 
 - Custom rate limiting based on query cost
 - Logging expensive operations for analysis
@@ -216,8 +213,8 @@ When a query exceeds the static limit, the router returns a 400 status with an e
 
 ### Start with Monitoring
 
-Start with `static_limit: 0` to calculate costs without rejecting any queries.
-This allows traffic patterns to be understood before setting limits.
+Start with `static_limit: 0` to calculate costs without rejecting queries.
+This reveals traffic patterns before setting limits.
 
 ```yaml
 security:
@@ -238,7 +235,7 @@ For fields that return large lists (100+ items), consider:
 
 ### Annotate Expensive Resolvers
 
-`@cost` should be applied to fields that trigger expensive operations:
+Apply `@cost` to fields that trigger expensive operations:
 
 - External API calls
 - Complex computations
@@ -257,8 +254,7 @@ type Query {
 
 ### Design for Pagination
 
-APIs with pagination provide better cost estimation.
-`slicingArguments` gives the router accurate multipliers based on what clients actually request:
+Pagination improves cost accuracy. `slicingArguments` provides precise multipliers based on client requests:
 
 ```graphql
 type Query {
@@ -289,8 +285,8 @@ query {
 }
 ```
 
-With default list size of 10, this query has a cost of over 10,000.
-`@listSize` should be used to provide realistic estimates for deeply nested structures.
+With default list size of 10, this query costs over 10,000.
+Use `@listSize` to provide realistic estimates for deeply nested structures.
 
 ## Features Not Yet Implemented
 
