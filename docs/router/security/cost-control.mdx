@@ -63,7 +63,7 @@ allowing specific resolvers to be weighted differently per subgraph.
 ### List Fields Multiply Cost
 
 When a field returns a list, the cost of that field and all its children is multiplied by the expected list size.
-Since the router doesn't know actual list sizes at planning time, it uses estimates.
+Since the router cannot determine actual list sizes during planning, it uses estimates.
 
 ```graphql
 query {
