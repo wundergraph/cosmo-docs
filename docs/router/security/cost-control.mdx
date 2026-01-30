@@ -174,15 +174,15 @@ In custom modules, the calculated cost is accessible through the operation conte
 
 ```go
 func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
-    // Get the static cost after planning
-    cost, err := ctx.Operation().StaticCost()
+    // Get cost after planning
+    cost, err := ctx.Operation().Cost()
     if err != nil {
         // Cost analysis not enabled or plan not ready
     }
     
-    // Use cost for custom logic (rate limiting, logging, etc.)
-    if cost > m.warningThreshold {
-        m.logger.Warn("High cost operation", "cost", cost)
+    // Use estimated cost for custom logic (rate limiting, logging, etc.)
+    if cost.Estimated > m.warningThreshold {
+        m.logger.Warn("High cost operation", "cost", cost.Estimated)
     }
     
     next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
