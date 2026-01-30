@@ -28,7 +28,7 @@ level and may include entity calls, `@requires` fetches, etc. These are accounte
 certain queries more expensive.
 
 When a field returns a list of objects with a type weight, the IBM spec does not multiply the type's own weight
-by the list size — only the children's costs are multiplied. Our implementation multiplies both the type weight
+by the list size — only the children's costs are multiplied. This implementation multiplies both the type weight
 and children's costs by the list size, resulting in higher cost estimates for list fields with weighted types.
 This is done because federation may trigger entity fetches between subgraphs.
 
