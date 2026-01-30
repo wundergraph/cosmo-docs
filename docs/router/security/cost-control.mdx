@@ -20,7 +20,7 @@ adapted for GraphQL Federation.
 
 ### Key differences from the IBM specification
 
-Weights are plain integers instead of stringified floats as defined in the IBM spec.
+Weights use plain integers instead of stringified floats as defined in the IBM spec.
 
 The IBM specification does not account for federation. Static cost is calculated based on the query plan,
 which uses a federation of subgraphs to create a chain of fetches. This chain is invisible at the supergraph
