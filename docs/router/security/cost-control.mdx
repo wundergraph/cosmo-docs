@@ -12,7 +12,7 @@ Cost analysis allows assigning weights to fields and estimating query complexity
 
 When cost analysis is enabled, the router calculates an estimated cost for each incoming operation based
 on the fields requested, their configured weights and expected list sizes.
-Operations exceeding the configured limit are rejected immediately — no subgraph requests are made,
+Operations exceeding the configured limit are rejected immediately. No subgraph requests are made,
 protecting the infrastructure from resource exhaustion.
 
 Cosmo router implements the [IBM GraphQL Cost Directive Specification](https://ibm.github.io/graphql-specs/cost-spec.html),
