@@ -87,15 +87,17 @@ Cost analysis is enabled in the router configuration:
 security:
   cost_analysis:
     enabled: true
-    static_limit: 1000
-    list_size: 10
+    mode: enforce
+    estimated_limit: 1000
+    estimated_list_size: 10
 ```
 
-| Option         | Environment Variable                  | Default | Description                                                                                                       |
-|----------------|---------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------|
-| `enabled`      | `SECURITY_COST_ANALYSIS_ENABLED`      | `false` | When true, the router calculates static cost for every operation. Required to access cost from custom modules.    |
-| `static_limit` | `SECURITY_COST_ANALYSIS_STATIC_LIMIT` | `0`     | Maximum allowed cost. Operations exceeding this limit receive a 400 error. 0 disables enforcement.                |
-| `list_size`    | `SECURITY_COST_ANALYSIS_LIST_SIZE`    | `10`    | Default assumed size for list fields when no `@listSize` directive is specified.                                  |
+| Option                | Environment Variable                         | Default   | Description                                                                                   |
+|-----------------------|----------------------------------------------|-----------|-----------------------------------------------------------------------------------------------|
+| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                   |
+| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.  |
+| `estimated_limit`     | `SECURITY_COST_ANALYSIS_ESTIMATED_LIMIT`     | `0`       | Maximum allowed estimated cost. Only enforced when mode is `enforce`. 0 disables enforcement. |
+| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `10`      | Default assumed size for list fields when no `@listSize` directive is specified.              |
 
 ## Customizing Cost with Directives
 
@@ -198,13 +200,13 @@ Use cases:
 
 ## Error Responses
 
-When a query exceeds the static limit, the router returns a 400 status with an error:
+When a query exceeds the estimated cost limit (in enforce mode), the router returns a 400 status:
 
 ```json
 {
   "errors": [
     {
-      "message": "The estimated query cost 1540 exceeds the maximum allowed static cost 1500"
+      "message": "The estimated query cost 1540 exceeds the maximum allowed estimated cost 1500"
     }
   ]
 }
@@ -212,16 +214,16 @@ When a query exceeds the static limit, the router returns a 400 status with an e
 
 ## Best Practices
 
-### Start with Monitoring
+### Start with Measure Mode
 
-Start with `static_limit: 0` to calculate costs without rejecting queries.
-This reveals traffic patterns before setting limits.
+Start with `mode: measure` to calculate costs without rejecting queries.
+This reveals traffic patterns before enabling enforcement.
 
 ```yaml
 security:
   cost_analysis:
     enabled: true
-    static_limit: 0  # Monitor only
+    mode: measure
     list_size: 10
 ```
 
