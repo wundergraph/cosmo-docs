@@ -76,7 +76,7 @@ The in-memory switchover feature provides automatic cache persistence across rou
 
 ### How It Works
 
-The router can restart due to two reasons, either due to a config change or due to a schema change. Due to the structure of the router internals we have two slight variations on how we handle the in-memory switchover cache warming:
+The router can restart for two reasons: either a config change or a schema change. Due to the structure of the router internals, we have two slight variations on how we handle the in-memory switchover cache warming:
 
 1. **Before Shutdown**: In case of config changes (from hot config reloading), the router extracts all queries from the current plan cache, preserving the queries that were in the planner cache before the cache is cleared for shutdown.
 
@@ -84,17 +84,17 @@ The router can restart due to two reasons, either due to a config change or due 
 
 3. **Result**: The updated router starts with a fully warmed cache, eliminating latency spikes that would normally occur during cold starts.
 
-When using the in memory switchover, the first start will still experience a cold start, as there is no prior populated planner cache. Subsequent restarts will benefit from the in-memory switchover.
+When using the in-memory switchover, the first start will still experience a cold start, as there is no prior populated planner cache. Subsequent restarts will benefit from the in-memory switchover.
 
-### When can you use the In-Memory Switchover
+### When to Use the In-Memory Switchover
 
 The in-memory switchover can be used either as a fallback method or as a primary method for cache warming. This depends on the router configuration, the defaults provided by the router enables it as a fallback to the Cosmo Cloud CDN cache warmer, which is a Cosmo enterprise feature that needs to be enabled explicitly in Cosmo.
 
-In case the in-memory switchover is used with the Cosmo Cloud CDN cache warmer, whenever either 
+When the in-memory switchover is used with the Cosmo Cloud CDN cache warmer, the fallback is triggered when either:
 * Getting the list of operations from the CDN fails
-* The request to the CDN succeeded but did not have a list of operations in it
+* The request to the CDN succeeds but does not return a list of operations (either no operations are cached or the manifest has not been created yet)
 
-We will use the fallback and load the list of operations from the in-memory switchover (if any operations exists).
+In these cases, the router will use the fallback and load the list of operations from the in-memory switchover (if any operations exist).
 
 <Note>
     The in-memory switchover cannot be used as a fallback for sources other than the Cosmo Cloud CDN cache warmer.
@@ -102,10 +102,10 @@ We will use the fallback and load the list of operations from the in-memory swit
 
 ### Configuration
 
-The in-memory switchover can be enabled as a fallback for the CDN cache warmer, in order to do this you need to ensure
+The in-memory switchover can be enabled as a fallback for the CDN cache warmer. To do this, ensure:
 
-* Cache warming is enabled on the router configuration (`cache_warmup.enabled: true`)
-* `source.cdn.enabled` is set to `true` (This is true by default, and does not need to be explicitly specified)
+* Cache warming is enabled in the router configuration (`cache_warmup.enabled: true`)
+* `source.cdn.enabled` is set to `true` (this is true by default and does not need to be explicitly specified)
 * `in_memory_fallback` is set to `true` (default)
 
 ```yaml
@@ -119,10 +119,10 @@ cache_warmup:
       enabled: true
 ```
 
-However you may want to use the in-memory switchover without the CDN cache warmer, as this is an enterprise feature. In order to do this you need to ensure
+However, you may want to use the in-memory switchover without the CDN cache warmer, as the CDN is an enterprise feature. To do this, ensure:
 
-* Cache warming is enabled on the router configuration (`cache_warmup.enabled: true`)
-* `source.cdn.enabled` is set to `false` (This needs to be specified explicitly as the default is false)
+* Cache warming is enabled in the router configuration (`cache_warmup.enabled: true`)
+* `source.cdn.enabled` is set to `false` (this needs to be specified explicitly, as the default is true)
 * `in_memory_fallback` is set to `true` (default)
 
 ```yaml
