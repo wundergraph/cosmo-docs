@@ -6,7 +6,8 @@ icon: scale-balanced
 
 ## Overview
 
-Some GraphQL queries are more expensive than others. A query requesting deeply nested lists can generate
+Cost analysis prevents a single GraphQL request from using too many system resources and
+slowing everything else down. A query requesting deeply nested lists can generate
 thousands of resolver calls and overwhelm subgraphs, while a simple field lookup costs almost nothing.
 Cost analysis allows assigning weights to fields and estimating query complexity *before* execution begins.
 
