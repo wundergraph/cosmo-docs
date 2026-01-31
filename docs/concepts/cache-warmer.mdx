@@ -70,39 +70,39 @@ Users can manually recompute slow queries from the Cosmo Studio. Currently, reco
 <img src="/images/concepts/image-4.png" />
 </Frame>
 
-## In-Memory Switchover Cache Warming
+## In-Memory Fallback Cache Warming
 
-The in-memory switchover feature provides automatic cache persistence across router restarts, ensuring zero cold starts when deploying new configurations or updates.
+The in-memory fallback cache warming feature preserves the planner cache across hot config reloads and schema changes, allowing it to be rewarmed automatically and reducing latency spikes during restarts.
 
 ### How It Works
 
-The router can restart for two reasons: either a config change or a schema change. Due to the structure of the router internals, we have two slight variations on how we handle the in-memory switchover cache warming:
+After the router has started, the router can be reloaded for two reasons: either a config change or a schema change. Due to the structure of the router internals, we have two slight variations on how we handle the in-memory switchover cache warming:
 
-1. **Before Shutdown**: In case of config changes (from hot config reloading), the router extracts all queries from the current plan cache, preserving the queries that were in the planner cache before the cache is cleared for shutdown.
+1. **Before Reload**: In case of config changes (from hot config reloading), the router extracts all queries from the current plan cache, preserving the queries that were in the planner cache before the cache is cleared for reloading.
 
-2. **During Startup**: The router with the updated config receives the queries from the previous plan cache and uses them to warm up its plan cache before serving traffic.
+2. **During Reload**: The router with the updated config receives the queries from the previous plan cache that existed before reloading, and uses them to warm up its current plan cache before serving traffic.
 
-3. **Result**: The updated router starts with a fully warmed cache, eliminating latency spikes that would normally occur during cold starts.
+3. **Result**: The updated router reloads with a fully warmed cache, eliminating latency spikes that would normally occur during cold starts.
 
-When using the in-memory switchover, the first start will still experience a cold start, as there is no prior populated planner cache. Subsequent restarts will benefit from the in-memory switchover.
+When using the in-memory fallback, the first start will still experience a cold start, as there is no prior populated planner cache. *Only subsequent reloads* will benefit from the in-memory fallback.
 
-### When to Use the In-Memory Switchover
+### When to Use the In-Memory Fallback
 
-The in-memory switchover can be used either as a fallback method or as a primary method for cache warming. This depends on the router configuration, the defaults provided by the router enables it as a fallback to the Cosmo Cloud CDN cache warmer, which is a Cosmo enterprise feature that needs to be enabled explicitly in Cosmo.
+The in-memory fallback can be used either as a fallback method or as a primary method for cache warming. This depends on the router configuration, the defaults provided by the router enables it as a fallback to the Cosmo Cloud CDN cache warmer, which is a feature that needs to be enabled explicitly in Cosmo.
 
-When the in-memory switchover is used with the Cosmo Cloud CDN cache warmer, the fallback is triggered when either:
+When the in-memory fallback is used with the Cosmo Cloud CDN cache warmer, the fallback is triggered when either:
 * Getting the list of operations from the CDN fails
 * The request to the CDN succeeds but does not return a list of operations (either no operations are cached or the manifest has not been created yet)
 
-In these cases, the router will use the fallback and load the list of operations from the in-memory switchover (if any operations exist).
+In these cases, the router will use the fallback and load the list of operations from the in-memory fallback (if any operations exist).
 
 <Note>
-    The in-memory switchover cannot be used as a fallback for sources other than the Cosmo Cloud CDN cache warmer.
+    The in-memory fallback cannot be used as a fallback for sources other than the Cosmo Cloud CDN cache warmer.
 </Note>
 
 ### Configuration
 
-The in-memory switchover can be enabled as a fallback for the CDN cache warmer. To do this, ensure:
+The in-memory fallback can be enabled as a fallback for the CDN cache warmer. To do this, ensure:
 
 * Cache warming is enabled in the router configuration (`cache_warmup.enabled: true`)
 * `source.cdn.enabled` is set to `true` (this is true by default and does not need to be explicitly specified)
@@ -119,7 +119,7 @@ cache_warmup:
       enabled: true
 ```
 
-However, you may want to use the in-memory switchover without the CDN cache warmer, as the CDN is an enterprise feature. To do this, ensure:
+To use the in-memory fallback as the primary source, ensure:
 
 * Cache warming is enabled in the router configuration (`cache_warmup.enabled: true`)
 * `source.cdn.enabled` is set to `false` (this needs to be specified explicitly, as the default is true)
