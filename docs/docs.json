@@ -167,7 +167,7 @@
                 "icon": "bridge-circle-check",
                 "pages": [
                   "router/proxy-capabilities",
-                  "router/proxy-capabilities/subgraph-request-headers-operations",
+                  "router/proxy-capabilities/subgraph-request-header-operations",
                   "router/proxy-capabilities/subgraph-response-header-operations",
                   "router/proxy-capabilities/forward-client-extensions",
                   "router/proxy-capabilities/adjusting-cache-control",
