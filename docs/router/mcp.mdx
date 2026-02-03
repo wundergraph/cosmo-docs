@@ -239,6 +239,7 @@ storage_providers:
 | `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`          |
 
 ## Session Handling
+
 By default, the MCP server runs in stateless mode (`session.stateless: true`). This avoids scalability issues in load‑balanced or serverless environments where sticky sessions may not be guaranteed. In stateless mode, no session data is retained between requests.
 
 In stateless mode, features that rely on long‑lived connections or server‑side session state are unavailable or limited:
