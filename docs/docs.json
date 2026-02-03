@@ -772,6 +772,14 @@
     {
       "source": "/router/event-driven-federated-subscriptions-edfs/:path*",
       "destination": "/router/cosmo-streams/:path*"
+    },
+    {
+      "source": "/router/proxy-capabilities/request-headers-operations",
+      "destination": "/router/proxy-capabilities/subgraph-request-header-operations"
+    },
+    {
+      "source": "/router/proxy-capabilities/response-header-operations",
+      "destination": "/router/proxy-capabilities/subgraph-response-header-operations"
     }
   ]
 }
