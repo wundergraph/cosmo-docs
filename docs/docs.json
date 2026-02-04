@@ -167,11 +167,12 @@
                 "icon": "bridge-circle-check",
                 "pages": [
                   "router/proxy-capabilities",
-                  "router/proxy-capabilities/request-headers-operations",
-                  "router/proxy-capabilities/response-header-operations",
+                  "router/proxy-capabilities/subgraph-request-header-operations",
+                  "router/proxy-capabilities/subgraph-response-header-operations",
                   "router/proxy-capabilities/forward-client-extensions",
                   "router/proxy-capabilities/adjusting-cache-control",
-                  "router/proxy-capabilities/override-subgraph-config"
+                  "router/proxy-capabilities/override-subgraph-config",
+                  "router/proxy-capabilities/router-response-header-operations"
                 ]
               },
               {
@@ -771,6 +772,14 @@
     {
       "source": "/router/event-driven-federated-subscriptions-edfs/:path*",
       "destination": "/router/cosmo-streams/:path*"
+    },
+    {
+      "source": "/router/proxy-capabilities/request-headers-operations",
+      "destination": "/router/proxy-capabilities/subgraph-request-header-operations"
+    },
+    {
+      "source": "/router/proxy-capabilities/response-header-operations",
+      "destination": "/router/proxy-capabilities/subgraph-response-header-operations"
     }
   ]
 }
