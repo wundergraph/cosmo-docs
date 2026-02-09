@@ -12,7 +12,7 @@ Cache warming operates by:
 
 1. **Identifying Slow Queries**: Telemetry data is used to detect high-latency operations that could cause performance bottlenecks. The system prioritizes queries based on **P90 latency measurements**, ensuring that the slowest queries are targeted for warming.
 
-2. **Building a Manifest**: The system prioritizes the slowest queries and compiles them into a manifest for caching. This manifest is stored in the CDN and fetched whenever the router needs it.
+2. **Building a Manifest**: The system prioritizes the slowest queries and then compiles them into a manifest for caching. This manifest is stored in the CDN and fetched whenever the router needs it.
 
 3. **Precomputing Query Plans**: The cache warmer precomputes and stores query plans in the router, ensuring immediate availability during peak traffic periods. This precomputing occurs at the **start of the router**, as well as whenever the router restarts due to a configuration update triggered by a subgraph publish.
 

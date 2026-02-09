@@ -40,6 +40,6 @@ WebSocket or SSE (Server-Sent Events) connections are long-lived and will be clo
 
 ### Latency Implications and Cache Warming
 
-When the configuration is swapped, a new graph is created internally. This implies that the planner cache is invalidated, as a plan is coupled to a specific graph. In high-traffic scenarios, this can increase latency.
+When the configuration is swapped, a new graph is created internally. This implies that the planner cache is invalidated, as a plan is coupled to a specific graph. In high-traffic scenarios, this can therefore increase latency.
 
 To mitigate this issue, the router supports **cache warming**. For more details on cache warming, see the [Cache Warmer documentation](/concepts/cache-warmer).
