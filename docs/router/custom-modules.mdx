@@ -143,6 +143,35 @@ QueryPlanStats includes the following info:
 
 Middleware is executed before any of the fetches are made, so you can use this information as a heuristic cost for rate limiting, etc.
 
+### Access operation timings
+
+In Middleware, you can access timing information for the various stages of operation processing. This is useful for capturing per-request performance metrics in custom telemetry pipelines.
+
+```go
+func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	timings := ctx.Operation().Timings()
+
+	fmt.Printf("parsing: %s\n", timings.ParsingTime)
+	fmt.Printf("validation: %s\n", timings.ValidationTime)
+	fmt.Printf("normalization: %s\n", timings.NormalizationTime)
+	fmt.Printf("planning: %s\n", timings.PlanningTime)
+
+	// Call the next handler in the chain or return early by calling w.Write()
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+`OperationTimings` includes the following fields (all `time.Duration`):
+
+- `ParsingTime` – Time spent parsing the GraphQL operation
+- `ValidationTime` – Time spent validating the operation against the schema
+- `NormalizationTime` – Time spent normalizing the operation
+- `PlanningTime` – Time spent generating the query plan
+
+<Info>
+  If called too early in the request chain, timing values may be inaccurate. Using `Timings()` in the `Middleware` handler is recommended.
+</Info>
+
 ### Access Request Context
 
 In every handler, you can add/remove, or modify response headers. We also provide a convenient, safe way to share data across handlers.
