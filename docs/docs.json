@@ -73,6 +73,18 @@
             ]
           },
           {
+            "group": "Cosmo ConnectRPC",
+            "pages": [
+              "connect-rpc/overview",
+              "connect-rpc/produce-define-contracts",
+              "connect-rpc/produce-configure-router",
+              "connect-rpc/produce-generate-distribute-sdks",
+              "connect-rpc/consume-via-sdks",
+              "connect-rpc/consume-via-rest-openapi",
+              "connect-rpc/consume-via-grpc"
+            ]
+          },
+          {
             "group": "Router",
             "pages": [
               "router/intro",
