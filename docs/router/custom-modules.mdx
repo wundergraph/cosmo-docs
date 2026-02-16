@@ -143,6 +143,35 @@ QueryPlanStats includes the following info:
 
 Middleware is executed before any of the fetches are made, so you can use this information as a heuristic cost for rate limiting, etc.
 
+### Access operation timings
+
+In Middleware, you can access timing information for the various stages of operation processing. This is useful for capturing per-request performance metrics in custom telemetry pipelines.
+
+```go
+func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	timings := ctx.Operation().Timings()
+
+	fmt.Printf("parsing: %s\n", timings.ParsingTime)
+	fmt.Printf("validation: %s\n", timings.ValidationTime)
+	fmt.Printf("normalization: %s\n", timings.NormalizationTime)
+	fmt.Printf("planning: %s\n", timings.PlanningTime)
+
+	// Call the next handler in the chain or return early by calling w.Write()
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+`OperationTimings` includes the following fields (all `time.Duration`):
+
+- `ParsingTime` – Time spent parsing the GraphQL operation
+- `ValidationTime` – Time spent validating the operation against the schema
+- `NormalizationTime` – Time spent normalizing the operation
+- `PlanningTime` – Time spent generating the query plan
+
+<Info>
+  If called too early in the request chain, timing values may be inaccurate. Using `Timings()` in the `Middleware` handler is recommended.
+</Info>
+
 ### Access Request Context
 
 In every handler, you can add/remove, or modify response headers. We also provide a convenient, safe way to share data across handlers.
@@ -264,6 +293,44 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
     core.WriteResponseError(ctx, fmt.Errorf("my custom error: %w", err))
     // or pass on
     next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+### Access The Error Set In The Router
+
+We expose the `Error()` method as part of the context, which when called will return the error set to `request.error` in expressions.
+
+Note that if you call `Error()` in the hooks, you are most likely to get `nil`. This is because when the hook is called, the error has not been set internally yet. The recommended approach is to use a custom response writer, which will be called after the error has been set internally, thus the value from `Error()` will be non-nil when called from the custom response writer. When using a custom response writer, we recommend wrapping the writer in the `RouterOnRequest` hook (see example below), as this is the first hook that is called in a request lifecycle.
+
+<Note>
+The `Write` method in the custom response writer can be called multiple times from the router for the same request.
+</Note>
+
+```go
+type headerCapturingWriter struct {
+	http.ResponseWriter
+	ctx             core.RequestContext
+}
+
+// This will be called by the router when it is calling Write
+// Do note that this can be called multiple times for the same request
+func (w *headerCapturingWriter) Write(b []byte) (int, error) {
+	if err := w.ctx.Error(); err != nil {
+		// error has been successfully set
+		fmt.Println("error detected")
+	}
+	return w.ResponseWriter.Write(b)
+}
+
+func (m *CustomModule) RouterOnRequest(ctx core.RequestContext, next http.Handler) {
+	// Wrap the response writer to intercept writes
+	wrappedWriter := &headerCapturingWriter{
+		ResponseWriter:  ctx.ResponseWriter(),
+		ctx:             ctx,
+	}
+
+	// Call the next handler with the wrapped writer
+	next.ServeHTTP(wrappedWriter, ctx.Request())
 }
 ```
 

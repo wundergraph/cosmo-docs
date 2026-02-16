@@ -8,13 +8,51 @@ sidebarTitle: "Overview"
 <Frame caption="Event-Driven Federated Subscriptions (EDFS) Architecture">
   <img 
     src="/images/router/event-driven-federated-subscriptions-router-message-broker.png" 
-    alt="Diagram of EDFS showing Router subscribing to message broker and triggering stateless subgraph fetches." 
+    alt="Diagram of Cosmo Streams showing Router subscribing to message broker and triggering stateless subgraph fetches." 
   />
 </Frame>
 
-Cosmo Streams solves 3 major problems when it comes to GraphQL Federation and Subscriptions by directly connecting the Router to an event source like Kafka and NATS and making it a part of the Graph.
+## Introduction
 
-## Intro
+Cosmo Streams doesn't try to make traditional GraphQL subscriptions less painful. It removes the root cause of the pain altogether.
+
+### Why GraphQL Subscriptions Are So Hard
+
+GraphQL subscriptions are notoriously difficult to build and operate at scale.
+
+In a classic setup, you're expected to run a dedicated subscription service yourself. That service must keep **long-lived WebSocket connections**, implement the correct GraphQL subprotocol, manage heartbeats and reconnects, listen for domain events, fetch and compose data from other services, and finally fan out updates to thousands of connected clients — all in real time.
+
+This architecture is inherently **stateful**. Every active subscription lives somewhere in memory. As traffic grows, so does connection overhead, memory pressure, and operational complexity. Subtle performance issues and edge-case failures are common, especially once you move beyond a few hundred clients.
+
+Federation makes things even harder. Now the router is no longer the only place dealing with subscriptions — **your subgraphs must participate too**. They often need to hold WebSocket connections, implement subscription loops, or support proprietary callback protocols. This creates tight coupling between your graph architecture and your runtime environment, making serverless deployments difficult or outright impossible.
+
+In short: traditional GraphQL subscriptions push state, complexity, and scalability concerns deep into every layer of your system.
+
+### Cosmo Streams: A Different Model
+
+Cosmo Streams takes a fundamentally different approach.
+
+Instead of asking subgraphs to host subscriptions, Cosmo Streams treats subscriptions as an **event-driven problem**, not a connection-driven one.
+
+Subgraphs remain **completely stateless**. They don't manage WebSockets. They don't track subscriptions. They don't run subscription loops. When something changes, they simply emit an event to an existing message broker like **Apache Kafka, NATS, or Redis** — infrastructure most event-driven systems already rely on.
+
+The Cosmo Router listens to those events.
+
+When an event arrives, the router determines which active subscriptions are affected, efficiently deduplicates work, and fetches the required data from subgraphs using **plain HTTP requests**. The updated results are then broadcast to clients over WebSockets, SSE, or multipart responses — all fully managed at the gateway layer.
+
+### Why This Matters
+
+This shift has important consequences:
+
+- **Stateless subgraphs** Subgraphs don't hold connections or subscription state, making them ideal for Lambda, Cloud Run, or any serverless environment.
+- **Centralized connection management** All client connections live in the router, where they can be optimized, monitored, and scaled efficiently.
+- **Event-native architecture** Subscriptions integrate naturally with Kafka, NATS, or Redis instead of introducing yet another stateful protocol.
+- **Better performance at scale** The router deduplicates subscriptions, minimizes fetches, and uses highly efficient I/O primitives to handle tens of thousands of concurrent clients with low memory overhead.
+- **Zero subscription logic in subgraphs** No WebSocket servers, no callback protocols, no proprietary APIs — just HTTP.
+
+## In More Detail
+
+Cosmo Streams solves 3 major problems when it comes to GraphQL Federation and Subscriptions by directly connecting the Router to an event source like Kafka and NATS and making it a part of the Graph.
 
 1. Subscriptions can only have one single root field
 2. Subgraphs should be stateless
@@ -22,7 +60,7 @@ Cosmo Streams solves 3 major problems when it comes to GraphQL Federation and Su
 
 Let me explain the three Problems:
 
-```js
+```graphql
 type Subscription {
     employeeUpdated(employeeID: ID!): Employee!
 }
@@ -63,7 +101,7 @@ Our goal is to integrate with various technologies rather than agree on a single
 
 Here is an overview about all Cosmo Streams directives:
 
-```js
+```graphql
 # Nats and JetStream integration
 directive @edfs__natsRequest(
   subject: String!,
@@ -152,7 +190,7 @@ If you run `make edfs-demo` in the Cosmo Monorepo, you'll automatically get a NA
 
 Below, you'll find an example Schema that use the NATS provider directives to connect the `@edfs__natsRequest` directive to a Query root field (employeeFromEvent), a Mutation root field (updateEmployee) that's connected to another topic using `@edfs__natsPublish` and a Subscription root field (employeeUpdated) that's connected via `@edfs__natsSubscribe`. Each of these fields is completely independent. Important to notice is that you can't implement this subgraph because the engine will implement the resolvers based on the router configuration.
 
-```js
+```graphql
 directive @edfs__natsRequest(
   subject: String!,
   providerId: String! = "default"
@@ -175,12 +213,13 @@ input edfs__NatsStreamConfiguration {
     streamName: String!
 }
 
-type PublishEventResult {
+type edfs__PublishResult {
     success: Boolean!
 }
 
 type Query {
-    employeeFromEvent(id: ID!): Employee! @edfs__natsRequest(subject: "getEmployee.{{ args.id }}")
+    employeeFromEvent(id: ID!): Employee!
+    @edfs__natsRequest(subject: "getEmployee.{{ args.id }}")
 }
 
 input UpdateEmployeeInput {
@@ -189,11 +228,18 @@ input UpdateEmployeeInput {
 }
 
 type Mutation {
-    updateEmployee(id: ID!, update: UpdateEmployeeInput!): PublishEventResult! @edfs__natsPublish(subject: "updateEmployee.{{ args.id }}")
+    updateEmployee(
+      id: ID!,
+      update: UpdateEmployeeInput!
+    ): edfs__PublishResult!
+    @edfs__natsPublish(subject: "updateEmployee.{{ args.id }}")
 }
 
 type Subscription {
-    employeeUpdated(employeeID: ID!): Employee! @edfs__natsSubscribe(subjects: ["employeeUpdated.{{ args.employeeID }}"])
+    employeeUpdated(employeeID: ID!): Employee!
+    @edfs__natsSubscribe(
+      subjects: ["employeeUpdated.{{ args.employeeID }}"]
+    )
 }
 
 type Employee @key(fields: "id", resolvable: false) {
@@ -209,7 +255,7 @@ The subjects/topics/channels argument of all events Directives allows you to use
 
 Given the following Schema:
 
-```js
+```graphql
 type Subscription {
     employeeUpdated(
       employeeID: ID!
@@ -250,11 +296,11 @@ Once the initial result is coming back from the "Event Subgraph", the Router is 
 
 ### Publish
 
-The `@edfs_natsPublish`, `@edfs_kafkaPublish` and `@edfs__redisPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `PublishEventResult` with one single field `success` of type `Boolean!`, indicating whether publishing the event was successful or not.
+The `@edfs_natsPublish`, `@edfs_kafkaPublish` and `@edfs__redisPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `edfs__PublishResult` with one single field `success` of type `Boolean!`, indicating whether publishing the event was successful or not.
 
 Given that we send the following Mutation:
 
-```js
+```graphql
 mutation UpdateEmployee($id: ID!, $update: UpdateEmployeeInput!) {
     updateEmployee(id: $id, update: $update){
         id
@@ -278,7 +324,7 @@ mutation UpdateEmployee($id: ID!, $update: UpdateEmployeeInput!) {
 
 Given the following Subscription:
 
-```js
+```graphql
 subscription EmployeeUpdates($id: ID!){
     employeeUpdated(employeeID: $id){
         id
@@ -328,7 +374,7 @@ The `@openfed__subscriptionFilter` directive allows you to filter subscription m
 
 Given the following subscription:
 
-```js
+```graphql
 scalar openfed__SubscriptionFilterValue
 
 input openfed__SubscriptionFieldCondition {
@@ -356,7 +402,7 @@ type Subscription {
 
 and a user who subscribes to the following:
 
-```js
+```graphql
 subscription {
     filteredEmployeeUpdated(employeeID: 1) {
         id
@@ -370,7 +416,7 @@ subscription {
 
 will receive Kafka events published on the topics `employeeUpdated` and `employeeUpdatedTwo` only when the payload `id` matches the values of the `IN` filter condition.
 
-```js
+```graphql
 filteredEmployeeUpdated(firstIds: [ID!]!, secondIds: [ID!]!): Employee!
         @edfs__kafkaSubscribe(
           topics: ["employeeUpdated", "employeeUpdatedTwo"], providerId: "my-kafka"
@@ -386,7 +432,7 @@ You can also use variable expansion to use input arguments in the filter conditi
 
 To illustrate the use case, we do the following query:
 
-```js
+```graphql
 subscription {
     filteredEmployeeUpdated(firstIds: [1, 12], secondIds: [2, 11]) {
         id
