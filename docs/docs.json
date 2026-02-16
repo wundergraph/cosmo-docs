@@ -88,6 +88,7 @@
               },
               "router/mcp",
               "router/custom-modules",
+              "router/custom-modules-migration",
               {
                 "group": "Cosmo Connect",
                 "icon": "network-wired",
