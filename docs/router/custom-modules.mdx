@@ -388,6 +388,14 @@ modules:
     Value: 1
 ```
 
+## Migrations
+
+### From pre-0.278.0 to 0.278.0+: Request Deduplication
+
+Starting with Router [0.278.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.278.0), request deduplication moved from the HTTP transport layer to the engine/loader layer. If your custom modules use `EnginePreOriginHandler` to set headers that affect request identity (e.g. tenant IDs, user tokens), you need to migrate them to earlier hooks.
+
+See the full [migration guide](/router/custom-modules-migration) for step-by-step instructions.
+
 ## Future Plans
 
 We're currently working on the iteration of the module system. It will allow you to fully customize the router with a complete overhaul of the development experience. The new module system will be available in the next major release of the router. If you have any questions or suggestions, please reach out to us on the [GitHub](https://github.com/wundergraph/cosmo/blob/main/adr/custom-modules-v1.md) ADR.
