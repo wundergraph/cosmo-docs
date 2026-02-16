@@ -260,6 +260,7 @@
               },
               "router/compliance-and-data-management",
               "router/query-batching",
+              "router/feature-flags",
               "router/subgraph-error-propagation",
               "router/relaxed-field-selection-merging-nullability",
               "router/file-upload",
