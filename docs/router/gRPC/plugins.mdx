@@ -237,6 +237,10 @@ When deploying router plugins with your Cosmo Router, keep these important consi
 
 Native integration with Cosmo Cloud allows you to push plugins directly to the platform without the need to re-deploy the Router. If you're already using Cosmo Cloud, you can use the `wgc router plugin publish` command to publish your plugin directly to the plugin registry for use by your routers.
 
+<Note>
+  **Publishing plugins requires Docker Buildx:** Publishing plugins to the Cosmo Cloud Plugin Registry requires Docker Buildx with a container builder configured. See the [plugin publish documentation](/cli/router/plugin/publish#docker-requirements) for setup instructions.
+</Note>
+
 ### Platform Compatibility
 
 Plugins must be compiled for the same target platform as your router. This means:
