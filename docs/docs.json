@@ -87,7 +87,14 @@
                 ]
               },
               "router/mcp",
-              "router/custom-modules",
+              {
+                "group": "Custom Modules",
+                "icon": "cubes",
+                "pages": [
+                  "router/custom-modules",
+                  "router/custom-modules-migration"
+                ]
+              },
               {
                 "group": "Cosmo Connect",
                 "icon": "network-wired",
@@ -213,6 +220,7 @@
                   "router/development/development-mode"
                 ]
               },
+              "router/request-deduplication",
               "router/performance-debugging",
               "router/advanced-request-tracing-art",
               {
