@@ -88,16 +88,16 @@ security:
   cost_analysis:
     enabled: true
     mode: enforce
-    estimated_limit: 1000
+    max_estimated_limit: 1000
     estimated_list_size: 10
 ```
 
-| Option                | Environment Variable                         | Default   | Description                                                                                   |
-|-----------------------|----------------------------------------------|-----------|-----------------------------------------------------------------------------------------------|
-| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                   |
-| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.  |
-| `estimated_limit`     | `SECURITY_COST_ANALYSIS_ESTIMATED_LIMIT`     | `0`       | Maximum allowed estimated cost. Only enforced when mode is `enforce`. 0 disables enforcement. |
-| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `10`      | Default assumed size for list fields when no `@listSize` directive is specified.              |
+| Option                | Environment Variable                         | Default   | Description                                                                                                 |
+|-----------------------|----------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------|
+| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                 |
+| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                |
+| `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Only enforced when its value is positive and mode is 'enforce'. |
+| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `10`      | Default assumed size for list fields when no `@listSize` directive is specified.                            |
 
 ## Customizing Cost with Directives
 
@@ -206,7 +206,7 @@ When a query exceeds the estimated cost limit (in enforce mode), the router retu
 {
   "errors": [
     {
-      "message": "The estimated query cost 1540 exceeds the maximum allowed estimated cost 1500"
+      "message": "The estimated query cost 1540 exceeds the maximum allowed limit 1500"
     }
   ]
 }
