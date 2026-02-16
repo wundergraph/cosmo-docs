@@ -219,6 +219,8 @@ When cost analysis is enabled, the router emits OpenTelemetry metrics for every 
 These metrics are available through both OTEL and Prometheus exporters, carrying the same
 operation-level attributes as other router metrics (`wg.operation.name`, `wg.operation.type`,
 `wg.operation.protocol`, `wg.client.name`, `wg.client.version`, `http.status_code`).
+For more details on exporting and querying, see [Metrics & Monitoring](/router/metrics-and-monitoring).
+
 
 ### Metrics
 
@@ -237,7 +239,7 @@ operation-level attributes as other router metrics (`wg.operation.name`, `wg.ope
 
 In **measure mode**, use cost metrics to understand the traffic before enabling enforcement:
 
-- Compare estimated vs. actual costs to tune `estimated_list_size` and `@listSize` directives.
+- Compare estimated vs. actual costs to configure `estimated_list_size` and `@listSize`.
 - Identify operations where the delta is consistently large — these benefit from more precise `@listSize` annotations.
 
 Example Prometheus queries:
@@ -262,10 +264,10 @@ security:
   cost_analysis:
     enabled: true
     mode: measure
-    list_size: 10
+    estimated_list_size: 10
 ```
 
-### Pick Parameters for @list_size Carefully
+### Pick Parameters for @listSize Carefully
 
 The default list size significantly impacts cost calculations.
 If lists typically return 5–20 items, a default of 10 is reasonable.
@@ -303,7 +305,7 @@ type Query {
   users(first: Int!, after: String): UserConnection
     @listSize(slicingArguments: ["first"])
   
-  # Less ideal: cost uses default list_size
+  # Less ideal: cost uses default estimated_list_size
   allUsers: [User]
 }
 ```
