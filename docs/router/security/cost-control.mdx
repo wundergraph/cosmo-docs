@@ -33,8 +33,9 @@ by the list size — only the children's costs are multiplied. This implementati
 and children's costs by the list size, resulting in higher cost estimates for list fields with weighted types.
 This is done because federation may trigger entity fetches between subgraphs.
 
-Currently, only static (estimated) costs are supported.
-Dynamic (runtime) cost, calculated from actual data returned by subgraphs, is in active development.
+The router supports both static (estimated) and runtime (actual) cost measurement.
+Estimated cost is calculated before execution based on directive weights and list size estimates.
+Actual cost is calculated after execution using real list sizes returned by subgraphs.
 
 ## How Cost is Calculated
 
@@ -212,6 +213,43 @@ When a query exceeds the estimated cost limit (in enforce mode), the router retu
 }
 ```
 
+## Telemetry
+
+When cost analysis is enabled, the router emits OpenTelemetry metrics for every operation.
+These metrics are available through both OTEL and Prometheus exporters, carrying the same
+operation-level attributes as other router metrics (`wg.operation.name`, `wg.operation.type`,
+`wg.operation.protocol`, `wg.client.name`, `wg.client.version`, `http.status_code`).
+
+### Metrics
+
+| Metric Name                               | Instrument Type | Description                                                                                                    |
+|-------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------------|
+| `router.graphql.operation.cost.estimated` | Int64 Histogram | Estimated cost calculated before execution, based on directive weights and list size estimates.                |
+| `router.graphql.operation.cost.actual`    | Int64 Histogram | Actual cost calculated after execution using real list sizes returned by subgraphs.                            |
+| `router.graphql.operation.cost.delta`     | Int64 Histogram | The difference between estimated and actual cost. A positive value means the query was cheaper than estimated. |
+
+<Info>
+  The estimated and actual cost metrics are emitted for every successfully planned operation, regardless of mode.
+  The actual and delta metrics require execution to complete so the router can observe real list sizes.
+</Info>
+
+### Using cost metrics
+
+In **measure mode**, use cost metrics to understand the traffic before enabling enforcement:
+
+- Compare estimated vs. actual costs to tune `estimated_list_size` and `@listSize` directives.
+- Identify operations where the delta is consistently large — these benefit from more precise `@listSize` annotations.
+
+Example Prometheus queries:
+
+```
+# Average estimated cost per operation
+avg by (wg_operation_name) (router_graphql_operation_cost_estimated_sum / router_graphql_operation_cost_estimated_count)
+
+# Operations where actual cost exceeds the estimate
+router_graphql_operation_cost_delta > 0
+```
+
 ## Best Practices
 
 ### Start with Measure Mode
@@ -293,8 +331,6 @@ Use `@listSize` to provide realistic estimates for deeply nested structures.
 
 ## Features Not Yet Implemented
 
-- **Runtime (dynamic) cost measurement** based on actual list sizes returned by subgraphs
-- **Cost telemetry** — OTEL metrics and span attributes for cost values (`cost.estimated`, `cost.actual`, `cost.delta`)
 - `sizedFields` in @listSize for applying list size estimates to specific child fields rather than all children
 - `requireOneSlicingArgument` for validation of queries
 - **Input object fields** when used as parameters of fields
