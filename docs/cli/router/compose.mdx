@@ -49,6 +49,27 @@ subgraphs:
         Authorization: 'Bearer YOUR_TOKEN_HERE'
 ```
 
+## Feature flags (optional)
+
+You can define feature flags in the input file so the composed router config includes alternate subgraphs when a flag is active. Each flag lists one or more `feature_graphs` that describe the replacement subgraph to serve when the flag is enabled (e.g. via the `X-Feature-Flag` header). For an overview of how the router uses feature flags, see [Feature Flags](/router/feature-flags).
+
+```yaml
+feature_flags:
+  - name: test_checkout
+    feature_graphs:
+      - name: checkout_canary
+        subgraph_name: checkout
+        routing_url: https://api.example.com/checkout-canary/graphql
+        schema:
+          file: feature-flag_checkout.graphql
+subgraphs:
+  - name: checkout
+    routing_url: https://api.example.com/checkout/graphql
+    schema:
+      file: checkout.graphql
+```
+
+
 ## Examples
 
 ```bash
