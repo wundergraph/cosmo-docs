@@ -27,6 +27,10 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
   [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 </Info>
 
+<Warning>
+  If you are upgrading from a Router version prior to [0.278.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.278.0) and use `EnginePreOriginHandler`, the request deduplication behavior has changed. Headers set in `OnOriginRequest` are no longer included in the deduplication key. See the [Custom Modules Migration Guide](/router/custom-modules-migration) for details on how to adapt your modules.
+</Warning>
+
 ## Learn by Example
 
 If you want to see how to develop your own modules, check out our examples repository. It contains examples to build and upgrade your own router.

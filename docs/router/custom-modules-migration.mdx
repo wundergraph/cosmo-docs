@@ -4,88 +4,23 @@ description: "Migration guide for custom modules using EnginePreOriginHandler (O
 icon: "arrows-turn-right"
 ---
 
-This guide helps Cosmo Router users who have custom modules with `EnginePreOriginHandler` (`OnOriginRequest`) to understand a breaking behavioral change in how request deduplication works and how to adapt their modules.
+<Warning>
+  This migration applies to Router versions **prior to [0.278.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.278.0)**. If you are upgrading from a version older than 0.278.0 and use custom modules with `EnginePreOriginHandler`, you need to follow this guide.
+</Warning>
+
+This guide helps Cosmo Router users who have custom modules with `EnginePreOriginHandler` (`OnOriginRequest`) to adapt to a breaking behavioral change in how [request deduplication](/router/request-deduplication) works.
 
 ## What Changed
 
 In older versions of the Cosmo Router, request deduplication (singleflight) happened at the **HTTP transport layer**. The `CustomTransport.RoundTrip` method would hash the request body and all headers to compute a deduplication key. Since `EnginePreOriginHandler.OnOriginRequest` hooks ran *before* the transport layer, any headers set in `OnOriginRequest` were naturally included in the deduplication key. Two requests with different custom headers would correctly be treated as distinct requests.
 
-In the current version, request deduplication has moved to the **engine/loader layer** inside `graphql-go-tools`. The router now **pre-computes** subgraph header hashes based on configured header forwarding rules *before* calling into the engine. This happens when `SubgraphHeadersBuilder` is called — which is *after* all middleware runs but *before* any `OnOriginRequest` hook fires.
+Starting with Router [0.278.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.278.0), request deduplication has moved to the **engine/loader layer**. The router now **pre-computes** subgraph header hashes based on configured header forwarding rules *before* calling into the engine — which is *after* all middleware runs but *before* any `OnOriginRequest` hook fires. See [Request Deduplication](/router/request-deduplication) for details on how the new deduplication works.
 
 This means:
 
 - Headers set in `OnOriginRequest` are **not included** in the deduplication key.
 - Two concurrent requests that differ only by a header set in `OnOriginRequest` may be incorrectly deduplicated — one request's response will be served to both clients.
 - As a safety measure, the router **automatically disables both levels of request deduplication** whenever any `EnginePreOriginHandler` is registered. This prevents incorrect behavior but sacrifices a significant performance optimization.
-
-## How Request Deduplication Works Now
-
-There are two deduplication layers, both inside the engine resolver:
-
-### Layer 1: Subgraph Request Deduplication
-
-Deduplicates identical fetches to the same subgraph across concurrent operations. The deduplication key is:
-
-```
-xxhash64(DataSourceID + ":" + requestBody + preComputedHeaderHash)
-```
-
-- **DataSourceID**: identifies the target subgraph
-- **requestBody**: the complete JSON payload (query + variables)
-- **preComputedHeaderHash**: xxhash64 of all headers that will be forwarded to this subgraph, as determined by your header forwarding rules
-
-Only `Query` operations are eligible. Mutations and subscriptions are never deduplicated.
-
-### Layer 2: Inbound Request Deduplication
-
-Deduplicates identical client requests before the engine even starts resolving. The key is:
-
-```
-xxhash64(normalizedOperationHash + variablesHash + combinedSubgraphHeadersHash)
-```
-
-If two concurrent clients send the same query with the same variables and the same forwarded headers, only one resolution is performed and the result is shared.
-
-### Key Point: Header Hashes Are Pre-Computed
-
-The header hashes for both layers are computed by `SubgraphHeadersBuilder`, which:
-
-1. Iterates over every subgraph involved in the execution plan
-2. Applies all configured header forwarding rules (global + per-subgraph) against the **current inbound request headers**
-3. Produces a deterministic `uint64` hash per subgraph
-4. Combines all per-subgraph hashes into a single `allHash`
-
-This happens **after** `RouterOnRequestHandler` and `RouterMiddlewareHandler` hooks run, but **before** `EnginePreOriginHandler.OnOriginRequest` hooks run.
-
-## Request Pipeline and Hook Ordering
-
-```
-Incoming HTTP Request
-    │
-    ├── [1] RouterOnRequestHandler hooks          ← can set headers here
-    │       (before auth, before request parsing)
-    │
-    ├── [2] graphqlPreHandler                     ← parses, authenticates, validates, plans
-    │
-    ├── [3] RouterMiddlewareHandler hooks          ← can set headers here
-    │       (after parse/auth, ctx.Operation() available)
-    │
-    ├── [4] graphqlHandler.ServeHTTP
-    │   ├── SubgraphHeadersBuilder()              ← HEADER HASHES COMPUTED HERE
-    │   │   (reads current request headers, applies forwarding rules, hashes result)
-    │   │
-    │   └── Engine Resolver
-    │       ├── Inbound Request Deduplication      (uses allHash from step [4])
-    │       └── Per-subgraph fetches:
-    │           ├── Subgraph Request Deduplication  (uses per-subgraph hash from step [4])
-    │           ├── ────────────────────────────
-    │           ├── EnginePreOriginHandler hooks    ← TOO LATE for dedup key
-    │           ├── ────────────────────────────
-    │           ├── HTTP transport (circuit breaker, retry, actual fetch)
-    │           └── EnginePostOriginHandler hooks
-    │
-    └── Response to client
-```
 
 ## What You Need to Do
 
@@ -236,32 +171,6 @@ func (m *MyModule) OnOriginRequest(req *http.Request, ctx core.RequestContext) (
 | Inspect subgraph responses | `OnOriginResponse` | Runs after the subgraph response is received |
 | Block requests based on operation | `Middleware` | Has full operation context |
 | Manipulate headers before auth | `RouterOnRequest` | Runs before auth middleware |
-
-## Configuration Reference
-
-```yaml
-engine:
-  # Enable subgraph request deduplication (default: true)
-  # Deduplicates identical fetches to the same subgraph across concurrent operations
-  enable_single_flight: true
-
-  # Force-enable subgraph dedup even when EnginePreOriginHandler is registered (default: false)
-  # Only use this if your OnOriginRequest hook does NOT set identity-affecting headers
-  force_enable_single_flight: false
-
-  # Enable inbound request deduplication (default: true)
-  # Deduplicates identical client requests before the engine starts resolving
-  enable_inbound_request_deduplication: true
-
-  # Force-enable inbound dedup even when EnginePreOriginHandler is registered (default: false)
-  force_enable_inbound_request_deduplication: false
-```
-
-Environment variable equivalents:
-- `ENGINE_ENABLE_SINGLE_FLIGHT`
-- `ENGINE_FORCE_ENABLE_SINGLE_FLIGHT`
-- `ENGINE_ENABLE_INBOUND_REQUEST_DEDUPLICATION`
-- `ENGINE_FORCE_ENABLE_INBOUND_REQUEST_DEDUPLICATION`
 
 ## Common Pitfalls
 

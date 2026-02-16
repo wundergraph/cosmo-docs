@@ -214,6 +214,7 @@
                   "router/development/development-mode"
                 ]
               },
+              "router/request-deduplication",
               "router/performance-debugging",
               "router/advanced-request-tracing-art",
               {
