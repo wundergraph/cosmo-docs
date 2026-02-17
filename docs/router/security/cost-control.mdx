@@ -11,10 +11,9 @@ slowing everything else down. A query requesting deeply nested lists can generat
 thousands of resolver calls and overwhelm subgraphs, while a simple field lookup costs almost nothing.
 Cost analysis allows assigning weights to fields and estimating query complexity *before* execution begins.
 
-When cost analysis is enabled, the router calculates an estimated cost for each incoming operation based
-on the fields requested, their configured weights and expected list sizes.
-Operations exceeding the configured limit are rejected immediately. No subgraph requests are made,
-protecting the infrastructure from resource exhaustion.
+When cost analysis is enabled, the router calculates and records costs for each incoming operation.
+In **enforce** mode, operations exceeding the configured limit are rejected immediately
+and no subgraph requests are made, protecting the infrastructure from resource exhaustion.
 
 The Cosmo Router implements the [IBM GraphQL Cost Directive Specification](https://ibm.github.io/graphql-specs/cost-spec.html),
 adapted for GraphQL Federation.
@@ -151,11 +150,8 @@ type Query {
 
 ```graphql
 type Query {
-  products(first: Int, after: String): ProductConnection 
-    @listSize(slicingArguments: ["first"])
-  
-  searchResults(limit: Int!, offset: Int): [Result]
-    @listSize(slicingArguments: ["limit"])
+  products(first: Int!): [Product] @listSize(slicingArguments: ["first"])
+  search(limit: Int!): [Result] @listSize(slicingArguments: ["limit"])
 }
 ```
 
@@ -180,7 +176,7 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
     // Get cost after planning
     cost, err := ctx.Operation().Cost()
     if err != nil {
-        // Cost analysis not enabled or plan not ready
+        // Cost analysis was not enabled or the plan is not ready
     }
     
     // Use estimated cost for custom logic (rate limiting, logging, etc.)
@@ -302,8 +298,7 @@ Pagination improves cost accuracy. `slicingArguments` provides precise multiplie
 ```graphql
 type Query {
   # Good: cost scales with requested page size
-  users(first: Int!, after: String): UserConnection
-    @listSize(slicingArguments: ["first"])
+  users(first: Int!, after: String): [User] @listSize(slicingArguments: ["first"])
   
   # Less ideal: cost uses default estimated_list_size
   allUsers: [User]
