@@ -243,7 +243,7 @@ For a detailed example, please refer to the [Access Logs](/router/access-logs) s
 |                                              | access_logs.subgraphs.value_from                 | <Icon icon="square" /> | Defines a source for the field value e.g. from a request header. If both default and value_from are set, value_from has precedence.                                                                                                                                                                                                                                                                                                                                                                             |               |
 |                                              | access_logs.subgraphs.value_from.request_header  | <Icon icon="square" /> | The name of the request header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                            |               |
 |                                              | access_logs.subgraphs.value_from.response_header | <Icon icon="square" /> | The name of the response header from which to extract the value. The value is only extracted when a request context is available otherwise the default value is used.                                                                                                                                                                                                                                                                                                                                           |               |
-|                                              | access_logs.subgraphs.value_from.context_field   | <Icon icon="square" /> | The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used. **One of:** [ "operation_name", "operation_type", "operation_service_names", "operation_hash", "persisted_operation_sha256", "operation_sha256", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ]                                                                                 |               |
+|                                              | access_logs.subgraphs.value_from.context_field   | <Icon icon="square" /> | The field name of the context from which to extract the value. The value is only extracted when a context is available otherwise the default value is used. **One of:** [ "operation_name", "operation_type", "operation_hash", "persisted_operation_sha256", "operation_sha256", "operation_parsing_time", "operation_validation_time", "operation_planning_time", "operation_normalization_time" ]                                                                                 |               |
 
 ### Example YAML config:
 
@@ -328,19 +328,18 @@ introspection:
 
 The Model Context Protocol (MCP) server allows AI models to discover and interact with your GraphQL API in a secure way.
 
-| Environment Variable            | YAML                            | Required               | Description                                                                                                                                                                                                                   | Default Value  |
-| ------------------------------- | ------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                                                                                              | false          |
-| MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                                                                                            | localhost:5025 |
-| MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy; used in MCP responses to provide the real router URL.                                                                  | -              |
-| MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                                                                                                 | -              |
-| MCP_SESSION_STATELESS           | mcp.session.stateless           | <Icon icon="square" /> | Whether the MCP server should operate in stateless mode. When true, no server-side session state is maintained between requests.                                                                                              | true           |
-| MCP_GRAPH_NAME                  | mcp.graph_name                  | <Icon icon="square" /> | The name of the graph to be used by the MCP server                                                                                                                                                                            | mygraph        |
-| MCP_EXCLUDE_MUTATIONS           | mcp.exclude_mutations           | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                                                                                                                     | false          |
-| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning>                                                                  | false          |
-| MCP_EXPOSE_SCHEMA               | mcp.expose_schema               | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning>                                                                                     | false          |
-| MCP_OMIT_TOOL_NAME_PREFIX       | mcp.omit_tool_name_prefix       | <Icon icon="square" /> | When enabled, MCP tool names generated from GraphQL operations omit the `execute_operation_` prefix.                                                                                                                          | false          |
-
+| Environment Variable            | YAML                            | Required               | Description                                                                                                                                                  | Default Value  |
+| ------------------------------- | ------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| MCP_ENABLED                     | mcp.enabled                     | <Icon icon="square" /> | Enable or disable the MCP server                                                                                                                             | false          |
+| MCP_SERVER_LISTEN_ADDR          | mcp.server.listen_addr          | <Icon icon="square" /> | The address and port where the MCP server will listen for requests                                                                                           | localhost:5025 |
+| MCP_ROUTER_URL                  | mcp.router_url                  | <Icon icon="square" /> | Custom URL to use for the router GraphQL endpoint in MCP. Use this when your router is behind a proxy; used in MCP responses to provide the real router URL. | -              |
+| MCP_STORAGE_PROVIDER_ID         | mcp.storage.provider_id         | <Icon icon="square" /> | The ID of a storage provider to use for loading GraphQL operations. Only file_system providers are supported.                                                | -              |
+| MCP_SESSION_STATELESS           | mcp.session.stateless           | <Icon icon="square" /> | Whether the MCP server should operate in stateless mode. When true, no server-side session state is maintained between requests.                             | true           |
+| MCP_GRAPH_NAME                  | mcp.graph_name                  | <Icon icon="square" /> | The name of the graph this router exposes via MCP. Used to build the MCP server name (wundergraph-cosmo-$graph_name) and for logging; it does not select a different graph.  | mygraph        |
+| MCP_EXCLUDE_MUTATIONS           | mcp.exclude_mutations           | <Icon icon="square" /> | Whether to exclude mutation operations from being exposed                                                                                                    | false          |
+| MCP_ENABLE_ARBITRARY_OPERATIONS | mcp.enable_arbitrary_operations | <Icon icon="square" /> | Whether to allow arbitrary GraphQL operations to be executed. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning> | false          |
+| MCP_EXPOSE_SCHEMA               | mcp.expose_schema               | <Icon icon="square" /> | Whether to expose the full GraphQL schema. <Warning>   Security risk: Should only be enabled in secure, internal environments. </Warning>                    | false          |
+| MCP_OMIT_TOOL_NAME_PREFIX       | mcp.omit_tool_name_prefix       | <Icon icon="square" /> | When enabled, MCP tool names generated from GraphQL operations omit the `execute_operation_` prefix.                                                         | false          |
 
 Example YAML config:
 
@@ -1453,6 +1452,7 @@ This is useful when you want to connect to a JWKS endpoint
 | --------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------|
 | url                                                                         | <Icon icon="square-check" iconType="solid" />  | The URL of the JWKs. The JWKs are used to verify the JWT (JSON Web Token). The URL is specified as a string with the format 'scheme://host:port'.                                                                                                                                     |                  |
 | refresh_interval                                                            | <Icon icon="square" />                         | The interval at which the JWKs are refreshed. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                                                                                                       | 1m               |
+| allowed_use                                                                 | <Icon icon="square" />                         | The allowed value of the use parameter for the JWKs. If not specified, only keys with use set to 'sig' will be used. If your server provides no use, you can add an empty value to allow those keys.                                                                                  | ["sig"]          |
 | algorithms                                                                  | <Icon icon="square" />                         | The allowed algorithms for the keys that are retrieved from the JWKs. An empty list means that all algorithms are allowed. The following algorithms are supported "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"                            | [] (all allowed) |
 | refresh_unknown_kid.enabled                                                 | <Icon icon="square" />                         | Enable automatic JWKS refresh when encountering a valid token with an unknown KID (Key ID). When enabled, the router will fetch updated keys to find the matching KID.                                                                                                                | false            |
 | refresh_unknown_kid.max_wait                                                | <Icon icon="square" />                         | Maximum time a refresh is allowed to wait. If the computed wait would exceed this value, the request fails immediately with 401 Unauthorized instead of waiting.                                                                                                                      | 2m               |
@@ -1727,6 +1727,7 @@ Configure the GraphQL Execution Engine of the Router.
 | ENGINE_ENABLE_REQUIRE_FETCH_REASONS                           | enable_require_fetch_reasons                           | <Icon icon="square" /> | Enable the openfed__requireFetchReasons directive, and forces the adding of the "fetch_reasons" extension to upstream subgraph requests. This extension explains why each field was requested.                                                                                                                                              | false         |
 | ENGINE_VALIDATE_REQUIRED_EXTERNAL_FIELDS                      | validate_required_external_fields                      | <Icon icon="square" /> | Validate nullable external "@requires" dependencies. When a subgraph entity fetch returns a null value with an error for a field set specified in the "@requires" directive, any following fetch that depends on it should not receive such an entity.                                                                                      | false         |
 | ENGINE_SUBSCRIPTION_FETCH_TIMEOUT                             | subscription_fetch_timeout                             | <Icon icon="square" /> | The maximum time a subscription fetch can take before it is considered timed out.                                                                                                                                                                                                                                                           | 30s           |
+| ENGINE_RELAX_SUBGRAPH_OPERATION_FIELD_SELECTION_MERGING_NULLABILITY | relax_subgraph_operation_field_selection_merging_nullability | <Icon icon="square" /> | Relaxes nullability validation for [field selection merging](/router/relaxed-field-selection-merging-nullability) across union member types.                                                                                                                                                                                            | false         |
 
 ### Example YAML config:
 
@@ -1757,6 +1758,7 @@ engine:
   disable_exposing_variables_content_on_validation_error: false
   enable_subgraph_fetch_operation_name: true
   subscription_fetch_timeout: 30s
+  relax_subgraph_operation_field_selection_merging_nullability: false
 ```
 
 ### Debug Configuration
@@ -2067,7 +2069,7 @@ client_header:
   version: "Client-Version"
 ```
 
-By default, we support `Graphql-Client-Name` , `Graphql-Client-Version`, `Apollo-Graphql-Client-Name`, `Apollo-Graphql-Client-Version`.
+By default, we support `Graphql-Client-Name` , `Graphql-Client-Version`, `ApolloGraphql-Client-Name`, `ApolloGraphql-Client-Version`.
 
 The custom names are given more precedence.
 
@@ -2174,13 +2176,14 @@ apollo_router_compatibility_flags:
 
 ## Cache warmer
 
-| Environment Variable | YAML             | Required               | Description                                                                                                                                                                                                                                                           | Default Value |
-| -------------------- | ---------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-|                      | enabled          | <Icon icon="square" /> | Enable the cache warmer.                                                                                                                                                                                                                                              | false         |
-|                      | workers          | <Icon icon="square" /> | The number of workers for the cache warmup to run in parallel. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                             | 8             |
-|                      | items_per_second | <Icon icon="square" /> | The number of cache warmup items to process per second. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                                    | 50            |
-|                      | timeout          | <Icon icon="square" /> | The timeout for warming up the cache. This can be used to limit the amount of time cache warming will block deploying a new config. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'. | 30s           |
-|                      | source           | <Icon icon="square" /> | The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.                                                                                                                |               |
+| Environment Variable                                | YAML                           | Required               | Description                                                                                                                                                                                                                                                                                  | Default Value |
+| --------------------------------------------------- | ------------------------------ | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| CACHE_WARMUP_ENABLED                                | enabled                        | <Icon icon="square" /> | Enable the cache warmer.                                                                                                                                                                                                                                                                     | false         |
+| CACHE_WARMUP_ITEMS_PER_SECOND                       | items_per_second               | <Icon icon="square" /> | The number of cache warmup items to process per second. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                                                           | 50            |
+| CACHE_WARMUP_TIMEOUT                                | timeout                        | <Icon icon="square" /> | The timeout for warming up the cache. This can be used to limit the amount of time cache warming will block deploying a new config. The period is specified as a string with a number and a unit, e.g. 10ms, 1s, 1m, 1h. The supported units are 'ms', 's', 'm', 'h'.                        | 30s           |
+| CACHE_WARMUP_WORKERS                                | workers                        | <Icon icon="square" /> | The number of workers for the cache warmup to run in parallel. Higher numbers decrease the time to warm up the cache but increase the load on the system.                                                                                                                                    | 8             |
+|                                                     | source                         | <Icon icon="square" /> | The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.                                                                                                                                       |               |
+| CACHE_WARMUP_IN_MEMORY_FALLBACK                     | in_memory_fallback             | <Icon icon="square" /> | Enable in-memory switchover that persists the plan cache across router restarts. When enabled, the router will use queries from the previous instance's plan cache to warm up the new cache on restart. Can be used as a fallback or as the primary source for cache warming.                | true          |
 
 ### Example YAML config:
 
@@ -2192,15 +2195,17 @@ cache_warmup:
   workers: 8
   items_per_second: 50
   timeout: 30s
+  in_memory_fallback: true
 ```
 
 ### Source
 
 The source of the cache warmup items. Only one can be specified. If empty, the cache warmup source is the Cosmo CDN and it requires a graph to be set.
 
-| Environment Variable | YAML | Required               | Description                                                  | Default Value |
-| -------------------- | ---- | ---------------------- | ------------------------------------------------------------ | ------------- |
-|                      | path | <Icon icon="square" /> | The path to the directory containing the cache warmup items. |               |
+| Environment Variable | YAML            | Required               | Description                                                  | Default Value |
+| -------------------- | --------------  | ---------------------- | ------------------------------------------------------------ | ------------- |
+|                      | filesystem.path | <Icon icon="square" /> | The path to the directory containing the cache warmup items. |               |
+|                      | cdn.enabled     | <Icon icon="square" /> | Whether the CDN is the source for warming the cache.         | true          |
 
 ### Example YAML config:
 
@@ -2212,6 +2217,10 @@ cache_warmup:
   workers: 8
   items_per_second: 50
   timeout: 30s
+  in_memory_fallback: true
   source:
-    path: "./cache-warmer/operations"
+    cdn:
+      enabled: true
+    filesystem:
+      path: "./cache-warmer/operations"
 ```

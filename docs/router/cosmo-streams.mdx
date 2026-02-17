@@ -60,7 +60,7 @@ Cosmo Streams solves 3 major problems when it comes to GraphQL Federation and Su
 
 Let me explain the three Problems:
 
-```js
+```graphql
 type Subscription {
     employeeUpdated(employeeID: ID!): Employee!
 }
@@ -101,7 +101,7 @@ Our goal is to integrate with various technologies rather than agree on a single
 
 Here is an overview about all Cosmo Streams directives:
 
-```js
+```graphql
 # Nats and JetStream integration
 directive @edfs__natsRequest(
   subject: String!,
@@ -190,7 +190,7 @@ If you run `make edfs-demo` in the Cosmo Monorepo, you'll automatically get a NA
 
 Below, you'll find an example Schema that use the NATS provider directives to connect the `@edfs__natsRequest` directive to a Query root field (employeeFromEvent), a Mutation root field (updateEmployee) that's connected to another topic using `@edfs__natsPublish` and a Subscription root field (employeeUpdated) that's connected via `@edfs__natsSubscribe`. Each of these fields is completely independent. Important to notice is that you can't implement this subgraph because the engine will implement the resolvers based on the router configuration.
 
-```js
+```graphql
 directive @edfs__natsRequest(
   subject: String!,
   providerId: String! = "default"
@@ -213,12 +213,13 @@ input edfs__NatsStreamConfiguration {
     streamName: String!
 }
 
-type PublishEventResult {
+type edfs__PublishResult {
     success: Boolean!
 }
 
 type Query {
-    employeeFromEvent(id: ID!): Employee! @edfs__natsRequest(subject: "getEmployee.{{ args.id }}")
+    employeeFromEvent(id: ID!): Employee!
+    @edfs__natsRequest(subject: "getEmployee.{{ args.id }}")
 }
 
 input UpdateEmployeeInput {
@@ -227,11 +228,18 @@ input UpdateEmployeeInput {
 }
 
 type Mutation {
-    updateEmployee(id: ID!, update: UpdateEmployeeInput!): PublishEventResult! @edfs__natsPublish(subject: "updateEmployee.{{ args.id }}")
+    updateEmployee(
+      id: ID!,
+      update: UpdateEmployeeInput!
+    ): edfs__PublishResult!
+    @edfs__natsPublish(subject: "updateEmployee.{{ args.id }}")
 }
 
 type Subscription {
-    employeeUpdated(employeeID: ID!): Employee! @edfs__natsSubscribe(subjects: ["employeeUpdated.{{ args.employeeID }}"])
+    employeeUpdated(employeeID: ID!): Employee!
+    @edfs__natsSubscribe(
+      subjects: ["employeeUpdated.{{ args.employeeID }}"]
+    )
 }
 
 type Employee @key(fields: "id", resolvable: false) {
@@ -247,7 +255,7 @@ The subjects/topics/channels argument of all events Directives allows you to use
 
 Given the following Schema:
 
-```js
+```graphql
 type Subscription {
     employeeUpdated(
       employeeID: ID!
@@ -288,11 +296,11 @@ Once the initial result is coming back from the "Event Subgraph", the Router is 
 
 ### Publish
 
-The `@edfs_natsPublish`, `@edfs_kafkaPublish` and `@edfs__redisPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `PublishEventResult` with one single field `success` of type `Boolean!`, indicating whether publishing the event was successful or not.
+The `@edfs_natsPublish`, `@edfs_kafkaPublish` and `@edfs__redisPublish` directive sends a JSON representation of all arguments, including arguments being used to render the topic, to the rendered topic. Fields using the `eventsPublish` directive MUST return the type `edfs__PublishResult` with one single field `success` of type `Boolean!`, indicating whether publishing the event was successful or not.
 
 Given that we send the following Mutation:
 
-```js
+```graphql
 mutation UpdateEmployee($id: ID!, $update: UpdateEmployeeInput!) {
     updateEmployee(id: $id, update: $update){
         id
@@ -316,7 +324,7 @@ mutation UpdateEmployee($id: ID!, $update: UpdateEmployeeInput!) {
 
 Given the following Subscription:
 
-```js
+```graphql
 subscription EmployeeUpdates($id: ID!){
     employeeUpdated(employeeID: $id){
         id
@@ -366,7 +374,7 @@ The `@openfed__subscriptionFilter` directive allows you to filter subscription m
 
 Given the following subscription:
 
-```js
+```graphql
 scalar openfed__SubscriptionFilterValue
 
 input openfed__SubscriptionFieldCondition {
@@ -394,7 +402,7 @@ type Subscription {
 
 and a user who subscribes to the following:
 
-```js
+```graphql
 subscription {
     filteredEmployeeUpdated(employeeID: 1) {
         id
@@ -408,7 +416,7 @@ subscription {
 
 will receive Kafka events published on the topics `employeeUpdated` and `employeeUpdatedTwo` only when the payload `id` matches the values of the `IN` filter condition.
 
-```js
+```graphql
 filteredEmployeeUpdated(firstIds: [ID!]!, secondIds: [ID!]!): Employee!
         @edfs__kafkaSubscribe(
           topics: ["employeeUpdated", "employeeUpdatedTwo"], providerId: "my-kafka"
@@ -424,7 +432,7 @@ You can also use variable expansion to use input arguments in the filter conditi
 
 To illustrate the use case, we do the following query:
 
-```js
+```graphql
 subscription {
     filteredEmployeeUpdated(firstIds: [1, 12], secondIds: [2, 11]) {
         id

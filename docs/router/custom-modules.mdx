@@ -1,5 +1,5 @@
 ---
-title: "Custom Modules"
+title: "Overview"
 description: "Customize your router by writing just a few lines of Go code and compiling it with a single command. Eliminate the complexities associated with writing scripts and use the existing Go ecosystem."
 icon: "cubes"
 ---
@@ -8,7 +8,7 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
 
 - `core.RouterOnRequestHandler` Implements a custom middleware that runs before most internal middleware in the router for each client request. Most importantly this is called before tracing and authentication logic for each request. **Use case:** Custom Authentication Logic, Custom Tracing Logic, Early return, Request Validation.
 - `core.RouterMiddlewareHandler` Implements a custom middleware on the router. The middleware is called for every client request. It allows you to modify the request before it is processed by the GraphQL engine. **Use case:** Logging, Caching, Early return, Request Validation, Header manipulation.
-- `core.EnginePreOriginHandler` Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Header manipulation.
+- `core.EnginePreOriginHandler` Implements a custom handler that is executed before the request is sent to the subgraph. This handler is called for every subgraph request. **Use case:** Logging, Request signing, Short-circuiting with mock responses. For setting headers that affect request identity (e.g. tenant IDs), use `RouterOnRequestHandler` or `RouterMiddlewareHandler` instead — see [Request Deduplication](/router/request-deduplication).
 - `core.EnginePostOriginHandler` Implement a custom handler executed after the request to the subgraph but before the response is passed to the GraphQL engine. This handler is called for every subgraph response. **Use cases:** Logging, Caching.
 - `core.Provisioner` Implements a Module lifecycle hook that is executed when the module is instantiated. Use it to prepare your module and validate the configuration.
 - `core.Cleaner` Implements a Module lifecycle hook that is executed after the server is shutdown. Use it to close connections gracefully or for any other cleanup.
@@ -26,6 +26,10 @@ The Cosmo Router can be easily extended by providing custom modules. Modules are
   `RouterOnRequestHander` is only available since Router
   [0.188.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.188.0)
 </Info>
+
+<Warning>
+  If you are upgrading from a Router version prior to [0.278.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.278.0) and use `EnginePreOriginHandler`, the request deduplication behavior has changed. Headers set in `OnOriginRequest` are no longer included in the deduplication key. See the [Custom Modules Migration Guide](/router/custom-modules-migration) for details on how to adapt your modules.
+</Warning>
 
 ## Learn by Example
 
@@ -142,6 +146,35 @@ QueryPlanStats includes the following info:
 - A map of subgraph names to the number of times they will be fetched
 
 Middleware is executed before any of the fetches are made, so you can use this information as a heuristic cost for rate limiting, etc.
+
+### Access operation timings
+
+In Middleware, you can access timing information for the various stages of operation processing. This is useful for capturing per-request performance metrics in custom telemetry pipelines.
+
+```go
+func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
+	timings := ctx.Operation().Timings()
+
+	fmt.Printf("parsing: %s\n", timings.ParsingTime)
+	fmt.Printf("validation: %s\n", timings.ValidationTime)
+	fmt.Printf("normalization: %s\n", timings.NormalizationTime)
+	fmt.Printf("planning: %s\n", timings.PlanningTime)
+
+	// Call the next handler in the chain or return early by calling w.Write()
+	next.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+}
+```
+
+`OperationTimings` includes the following fields (all `time.Duration`):
+
+- `ParsingTime` – Time spent parsing the GraphQL operation
+- `ValidationTime` – Time spent validating the operation against the schema
+- `NormalizationTime` – Time spent normalizing the operation
+- `PlanningTime` – Time spent generating the query plan
+
+<Info>
+  If called too early in the request chain, timing values may be inaccurate. Using `Timings()` in the `Middleware` handler is recommended.
+</Info>
 
 ### Access Request Context
 
@@ -316,7 +349,7 @@ Incoming client request
     │
     └─▶ core.RouterMiddlewareHandler (Early return, Validation)
        │
-       └─▶ core.EnginePreOriginHandler (Header mods, Custom Response, Caching)
+       └─▶ core.EnginePreOriginHandler (Request signing, Custom Response, Logging)
        │
        └─▶ "Request to the subgraph"
        │
@@ -354,6 +387,14 @@ modules:
   myModule: # Id of your module
     Value: 1
 ```
+
+## Migrations
+
+### From pre-0.278.0 to 0.278.0+: Request Deduplication
+
+Starting with Router [0.278.0](https://github.com/wundergraph/cosmo/releases/tag/router%400.278.0), request deduplication moved from the HTTP transport layer to the engine/loader layer. If your custom modules use `EnginePreOriginHandler` to set headers that affect request identity (e.g. tenant IDs, user tokens), you need to migrate them to earlier hooks.
+
+See the full [migration guide](/router/custom-modules-migration) for step-by-step instructions.
 
 ## Future Plans
 

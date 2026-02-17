@@ -87,7 +87,14 @@
                 ]
               },
               "router/mcp",
-              "router/custom-modules",
+              {
+                "group": "Custom Modules",
+                "icon": "cubes",
+                "pages": [
+                  "router/custom-modules",
+                  "router/custom-modules-migration"
+                ]
+              },
               {
                 "group": "Cosmo Connect",
                 "icon": "network-wired",
@@ -112,9 +119,7 @@
                       {
                         "group": "TypeScript Plugins",
                         "icon": "t",
-                        "pages": [
-                          "router/gRPC/plugins/ts-plugin/overview"
-                        ]
+                        "pages": ["router/gRPC/plugins/ts-plugin/overview"]
                       }
                     ]
                   },
@@ -169,11 +174,12 @@
                 "icon": "bridge-circle-check",
                 "pages": [
                   "router/proxy-capabilities",
-                  "router/proxy-capabilities/request-headers-operations",
-                  "router/proxy-capabilities/response-header-operations",
+                  "router/proxy-capabilities/subgraph-request-header-operations",
+                  "router/proxy-capabilities/subgraph-response-header-operations",
                   "router/proxy-capabilities/forward-client-extensions",
                   "router/proxy-capabilities/adjusting-cache-control",
-                  "router/proxy-capabilities/override-subgraph-config"
+                  "router/proxy-capabilities/override-subgraph-config",
+                  "router/proxy-capabilities/router-response-header-operations"
                 ]
               },
               {
@@ -214,6 +220,7 @@
                   "router/development/development-mode"
                 ]
               },
+              "router/request-deduplication",
               "router/performance-debugging",
               "router/advanced-request-tracing-art",
               {
@@ -253,7 +260,9 @@
               },
               "router/compliance-and-data-management",
               "router/query-batching",
+              "router/feature-flags",
               "router/subgraph-error-propagation",
+              "router/relaxed-field-selection-merging-nullability",
               "router/file-upload",
               "router/access-logs",
               "router/profiling",
@@ -399,7 +408,8 @@
                   "federation/event-driven-federated-subscriptions/redis",
                   "federation/event-driven-federated-subscriptions/composition-rules"
                 ]
-              }
+              },
+              "federation/composition-errors"
             ]
           },
           {
@@ -472,7 +482,9 @@
                   "cli/subgraph/fetch",
                   "cli/subgraph/move",
                   "cli/subgraph/introspect",
-                  "cli/subgraph/fix"
+                  "cli/subgraph/fix",
+                  "cli/subgraph/link",
+                  "cli/subgraph/unlink"
                 ]
               },
               {
@@ -758,9 +770,6 @@
     "plausible": {
       "domain": "cosmo-docs.wundergraph.com"
     },
-    "osano": {
-      "scriptSource": "https://cmp.osano.com/useYQdd6k1/6006b494-d3ca-4de7-860d-e8e78f744c5f/osano.js"
-    },
     "posthog": {
       "apiKey": "phc_CEnvoyw3KcTuC5E1seDPrgvAamgGRDLfzPi1e7RU1G1",
       "apiHost": "https://eu.i.posthog.com"
@@ -773,6 +782,14 @@
     {
       "source": "/router/event-driven-federated-subscriptions-edfs/:path*",
       "destination": "/router/cosmo-streams/:path*"
+    },
+    {
+      "source": "/router/proxy-capabilities/request-headers-operations",
+      "destination": "/router/proxy-capabilities/subgraph-request-header-operations"
+    },
+    {
+      "source": "/router/proxy-capabilities/response-header-operations",
+      "destination": "/router/proxy-capabilities/subgraph-response-header-operations"
     }
   ]
 }

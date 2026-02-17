@@ -143,6 +143,35 @@ Here's the recommended workflow for developing and publishing a plugin:
    npx wgc router plugin publish
    ```
 
+## **Docker Requirements**
+
+Docker Buildx with a container builder is required for publishing plugins.
+
+### Recommended Installation
+
+- **macOS**: [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [OrbStack](https://orbstack.dev/)
+- **Windows**: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux**: [Docker Engine](https://docs.docker.com/engine/install/)
+
+<Warning>
+  Before publishing plugins, ensure you have:
+
+  - Docker Buildx enabled
+  - A container builder configured
+
+  To verify your setup, run:
+  ```bash
+  docker buildx version
+  docker buildx inspect
+  ```
+
+  **Important:** The `docker buildx inspect` output must show the `docker-container` driver. If you don't see this, create a builder:
+  ```bash
+  docker buildx create --name container-builder --use
+  docker buildx inspect --bootstrap
+  ```
+</Warning>
+
 ## **Build Process**
 
 The publish command performs the following steps:

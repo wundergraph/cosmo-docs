@@ -7,7 +7,7 @@ description: "@shareable is a federation V2-only directive. Examples and usages 
 ## Definition
 
 ```graphql
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 ```
 
 ## Overview
@@ -20,14 +20,14 @@ If the `@shareable` directive is declared on a field definition, the same field 
 
 ```graphql
 # subgraph 1
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 type User {
     id: ID! @shareable
 }
 
 # subgraph 2
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 type User {
     id: ID! @shareable
@@ -44,7 +44,7 @@ If the `@shareable` directive is declared on an object type, _all_ fields curren
 
 ```graphql
 # subgraph 1
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 # The whole object is declared shareable
 type User @shareable {
@@ -60,7 +60,7 @@ extend type User {
 }
 
 # normalized subgraph
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 # Although the original object was declared shareable, because the extension does
 # not declare the field "age" as shareable, the object-wide shareable directive
@@ -85,14 +85,14 @@ type User {
 }
 
 # V2 subgraph 1
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 type User {
     name: String! @shareable
 }
 
 # V2 subgraph 2
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 type User @shareable {
     name: String!
@@ -107,8 +107,8 @@ Fields that comprise part of at least one of the entity's primary keys are autom
 
 ```graphql
 # subgraph 1
-directive @key(fields: String!) repeatable ON OBJECT
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @key(fields: String!) repeatable on OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 type User @key(fields: "id") {
     id: ID!
@@ -116,8 +116,8 @@ type User @key(fields: "id") {
 }
 
 # subgraph 2
-directive @key(fields: String!) repeatable ON OBJECT
-directive @shareable ON FIELD_DEFINITION | OBJECT
+directive @key(fields: String!) repeatable on OBJECT
+directive @shareable repeatable on FIELD_DEFINITION | OBJECT
 
 type User @key(fields: "id") {
     id: ID!
