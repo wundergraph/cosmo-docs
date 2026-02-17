@@ -243,9 +243,6 @@ Example Prometheus queries:
 ```
 # Average estimated cost per operation
 avg by (wg_operation_name) (router_graphql_operation_cost_estimated_sum / router_graphql_operation_cost_estimated_count)
-
-# Operations where actual cost exceeds the estimate
-router_graphql_operation_cost_delta > 0
 ```
 
 ## Best Practices
