@@ -117,3 +117,61 @@ _, err = client.Do(req)
 
 That's it! The router should now be able to receive TLS connections **only** from clients who authenticate themselves using a certificate issued by your trusted CA.
 
+## TLS with Subgraphs
+
+### Router mTLS
+
+In addition to accepting mTLS connections from clients (inbound), the router can also present client certificates when connecting to subgraphs (outbound). This is useful when your subgraphs require mTLS authentication to accept requests from the router.
+
+You can configure a global client certificate that applies to all subgraph connections, and optionally override it on a per-subgraph basis.
+
+#### Global Configuration
+
+Apply a client certificate to all outbound subgraph connections:
+
+```yaml config.yaml
+tls:
+  client:
+    all:
+      cert_file: /path/to/client.crt
+      key_file: /path/to/client.key
+```
+
+### Per-Subgraph Configuration
+
+Override the global config for specific subgraphs. Each entry fully overrides the global `all` config for that subgraph:
+
+```yaml config.yaml
+tls:
+  client:
+    all:
+      cert_file: /path/to/default-client.crt
+      key_file: /path/to/default-client.key
+    subgraphs:
+      products:
+        cert_file: /path/to/products-client.crt
+        key_file: /path/to/products-client.key
+        ca_file: /path/to/products-ca.crt
+      inventory:
+        cert_file: /path/to/inventory-client.crt
+        key_file: /path/to/inventory-client.key
+```
+
+<Note>
+  Per-subgraph TLS configuration uses the same fields (`cert_file`, `key_file`, `ca_file`, `insecure_skip_ca_verification`) nested under `tls.client.subgraphs.<subgraph_name>`. A per-subgraph entry fully overrides the global `all` config for that subgraph.
+</Note>
+
+<Warning>
+  `insecure_skip_ca_verification` disables server certificate validation. Only use this for development or testing environments.
+</Warning>
+
+### Custom CA Certificates
+
+By default, the router uses your operating system's root CA store to verify subgraph server certificates. If your subgraphs use TLS certificates signed by an internal or private CA that is not in the system's root CA store, you can provide a custom CA certificate file using `ca_file`. The router will use this CA to verify the subgraph's server certificate during the TLS handshake.
+
+```yaml config.yaml
+tls:
+  client:
+    all:
+      ca_file: /path/to/internal-ca.crt
+```
