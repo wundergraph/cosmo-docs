@@ -151,19 +151,14 @@ tls:
       products:
         cert_file: /path/to/products-client.crt
         key_file: /path/to/products-client.key
-        ca_file: /path/to/products-ca.crt
       inventory:
         cert_file: /path/to/inventory-client.crt
         key_file: /path/to/inventory-client.key
 ```
 
 <Note>
-  Per-subgraph TLS configuration uses the same fields (`cert_file`, `key_file`, `ca_file`, `insecure_skip_ca_verification`) nested under `tls.client.subgraphs.<subgraph_name>`. A per-subgraph entry fully overrides the global `all` config for that subgraph.
+  Per-subgraph TLS configuration uses the same fields nested under `tls.client.all`. A per-subgraph entry fully overrides the global `all` config for that subgraph.
 </Note>
-
-<Warning>
-  `insecure_skip_ca_verification` disables server certificate validation. Only use this for development or testing environments.
-</Warning>
 
 ### Custom CA Certificates
 
@@ -174,4 +169,9 @@ tls:
   client:
     all:
       ca_file: /path/to/internal-ca.crt
+      insecure_skip_ca_verification: false
 ```
+
+<Warning>
+  `insecure_skip_ca_verification` disables subgraph certificate validation. Only use this for development or testing environments.
+</Warning>
