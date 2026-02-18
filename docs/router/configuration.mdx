@@ -501,6 +501,8 @@ telemetry:
 | TRACING_EXPORT_GRAPHQL_VARIABLES     | export_graphql_variables     | <Icon icon="square" />                        | Export GraphQL variables as span attribute. Variables may contain sensitive data.                                                                                                                                                                                                    | false         |
 | TRACING_OPERATION_CONTENT_ATTRIBUTES | operation_content_attributes | <Icon icon="square" />                        | Enable the addition of GraphQL operation body content as trace attributes. When enabled, original operation content will be added to the trace span for parse and normalized operation content will be added to the trace span for normalize. The default value is false.            | false         |
 |                                      | with_new_root                | <Icon icon="square" />                        | Starts the root span always at the router.                                                                                                                                                                                                                                           | false         |
+| TRACING_SANITIZE_UTF8_ENABLED        | sanitize_utf8.enabled        | <Icon icon="square" />                        | Enable sanitization of invalid UTF-8 sequences in span attribute values. Invalid bytes are replaced with the Unicode replacement character (U+FFFD). See [Sanitize UTF-8](/router/open-telemetry#sanitize-utf-8). | false         |
+| TRACING_SANITIZE_UTF8_LOG_SANITIZATIONS | sanitize_utf8.log_sanitizations | <Icon icon="square" />                     | When enabled, logs a warning for each span attribute that contains invalid UTF-8 and is sanitized.                                                                                                               | false         |
 
 ### Example YAML config:
 
@@ -521,6 +523,9 @@ telemetry:
     export_graphql_variables: false
     operation_content_attributes: false
     with_new_root: false
+    sanitize_utf8:
+      enabled: false
+      log_sanitizations: false
 ```
 
 ### Exporters
