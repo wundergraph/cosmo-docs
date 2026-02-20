@@ -414,6 +414,34 @@ tls:
       cert_file: ../your/cert.pem
 ```
 
+### Outbound Client TLS (mTLS to Subgraphs)
+
+Configure TLS client certificates for outbound connections from the router to subgraphs. See [Outbound mTLS to Subgraphs](/router/security/tls#outbound-mtls-to-subgraphs) for details.
+
+| Environment Variable                      | YAML                                          | Required               | Description                                                                                                                   | Default Value |
+| ----------------------------------------- | --------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| TLS_CLIENT_CERT_FILE                      | tls.client.all.cert_file                      | <Icon icon="square" /> | Path to the client certificate chain file for authenticating the router to subgraphs.                                         |               |
+| TLS_CLIENT_KEY_FILE                       | tls.client.all.key_file                       | <Icon icon="square" /> | Path to the client private key file.                                                                                          |               |
+| TLS_CLIENT_CA_FILE                        | tls.client.all.ca_file                        | <Icon icon="square" /> | Path to a custom CA certificate file for verifying subgraph server certificates.                                              |               |
+| TLS_CLIENT_INSECURE_SKIP_CA_VERIFICATION  | tls.client.all.insecure_skip_ca_verification  | <Icon icon="square" /> | Skip verification of the subgraph server certificate. Only use for development or testing.                                    | false         |
+
+### Example YAML config:
+
+```yaml config.yaml
+version: "1"
+
+tls:
+  client:
+    all:
+      cert_file: /path/to/client.crt
+      key_file: /path/to/client.key
+      ca_file: /path/to/ca.crt
+    subgraphs:
+      products:
+        cert_file: /path/to/products-client.crt
+        key_file: /path/to/products-client.key
+```
+
 ## Compliance
 
 The configuration for the compliance. Includes for example the configuration for the anonymization of the IP addresses.
