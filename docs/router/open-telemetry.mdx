@@ -177,6 +177,31 @@ telemetry:
       header_name: "my-trace-id" # default: "x-wg-trace-id"
 ```
 
+### Sanitize UTF-8
+
+OTLP uses Protocol Buffers for serialization, and protobuf's `string` type requires valid UTF-8. When subgraphs or upstream services return responses containing invalid UTF-8 byte sequences (e.g., from binary data or legacy encodings), these invalid bytes can end up in span attributes, causing the protobuf marshaler to fail with errors like `"string field contains invalid UTF-8"`. This results in the entire span export failing and trace data being silently dropped.
+
+Enabling `sanitize_utf8` replaces any invalid UTF-8 sequences in string span attributes with the Unicode replacement character (`U+FFFD`). This ensures that traces are always exported successfully, even when upstream data contains encoding issues.
+
+<Info>
+  This feature is disabled by default. Enable it if you observe missing traces caused by OTEL export errors related to invalid UTF-8 in string fields.
+</Info>
+
+<CodeGroup>
+  ```bash config.yaml
+  telemetry:
+    tracing:
+      sanitize_utf8:
+        enabled: true
+        # Optional: log a warning for each sanitized attribute (useful for debugging)
+        log_sanitizations: false
+  ```
+</CodeGroup>
+
+<Note>
+  In addition to span attributes, the router also sanitizes invalid UTF-8 in span status descriptions (e.g., error messages). This happens automatically and does not require any configuration.
+</Note>
+
 ## FAQ
 
 <AccordionGroup>
