@@ -69,7 +69,15 @@ All the below mentioned metrics have the `wg.subgraph.name` dimensions. Do note 
 
 #### GraphQL specific metrics
 
-`router.graphql.operation.planning_time`: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
+* `router.graphql.operation.planning_time`: Time taken to plan the operation. An additional attribute `wg.engine.plan_cache_hit` indicates if the plan was served from the cache.
+
+#### Cost Analysis metrics
+
+When [cost analysis](/router/security/cost-control) is enabled, the following metrics are emitted for every successfully planned operation:
+
+* `router.graphql.operation.cost.estimated`: Estimated cost calculated before execution, based on `@cost` / `@listSize` directive weights and list size estimates. (Int64 Histogram)
+* `router.graphql.operation.cost.actual`: Actual cost calculated after execution using real list sizes returned by subgraphs. (Int64 Histogram)
+* `router.graphql.operation.cost.delta`: The difference between estimated and actual cost. (Int64 Histogram)
 
 ### List of asynchronous instruments
 
