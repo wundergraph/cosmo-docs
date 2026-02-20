@@ -107,10 +107,6 @@ headers:
 When using [Cosmo Connect](/connect/overview), headers are forwarded to gRPC services as [metadata](https://grpc.io/docs/guides/metadata/) according to the rules defined in the config.
 Metadata keys match header names but in lowercase. To access `X-User-Id` you need to use `x-user-id` as the key.
 
-<Note>
-  Headers prefixed with `Grpc-` are not forwarded to subgraphs, because they are reserved keywords in gRPC.
-</Note>
-
 ### Rule ordering
 
 All rules are evaluated in the order they are defined.
