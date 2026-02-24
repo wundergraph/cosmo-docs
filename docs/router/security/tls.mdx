@@ -137,7 +137,7 @@ tls:
       key_file: /path/to/client.key
 ```
 
-### Per-Subgraph Configuration
+#### Per-Subgraph Configuration
 
 Override the global config for specific subgraphs. Each entry fully overrides the global `all` config for that subgraph:
 
@@ -157,7 +157,7 @@ tls:
 ```
 
 <Note>
-  Per-subgraph TLS configuration uses the same fields nested under `tls.client.all`. A per-subgraph entry fully overrides the global `all` config for that subgraph.
+  Per-subgraph entries live under `tls.client.subgraphs` and use the same field structure as `tls.client.all` (e.g., `cert_file`, `key_file`). A per-subgraph entry fully overrides the global `all` config for that subgraph.
 </Note>
 
 ### Custom CA Certificates
