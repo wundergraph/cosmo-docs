@@ -73,11 +73,28 @@ All the below mentioned metrics have the `wg.subgraph.name` dimensions. Do note 
 
 #### Cost Analysis metrics
 
-When [cost analysis](/router/security/cost-control) is enabled, the following metrics are emitted for every successfully planned operation:
+When [cost analysis](/router/security/cost-control) is enabled and the `cost_stats` toggles are set, the following metrics are emitted:
+
+```yaml
+telemetry:
+  metrics:
+    otlp:
+      cost_stats:
+        estimated_enabled: true
+        actual_enabled: true
+        delta_enabled: true
+    prometheus:
+      cost_stats:
+        estimated_enabled: true
+        actual_enabled: true
+        delta_enabled: true
+```
 
 * `router.graphql.operation.cost.estimated`: Estimated cost calculated before execution, based on `@cost` / `@listSize` directive weights and list size estimates. (Int64 Histogram)
 * `router.graphql.operation.cost.actual`: Actual cost calculated after execution using real list sizes returned by subgraphs. (Int64 Histogram)
 * `router.graphql.operation.cost.delta`: The difference between estimated and actual cost. (Int64 Histogram)
+
+See [Cost Analysis](/router/security/cost-control#telemetry) for full configuration details.
 
 ### List of asynchronous instruments
 

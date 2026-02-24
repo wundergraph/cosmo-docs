@@ -90,6 +90,7 @@ security:
     mode: enforce
     max_estimated_limit: 1000
     estimated_list_size: 10
+    expose_headers: true
 ```
 
 | Option                | Environment Variable                         | Default   | Description                                                                                                 |
@@ -98,6 +99,7 @@ security:
 | `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                |
 | `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Only enforced when its value is positive and mode is 'enforce'. |
 | `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `10`      | Default assumed size for list fields when no `@listSize` directive is specified.                            |
+| `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                      |
 
 ## Customizing Cost with Directives
 
@@ -211,12 +213,29 @@ When a query exceeds the estimated cost limit (in enforce mode), the router retu
 
 ## Telemetry
 
-When cost analysis is enabled, the router emits OpenTelemetry metrics for every operation.
+When cost analysis is enabled, the router can emit OpenTelemetry metrics for every operation.
 These metrics are available through both OTEL and Prometheus exporters, carrying the same
 operation-level attributes as other router metrics (`wg.operation.name`, `wg.operation.type`,
 `wg.operation.protocol`, `wg.client.name`, `wg.client.version`, `http.status_code`).
 For more details on exporting and querying, see [Metrics & Monitoring](/router/metrics-and-monitoring).
 
+Cost metrics are disabled by default and must be explicitly enabled through `cost_stats` under the
+OTLP or Prometheus telemetry configuration:
+
+```yaml
+telemetry:
+  metrics:
+    otlp:
+      cost_stats:
+        estimated_enabled: true
+        actual_enabled: true
+        delta_enabled: true
+    prometheus:
+      cost_stats:
+        estimated_enabled: true
+        actual_enabled: true
+        delta_enabled: true
+```
 
 ### Metrics
 
@@ -227,8 +246,11 @@ For more details on exporting and querying, see [Metrics & Monitoring](/router/m
 | `router.graphql.operation.cost.delta`     | Int64 Histogram | The difference between estimated and actual cost. A positive value means the query was cheaper than estimated. |
 
 <Info>
-  The estimated and actual cost metrics are emitted for every successfully planned operation, regardless of mode.
-  The actual and delta metrics require execution to complete so the router can observe real list sizes.
+    Cost metrics require both cost analysis to be enabled (`security.cost_analysis.enabled: true`)
+    and the
+    corresponding `cost_stats` toggle to be set. The actual and delta metrics additionally require
+    execution
+    to complete so the router can observe real list sizes.
 </Info>
 
 ### Using cost metrics
@@ -243,6 +265,25 @@ Example Prometheus queries:
 ```
 # Average estimated cost per operation
 avg by (wg_operation_name) (router_graphql_operation_cost_estimated_sum / router_graphql_operation_cost_estimated_count)
+```
+
+## Response Headers
+
+When `expose_headers` is enabled, the router adds cost information to every response as HTTP headers.
+This is useful for debugging, client-side observability, and integrating cost awareness into API tooling.
+
+| Header                | Description                                                                                         |
+|-----------------------|-----------------------------------------------------------------------------------------------------|
+| `X-WG-Cost-Estimated` | The estimated cost calculated before execution, based on directive weights and list size estimates. |
+| `X-WG-Cost-Actual`    | The actual cost calculated after execution using real list sizes from subgraph responses.           |
+
+Both headers are present on successful responses. On rejected responses (enforce mode), only `X-WG-Cost-Estimated` is set,
+since the query was not executed.
+
+```yaml
+security:
+  cost_analysis:
+    expose_headers: true
 ```
 
 ## Best Practices
