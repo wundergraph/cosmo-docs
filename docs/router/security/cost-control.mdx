@@ -243,6 +243,13 @@ telemetry:
         actual_enabled: true
 ```
 
+The environment variables corresponding to the config options above:
+
+    `METRICS_OTLP_COST_STATS_ESTIMATED_ENABLED`
+    `METRICS_OTLP_COST_STATS_ACTUAL_ENABLED`
+    `PROMETHEUS_COST_STATS_ESTIMATED_ENABLED`
+    `PROMETHEUS_COST_STATS_ACTUAL_ENABLED`
+
 ### Metrics
 
 | Metric Name                               | Instrument Type | Description                                                                                                    |
@@ -371,8 +378,8 @@ Use `@listSize` to provide realistic estimates for deeply nested structures.
 
 ## Features Not Yet Implemented
 
-- `sizedFields` in @listSize for applying list size estimates to specific child fields rather than all children
-- `requireOneSlicingArgument` for validation of queries
-- **Input object fields** when used as parameters of fields
-- **Arguments of directives** are not accounted for weights
+- `sizedFields` in `@listSize` for applying list size estimates to specific child fields rather than all children
+- `requireOneSlicingArgument` in `@listSize` for validation that exactly one slicing argument is provided
+- **Weights on input object fields** — when an argument accepts an input object, the `@cost` weights on its nested fields are not yet accumulated recursively
+- **Weights on directive arguments** — `@cost` placed on arguments of custom directives is not accounted for
 
