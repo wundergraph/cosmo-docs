@@ -32,9 +32,9 @@ by the list size — only the children's costs are multiplied. This implementati
 and children's costs by the list size, resulting in higher cost estimates for list fields with weighted types.
 This is done because federation may trigger entity fetches between subgraphs.
 
-The router supports both static (estimated) and runtime (actual) cost measurement.
-Estimated cost is calculated before execution based on directive weights and list size estimates.
-Actual cost is calculated after execution using real list sizes returned by subgraphs.
+The router supports both static (estimated) and runtime (actual) cost measurements.
+Estimated cost is calculated before the execution based on directive weights and list size estimates.
+Actual cost is calculated after the execution using real list sizes returned by subgraphs.
 
 ## How Cost is Calculated
 
@@ -88,18 +88,18 @@ security:
   cost_analysis:
     enabled: true
     mode: enforce
-    max_estimated_limit: 1000
     estimated_list_size: 10
+    max_estimated_limit: 1000
     expose_headers: true
 ```
 
-| Option                | Environment Variable                         | Default   | Description                                                                                                 |
-|-----------------------|----------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------|
-| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                 |
-| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                |
-| `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Only enforced when its value is positive and mode is 'enforce'. |
-| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `10`      | Default assumed size for list fields when no `@listSize` directive is specified.                            |
-| `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                      |
+| Option                | Environment Variable                         | Default   | Description                                                                                                                       |
+|-----------------------|----------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                                       |
+| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                                      |
+| `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Rejection of operatation happens only for positive values and when mode is 'enforce'. |
+| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for cost control to work.               |
+| `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                                            |
 
 ## Customizing Cost with Directives
 
@@ -123,7 +123,7 @@ When specified **on a field** — only that field carries the weight:
 
 ```graphql
 type Query {
-  search(term: String!): [Result] @cost(weight: 10)
+  searchFirst(term: String!): Result @cost(weight: 10)
 }
 ```
 
@@ -132,6 +132,14 @@ When specified **on an argument** — adds cost for expensive argument processin
 ```graphql
 type Query {
   users(filter: UserFilter @cost(weight: 3)): [User]
+}
+```
+
+When specified **on a field returning a list** — the weight of this fields is multiplied by the list size:
+
+```graphql
+type Query {
+  searchAll(term: String!): [Result] @cost(weight: 10)
 }
 ```
 
@@ -178,7 +186,7 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
     // Get cost after planning
     cost, err := ctx.Operation().Cost()
     if err != nil {
-        // Cost analysis was not enabled or the plan is not ready
+        // Cost analysis was not enabled.
     }
     
     // Use estimated cost for custom logic (rate limiting, logging, etc.)
@@ -229,12 +237,10 @@ telemetry:
       cost_stats:
         estimated_enabled: true
         actual_enabled: true
-        delta_enabled: true
     prometheus:
       cost_stats:
         estimated_enabled: true
         actual_enabled: true
-        delta_enabled: true
 ```
 
 ### Metrics
@@ -243,12 +249,11 @@ telemetry:
 |-------------------------------------------|-----------------|----------------------------------------------------------------------------------------------------------------|
 | `router.graphql.operation.cost.estimated` | Int64 Histogram | Estimated cost calculated before execution, based on directive weights and list size estimates.                |
 | `router.graphql.operation.cost.actual`    | Int64 Histogram | Actual cost calculated after execution using real list sizes returned by subgraphs.                            |
-| `router.graphql.operation.cost.delta`     | Int64 Histogram | The difference between estimated and actual cost. A positive value means the query was cheaper than estimated. |
 
 <Info>
     Cost metrics require both cost analysis to be enabled (`security.cost_analysis.enabled: true`)
     and the
-    corresponding `cost_stats` toggle to be set. The actual and delta metrics additionally require
+    corresponding `cost_stats` toggle to be set. The actual metrics additionally require
     execution
     to complete so the router can observe real list sizes.
 </Info>
