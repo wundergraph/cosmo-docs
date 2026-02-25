@@ -93,13 +93,13 @@ security:
     expose_headers: true
 ```
 
-| Option                | Environment Variable                         | Default   | Description                                                                                                                       |
-|-----------------------|----------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                                       |
-| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                                      |
-| `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Rejection of operatation happens only for positive values and when mode is 'enforce'. |
-| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for cost control to work.               |
-| `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                                            |
+| Option                | Environment Variable                         | Default   | Description                                                                                                                     |
+|-----------------------|----------------------------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------|
+| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                                     |
+| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                                    |
+| `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Rejection of operation happens only for positive values and when mode is 'enforce'. |
+| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for cost control to work.             |
+| `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                                          |
 
 ## Customizing Cost with Directives
 
@@ -258,26 +258,30 @@ The environment variables corresponding to the config options above:
 | `router.graphql.operation.cost.actual`    | Int64 Histogram | Actual cost calculated after execution using real list sizes returned by subgraphs.                            |
 
 <Info>
-    Cost metrics require both cost analysis to be enabled (`security.cost_analysis.enabled: true`)
-    and the
-    corresponding `cost_stats` toggle to be set. The actual metrics additionally require
-    execution
+    Cost metrics require both cost analysis to be enabled (`security.cost_analysis.enabled: true`) and the
+    corresponding `cost_stats` toggle to be set. The actual metrics additionally require execution
     to complete so the router can observe real list sizes.
 </Info>
 
 ### Using cost metrics
 
+By default, histogram bucket boundaries are the following:
+
+	costBucketBounds = []float64{
+		0, 5, 10,
+		25, 50, 100,
+		250, 500, 1000,
+		2500, 5000, 10000,
+	}
+
+The best practice is to assign to fields as small weights as possible. It is better to keep costs low.
+If the estimation gets higher than `10000`, then the value will be lost in the infinite bucket.
+Non-scalar fields have the default weight of 1. It is a good idea to pick custom weights close to 1.
+
 In **measure mode**, use cost metrics to understand the traffic before enabling enforcement:
 
 - Compare estimated vs. actual costs to configure `estimated_list_size` and `@listSize`.
 - Identify operations where the delta is consistently large — these benefit from more precise `@listSize` annotations.
-
-Example Prometheus queries:
-
-```
-# Average estimated cost per operation
-avg by (wg_operation_name) (router_graphql_operation_cost_estimated_sum / router_graphql_operation_cost_estimated_count)
-```
 
 ## Response Headers
 
