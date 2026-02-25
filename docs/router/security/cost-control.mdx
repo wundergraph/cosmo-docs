@@ -135,7 +135,7 @@ type Query {
 }
 ```
 
-When specified **on a field returning a list** — the weight of this fields is multiplied by the list size:
+When specified **on a field returning a list** — the list size multiplies the weight of this field:
 
 ```graphql
 type Query {
@@ -267,12 +267,7 @@ The environment variables corresponding to the config options above:
 
 By default, histogram bucket boundaries are the following:
 
-	costBucketBounds = []float64{
-		0, 5, 10,
-		25, 50, 100,
-		250, 500, 1000,
-		2500, 5000, 10000,
-	}
+    0, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000
 
 The best practice is to assign to fields as small weights as possible. It is better to keep costs low.
 If the estimation gets higher than `10000`, then the value will be lost in the infinite bucket.
@@ -286,7 +281,7 @@ In **measure mode**, use cost metrics to understand the traffic before enabling 
 ## Response Headers
 
 When `expose_headers` is enabled, the router adds cost information to every response as HTTP headers.
-This is useful for debugging, client-side observability, and integrating cost awareness into API tooling.
+This is useful for debugging, client-side observability and integrating cost awareness into API tooling.
 
 | Header                | Description                                                                                         |
 |-----------------------|-----------------------------------------------------------------------------------------------------|
