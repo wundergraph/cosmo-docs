@@ -257,6 +257,9 @@ The environment variables corresponding to the config options above:
 | `router.graphql.operation.cost.estimated` | Int64 Histogram | Estimated cost calculated before execution, based on directive weights and list size estimates.                |
 | `router.graphql.operation.cost.actual`    | Int64 Histogram | Actual cost calculated after execution using real list sizes returned by subgraphs.                            |
 
+Those metrics use the exact same attribute set as other router request-level metrics
+(like `router.http.requests`, `router.http.request.duration_milliseconds`).
+
 <Info>
     Cost metrics require both cost analysis to be enabled (`security.cost_analysis.enabled: true`) and the
     corresponding `cost_stats` toggle to be set. The actual metrics additionally require execution

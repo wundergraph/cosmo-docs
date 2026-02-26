@@ -75,6 +75,11 @@ All the below mentioned metrics have the `wg.subgraph.name` dimensions. Do note 
 
 When [cost analysis](/router/security/cost-control) is enabled and the `cost_stats` toggles are set, the following metrics are emitted:
 
+* `router.graphql.operation.cost.estimated`: Estimated cost calculated before execution, based on `@cost` / `@listSize` directive weights and list size estimates. (Int64 Histogram)
+* `router.graphql.operation.cost.actual`: Actual cost calculated after execution using real list sizes returned by subgraphs. (Int64 Histogram)
+
+Use the following config to enable some of them:
+
 ```yaml
 telemetry:
   metrics:
@@ -88,10 +93,12 @@ telemetry:
         actual_enabled: true
 ```
 
-* `router.graphql.operation.cost.estimated`: Estimated cost calculated before execution, based on `@cost` / `@listSize` directive weights and list size estimates. (Int64 Histogram)
-* `router.graphql.operation.cost.actual`: Actual cost calculated after execution using real list sizes returned by subgraphs. (Int64 Histogram)
+Those metrics use the exact same attribute set as other router request-level metrics
+(like `router.http.requests`, `router.http.request.duration_milliseconds`).
+See [Cost Analysis](/router/security/cost-control#telemetry) for more details.
 
-See [Cost Analysis](/router/security/cost-control#telemetry) for full configuration details.
+Additionally, use [response headers](/router/security/cost-control#response-headers)
+(`X-WG-Cost-Estimated` and `X-WG-Cost-Actual`) to observe costs.
 
 ### List of asynchronous instruments
 
