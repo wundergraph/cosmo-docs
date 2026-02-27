@@ -216,6 +216,7 @@ mcp:
   exclude_mutations: true
   enable_arbitrary_operations: false
   expose_schema: false
+  omit_tool_name_prefix: false  # When true: GetUser → get_user (no execute_operation_ prefix)
 
 # Configure storage providers
 storage_providers:
@@ -237,6 +238,7 @@ storage_providers:
 | `exclude_mutations`           | Whether to exclude mutation operations from being exposed                                                                                                | `false`          |
 | `enable_arbitrary_operations` | Whether to allow arbitrary GraphQL operations to be executed. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning> | `false`          |
 | `expose_schema`               | Whether to expose the full GraphQL schema. <Warning>Security risk: Should only be enabled in secure, internal environments.</Warning>                    | `false`          |
+| `omit_tool_name_prefix`      | When enabled, MCP tool names generated from GraphQL operations omit the `execute_operation_` prefix. For example, the GraphQL operation `GetUser` results in a tool named `get_user` instead of `execute_operation_get_user`. This produces shorter tool names and is entirely optional. Can also be set via `MCP_OMIT_TOOL_NAME_PREFIX` environment variable. | `false`          |
 
 ## Session Handling
 
@@ -374,6 +376,32 @@ The MCP server converts each operation into a corresponding tool:
 - Operation name: `CreateUser` → Tool name: `execute_operation_create_user`
 
 Operations are converted to snake_case for tool naming consistency.
+
+#### Omitting the Tool Name Prefix
+
+By default, all operation tools include the `execute_operation_` prefix:
+
+- `GetUsers` becomes `execute_operation_get_users`
+- `CreateUser` becomes `execute_operation_create_user`
+
+When enabled, the `omit_tool_name_prefix` option generates tool names without this prefix:
+
+```yaml
+mcp:
+  enabled: true
+  omit_tool_name_prefix: true
+```
+
+- `GetUsers` becomes `get_users`
+- `CreateUser` becomes `create_user`
+
+<Warning>
+Enabling this option changes all tool names and may break existing integrations that rely on the `execute_operation_` prefix. Only enable this for new deployments or when you can update all dependent systems.
+</Warning>
+
+<Info>
+Operations with names that would collide with built-in MCP tools (`get_schema`, `execute_graphql`, `get_operation_info`) automatically retain the `execute_operation_` prefix to prevent conflicts.
+</Info>
 
 ### Best Practices
 
