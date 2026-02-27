@@ -1,17 +1,17 @@
 ---
-title: "Cost Analysis"
+title: "Cost Control"
 description: "Protect the API from expensive operations by estimating query complexity before execution using @cost and @listSize directives"
 icon: scale-balanced
 ---
 
 ## Overview
 
-Cost analysis prevents a single GraphQL request from using too many system resources and
+Cost Control prevents a single GraphQL request from using too many system resources and
 slowing everything else down. A query requesting deeply nested lists can generate
 thousands of resolver calls and overwhelm subgraphs, while a simple field lookup costs almost nothing.
-Cost analysis allows assigning weights to fields and estimating query complexity *before* execution begins.
+Cost Control allows assigning weights to fields and estimating query complexity *before* execution begins.
 
-When cost analysis is enabled, the router calculates and records costs for each incoming operation.
+When Cost Control is enabled, the router calculates and records costs for each incoming operation.
 In **enforce** mode, operations exceeding the configured limit are rejected immediately
 and no subgraph requests are made, protecting the infrastructure from resource exhaustion.
 
@@ -81,7 +81,7 @@ With a default list size of 10, this query costs: `10 × (1 Employee + 1 Departm
 
 ## Configuration
 
-Cost analysis is enabled in the router configuration:
+Cost Control is enabled in the router configuration:
 
 ```yaml
 security:
@@ -98,7 +98,7 @@ security:
 | `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                                     |
 | `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                                    |
 | `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Rejection of operation happens only for positive values and when mode is 'enforce'. |
-| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for cost control to work.             |
+| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for Cost Control to work.             |
 | `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                                          |
 
 ## Customizing Cost with Directives
@@ -186,7 +186,7 @@ func (m *MyModule) Middleware(ctx core.RequestContext, next http.Handler) {
     // Get cost after planning
     cost, err := ctx.Operation().Cost()
     if err != nil {
-        // Cost analysis was not enabled.
+        // Cost Control was not enabled.
     }
     
     // Use estimated cost for custom logic (rate limiting, logging, etc.)
@@ -221,7 +221,7 @@ When a query exceeds the estimated cost limit (in enforce mode), the router retu
 
 ## Telemetry
 
-When cost analysis is enabled, the router can emit OpenTelemetry metrics for every operation.
+When Cost Control is enabled, the router can emit OpenTelemetry metrics for every operation.
 These metrics are available through both OTEL and Prometheus exporters, carrying the same
 operation-level attributes as other router metrics (`wg.operation.name`, `wg.operation.type`,
 `wg.operation.protocol`, `wg.client.name`, `wg.client.version`, `http.status_code`).
@@ -261,7 +261,7 @@ Those metrics use the exact same attribute set as other router request-level met
 (like `router.http.requests`, `router.http.request.duration_milliseconds`).
 
 <Info>
-    Cost metrics require both cost analysis to be enabled (`security.cost_analysis.enabled: true`) and the
+    Cost metrics require both Cost Control to be enabled (`security.cost_analysis.enabled: true`) and the
     corresponding `cost_stats` toggle to be set. The actual metrics additionally require execution
     to complete so the router can observe real list sizes.
 </Info>
