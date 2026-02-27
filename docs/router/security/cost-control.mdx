@@ -85,7 +85,7 @@ Cost Control is enabled in the router configuration:
 
 ```yaml
 security:
-  cost_analysis:
+  cost_control:
     enabled: true
     mode: enforce
     estimated_list_size: 10
@@ -95,11 +95,11 @@ security:
 
 | Option                | Environment Variable                         | Default   | Description                                                                                                                     |
 |-----------------------|----------------------------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------|
-| `enabled`             | `SECURITY_COST_ANALYSIS_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                                     |
-| `mode`                | `SECURITY_COST_ANALYSIS_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                                    |
-| `max_estimated_limit` | `SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Rejection of operation happens only for positive values and when mode is 'enforce'. |
-| `estimated_list_size` | `SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for Cost Control to work.             |
-| `expose_headers`      | `SECURITY_COST_ANALYSIS_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                                          |
+| `enabled`             | `SECURITY_COST_CONTROL_ENABLED`             | `false`   | When true, the router calculates costs for every operation.                                                                     |
+| `mode`                | `SECURITY_COST_CONTROL_MODE`                | `measure` | `measure` calculates costs only; `enforce` rejects operations exceeding the estimated limit.                                    |
+| `max_estimated_limit` | `SECURITY_COST_CONTROL_MAX_ESTIMATED_LIMIT` | `0`       | Maximum allowed estimated cost for a query. Rejection of operation happens only for positive values and when mode is 'enforce'. |
+| `estimated_list_size` | `SECURITY_COST_CONTROL_ESTIMATED_LIST_SIZE` | `0`       | Default assumed size for list fields when no `@listSize` directive is specified. Required for Cost Control to work.             |
+| `expose_headers`      | `SECURITY_COST_CONTROL_EXPOSE_HEADERS`      | `false`   | Adds `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers to every operation.                                          |
 
 ## Customizing Cost with Directives
 
@@ -261,7 +261,7 @@ Those metrics use the exact same attribute set as other router request-level met
 (like `router.http.requests`, `router.http.request.duration_milliseconds`).
 
 <Info>
-    Cost metrics require both Cost Control to be enabled (`security.cost_analysis.enabled: true`) and the
+    Cost metrics require both Cost Control to be enabled (`security.cost_control.enabled: true`) and the
     corresponding `cost_stats` toggle to be set. The actual metrics additionally require execution
     to complete so the router can observe real list sizes.
 </Info>
@@ -296,7 +296,7 @@ since the query was not executed.
 
 ```yaml
 security:
-  cost_analysis:
+  cost_control:
     expose_headers: true
 ```
 
@@ -309,7 +309,7 @@ This reveals traffic patterns before enabling enforcement.
 
 ```yaml
 security:
-  cost_analysis:
+  cost_control:
     enabled: true
     mode: measure
     estimated_list_size: 10

@@ -2007,17 +2007,17 @@ Calculates estimated and actual costs for GraphQL operations. It can reject expe
 
 | Environment Variable                       | YAML                | Required               | Description                                                                                                   | Default Value |
 |--------------------------------------------|---------------------|------------------------|---------------------------------------------------------------------------------------------------------------|---------------|
-| SECURITY_COST_ANALYSIS_ENABLED             | enabled             | <Icon icon="square" /> | Enable Cost Control. When true, the router calculates costs for every operation.                             | false         |
-| SECURITY_COST_ANALYSIS_MODE                | mode                | <Icon icon="square" /> | `measure` calculates costs without rejecting; `enforce` rejects operations exceeding the limit.               | measure       |
-| SECURITY_COST_ANALYSIS_MAX_ESTIMATED_LIMIT | max_estimated_limit | <Icon icon="square" /> | Maximum allowed estimated cost. Operations exceeding this are rejected in enforce mode. 0 means no limit.     | 0             |
-| SECURITY_COST_ANALYSIS_ESTIMATED_LIST_SIZE | estimated_list_size | <Icon icon="square" /> | Default assumed size for list fields when no `@listSize` directive is present. Must be positive when enabled. | 0             |
-| SECURITY_COST_ANALYSIS_EXPOSE_HEADERS      | expose_headers      | <Icon icon="square" /> | Add `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers.                                            | false         |
+| SECURITY_COST_CONTROL_ENABLED             | enabled             | <Icon icon="square" /> | Enable Cost Control. When true, the router calculates costs for every operation.                             | false         |
+| SECURITY_COST_CONTROL_MODE                | mode                | <Icon icon="square" /> | `measure` calculates costs without rejecting; `enforce` rejects operations exceeding the limit.               | measure       |
+| SECURITY_COST_CONTROL_MAX_ESTIMATED_LIMIT | max_estimated_limit | <Icon icon="square" /> | Maximum allowed estimated cost. Operations exceeding this are rejected in enforce mode. 0 means no limit.     | 0             |
+| SECURITY_COST_CONTROL_ESTIMATED_LIST_SIZE | estimated_list_size | <Icon icon="square" /> | Default assumed size for list fields when no `@listSize` directive is present. Must be positive when enabled. | 0             |
+| SECURITY_COST_CONTROL_EXPOSE_HEADERS      | expose_headers      | <Icon icon="square" /> | Add `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers.                                            | false         |
 
 #### Example YAML Configuration
 
 ```yaml
 security:
-  cost_analysis:
+  cost_control:
     enabled: true
     mode: enforce
     estimated_list_size: 10
