@@ -52,21 +52,21 @@ To see all available options for `wgc operations push`, see [Push](/cli/operatio
 
 Additionally, check the [Using Persisted Operation with Federated GraphQL](/tutorial/using-persisted-operations) tutorial for a step-by-step guide.
 
-## Retiring persisted operations in Studio
+## Deleting persisted operations in Studio
 
-You can retire persisted operations directly in Cosmo Studio after they have been uploaded via `wgc operations push`.
+You can delete persisted operations directly in Cosmo Studio after they have been uploaded via `wgc operations push`.
 
 1. Open your federated graph in Studio.
 2. Go to **Clients**.
 3. Open a client and click **View Operations**.
-4. Expand the operation and click the retire button (archive icon).
-5. Confirm in the retire dialog.
+4. Expand the operation and click the delete button.
+5. Confirm in the delete dialog.
 
-Only organization users with `organization-admin` or `organization-developer` roles can retire operations.
-Operations are currently retired one at a time from the UI.
+Only organization users with `organization-admin` or `organization-developer` roles can delete operations.
+Operations are currently deleted one at a time from the UI.
 
 <Note>
-  Studio always asks for confirmation before retiring operations. If traffic is detected for the selected operation, the dialog explicitly warns you that the operation is receiving traffic. If analytics data is unavailable, Studio warns that traffic cannot be guaranteed as zero.
+  Studio always asks for confirmation before deleting operations. If traffic is detected for the selected operation, the dialog warns that the operation is receiving traffic and points you to metrics. If analytics data is unavailable, Studio warns that traffic cannot be guaranteed as zero.
 </Note>
 
 ## Disallowing non-persisted Operations
