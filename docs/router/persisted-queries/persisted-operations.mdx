@@ -4,7 +4,7 @@ description: "Persisted operations, also known as trusted documents, allow you t
 icon: "database"
 ---
 
-**Persisted operations** allow you to register queries / mutations / subscriptions within a federated graph, enabling the clients to send just an identifier in their request instead of sending the whole operation body. These operations need to be registered ahead of time, using the `wgc operation push` command.
+**Persisted operations** allow you to register queries / mutations / subscriptions within a federated graph, enabling the clients to send just an identifier in their request instead of sending the whole operation body. These operations need to be registered ahead of time, using the `wgc operations push` command.
 
 This not only saves bandwidth but can also help reduce the attack surface by allowing only safe-listed operations.
 
@@ -48,9 +48,26 @@ wgc operations push mygraph -n default -c my-client -f persisted-query-manifest.
 
 Finally, you should enable persisted operations in your GraphQL client library.
 
-To see all available options for `wgc operations push, see `[Push](/cli/operations/push).
+To see all available options for `wgc operations push`, see [Push](/cli/operations/push).
 
-Additionally, check the [Using Persisted Operation with Federated GraphQL](/tutorial/using-persisted-operations) tutorial for a step by step guide.
+Additionally, check the [Using Persisted Operation with Federated GraphQL](/tutorial/using-persisted-operations) tutorial for a step-by-step guide.
+
+## Deleting persisted operations in Studio
+
+You can delete persisted operations directly in Cosmo Studio after they have been uploaded via `wgc operations push`.
+
+1. Open your federated graph in Studio.
+2. Go to **Clients**.
+3. Open a client and click **View Operations**.
+4. Expand the operation and click the delete button.
+5. Confirm in the delete dialog.
+
+Only organization users with `organization-admin` or `organization-developer` roles can delete operations.
+Operations are currently deleted one at a time from the UI.
+
+<Note>
+  Studio always asks for confirmation before deleting operations. If traffic is detected for the selected operation, the dialog warns that the operation is receiving traffic. If analytics data is unavailable, Studio cannot guarantee that existing clients won't break. You can always check the metrics using the link in the dialog.
+</Note>
 
 ## Disallowing non-persisted Operations
 
@@ -116,4 +133,3 @@ To migrate from allowing all operations to a more restrictive option incremental
 
   * **Compatibility with Automatic Persisted Queries (APQ)** The `safelist` option cannot be used alongside APQ, as their functions are opposite.
 </Info>
-
