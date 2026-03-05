@@ -90,41 +90,13 @@ telemetry:
           - 'process\.'
           - 'server\.uptime'
           - 'router\.info'
+      # alternatively use include_metrics to only include certain metrics
 ```
 
 <Info>
   `exclude_metrics` and `include_metrics` cannot be used together. Use only one to filter which metrics are logged.
 </Info>
 
-### Example: Focus on specific metrics
-
-To log only HTTP request metrics:
-
-```yaml config.yaml
-telemetry:
-  metrics:
-    otlp:
-      log_exporter:
-        enabled: true
-        include_metrics:
-          - 'router\.http\.'
-```
-
-### Example: Exclude noisy metrics
-
-To log all metrics except runtime and process metrics:
-
-```yaml config.yaml
-telemetry:
-  metrics:
-    otlp:
-      log_exporter:
-        enabled: true
-        exclude_metrics:
-          - 'process\.'
-          - 'server\.uptime'
-          - 'runtime\.'
-```
 
 ### Log output
 
