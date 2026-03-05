@@ -707,6 +707,7 @@ telemetry:
       streams: true
       log_exporter:
         enabled: false
+        # note that both exclude_metrics and include_metrics cannot be used together
         exclude_metrics: []
         include_metrics: []
     attributes:
@@ -790,6 +791,7 @@ telemetry:
           # headers: {Authorization: Bearer <my-token>}
       log_exporter:
         enabled: false
+        # note that both exclude_metrics and include_metrics cannot be used together
         exclude_metrics: []
         include_metrics: []
 
