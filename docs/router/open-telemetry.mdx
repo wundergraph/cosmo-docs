@@ -68,6 +68,68 @@ Using single quotes in YAML prevents the need to double-escape backslashes, maki
   ```
 </CodeGroup>
 
+## Metrics Log Exporter
+
+The metrics log exporter is a standalone OTLP exporter that prints all collected metrics directly to the router's log output. It operates independently from your configured OTLP exporters and does not wrap them — it simply logs the metrics at each export interval. This gives you direct, local visibility into the metrics pipeline without needing an external collector. It is particularly useful when metrics are not appearing in your collector or dashboard — enabling the log exporter lets you quickly determine whether the issue is on the router side or downstream. You can also use it to verify the full structure of each metric (type, temporality, attributes, values), validate that your `exclude_metrics` or `exclude_metric_labels` rules are filtering correctly, or simply inspect what the router emits during local development. Use the `exclude_metrics` or `include_metrics` options on the log exporter itself to reduce noise and focus on the specific metrics you are investigating.
+
+<Warning>
+  Enabling this exporter will increase log volume. It is recommended for investigation and troubleshooting rather than long-term production use.
+</Warning>
+
+### Configuration
+
+The log exporter is configured under `telemetry.metrics.otlp.log_exporter`:
+
+```yaml config.yaml
+telemetry:
+  metrics:
+    otlp:
+      log_exporter:
+        enabled: true
+        exclude_metrics:
+          - 'process\.'
+          - 'server\.uptime'
+          - 'router\.info'
+```
+
+<Info>
+  `exclude_metrics` and `include_metrics` cannot be used together. Use only one to filter which metrics are logged.
+</Info>
+
+### Example: Focus on specific metrics
+
+To log only HTTP request metrics:
+
+```yaml config.yaml
+telemetry:
+  metrics:
+    otlp:
+      log_exporter:
+        enabled: true
+        include_metrics:
+          - 'router\.http\.'
+```
+
+### Example: Exclude noisy metrics
+
+To log all metrics except runtime and process metrics:
+
+```yaml config.yaml
+telemetry:
+  metrics:
+    otlp:
+      log_exporter:
+        enabled: true
+        exclude_metrics:
+          - 'process\.'
+          - 'server\.uptime'
+          - 'runtime\.'
+```
+
+### Log output
+
+When enabled, the exporter logs a summary line at each export interval showing the number of scope metrics and total metrics, followed by individual log entries for each metric. Each entry includes the metric name, unit, type (e.g., `sum:int64`, `histogram:float64`, `gauge:int64`), and data points with their attributes and values.
+
 ## Limits
 
 High metric cardinality can lead to performance issues by consuming excessive resources and slowing down data processing. When too many distinct metric labels are generated, the system might struggle to manage the data efficiently. To mitigate this, we have set a default hard cardinality limit of 2000. This limit helps to ensure that the metrics remain manageable and that the performance of our system is not adversely affected.

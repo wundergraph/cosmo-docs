@@ -670,6 +670,16 @@ This option may change or be removed in future versions as the OpenTelemetry SDK
 | METRICS_OTLP_CIRCUIT_BREAKER       | circuit_breaker       | <Icon icon="square" />                        | Ensure that circuit breaker metrics are enabled for OTEL.                                                                                                 | false         |
 | METRICS_OTLP_STREAM                | streams               | <Icon icon="square" />                        | Enable Cosmo Streams metrics.                                                                                                                             | false         |
 
+### Metrics Log Exporter
+
+Configured under `telemetry.metrics.otlp.log_exporter`. See [Metrics Log Exporter](/router/open-telemetry#metrics-log-exporter) for details.
+
+| Environment Variable                          | YAML                  | Required               | Description                                                                                                                  | Default Value |
+| --------------------------------------------- | --------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| METRICS_OTLP_LOG_EXPORTER_ENABLED             | enabled               | <Icon icon="square" /> | Enable the metrics log exporter.                                                                                             | false         |
+| METRICS_OTLP_LOG_EXPORTER_EXCLUDE_METRICS     | exclude_metrics       | <Icon icon="square" /> | List of Go regex patterns. Metrics matching any pattern will not be logged. Cannot be used together with `include_metrics`.   | []            |
+| METRICS_OTLP_LOG_EXPORTER_INCLUDE_METRICS     | include_metrics       | <Icon icon="square" /> | List of Go regex patterns. When set, only metrics matching at least one pattern are logged. Cannot be used with `exclude_metrics`. | []            |
+
 ### Attributes
 
 | YAML                                 | Required               | Description                                                                                                                                                                                                  | Default Value                                                                                                |
@@ -695,6 +705,10 @@ telemetry:
       exclude_metrics: []
       exclude_metric_labels: []
       streams: true
+      log_exporter:
+        enabled: false
+        exclude_metrics: []
+        include_metrics: []
     attributes:
       - key: "x-new-attribute"
         default: "foo"
@@ -774,6 +788,10 @@ telemetry:
           endpoint: https://my-otel-collector.example.com
           temporality: delta # or cumulative
           # headers: {Authorization: Bearer <my-token>}
+      log_exporter:
+        enabled: false
+        exclude_metrics: []
+        include_metrics: []
 
     # Expose OpenTelemetry metrics for scraping
     prometheus:
