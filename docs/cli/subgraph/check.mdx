@@ -57,6 +57,8 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 
 * `--skip-traffic-check` : This will skip checking against client traffic and any breaking change will fail the run.
 
+* `-j, --json`: Prints the check result in JSON format instead of table output. Useful for CI/CD automation and scripts.
+
 * `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 * `--label [labels...]`: The labels to apply to the new subgraph. The labels are passed in the format `<key>=<value> <key>=<value>`. This parameter is always ignored if the subgraph already exists.
@@ -77,6 +79,12 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 
    ```bash
    npx wgc subgraph check newSubgraph -n default --schema ./schemas/new_schema.graphql --label team=A
+   ```
+
+3. Output the check result as JSON for automation:
+
+   ```bash
+   npx wgc subgraph check products -n default --schema ./schemas/new_schema.graphql --json
    ```
 
 <Info>
@@ -147,4 +155,3 @@ Checkout the tutorial [here](/tutorial/pr-based-workflow-for-federation) on how 
 * The `npx wgc subgraph check` command interacts with the Cosmo platform's control plane and connected federated graphs to perform the validation checks.
 
 * If there are no breaking changes or composition errors detected, the tables will be empty, indicating that the new schema is compatible with the existing federated graphs.
-
