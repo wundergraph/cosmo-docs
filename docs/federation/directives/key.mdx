@@ -1,0 +1,128 @@
+---
+title: "@key"
+icon: "fingerprint"
+description: "The @key directive designates an object type as a federation entity and specifies the fields that uniquely identify it across subgraphs."
+---
+
+## Definition
+
+```graphql
+directive @key(fields: FieldSet!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+```
+
+## Arguments
+
+| Argument | Type | Default | Description |
+|----------|------|---------|-------------|
+| `fields` | `FieldSet!` | — | A selection set (as a string) of one or more fields that together uniquely identify an instance of the entity. |
+| `resolvable` | `Boolean` | `true` | When `false`, indicates that this subgraph does not implement a reference resolver for the entity. The router will not route queries to this subgraph solely to resolve entity fields. |
+
+## Overview
+
+The `@key` directive is the foundation of GraphQL Federation entities. By applying `@key` to an object type, you declare it an _entity_: a type that can be uniquely identified and resolved across multiple subgraphs using a set of key fields.
+
+Any subgraph that owns or references an entity must declare `@key` with the same set of identifying fields. The router uses these keys to construct _representations_ when fetching entity data from subgraphs that contribute additional fields.
+
+## Single Key
+
+The most common case is identifying an entity by a single scalar field. Here an `Event` type is owned by the scheduling subgraph but also contributes fields from the analytics subgraph:
+
+```graphql
+# scheduling subgraph
+type Event @key(fields: "id") {
+  id: ID!
+  name: String!
+  startsAt: String!
+}
+```
+
+```graphql
+# analytics subgraph
+type Event @key(fields: "id") {
+  id: ID!
+  totalRegistrations: Int!
+  pageViews: Int!
+}
+```
+
+Both subgraphs declare `Event` as an entity with the `id` key. The router can now combine fields from both subgraphs into a single `Event` response.
+
+## Multiple Keys
+
+A type can have more than one `@key` directive. This is useful when different clients or query paths identify the same entity through different fields:
+
+```graphql
+type Event @key(fields: "id") @key(fields: "slug") {
+  id: ID!
+  slug: String!
+  name: String!
+}
+```
+
+When multiple keys are declared, the router chooses the most efficient key for a given query plan. The entity must be resolvable by any one of the declared keys.
+
+## Compound Keys
+
+A key can span multiple fields, including nested object fields. All fields in the selection set must be present on the type:
+
+```graphql
+type Session @key(fields: "id event { id }") {
+  id: ID!
+  event: Event!
+  title: String!
+  speakerName: String!
+}
+
+type Event {
+  id: ID!
+}
+```
+
+When the key includes nested fields, the router passes the full nested structure in representations so the subgraph can resolve the entity.
+
+## Non-Resolvable Keys (`resolvable: false`)
+
+Sometimes a subgraph needs to reference an entity from another subgraph without being able to resolve it independently. Setting `resolvable: false` signals to the router that this subgraph contributes no reference resolver for the entity:
+
+```graphql
+# ticketing subgraph
+# References Event by key but cannot resolve Event fields independently.
+type Event @key(fields: "id", resolvable: false) {
+  id: ID!
+}
+
+type Ticket {
+  id: ID!
+  event: Event!
+  seatNumber: String!
+  attendeeName: String!
+}
+```
+
+The router will never route a query to this subgraph just to resolve `Event` fields; it will always consult the subgraph that owns the entity. The `id` field is still available for use in `@requires` or `@provides` directives within this subgraph.
+
+## Keys on Interfaces
+
+Applying `@key` to an interface creates an _entity interface_, allowing a subgraph to contribute fields to every object type that implements the interface across subgraphs:
+
+```graphql
+# scheduling subgraph
+interface ScheduledItem @key(fields: "id") {
+  id: ID!
+  startsAt: String!
+}
+
+type Concert implements ScheduledItem @key(fields: "id") {
+  id: ID!
+  startsAt: String!
+}
+
+type Workshop implements ScheduledItem @key(fields: "id") {
+  id: ID!
+  startsAt: String!
+}
+```
+
+## See Also
+
+[`@external`](/federation/directives/external) marks fields owned by another subgraph, making them available for use in `@requires` or `@provides`. [`@requires`](/federation/directives/requires) declares that an entity field depends on external fields that must be fetched from another subgraph first. [`@provides`](/federation/directives/provides) declares that a subgraph can resolve certain external entity fields at a specific query path.

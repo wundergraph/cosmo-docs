@@ -1,0 +1,76 @@
+---
+title: "@provides"
+icon: "hand-holding"
+description: "The @provides directive declares that a subgraph can resolve specific external entity fields at a particular schema path, reducing cross-subgraph fetches."
+---
+
+## Definition
+
+```graphql
+directive @provides(fields: FieldSet!) on FIELD_DEFINITION
+```
+
+## Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `fields` | `FieldSet!` | A selection set (as a string) of external entity fields that this subgraph can resolve at this specific query path. |
+
+## Overview
+
+By default, if a field belongs to another subgraph (marked [`@external`](/federation/directives/external)), the router must always fetch it from the owning subgraph. The `@provides` directive is a performance optimization that tells the router that at this specific query path, it can skip the separate fetch because the subgraph is already providing those external fields.
+
+`@provides` does not change which subgraph owns a field. It only informs the query planner that an additional fetch can be avoided along a particular path. This is particularly useful when a root query already fetches related data from a joined data source, and returning it alongside is essentially free.
+
+## Example
+
+The scheduling subgraph owns `Event.venueName`. The ticketing subgraph happens to include `venueName` in the result of its confirmed tickets query (it comes along in a JOIN), so it can declare `@provides` to save the router a round-trip:
+
+```graphql
+# scheduling subgraph
+type Event @key(fields: "id") {
+  id: ID!
+  name: String!
+  venueName: String! @shareable
+}
+```
+
+```graphql
+# ticketing subgraph
+type Event @key(fields: "id") {
+  id: ID!
+  venueName: String! @external
+}
+
+type Ticket {
+  id: ID!
+  event: Event!
+  seatNumber: String!
+}
+
+type Query {
+  # venueName is included in the JOIN result at this path
+  confirmedTickets: [Ticket!]! @provides(fields: "event { venueName }")
+
+  # At this path venueName is not available, so the router fetches it from scheduling
+  cancelledTickets: [Ticket!]!
+}
+```
+
+When a client queries `confirmedTickets { event { venueName } }`, the router knows the ticketing subgraph will include `venueName` in its response and skips the round-trip to the scheduling subgraph. For `cancelledTickets { event { venueName } }`, the router still fetches `venueName` from scheduling.
+
+## Rules
+
+For `@provides` to be valid, the fields listed in `fields` must be declared `@external` on the type in this subgraph, and those same fields must be declared `@shareable` (or be key fields) in at least one other subgraph. The owning subgraph must still be capable of resolving them independently. `@provides` can only be applied to a field that returns an entity type or a list of an entity type.
+
+If the provided fields are not `@shareable` in the owning subgraph, composition will fail.
+
+## When to Use `@provides`
+
+`@provides` is always optional; the federation graph will be functionally correct without it. It makes sense when a query already fetches certain related entity fields as a side effect of its implementation, and the overhead of returning those extra fields is lower than the cost of an additional network round-trip.
+
+Do not use `@provides` just to avoid declaring `@external`. The semantics of field ownership must still be accurate.
+
+## See Also
+
+[`@key`](/federation/directives/key) designates an object type as a federation entity. [`@external`](/federation/directives/external) marks a field as owned by another subgraph, which is required for fields listed in `@provides`. [`@requires`](/federation/directives/requires) handles the opposite case: declaring that a locally-resolved field depends on external fields.
