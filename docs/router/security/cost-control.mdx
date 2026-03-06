@@ -12,7 +12,7 @@ thousands of resolver calls and overwhelm subgraphs, while a simple field lookup
 Cost Control allows assigning weights to fields and estimating query complexity *before* execution begins.
 
 When Cost Control is enabled, the router calculates and records costs for each incoming operation.
-In **enforce** mode, operations exceeding the configured limit are rejected immediately
+In **enforce** mode, operations exceeding the configured limit are rejected immediately,
 and no subgraph requests are made, protecting the infrastructure from resource exhaustion.
 
 The Cosmo Router implements the [IBM GraphQL Cost Directive Specification](https://ibm.github.io/graphql-specs/cost-spec.html),
@@ -20,11 +20,11 @@ adapted for GraphQL Federation.
 
 ### Key differences from the IBM specification
 
-Weights use plain integers instead of stringified floats as defined in the IBM spec.
+Weights use plain integers instead of stringified floats, as defined in the IBM spec.
 
 The IBM specification does not account for federation. Static cost is calculated based on the query plan,
 which uses a federation of subgraphs to create a chain of fetches. This chain is invisible at the supergraph
-level and may include entity calls, `@requires` fetches, etc. These are accounted for because they make
+level and may include entity calls, `@requires` fetches, and similar operations. These are accounted for because they make
 certain queries more expensive.
 
 When a field returns a list of objects with a type weight, the IBM spec does not multiply the type's own weight
@@ -33,8 +33,8 @@ and children's costs by the list size, resulting in higher cost estimates for li
 This is done because federation may trigger entity fetches between subgraphs.
 
 The router supports both static (estimated) and runtime (actual) cost measurements.
-Estimated cost is calculated before the execution based on directive weights and list size estimates.
-Actual cost is calculated after the execution using real list sizes returned by subgraphs.
+Estimated cost is calculated before the execution, based on directive weights and list size estimates.
+Actual cost is calculated after the execution, using real list sizes returned by subgraphs.
 
 ## How Cost is Calculated
 
@@ -272,9 +272,9 @@ By default, histogram bucket boundaries are the following:
 
     0, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000
 
-The best practice is to assign to fields as small weights as possible. It is better to keep costs low.
-If the estimation gets higher than `10000`, then the value will be lost in the infinite bucket.
-Non-scalar fields have the default weight of 1. It is a good idea to pick custom weights close to 1.
+The best practice is to assign the smallest possible weights to fields. It is better to keep costs low.
+If the estimate exceeds `10000`, the value will be placed in the infinite bucket.
+Non-scalar fields have a default weight of 1. It is a good idea to pick custom weights close to 1.
 
 In **measure mode**, use cost metrics to understand the traffic before enabling enforcement:
 
@@ -284,7 +284,7 @@ In **measure mode**, use cost metrics to understand the traffic before enabling 
 ## Response Headers
 
 When `expose_headers` is enabled, the router adds cost information to every response as HTTP headers.
-This is useful for debugging, client-side observability and integrating cost awareness into API tooling.
+This is useful for debugging, client-side observability, and integrating cost awareness into API tooling.
 
 | Header                | Description                                                                                         |
 |-----------------------|-----------------------------------------------------------------------------------------------------|
