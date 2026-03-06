@@ -2000,9 +2000,9 @@ The configuration for the security. The security is used to configure the securi
 | SECURITY_BLOCK_NON_PERSISTED_OPERATIONS           | block_non_persisted_operations           | <Icon icon="square" /> | Block non-persisted Operations.                                                                                                    |               |
 | SECURITY_BLOCK_NON_PERSISTED_OPERATIONS_ENABLED   | block_non_persisted_operations.enabled   | <Icon icon="square" /> | If the value is true, the non-persisted operations are blocked.                                                                    | false         |
 | SECURITY_BLOCK_NON_PERSISTED_OPERATIONS_CONDITION | block_non_persisted_operations.condition | <Icon icon="square" /> | The [expression](/router/configuration/template-expressions) to evaluate if the operation should be blocked.                       |               |
-| SECURITY_BLOCK_PERSISTED_OPERATIONS              | block_persisted_operations              | <Icon icon="square" /> | Block persisted Operations.                                                                                                        |               |
-| SECURITY_BLOCK_PERSISTED_OPERATIONS_ENABLED      | block_persisted_operations.enabled      | <Icon icon="square" /> | If the value is true, the persisted operations are blocked.                                                                         | false         |
-| SECURITY_BLOCK_PERSISTED_OPERATIONS_CONDITION    | block_persisted_operations.condition    | <Icon icon="square" /> | The [expression](/router/configuration/template-expressions) to evaluate if the operation should be blocked.                       |               |
+| SECURITY_BLOCK_PERSISTED_OPERATIONS               | block_persisted_operations               | <Icon icon="square" /> | Block persisted Operations.                                                                                                        |               |
+| SECURITY_BLOCK_PERSISTED_OPERATIONS_ENABLED       | block_persisted_operations.enabled       | <Icon icon="square" /> | If the value is true, the persisted operations are blocked.                                                                         | false         |
+| SECURITY_BLOCK_PERSISTED_OPERATIONS_CONDITION     | block_persisted_operations.condition     | <Icon icon="square" /> | The [expression](/router/configuration/template-expressions) to evaluate if the operation should be blocked.                       |               |
 |                                                   | complexity_calculation_cache             | <Icon icon="square" /> | Complexity Cache configuration                                                                                                     |               |
 |                                                   | complexity_limits                        | <Icon icon="square" /> | Complexity limits configuration                                                                                                    |               |
 |                                                   | parser_limits.approximate_depth_limit    | <Icon icon="square" /> | The approximate cumulative depth limit of a query, including fragments. Set to 0 to disable.                                       | 200           |
@@ -2056,6 +2056,31 @@ security:
   `security.complexity_calculation_cache` and `security.complexity_limits`
   configurations instead, which provide that functionality.
 </Warning>
+
+### Cost Control
+
+The configuration for [Cost Control](/router/security/cost-control) based on `@cost` and `@listSize` directives.
+Calculates estimated and actual costs for GraphQL operations. It can reject expensive operations.
+
+| Environment Variable                       | YAML                | Required               | Description                                                                                                   | Default Value |
+|--------------------------------------------|---------------------|------------------------|---------------------------------------------------------------------------------------------------------------|---------------|
+| SECURITY_COST_CONTROL_ENABLED             | enabled             | <Icon icon="square" /> | Enable Cost Control. When true, the router calculates costs for every operation.                             | false         |
+| SECURITY_COST_CONTROL_MODE                | mode                | <Icon icon="square" /> | `measure` calculates costs without rejecting; `enforce` rejects operations exceeding the limit.               | measure       |
+| SECURITY_COST_CONTROL_MAX_ESTIMATED_LIMIT | max_estimated_limit | <Icon icon="square" /> | Maximum allowed estimated cost. Operations exceeding this are rejected in enforce mode. 0 means no limit.     | 0             |
+| SECURITY_COST_CONTROL_ESTIMATED_LIST_SIZE | estimated_list_size | <Icon icon="square" /> | Default assumed size for list fields when no `@listSize` directive is present. Must be positive when enabled. | 0             |
+| SECURITY_COST_CONTROL_EXPOSE_HEADERS      | expose_headers      | <Icon icon="square" /> | Add `X-WG-Cost-Estimated` and `X-WG-Cost-Actual` response headers.                                            | false         |
+
+#### Example YAML Configuration
+
+```yaml
+security:
+  cost_control:
+    enabled: true
+    mode: enforce
+    estimated_list_size: 10
+    max_estimated_limit: 1000
+    expose_headers: true
+```
 
 ### Complexity Calculation Cache
 
