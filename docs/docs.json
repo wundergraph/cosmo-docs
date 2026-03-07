@@ -265,7 +265,8 @@
                       "router/cosmo-streams/custom-modules",
                       "router/cosmo-streams/custom-modules/subscription-on-start",
                       "router/cosmo-streams/custom-modules/on-receive-event",
-                      "router/cosmo-streams/custom-modules/on-publish-event"
+                      "router/cosmo-streams/custom-modules/on-publish-event",
+                      "router/cosmo-streams/custom-modules/general-usage"
                     ]
                   }
                 ]
