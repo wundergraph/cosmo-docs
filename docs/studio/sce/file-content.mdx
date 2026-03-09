@@ -39,6 +39,14 @@ description: "Definition of the Subgraph Check extension payload structure."
 | `federatedClientSchema` | `string`                                                | The composed schema for the Federated Client.                       |
 | `subgraphs`             | [`CompositionSubgraphInfo[]`](#compositionsubgraphinfo) | A collection of all subgraphs that contributed to this composition. |
 
+### LabelInfo
+Provides information about the labels associated with the subgraph.
+
+| Field  | Type     | Description            |
+|--------|----------|------------------------|
+| `key`  | `string` | The key of the label.  |
+| `name` | `string` | The name of the label. |
+
 ## CompositionSubgraphInfo
 | Field  | Type     | Description                            |
 |--------|----------|----------------------------------------|
