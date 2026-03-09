@@ -15,18 +15,20 @@ description: "Definition of the Subgraph Check extension payload structure."
 |----------------------|--------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | `subgraphs`          | [`SubgraphInfo[]`](#subgraphinfo) or `undefined`                   | A list of subgraphs that trigger the check.                                                   |
 | `compositions`       | [`CompositionInfo[]`](#compositioninfo) or `undefined`             | A list of all compositions produced by the check.                                             |
-| `lintIssues`         | [`LintIssues[]`](#lintissue) or `undefined`                        | A list containing all the lint issues detected based on the `Lint Policies`.                  |
-| `graphPruningIssues` | [`GraphPruningIssues[]`](#graphpruningissue) or `undefined`        | A list containing all the graph pruning issues detected based on the `Graph Pruning Policies` |
-| `schemaChanges`      | [`SchemaChangeInfo[]`](#schemachangeinfo) or `undefined`           | A list containing all the changes detected by the check.                                      |
 | `affectedOperations` | [`AffectedOperationInfo[]`](#affectedoperationinfo) or `undefined` | A list containing all the operations affected by the check.                                   |
 
 ## SubgraphInfo
-| Field            | Type                    | Description                            |
-|------------------|-------------------------|----------------------------------------|
-| `id`             | `string`                | The unique identifier of the subgraph. |
-| `name`           | `string`                | The name of the subgraph.              |
-| `oldComposedSdl` | `string` or `undefined` |                                        |
-| `newComposedSdl` | `string` or `undefined` |                                        |
+| Field                | Type                                                        | Description                                                                                   |
+|----------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| `id`                 | `string`                                                    | The unique identifier of the subgraph.                                                        |
+| `name`               | `string`                                                    | The name of the subgraph.                                                                     |
+| `labels`             | [`LabelInfo[]`](#labelinfo)                                 | The list of labels the subgraph is associated with.                                           |
+| `oldComposedSdl`     | `string` or `undefined`                                     | The original subgraph SDL                                                                     |
+| `newComposedSdl`     | `string` or `undefined`                                     | The new subgraph SDL                                                                          |
+| `lintIssues`         | [`LintIssues[]`](#lintissue) or `undefined`                 | A list containing all the lint issues detected based on the `Lint Policies`.                  |
+| `graphPruningIssues` | [`GraphPruningIssues[]`](#graphpruningissue) or `undefined` | A list containing all the graph pruning issues detected based on the `Graph Pruning Policies` |
+| `schemaChanges`      | [`SchemaChangeInfo[]`](#schemachangeinfo) or `undefined`    | A list containing all the changes detected by the check.                                      |
+
 
 ## CompositionInfo
 | Field                   | Type                                                    | Description                                                         |
@@ -200,8 +202,17 @@ description: "Definition of the Subgraph Check extension payload structure."
 interface SubgraphInfo {
   id: string;
   name: string;
+  labels: LabelInfo[];
   oldComposedSdl?: string;
   newComposedSdl?: string;
+  lintIssues?: LintIssue[];
+  graphPruningIssues?: GraphPruningIssue[];
+  schemaChanges?: SchemaChangeInfo[];
+}
+
+interface LabelInfo {
+  key: string;
+  name: string;
 }
 
 interface CompositionInfo {
@@ -280,9 +291,6 @@ interface AffectedOperationInfo {
 interface SubgraphCheckExtensionContent {
   subgraphs?: SubgraphInfo[];
   compositions?: CompositionInfo;
-  lintIssues?: LintIssue[];
-  graphPruningIssues?: GraphPruningIssue[];
-  schemaChanges?: SchemaChangeInfo[];
   affectedOperations?: AffectedOperationInfo[];
 }
 ```
