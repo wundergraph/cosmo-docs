@@ -59,6 +59,8 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 
 * `-j, --json`: Prints the check result in JSON format instead of table output. Useful for CI/CD automation and scripts.
 
+* `-o, --out [string]`: Writes the JSON check result to a destination file. This option enables JSON output automatically.
+
 * `--suppress-warnings`: This flag suppresses any warnings produced by composition.
 
 * `--label [labels...]`: The labels to apply to the new subgraph. The labels are passed in the format `<key>=<value> <key>=<value>`. This parameter is always ignored if the subgraph already exists.
@@ -85,6 +87,12 @@ The `npx wgc subgraph check` command checks for breaking changes and composition
 
    ```bash
    npx wgc subgraph check products -n default --schema ./schemas/new_schema.graphql --json
+   ```
+
+4. Write the JSON check result to a file:
+
+   ```bash
+   npx wgc subgraph check products -n default --schema ./schemas/new_schema.graphql --out ./check-result.json
    ```
 
 <Info>

@@ -32,6 +32,8 @@ The `npx wgc monograph check` command checks for breaking changes and compositio
 
 * `-j, --json`: Prints the check result in JSON format instead of table output. Useful for CI/CD automation and scripts.
 
+* `-o, --out [string]`: Writes the JSON check result to a destination file. This option enables JSON output automatically.
+
 ## Example
 
 Check for breaking changes and composition errors for the monograph "production" in the default namespace with the new schema file located at "./schemas/new\_schema.graphql":
@@ -44,6 +46,12 @@ Output the check result as JSON for automation:
 
 ```bash
 npx wgc monograph check production -n default --schema ./schemas/new_schema.graphql --json
+```
+
+Write the JSON check result to a file:
+
+```bash
+npx wgc monograph check production -n default --schema ./schemas/new_schema.graphql --out ./check-result.json
 ```
 
 ## Sample output with changes and errors
