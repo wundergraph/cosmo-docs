@@ -123,7 +123,56 @@ In these cases, the router will use the fallback and load the list of operations
 - **Cold start on first start**: The first router start will experience normal cache warming latency, as there's no existing cache to preserve.
 - **Cache can accumulate stale entries**: Without a full restart, the planner cache can eventually fill up with query plans for outdated or rarely-used queries. However, the cache uses a LFU (Least Frequently Used) eviction policy, ensuring that older, less-used items are removed when the cache reaches capacity.
 
+## Expensive Query Cache
+
+The main execution plan cache uses a TinyLFU (Least Frequently Used) eviction policy, which is optimized for frequently accessed items. However, this can cause problems for queries that are slow to plan but infrequently accessed — the LFU policy may evict them in favor of cheaper, more frequent queries. When an expensive query is evicted and re-requested, the router must re-plan it from scratch, causing a latency spike.
+
+The expensive query cache is a secondary, bounded cache that protects these slow-to-plan queries from eviction. It is automatically enabled when `in_memory_fallback` is set to `true`.
+
+### How It Works
+
+1. When a query is planned for the first time, its planning duration is measured.
+2. If the planning duration exceeds the configured threshold (`expensive_query_threshold`, default 5s), the query plan is stored in both the main cache and the expensive query cache.
+3. If the main cache later evicts this plan (due to LFU pressure from more frequent queries), the expensive query cache still holds it.
+4. On subsequent requests, if the plan is not found in the main cache, the router checks the expensive query cache before re-planning. If found, the plan is served immediately and re-inserted into the main cache.
+5. During config reloads, expensive cache entries are merged into the warmup source, ensuring slow queries survive cache rebuilds.
+
+### Bounded Size and Eviction
+
+The expensive query cache has a configurable maximum size (`expensive_query_cache_size`, default 100). When the cache is full and a new expensive query needs to be added:
+
+- The new query's planning duration is compared to the shortest duration in the cache.
+- If the new query is more expensive (took longer to plan), it replaces the least expensive entry.
+- If the new query is cheaper or equal, it is not added. This ensures the cache always contains the most expensive queries.
+
 ### Configuration
+
+The expensive query cache is configured through the engine configuration:
+
+```yaml
+engine:
+  expensive_query_cache_size: 100  # Maximum entries (default: 100)
+  expensive_query_threshold: 5s    # Minimum planning time to qualify (default: 5s)
+
+cache_warmup:
+  enabled: true
+  in_memory_fallback: true  # Required to enable the expensive query cache
+```
+
+For the full list of engine configuration options, see [Router Engine Configuration](/router/configuration#router-engine-configuration).
+
+### Observability
+
+When the expensive query cache is enabled, the following observability signals are available:
+
+- **Response header**: `X-WG-Expensive-Plan-Cache` is set to `HIT` or `MISS` when debug cache headers are enabled (`engine.debug.enable_cache_response_headers: true`). This header is only present when `in_memory_fallback` is enabled.
+- **OTEL span attribute**: `wg.engine.expensive_plan_cache_hit` (boolean) is added to the `Operation - Plan` span.
+- **OTEL metric attribute**: `wg.engine.expensive_plan_cache_hit` (boolean) is added to the `router.graphql.operation.planning_time` metric.
+- **Prometheus label**: `wg_engine_expensive_plan_cache_hit` is added to the `router_graphql_operation_planning_time` metric.
+
+These attributes are only emitted when `in_memory_fallback` is enabled. Existing users who do not enable this feature will see no change in their telemetry.
+
+## In-Memory Fallback Configuration
 
 The in-memory fallback can be enabled as a fallback for the CDN cache warmer. To do this, ensure:
 
