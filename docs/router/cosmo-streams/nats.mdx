@@ -96,6 +96,55 @@ Based on the example above, you will need a compatible router configuration.
   ```
 </CodeGroup>
 
+### TLS
+
+The NATS provider supports four TLS modes:
+
+| Mode | Config |
+|---|---|
+| No TLS | Omit the `tls` block |
+| TLS with skip verify | `insecure_skip_verify: true` |
+| TLS with custom CA | `ca_file: /path/to/ca.crt` |
+| Mutual TLS (mTLS) | `ca_file` + `cert_file` + `key_file` |
+
+<CodeGroup>
+  ```yaml Skip verify (dev/self-signed)
+  events:
+    providers:
+      nats:
+        - id: my-nats
+          url: "nats://localhost:4222"
+          tls:
+            insecure_skip_verify: true
+  ```
+
+  ```yaml Custom CA (1-way TLS)
+  events:
+    providers:
+      nats:
+        - id: my-nats
+          url: "nats://localhost:4222"
+          tls:
+            ca_file: /path/to/ca.crt
+  ```
+
+  ```yaml Mutual TLS (mTLS)
+  events:
+    providers:
+      nats:
+        - id: my-nats
+          url: "nats://localhost:4222"
+          tls:
+            ca_file: /path/to/ca.crt
+            cert_file: /path/to/client.crt
+            key_file: /path/to/client.key
+  ```
+</CodeGroup>
+
+<Warning>
+  `insecure_skip_verify: true` disables server certificate verification. Do not use in production.
+</Warning>
+
 ## Example Query
 
 In the example query below, one or more subgraphs have been implemented alongside the Event-Driven Graph to resolve any other fields defined on `Employee`, e.g., `tag` and `details.surname`.
