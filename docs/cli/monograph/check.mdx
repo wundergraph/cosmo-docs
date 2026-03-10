@@ -30,12 +30,28 @@ The `npx wgc monograph check` command checks for breaking changes and compositio
 
 * `--schema <path-to-schema>`: The path to the new schema file that you want to validate. This file should contain the complete schema definition in the GraphQL Schema Definition Language (SDL) format.
 
+* `-j, --json`: Prints the check result in JSON format instead of table output. Useful for CI/CD automation and scripts.
+
+* `-o, --out [string]`: Writes the JSON check result to a destination file. This option enables JSON output automatically.
+
 ## Example
 
 Check for breaking changes and composition errors for the monograph "production" in the default namespace with the new schema file located at "./schemas/new\_schema.graphql":
 
 ```bash
 npx wgc monograph check production -n default --schema ./schemas/new_schema.graphql
+```
+
+Output the check result as JSON for automation:
+
+```bash
+npx wgc monograph check production -n default --schema ./schemas/new_schema.graphql --json
+```
+
+Write the JSON check result to a file:
+
+```bash
+npx wgc monograph check production -n default --schema ./schemas/new_schema.graphql --out ./check-result.json
 ```
 
 ## Sample output with changes and errors
@@ -56,4 +72,3 @@ Checkout the tutorial [here](/tutorial/pr-based-workflow-for-federation) on how 
 * The `npx wgc monograph check` command interacts with the Cosmo platform's control plane to perform the validation checks.
 
 * If there are no breaking changes or composition errors detected, the tables will be empty, indicating that the new schema is safe to be used in production.
-
