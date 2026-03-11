@@ -16,7 +16,7 @@ Unlike traditional GraphQL resolvers that run within your application code, Cosm
 Field resolvers are specialized functions that define how specific fields in your GraphQL schema should be resolved. They bridge the gap between your GraphQL API and custom business logic by:
 
 - **Custom Field Logic**: Implementing complex calculations, data transformations, or external API calls
-- **Argument Handling**: Processing field arguments passed from GraphQL operations, either directly or through variables  
+- **Argument Handling**: Optionally processing field arguments passed from GraphQL operations, either directly or through variables. Fields without arguments can also use field resolvers.
 - **Context Awareness**: Accessing parent object data and resolver context to make informed decisions
 - **Type Safety**: Leveraging protobuf definitions to ensure type-safe communication between the router and your resolver logic
 
@@ -24,7 +24,7 @@ When a GraphQL operation requests a field with a custom resolver, the Cosmo Rout
 
 ## How Field Resolvers Work in Protobuf
 
-The implementation of field resolvers in a protobuf-based system presents a unique architectural challenge. Since Protocol Buffers don't natively support field arguments (unlike GraphQL), Cosmo solves this through an innovative approach:
+The implementation of field resolvers in a protobuf-based system presents a unique architectural challenge. Since Protocol Buffers don't natively support field arguments (unlike GraphQL), Cosmo solves this through an innovative approach. Field resolvers can also be used to delegate expensive fields without arguments to a separate RPC, avoiding unnecessary computation in the base operation.
 
 ### The Challenge
 Traditional protobuf message definitions cannot represent GraphQL fields with arguments, as protobuf fields are simple properties without parameter support.
@@ -37,7 +37,7 @@ To overcome this limitation, Cosmo generates **RPC methods for each field resolv
 3. **Enables complex resolution**: The RPC method can implement any custom logic needed to resolve the field value
 
 ### Runtime Execution Flow
-When your GraphQL operation requests a field with arguments:
+When your GraphQL operation requests a field with a field resolver:
 
 1. **Query Planning**: The Cosmo Router analyzes the operation and identifies fields requiring custom resolution
 2. **Data Retrieval**: The router first fetches any necessary parent data which is needed for the current type to resolve the field value  
@@ -105,6 +105,49 @@ message Foo {
 }
 ```
 
+### Field Resolvers Without Arguments
+
+Field resolvers can also be used on fields that have no arguments. This is useful when a field is expensive to resolve from the base operation and should be delegated to a separate RPC. When a field has no arguments, the generated protobuf omits the `Args` message and `field_args` field from the request — only `context` remains.
+
+<Note>
+The `context` parameter on `@connect__fieldResolver` is always required, even for fields without arguments. It provides the parent data needed to resolve the field.
+</Note>
+
+**Schema example:**
+```graphql
+type User {
+  id: ID!
+  name: String!
+  avatar: String! @connect__fieldResolver(context: "id")
+}
+```
+
+**Generated protobuf:**
+```protobuf
+service UserService {
+  rpc ResolveUserAvatar(ResolveUserAvatarRequest) returns (ResolveUserAvatarResponse) {}
+}
+
+message ResolveUserAvatarContext {
+  string id = 1;
+}
+
+message ResolveUserAvatarRequest {
+  // context provides the resolver context for the field avatar of type User.
+  repeated ResolveUserAvatarContext context = 1;
+}
+
+message ResolveUserAvatarResult {
+  string avatar = 1;
+}
+
+message ResolveUserAvatarResponse {
+  repeated ResolveUserAvatarResult result = 1;
+}
+```
+
+Notice there is no `Args` message or `field_args` field in the request — the resolver receives only the batched context entries.
+
 ## Implementation Guide
 
 ### Step-by-Step Setup
@@ -166,6 +209,41 @@ func (s *CategoryService) ResolveCategoryPopularityScore(_ context.Context, req 
 	}
 
 	resp := &categoryv1.ResolveCategoryPopularityScoreResponse{
+		Result: results,
+	}
+
+	return resp, nil
+}
+```
+</CodeGroup>
+
+### Example: Field Resolver Without Arguments
+
+This example shows how to implement a field resolver for a field that has no arguments. Here, the `avatar` field is resolved by looking up an avatar URL based on the user's ID from context.
+
+<CodeGroup>
+```graphql user-schema.graphql
+type User {
+  id: ID!
+  name: String!
+  avatar: String! @connect__fieldResolver(context: "id")
+}
+```
+
+```go user-service.go
+func (s *UserService) ResolveUserAvatar(_ context.Context, req *userv1.ResolveUserAvatarRequest) (*userv1.ResolveUserAvatarResponse, error) {
+	// We need to return results in the original order of the context elements.
+	results := make([]*userv1.ResolveUserAvatarResult, 0, len(req.GetContext()))
+
+	// No field_args — iterate over context only.
+	for _, reqContext := range req.GetContext() {
+		avatarURL := fmt.Sprintf("https://avatars.example.com/%s.png", reqContext.GetId())
+		results = append(results, &userv1.ResolveUserAvatarResult{
+			Avatar: avatarURL,
+		})
+	}
+
+	resp := &userv1.ResolveUserAvatarResponse{
 		Result: results,
 	}
 
