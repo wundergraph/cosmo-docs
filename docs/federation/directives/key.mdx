@@ -65,6 +65,41 @@ The entity must be resolvable by any one of its declared keys.
 Multiple keys increase the number of possible query plan paths, which adds complexity to query planning. In most cases a single key is sufficient. The primary reason to declare a second key is during a key migration, where the old key is kept temporarily while subgraphs transition to the new one. Avoid permanent multi-key setups unless you have a clear need.
 </Warning>
 
+### When Multiple Keys Are Needed
+
+Multiple keys become necessary when different subgraphs can only resolve an entity by different identifiers. Consider a `User` entity with a public `id` and an `internalId`. Subgraph A can only resolve users by `id`, subgraph B can only resolve users by `internalId`, and subgraph C defines both keys:
+
+```graphql
+# subgraph A — resolves by public id only
+type User @key(fields: "id") {
+  id: ID!
+  displayName: String!
+}
+```
+
+```graphql
+# subgraph B — resolves by internal id only
+type User @key(fields: "internalId") {
+  internalId: ID!
+  role: String!
+}
+```
+
+```graphql
+# subgraph C — resolves by either key
+type User @key(fields: "id") @key(fields: "internalId") {
+  id: ID!
+  internalId: ID!
+  email: String!
+}
+```
+
+Subgraph C acts as a bridge: it can accept either key and resolve the other. The router uses this to jump between subgraphs that share no common key.
+
+<Warning>
+This bridge pattern introduces extra hops. If a query starts at subgraph B and needs a field from subgraph A, the router must go B → C → A because B and A share no common key. This "leap-frogging" adds latency and indicates a design problem. If possible, align subgraphs on a single shared key to avoid unnecessary indirection.
+</Warning>
+
 ## Compound Keys
 
 A compound key spans multiple fields, including nested object fields. All fields in the compound key's selection set must be present on the type:
@@ -152,4 +187,4 @@ type Workshop implements ScheduledItem @key(fields: "id") {
 
 ## See Also
 
-[`@external`](/federation/directives/external) marks fields as resolved by another subgraph, making them available for use in `@requires` or `@provides`. [`@requires`](/federation/directives/requires) declares that an entity field depends on external fields that must be fetched from another subgraph first. [`@provides`](/federation/directives/provides) declares that a subgraph can resolve certain external entity fields at a specific query path.
+[`@external`](/federation/directives/external) declares that a field is not independently resolvable by the current subgraph, making it available for use in `@requires` or `@provides`. [`@requires`](/federation/directives/requires) declares that an entity field depends on external fields that must be fetched from another subgraph first. [`@provides`](/federation/directives/provides) declares that a subgraph can resolve certain external entity fields at a specific query path.

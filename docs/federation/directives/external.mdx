@@ -1,7 +1,7 @@
 ---
 title: "@external"
 icon: "arrow-right-from-bracket"
-description: "The @external directive marks a field as resolved by another subgraph, making it available for use with @requires and @provides."
+description: "The @external directive declares that a field is not independently resolvable by the current subgraph, making it available for use with @requires and @provides."
 ---
 
 ## Definition
@@ -12,15 +12,12 @@ directive @external on FIELD_DEFINITION | OBJECT
 
 ## Overview
 
-The `@external` directive tells the router that a field is not resolved by the current subgraph. It is defined and resolved by another subgraph, and even though it is declared locally, the current subgraph cannot independently resolve it.
+The `@external` directive declares that a field is not independently resolvable by the current subgraph. The exact behavior depends on where the field is referenced:
 
-An `@external` field cannot exist on its own. It must be used by at least one of the following:
+- **Unresolvable by this subgraph** — An `@external` field referenced only in a [`@requires`](/federation/directives/requires) `FieldSet`, or defined only to satisfy an interface. The router will never ask this subgraph to resolve it. The field exists locally so `@requires` can depend on its value, or so the type satisfies its interface contract.
+- **Conditionally resolvable by this subgraph** — An `@external` field referenced in a [`@provides`](/federation/directives/provides) `FieldSet`. The subgraph can resolve this field, but only at specific query paths where `@provides` is applied. At all other paths, the router fetches it from another subgraph.
 
-- [`@requires`](/federation/directives/requires), to express that a locally-resolved field depends on the external field's value.
-- [`@provides`](/federation/directives/provides), to tell the router that the subgraph can resolve the external field at a specific query path.
-- An interface contract, where the field is needed to satisfy the interface but is resolved by another subgraph.
-
-If an external field is not used in any of these ways, composition will reject the schema.
+An `@external` field must be referenced in `@key`, `@provides`, and/or `@requires`, or defined to satisfy an interface. If it is not used in any of these ways, composition will reject the schema. Every `@external` field must also have a non-external counterpart: the same field defined without `@external` in at least one other subgraph.
 
 In most schemas, `@external` only appears on entity types (types with a [`@key`](/federation/directives/key) directive), where fields come from multiple subgraphs.
 
