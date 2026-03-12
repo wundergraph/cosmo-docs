@@ -32,52 +32,53 @@ is generated and the `url` field will be `undefined` or not present in the reque
 ### LabelInfo
 Provides information about the labels used to trigger the check.
 
-| Field | Type     | Description            |
-|-------|----------|------------------------|
-| key   | `string` | The key of the label.  |
-| name  | `string` | The name of the label. |
+| Field  | Type     | Description            |
+|--------|----------|------------------------|
+| `key`  | `string` | The key of the label.  |
+| `name` | `string` | The name of the label. |
 
 ### OrganizationContext
 Provides information about the organization that triggered the check.
 
-| Field | Type     | Description                                |
-|-------|----------|--------------------------------------------|
-| id    | `string` | The unique identifier of the organization. |
-| slug  | `string` | The slug of the organization.              |
+| Field  | Type     | Description                                |
+|--------|----------|--------------------------------------------|
+| `id`   | `string` | The unique identifier of the organization. |
+| `slug` | `string` | The slug of the organization.              |
 
 ### NamespaceContext
 Provides information about the associated namespace.
 
-| Field | Type     | Description                             |
-|-------|----------|-----------------------------------------|
-| id    | `string` | The unique identifier of the namespace. |
-| name  | `string` | The display name of the namespace.      |
+| Field  | Type     | Description                             |
+|--------|----------|-----------------------------------------|
+| `id`   | `string` | The unique identifier of the namespace. |
+| `name` | `string` | The display name of the namespace.      |
 
 ### VCSContext
 Provides details about the Version Control System (VCS) that triggered the check. This field is only included when the check is initiated from a VCS.
 
-| Field     | Type     | Description                                          |
-|-----------|----------|------------------------------------------------------|
-| author    | `string` | The email address of the commit author.              |
-| commitSha | `string` | The SHA hash of the commit that triggered the check. |
-| branch    | `string` | The branch name associated with the commit.          |
+| Field       | Type     | Description                                          |
+|-------------|----------|------------------------------------------------------|
+| `author`    | `string` | The email address of the commit author.              |
+| `commitSha` | `string` | The SHA hash of the commit that triggered the check. |
+| `branch`    | `string` | The branch name associated with the commit.          |
 
 ### AffectedGraphInfo
 Provides information about the graphs affected by the check.
 
-| Field | Type     | Description                         |
-|-------|----------|-------------------------------------|
-| id    | `string` | The unique identifier of the graph. |
-| name  | `string` | The name of the graph.              |
+| Field  | Type     | Description                         |
+|--------|----------|-------------------------------------|
+| `id`   | `string` | The unique identifier of the graph. |
+| `name` | `string` | The name of the graph.              |
 
 ### SubgraphContext
 Provides information about the subgraphs that triggered the check. This field is only included when the check is for an existing subgraph.
 
-| Field     | Type      | Description                                                      |
-|-----------|-----------|------------------------------------------------------------------|
-| id        | `string`  | The unique identifier of the subgraph.                           |
-| name      | `string`  | The name of the subgraph.                                        |
-| isDeleted | `boolean` | Indicates whether the check was triggered by a deleted subgraph. |
+| Field       | Type                        | Description                                                      |
+|-------------|-----------------------------|------------------------------------------------------------------|
+| `id`        | `string`                    | The unique identifier of the subgraph.                           |
+| `labels`    | [`LabelInfo[]`](#labelinfo) | The list of labels the subgraph is associated with.              |
+| `name`      | `string`                    | The name of the subgraph.                                        |
+| `isDeleted` | `boolean`                   | Indicates whether the check was triggered by a deleted subgraph. |
 
 ## TypeScript definition
 
@@ -111,6 +112,7 @@ interface AffectedGraphInfo {
 
 interface SubgraphInfo {
   id: string;
+  labels: LabelInfo[];
   name: string;
   isDeleted: boolean;
 }

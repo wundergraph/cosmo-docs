@@ -8,16 +8,18 @@ description: "Definition of the response payload structure for Subgraph Check Ex
 When your server receives a request from the Subgraph Check Extension, it must respond with either `204 No Content`, which indicates that nothing changed, or `200 OK` with the structure described below.
 
 The response payload allows you to append a collection of **LintIssues** to the check, which will be displayed on the
-Check results page.
+Check results page. To do this, the response must contain the `lintIssues` field with the **subgraph name** as the key
+and the **LintIssues** as the value.
+
 You can also return a collection of error messages to be displayed in the extension’s UI.
 
 The response payload must be a JSON object no larger than **5 MB**.
 
 ## SubgraphCheckExtensionReply
-| Field        | Type                                       | Description                                                                                                                                                                                        |
-|--------------|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `errors`     | `string[]` or `undefined`                  | An optional collection of errors caught by the check extension. When one or more errors are returned, the subgraph check extension reports the result as a failure.                                |
-| `lintIssues` | [`LintIssue[]`](#lintissue) or `undefined` | An optional collection of lint issues that will be appended to the ones reported by the internal lint check. If you only want to see issues reported by your service, disable the `Lint Policies`. |
+| Field        | Type                                                           | Description                                                                                                                                                                                                      |
+|--------------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `errors`     | `string[]` or `undefined`                                      | An optional collection of errors caught by the check extension. When one or more errors are returned, the subgraph check extension reports the result as a failure.                                              |
+| `lintIssues` | `Record<string, `[`LintIssue[]`](#lintissue)`>` or `undefined` | An optional map of the lint issues by subgraph name that will be appended to the ones reported by the internal lint check. If you only want to see issues reported by your service, disable the `Lint Policies`. |
 
 ## LintIssue
 | Field           | Type                                      | Description                                                                                                  |
@@ -65,6 +67,6 @@ enum LintSeverity {
 
 interface SubgraphCheckExtensionReply {
   errors?: string[];
-  lintIssues?: LintIssue[];
+  lintIssues?: Record<string, LintIssue[]>;
 }
 ```
