@@ -18,9 +18,9 @@ directive @provides(fields: FieldSet!) on FIELD_DEFINITION
 
 ## Overview
 
-By default, if a field belongs to another subgraph (marked [`@external`](/federation/directives/external)), the router must always fetch it from the owning subgraph. The `@provides` directive is a performance optimization that tells the router that at this specific query path, it can skip the separate fetch because the subgraph is already providing those external fields.
+Sometimes a subgraph can resolve a field that is normally resolved by other subgraphs, but only on a specific query path. For example, a query might JOIN related data, making certain fields available as a side effect. The `@provides` directive tells the router that on this path the subgraph will include those fields, so the router can skip a separate fetch.
 
-`@provides` does not change which subgraph owns a field. It only informs the query planner that an additional fetch can be avoided along a particular path. This is particularly useful when a root query already fetches related data from a joined data source, and returning it alongside is essentially free.
+Because the field is only available on one path and not on all paths of this subgraph, it must be declared [`@external`](/federation/directives/external). The `@external` declaration is a consequence of using `@provides`: the subgraph cannot resolve the field everywhere, only where `@provides` is applied.
 
 ## Example
 
@@ -61,16 +61,18 @@ When a client queries `confirmedTickets { event { venueName } }`, the router kno
 
 ## Rules
 
-For `@provides` to be valid, the fields listed in `fields` must be declared `@external` on the type in this subgraph, and those same fields must be declared `@shareable` (or be key fields) in at least one other subgraph. The owning subgraph must still be capable of resolving them independently. `@provides` can only be applied to a field that returns an entity type or a list of an entity type.
+For `@provides` to be valid:
 
-If the provided fields are not `@shareable` in the owning subgraph, composition will fail.
+- The provided fields must be declared `@external` on the type in this subgraph.
+- Those same fields must be declared `@shareable` (or be key fields) in at least one other subgraph that resolves them. If they are not `@shareable` there, composition will fail.
+- `@provides` can only be applied to a field that returns an entity type or a list of an entity type.
 
 ## When to Use `@provides`
 
 `@provides` is always optional; the federation graph will be functionally correct without it. It makes sense when a query already fetches certain related entity fields as a side effect of its implementation, and the overhead of returning those extra fields is lower than the cost of an additional network round-trip.
 
-Do not use `@provides` just to avoid declaring `@external`. The semantics of field ownership must still be accurate.
+Do not use `@provides` just to avoid declaring `@external`. The field must genuinely be available at that path.
 
 ## See Also
 
-[`@key`](/federation/directives/key) designates an object type as a federation entity. [`@external`](/federation/directives/external) marks a field as owned by another subgraph, which is required for fields listed in `@provides`. [`@requires`](/federation/directives/requires) handles the opposite case: declaring that a locally-resolved field depends on external fields.
+[`@key`](/federation/directives/key) designates an object type as a federation entity. [`@external`](/federation/directives/external) marks a field as not resolved by this subgraph by default, which is required for fields listed in `@provides`. [`@requires`](/federation/directives/requires) handles the opposite case: declaring that a locally-resolved field depends on external fields.
