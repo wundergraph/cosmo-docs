@@ -1,7 +1,7 @@
 ---
 title: "@external"
 icon: "arrow-right-from-bracket"
-description: "The @external directive marks a field as being owned and resolved by another subgraph, making it available for use with @requires and @provides."
+description: "The @external directive marks a field as resolved by another subgraph, making it available for use with @requires and @provides."
 ---
 
 ## Definition
@@ -12,13 +12,13 @@ directive @external on FIELD_DEFINITION | OBJECT
 
 ## Overview
 
-The `@external` directive tells the router that a field is _not_ owned by the current subgraph. It belongs to and is resolved by another subgraph, and even though it is declared locally, the current subgraph cannot independently resolve it.
+The `@external` directive tells the router that a field is not resolved by the current subgraph. It is defined and resolved by another subgraph, and even though it is declared locally, the current subgraph cannot independently resolve it.
 
 An `@external` field cannot exist on its own. It must be used by at least one of the following:
 
 - [`@requires`](/federation/directives/requires), to express that a locally-resolved field depends on the external field's value.
 - [`@provides`](/federation/directives/provides), to tell the router that the subgraph can resolve the external field at a specific query path.
-- An interface contract, where the field is needed to satisfy the interface but is owned by another subgraph.
+- An interface contract, where the field is needed to satisfy the interface but is resolved by another subgraph.
 
 If an external field is not used in any of these ways, composition will reject the schema.
 
@@ -26,10 +26,10 @@ In most schemas, `@external` only appears on entity types (types with a [`@key`]
 
 ## Field-Level Declaration
 
-When applied to a single field definition, `@external` marks only that field as coming from another subgraph. In this example, two subgraphs contribute to the `Event` entity: the **"scheduling"** subgraph owns `capacity` and `registrationCount`, while the **"waitlist"** subgraph needs those values to compute `spotsRemaining` and therefore declares them `@external`:
+When applied to a single field definition, `@external` marks only that field as coming from another subgraph. In this example, two subgraphs contribute to the `Event` entity: the **"scheduling"** subgraph resolves `capacity` and `registrationCount`, while the **"waitlist"** subgraph needs those values to compute `spotsRemaining` and therefore declares them `@external`:
 
 ```graphql
-# scheduling subgraph — owns capacity and registrationCount
+# scheduling subgraph — resolves capacity and registrationCount
 type Event @key(fields: "id") {
   id: ID!
   name: String!
@@ -55,20 +55,20 @@ type Event @key(fields: "id") {
 Applying `@external` to an object type marks all fields currently defined on that type as external:
 
 ```graphql
-# notifications subgraph — ContactInfo is owned by the users subgraph
+# notifications subgraph — ContactInfo is resolved by the users subgraph
 type ContactInfo @external {
   email: String!
   phone: String
 }
 ```
 
-This is equivalent to marking each field `@external` individually. It is typically used when a subgraph needs to reference a complete object type owned by another subgraph.
+This is equivalent to marking each field `@external` individually. It is typically used when a subgraph needs to reference a complete object type resolved by another subgraph.
 
 ## Behavior at Composition
 
-External fields are excluded from the subgraph's contribution to the composed supergraph schema. They exist in the subgraph's SDL only to support directives that reference them. The router knows the authoritative source for the field and will always fetch it from the owning subgraph.
+External fields are excluded from the subgraph's contribution to the composed supergraph schema. They exist in the subgraph's SDL only to support directives that reference them. The router knows which subgraph resolves the field and will fetch it from there.
 
-If a field is declared `@external` in one subgraph but is never owned (i.e., defined without `@external`) in any other subgraph, composition will fail.
+If a field is declared `@external` in one subgraph but is never defined (without `@external`) in any other subgraph, composition will fail.
 
 ## Key Fields and `@external`
 

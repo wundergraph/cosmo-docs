@@ -24,7 +24,7 @@ Because the field is only available on one path and not on all paths of this sub
 
 ## Example
 
-The scheduling subgraph owns `Event.venueName`. The ticketing subgraph happens to include `venueName` in the result of its confirmed tickets query (it comes along in a JOIN), so it can declare `@provides` to save the router a round-trip:
+The scheduling subgraph resolves `Event.venueName`. The ticketing subgraph happens to include `venueName` in the result of its confirmed tickets query (it comes along in a JOIN), so it can declare `@provides` to save the router a round-trip:
 
 ```graphql
 # scheduling subgraph

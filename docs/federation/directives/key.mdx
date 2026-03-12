@@ -21,11 +21,11 @@ directive @key(fields: FieldSet!, resolvable: Boolean = true) repeatable on OBJE
 
 The `@key` directive is the foundation of GraphQL Federation entities. Applying `@key` to an object type declares it an _entity_: a type whose fields can be distributed across multiple subgraphs and resolved independently by each. The key fields uniquely identify an instance of the entity so the router can correlate data from different subgraphs.
 
-Any subgraph that owns or references an entity must declare `@key` with the same set of identifying fields. The router uses these keys to construct _representations_ when fetching entity data from subgraphs that contribute additional fields.
+Any subgraph that resolves or references an entity must declare `@key` with the same set of identifying fields. The router uses these keys to construct _representations_ when fetching entity data from subgraphs that contribute additional fields.
 
 ## Single Key
 
-The most common case is identifying an entity by a single scalar field. Here an `Event` type is owned by the scheduling subgraph but also contributes fields from the analytics subgraph:
+The most common case is identifying an entity by a single scalar field. Here both the scheduling and analytics subgraphs contribute fields to the `Event` entity:
 
 ```graphql
 # scheduling subgraph
@@ -98,7 +98,7 @@ The subgraph's entity resolver receives both `id` and the nested `event.id` to u
 
 ## Non-Resolvable Keys (`resolvable: false`)
 
-A subgraph sometimes needs to return a reference to an entity it does not own. For example, a ticketing subgraph stores which event a ticket belongs to, but the event's details (name, date, venue) live in a separate scheduling subgraph. Setting `resolvable: false` tells the router to never send entity resolution requests to this subgraph for the `Event` type:
+A subgraph sometimes needs to return a reference to an entity it does not resolve. For example, a ticketing subgraph stores which event a ticket belongs to, but the event's details (name, date, venue) live in a separate scheduling subgraph. Setting `resolvable: false` tells the router to never send entity resolution requests to this subgraph for the `Event` type:
 
 ```graphql
 # ticketing subgraph
@@ -152,4 +152,4 @@ type Workshop implements ScheduledItem @key(fields: "id") {
 
 ## See Also
 
-[`@external`](/federation/directives/external) marks fields owned by another subgraph, making them available for use in `@requires` or `@provides`. [`@requires`](/federation/directives/requires) declares that an entity field depends on external fields that must be fetched from another subgraph first. [`@provides`](/federation/directives/provides) declares that a subgraph can resolve certain external entity fields at a specific query path.
+[`@external`](/federation/directives/external) marks fields as resolved by another subgraph, making them available for use in `@requires` or `@provides`. [`@requires`](/federation/directives/requires) declares that an entity field depends on external fields that must be fetched from another subgraph first. [`@provides`](/federation/directives/provides) declares that a subgraph can resolve certain external entity fields at a specific query path.
