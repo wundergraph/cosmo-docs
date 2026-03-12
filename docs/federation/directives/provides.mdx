@@ -57,7 +57,7 @@ type Query {
 }
 ```
 
-When a client queries `confirmedTickets { event { venueName } }`, the router knows the ticketing subgraph will include `venueName` in its response and skips the round-trip to the scheduling subgraph. For `cancelledTickets { event { venueName } }`, the router still fetches `venueName` from scheduling.
+When a client queries `confirmedTickets { event { venueName } }`, the router knows the ticketing subgraph is able to resolve venueName under the confirmedTickets path and skips the round-trip to the scheduling subgraph. For `cancelledTickets { event { venueName } }`, the router still fetches `venueName` from scheduling.
 
 ## Rules
 
@@ -69,9 +69,9 @@ For `@provides` to be valid:
 
 ## When to Use `@provides`
 
-`@provides` is always optional; the federation graph will be functionally correct without it. It makes sense when a query already fetches certain related entity fields as a side effect of its implementation, and the overhead of returning those extra fields is lower than the cost of an additional network round-trip.
+`@provides` is a performance hint, not a correctness requirement. Without it, the router fetches the field from the subgraph that normally resolves it. With `@provides`, the router knows the field is already available in the response and skips the extra round-trip.
 
-Do not use `@provides` just to avoid declaring `@external`. The field must genuinely be available at that path.
+Use it when a query already fetches related entity fields as a side effect (e.g. a database JOIN) and returning them costs less than an additional network hop. The field is available at this path, even though it is marked as `@external`.
 
 ## See Also
 
