@@ -14,13 +14,13 @@ directive @external on FIELD_DEFINITION | OBJECT
 
 The `@external` directive tells the router that a field is _not_ owned by the current subgraph. It belongs to and is resolved by another subgraph, and even though it is declared locally, the current subgraph cannot independently resolve it.
 
-Declaring a field as `@external` is not merely informational. It is a prerequisite for using that field in [`@requires`](/federation/directives/requires), which expresses that a locally-resolved field depends on the value of an external field, and in [`@provides`](/federation/directives/provides), which tells the router that a subgraph can resolve an external field at a specific query path.
+An `@external` field cannot exist on its own. It must be referenced by another directive such as [`@requires`](/federation/directives/requires) or [`@provides`](/federation/directives/provides). If an external field is not used by any of these directives, composition will reject the schema as invalid. In other words, `@external` is always paired with a directive that gives the field a purpose: `@requires` expresses that a locally-resolved field depends on the value of an external field, and `@provides` tells the router that a subgraph can resolve an external field at a specific query path.
 
 In most schemas, `@external` only appears on entity types (types with a [`@key`](/federation/directives/key) directive), where fields come from multiple subgraphs.
 
 ## Field-Level Declaration
 
-When applied to a single field definition, `@external` marks only that field as coming from another subgraph. In this example, the scheduling subgraph owns `capacity` and `registrationCount` on the `Event` entity. The waitlist subgraph needs those values to compute `spotsRemaining`, so it declares them `@external`:
+When applied to a single field definition, `@external` marks only that field as coming from another subgraph. In this example, two subgraphs contribute to the `Event` entity: the **"scheduling"** subgraph owns `capacity` and `registrationCount`, while the **"waitlist"** subgraph needs those values to compute `spotsRemaining` and therefore declares them `@external`:
 
 ```graphql
 # scheduling subgraph — owns capacity and registrationCount
