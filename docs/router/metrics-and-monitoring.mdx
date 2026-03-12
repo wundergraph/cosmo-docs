@@ -70,8 +70,7 @@ All the below mentioned metrics have the `wg.subgraph.name` dimensions. Do note 
 #### GraphQL specific metrics
 
 `router.graphql.operation.planning_time`: Time taken to plan the operation. The following attributes are attached:
-  * `wg.engine.plan_cache_hit`: Indicates if the plan was served from the main execution plan cache.
-  * `wg.engine.expensive_plan_cache_hit`: Indicates if the plan was served from the expensive query cache. This attribute is only present when `in_memory_fallback` is enabled. See [Expensive Query Cache](/concepts/cache-warmer#expensive-query-cache) for details.
+  * `wg.engine.plan_cache_hit`: Indicates if the plan was served from the main execution plan cache or the plan fallback cache.
 
 ### List of asynchronous instruments
 
