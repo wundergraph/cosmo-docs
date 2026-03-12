@@ -65,13 +65,14 @@ For `@provides` to be valid:
 
 - The provided fields must be declared `@external` on the type in this subgraph.
 - Those same fields must be declared `@shareable` (or be key fields) in at least one other subgraph that resolves them. If they are not `@shareable` there, composition will fail.
-- `@provides` can only be applied to a field that returns an entity type or a list of an entity type.
 
 ## When to Use `@provides`
 
 `@provides` is a performance hint, not a correctness requirement. Without it, the router fetches the field from the subgraph that normally resolves it. With `@provides`, the router knows the field is already available in the response and skips the extra round-trip.
 
 Use it when a query already fetches related entity fields as a side effect (e.g. a database JOIN) and returning them costs less than an additional network hop. The field is available at this path, even though it is marked as `@external`.
+
+This also applies to [`@requires`](/federation/directives/requires): if all required fields are already provided at the current query path, the router skips the fetch for those fields entirely.
 
 ## See Also
 
