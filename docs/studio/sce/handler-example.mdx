@@ -90,19 +90,22 @@ The following example includes the handler implementation, a helper for validati
       }
 
       return {
-        lintIssues: [
-          {
-            lintRuleType: 'TYPE_SUFFIX',
-            severity: 1,
-            message: 'Type names should use the prefix `Type`',
-            issueLocation: {
-              line: 9,
-              column: 6,
-              endLine: 9,
-              endColumn: 11,
+        lintIssues: {
+          // The key is the name of the subgraph the lint issues apply for
+          'my-subgraph': [
+            {
+              lintRuleType: 'TYPE_SUFFIX',
+              severity: 1,
+              message: 'Type names should use the prefix `Type`',
+              issueLocation: {
+                line: 9,
+                column: 6,
+                endLine: 9,
+                endColumn: 11,
+              },
             },
-          },
-        ],
+          ]
+        },
       };
     },
   );
@@ -160,6 +163,7 @@ The following example includes the handler implementation, a helper for validati
 
   export interface SubgraphInfo {
     id: string;
+    labels: LabelInfo[];
     name: string;
     isDeleted: boolean;
   }
@@ -198,13 +202,9 @@ The following example includes the handler implementation, a helper for validati
     };
   }
 
-  export interface OverwriteInfo {
-    lintIssues: LintIssue[];
-  }
-
   export interface SubgraphCheckExtensionReply {
     errors?: string[];
-    lintIssues: LintIssue[];
+    lintIssues?: Record<string, LintIssue[]>;
   }
   ```
 </CodeGroup>
