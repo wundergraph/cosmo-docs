@@ -7,7 +7,7 @@ icon: "link"
 
 ## Introduction
 
-The [`@requires`](/federation/directives/requires) federation directive declares that a field's resolver depends on values from fields owned by another subgraph. Cosmo Connect supports `@requires` for gRPC-backed entities, enabling you to implement computed fields that span multiple subgraphs with full type safety and automatic batching.
+The [`@requires`](/federation/directives/requires) federation directive declares that a field's resolver depends on values from fields resolved by another subgraph. Cosmo Connect supports `@requires` for gRPC-backed entities, enabling you to implement computed fields that span multiple subgraphs with full type safety and automatic batching.
 
 If you're not familiar with how `@requires` works in federation generally, read the [**@requires directive**](/federation/directives/requires) documentation first.
 
@@ -25,7 +25,7 @@ type Storage @key(fields: "id") {
 }
 ```
 
-`tags` is owned by another subgraph and marked `@external`. The `tagSummary` field is resolved by this subgraph, but only after `tags` has been fetched from the owning subgraph.
+`tags` is resolved by another subgraph and marked `@external`. The `tagSummary` field is resolved by this subgraph, but only after `tags` has been fetched from the other subgraph.
 
 ### Generated RPC
 
@@ -64,7 +64,7 @@ message RequireStorageTagSummaryByIdFields {
 }
 ```
 
-The `key` is passed through automatically from the parent entity's `@key` directive, giving you a stable identifier to use in your business logic. The `fields` message contains the already-resolved values of the `@external` fields you declared in `@requires`. In this example, `fields.tags` will already be populated with the tag list fetched from the owning subgraph before your RPC is called.
+The `key` is passed through automatically from the parent entity's `@key` directive, giving you a stable identifier to use in your business logic. The `fields` message contains the already-resolved values of the `@external` fields you declared in `@requires`. In this example, `fields.tags` will already be populated with the tag list fetched from the subgraph that resolves them before your RPC is called.
 
 ### Response
 
@@ -82,7 +82,7 @@ The response is a repeated list of results, one per context element in the reque
 
 ## Batching
 
-`@requires` RPCs are **batched by default**. When multiple entities need their requiring field resolved in a single GraphQL operation, Cosmo Connect aggregates all of them, fetches the `@external` field values from the owning subgraph for all entities at once, and issues a single RPC call to your service with all context elements in one request.
+`@requires` RPCs are **batched by default**. When multiple entities need their requiring field resolved in a single GraphQL operation, Cosmo Connect aggregates all of them, fetches the `@external` field values from the subgraph that resolves them for all entities at once, and issues a single RPC call to your service with all context elements in one request.
 
 This eliminates the N+1 query problem: no matter how many `Storage` entities are returned in a list, there is always exactly one `RequireStorageTagSummaryById` call per operation.
 
@@ -130,10 +130,10 @@ continue
 
 <Steps>
   <Step title="Entity lookup">
-    The router resolves the entity via its regular lookup RPC (e.g., `LookupStorageById`), fetching locally-owned fields.
+    The router resolves the entity via its regular lookup RPC (e.g., `LookupStorageById`), fetching its locally-resolved fields.
   </Step>
   <Step title="External field fetch">
-    The router fetches the `@external` fields (`tags`) from the subgraph that owns them.
+    The router fetches the `@external` fields (`tags`) from the subgraph that resolves them.
   </Step>
   <Step title="Require RPC call">
     With both the entity keys and external field values in hand, the router issues the batched `RequireStorageTagSummaryById` RPC to your service.
@@ -156,5 +156,5 @@ Two limitations currently apply to `@requires` in Cosmo Connect. Both are active
 ## See Also
 
 - [**@requires directive**](/federation/directives/requires) — Federation concept documentation
-- [**@external directive**](/federation/directives/external) — Marking fields as owned by another subgraph
+- [**@external directive**](/federation/directives/external) — Marking fields as resolved by another subgraph
 - [**GraphQL Support**](/router/gRPC/graphql-support) — Supported features and limitations overview
