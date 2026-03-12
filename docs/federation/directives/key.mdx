@@ -49,7 +49,7 @@ Both subgraphs declare `Event` as an entity with the `id` key. The router can no
 
 ## Multiple Keys
 
-A type can have more than one `@key` directive. This is useful when different clients or query paths identify the same entity through different fields:
+A type can have more than one `@key` directive. Each additional key gives the query planner another set of fields it can use to jump between subgraphs when resolving the entity.
 
 ```graphql
 type Event @key(fields: "id") @key(fields: "slug") {
@@ -59,11 +59,15 @@ type Event @key(fields: "id") @key(fields: "slug") {
 }
 ```
 
-When multiple keys are declared, the router chooses the most efficient key for a given query plan. The entity must be resolvable by any one of the declared keys.
+The entity must be resolvable by any one of its declared keys.
+
+<Warning>
+Multiple keys increase the number of possible query plan paths, which adds complexity to query planning. In most cases a single key is sufficient. The primary reason to declare a second key is during a key migration, where the old key is kept temporarily while subgraphs transition to the new one. Avoid permanent multi-key setups unless you have a clear need.
+</Warning>
 
 ## Compound Keys
 
-A key can span multiple fields, including nested object fields. All fields in the selection set must be present on the type:
+A compound key spans multiple fields, including nested object fields. All fields in the compound key's selection set must be present on the type:
 
 ```graphql
 type Session @key(fields: "id event { id }") {
@@ -78,20 +82,31 @@ type Event {
 }
 ```
 
-When the key includes nested fields, the router passes the full nested structure in representations so the subgraph can resolve the entity.
+When the key includes nested fields, the router passes the full nested structure in representations so the subgraph can resolve the entity. For the schema above, a representation looks like this:
+
+```json
+{
+  "__typename": "Session",
+  "id": "session-1",
+  "event": {
+    "id": "event-42"
+  }
+}
+```
+
+The subgraph's entity resolver receives both `id` and the nested `event.id` to uniquely identify the `Session`.
 
 ## Non-Resolvable Keys (`resolvable: false`)
 
-Sometimes a subgraph needs to reference an entity from another subgraph without being able to resolve it independently. Setting `resolvable: false` signals to the router that this subgraph contributes no reference resolver for the entity:
+A subgraph sometimes needs to return a reference to an entity it does not own. For example, a ticketing subgraph stores which event a ticket belongs to, but the event's details (name, date, venue) live in a separate scheduling subgraph. Setting `resolvable: false` tells the router to never send entity resolution requests to this subgraph for the `Event` type:
 
 ```graphql
 # ticketing subgraph
-# References Event by key but cannot resolve Event fields independently.
 type Event @key(fields: "id", resolvable: false) {
   id: ID!
 }
 
-type Ticket {
+type Ticket @key(fields: "id") {
   id: ID!
   event: Event!
   seatNumber: String!
@@ -99,11 +114,22 @@ type Ticket {
 }
 ```
 
-The router will never route a query to this subgraph just to resolve `Event` fields; it will always consult the subgraph that owns the entity. The `id` field is still available for use in `@requires` or `@provides` directives within this subgraph.
+The subgraph can return `Event` references (e.g. `Ticket.event`), but the router will resolve `Event` fields through subgraphs that declare a resolvable key for it. If you need to use the `id` field in [`@requires`](/federation/directives/requires) or [`@provides`](/federation/directives/provides) within this subgraph, mark it as [`@external`](/federation/directives/external).
+
+<Note>
+In Federation v1, each entity had a single "origin" subgraph (the type definition). All other subgraphs used type extensions and had to mark key fields as `@external`. Federation v2 removed the origin concept entirely. Entities can now be defined as regular types across multiple subgraphs, and key fields are implicitly shareable. See [Understanding Federation Versions](https://wundergraph.com/blog/understanding-federation-versions) for more details.
+</Note>
 
 ## Keys on Interfaces
 
-Applying `@key` to an interface creates an _entity interface_, allowing a subgraph to contribute fields to every object type that implements the interface across subgraphs:
+Applying `@key` to an interface creates an _entity interface_, allowing a subgraph to contribute fields to every object type that implements the interface across subgraphs.
+
+### Rules
+
+- The subgraph that defines the entity interface must also define every entity type that implements it. Other subgraphs may also define these entities.
+- Every implementing entity must include all `@key` directives from the interface. Additional keys are permitted but generally discouraged (see [Multiple Keys](#multiple-keys)).
+- Key field values must be unique across all implementing types. No instance of `Concert` can have the same key value as any instance of `Workshop`.
+- The interface must have at least one `@key` directive.
 
 ```graphql
 # scheduling subgraph
@@ -112,6 +138,7 @@ interface ScheduledItem @key(fields: "id") {
   startsAt: String!
 }
 
+# Both implementing types repeat @key(fields: "id") from the interface.
 type Concert implements ScheduledItem @key(fields: "id") {
   id: ID!
   startsAt: String!
