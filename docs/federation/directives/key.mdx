@@ -19,7 +19,7 @@ directive @key(fields: FieldSet!, resolvable: Boolean = true) repeatable on OBJE
 
 ## Overview
 
-The `@key` directive is the foundation of GraphQL Federation entities. By applying `@key` to an object type, you declare it an _entity_: a type that can be uniquely identified and resolved across multiple subgraphs using a set of key fields.
+The `@key` directive is the foundation of GraphQL Federation entities. Applying `@key` to an object type declares it an _entity_: a type whose fields can be distributed across multiple subgraphs and resolved independently by each. The key fields uniquely identify an instance of the entity so the router can correlate data from different subgraphs.
 
 Any subgraph that owns or references an entity must declare `@key` with the same set of identifying fields. The router uses these keys to construct _representations_ when fetching entity data from subgraphs that contribute additional fields.
 
