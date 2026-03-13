@@ -7,49 +7,89 @@ icon: "function"
 
 ## Introduction
 
-Field resolvers in Cosmo Router enable you to implement custom resolution logic for any field in your GraphQL schema through gRPC integration. This powerful feature allows you to add computed fields, perform complex transformations, and integrate external data sources seamlessly within your federated graph.
+A field resolver turns a GraphQL field into a remote function (RPC). When a query requests that field, the Cosmo Router calls an additional RPC endpoint within your gRPC service to compute its value.
 
-Unlike traditional GraphQL resolvers that run within your application code, Cosmo's field resolvers execute as gRPC services, providing better performance, type safety, and language flexibility while maintaining the familiar GraphQL developer experience.
+The function receives:
 
-## What are Field Resolvers?
+- **Parent object context** — data from the parent type needed to resolve the field (e.g. the entity's `id`)
+- **Field arguments** (optional) — any arguments declared on the field in the GraphQL schema
 
-Field resolvers are specialized functions that define how specific fields in your GraphQL schema should be resolved. They bridge the gap between your GraphQL API and custom business logic by:
+Field resolvers are useful whenever a field is expensive to compute, depends on external data, or needs custom business logic — whether or not it accepts arguments.
 
-- **Custom Field Logic**: Implementing complex calculations, data transformations, or external API calls
-- **Argument Handling**: Processing field arguments passed from GraphQL operations, either directly or through variables  
-- **Context Awareness**: Accessing parent object data and resolver context to make informed decisions
-- **Type Safety**: Leveraging protobuf definitions to ensure type-safe communication between the router and your resolver logic
+## How It Works
 
-When a GraphQL operation requests a field with a custom resolver, the Cosmo Router delegates the resolution to your gRPC service, which can implement any custom logic required to compute the field's value.
+To create a field resolver, annotate a field with the `@connect__fieldResolver` directive and specify which parent fields to pass as context:
 
-## How Field Resolvers Work in Protobuf
-
-The implementation of field resolvers in a protobuf-based system presents a unique architectural challenge. Since Protocol Buffers don't natively support field arguments (unlike GraphQL), Cosmo solves this through an innovative approach:
-
-### The Challenge
-Traditional protobuf message definitions cannot represent GraphQL fields with arguments, as protobuf fields are simple properties without parameter support.
-
-### The Solution
-To overcome this limitation, Cosmo generates **RPC methods for each field resolver** instead of simple message fields. This approach:
-
-1. **Converts fields to RPCs**: Each field with custom resolution logic becomes a dedicated RPC method in the generated protobuf service
-2. **Preserves argument support**: Field arguments are mapped to RPC method parameters, maintaining full GraphQL functionality
-3. **Enables complex resolution**: The RPC method can implement any custom logic needed to resolve the field value
-
-### Runtime Execution Flow
-When your GraphQL operation requests a field with arguments:
-
-1. **Query Planning**: The Cosmo Router analyzes the operation and identifies fields requiring custom resolution
-2. **Data Retrieval**: The router first fetches any necessary parent data which is needed for the current type to resolve the field value  
-3. **Field Resolution**: For each field resolver, the router calls the corresponding RPC method with the field arguments and parent context
-4. **Response Assembly**: The resolved field values are integrated back into the GraphQL response structure
-
-This architecture ensures that your field resolvers have access to both the requested arguments and the complete parent object context, enabling sophisticated resolution logic while maintaining GraphQL's declarative query interface.
-
-## Schema Definition and Generated Protobuf
-
-**This example GraphQL schema:**
 ```graphql
+type User {
+  id: ID!
+  name: String!
+  avatar: String! @connect__fieldResolver(context: "id")
+}
+```
+
+The `context` parameter accepts a space-separated list of field names from the parent type. You can pass multiple fields — for example `context: "id name"` — and only those fields will appear in the generated context message.
+
+Cosmo generates a dedicated RPC for the annotated field. The generated request message always contains a **repeated `context`** field — one entry per entity in the batch. If the field declares arguments, the request also contains a `field_args` message.
+
+<Note>
+The `context` parameter on `@connect__fieldResolver` is always required. It specifies which parent fields are passed to the resolver.
+</Note>
+
+### Runtime Flow
+
+1. **Query Planning** — The router identifies fields that require custom resolution
+2. **Data Retrieval** — Parent data needed for context is fetched first
+3. **Field Resolution** — The router calls the generated RPC with batched context (and arguments, if any)
+4. **Response Assembly** — Resolved values are merged back into the GraphQL response
+
+## Schema & Generated Protobuf
+
+### Field Without Arguments
+
+The simplest case: a field with no arguments, resolved via context alone.
+
+<CodeGroup>
+```graphql Schema
+type User {
+  id: ID!
+  name: String!
+  avatar: String! @connect__fieldResolver(context: "id")
+}
+```
+
+```protobuf Generated Protobuf
+service UserService {
+  rpc ResolveUserAvatar(ResolveUserAvatarRequest) returns (ResolveUserAvatarResponse) {}
+}
+
+message ResolveUserAvatarContext {
+  string id = 1;
+}
+
+message ResolveUserAvatarRequest {
+  // context provides the resolver context for the field avatar of type User.
+  repeated ResolveUserAvatarContext context = 1;
+}
+
+message ResolveUserAvatarResult {
+  string avatar = 1;
+}
+
+message ResolveUserAvatarResponse {
+  repeated ResolveUserAvatarResult result = 1;
+}
+```
+</CodeGroup>
+
+The request contains only `context` — one entry per entity in the batch.
+
+### Field With Arguments
+
+When a field declares arguments, Cosmo additionally generates an `Args` message and a `field_args` field on the request.
+
+<CodeGroup>
+```graphql Schema (with args)
 type Query {
   foo(id: ID!): Foo!
 }
@@ -60,10 +100,7 @@ type Foo {
 }
 ```
 
-**will produce the following Protobuf definitions:**
-
-```protobuf
-// Service definition for ProductService
+```protobuf Generated Protobuf (with args)
 service ProductService {
   rpc QueryFoo(QueryFooRequest) returns (QueryFooResponse) {}
   rpc ResolveFooBar(ResolveFooBarRequest) returns (ResolveFooBarResponse) {}
@@ -104,6 +141,51 @@ message Foo {
   string id = 1;
 }
 ```
+</CodeGroup>
+
+Note the addition of `ResolveFooBarArgs` and the `field_args` field on the request — this is the only structural difference from the no-arguments case.
+
+### Multiple Context Fields
+
+You can select multiple parent fields by listing them space-separated in the `context` parameter. Only the fields you select are included in the generated context message — no other fields from the parent type are passed to the resolver.
+
+<CodeGroup>
+```graphql Schema (multiple context fields)
+type Product {
+  id: ID!
+  name: String!
+  category: String!
+  discount: Float! @connect__fieldResolver(context: "id name category")
+}
+```
+
+```protobuf Generated Protobuf (multiple context fields)
+service ProductService {
+  rpc ResolveProductDiscount(ResolveProductDiscountRequest) returns (ResolveProductDiscountResponse) {}
+}
+
+message ResolveProductDiscountContext {
+  string id = 1;
+  string name = 2;
+  string category = 3;
+}
+
+message ResolveProductDiscountRequest {
+  // context provides the resolver context for the field discount of type Product.
+  repeated ResolveProductDiscountContext context = 1;
+}
+
+message ResolveProductDiscountResult {
+  float discount = 1;
+}
+
+message ResolveProductDiscountResponse {
+  repeated ResolveProductDiscountResult result = 1;
+}
+```
+</CodeGroup>
+
+The `ResolveProductDiscountContext` message contains exactly the three fields listed in `context: "id name category"`. Other fields on `Product` (or fields added later) are not included.
 
 ## Implementation Guide
 
@@ -124,15 +206,47 @@ message Foo {
   </Step>
 </Steps>
 
+### Example 1: Field Resolver Without Arguments
 
-### Example implementation
-
-To provide better insights on how to implement field resolvers, you can take a look at the following Go example.
-
-In this example, we want to retrieve the popularity score for a category based on the ID and a given threshold.
+This example resolves the `avatar` field by looking up an avatar URL based on the user's ID from context.
 
 <CodeGroup>
-```graphql schema.graphql
+```graphql user-schema.graphql
+type User {
+  id: ID!
+  name: String!
+  avatar: String! @connect__fieldResolver(context: "id")
+}
+```
+
+```go user-service.go
+func (s *UserService) ResolveUserAvatar(_ context.Context, req *userv1.ResolveUserAvatarRequest) (*userv1.ResolveUserAvatarResponse, error) {
+	// We need to return results in the original order of the context elements.
+	results := make([]*userv1.ResolveUserAvatarResult, 0, len(req.GetContext()))
+
+	// No field_args — iterate over context only.
+	for _, reqContext := range req.GetContext() {
+		avatarURL := fmt.Sprintf("https://avatars.example.com/%s.png", reqContext.GetId())
+		results = append(results, &userv1.ResolveUserAvatarResult{
+			Avatar: avatarURL,
+		})
+	}
+
+	resp := &userv1.ResolveUserAvatarResponse{
+		Result: results,
+	}
+
+	return resp, nil
+}
+```
+</CodeGroup>
+
+### Example 2: Field Resolver With Arguments
+
+This example retrieves the popularity score for a category based on the ID and a given threshold argument.
+
+<CodeGroup>
+```graphql category-schema.graphql
 type Category {
   id: ID!
   name: String!
@@ -141,7 +255,7 @@ type Category {
 }
 ```
 
-```go service.go
+```go category-service.go
 func (s *CategoryService) ResolveCategoryPopularityScore(_ context.Context, req *categoryv1.ResolveCategoryPopularityScoreRequest) (*categoryv1.ResolveCategoryPopularityScoreResponse, error) {
   // We need to return results in the original order of the context elements.
 	results := make([]*categoryv1.ResolveCategoryPopularityScoreResult, 0, len(req.GetContext()))
@@ -149,7 +263,7 @@ func (s *CategoryService) ResolveCategoryPopularityScore(_ context.Context, req 
   // The threshold is provided in the field arguments of the request (req.GetFieldArgs()).
 	threshold := req.GetFieldArgs().GetThreshold()
 
-  // You can implement any custom logic to compute the popularity score. 
+  // You can implement any custom logic to compute the popularity score.
   // To keep it simple, in this example we compare against a base score of 50
   // and return either nil or the base score.
 	baseScore := 50
@@ -183,7 +297,7 @@ Cosmo Connect automatically optimizes field resolver performance through intelli
 When your GraphQL operation requests fields across multiple entities, Cosmo Connect:
 
 1. **Aggregates Context**: Collects all context elements from the original operation that require field resolution
-2. **Batches Requests**: Groups multiple field resolution calls into a single gRPC request 
+2. **Batches Requests**: Groups multiple field resolution calls into a single gRPC request
 3. **Preserves Order**: Maintains the original order of context elements to ensure correct response mapping
 
 ### Implementation Requirements
@@ -285,4 +399,4 @@ To maximize performance in your field resolver implementations:
 
 
 
-See also: [gRPC Services](/router/gRPC/grpc-services) · [Plugins](/router/gRPC/plugins) · [GraphQL Support](/router/gRPC/graphql-support) 
+See also: [gRPC Services](/router/gRPC/grpc-services) · [Plugins](/router/gRPC/plugins) · [GraphQL Support](/router/gRPC/graphql-support)
