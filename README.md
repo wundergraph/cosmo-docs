@@ -1,5 +1,7 @@
 # WunderGraph Cosmo Docs
 
+> **Note:** This documentation has been moved to the Cosmo monorepo at [github.com/wundergraph/cosmo/docs-website](https://github.com/wundergraph/cosmo/tree/main/docs-website). Please refer to that repository for the latest version.
+
 The official documentation for the [WunderGraph Cosmo](https://github.com/wundergraph/cosmo) project.
 
 ## Contributing
