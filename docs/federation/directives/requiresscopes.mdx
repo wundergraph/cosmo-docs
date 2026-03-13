@@ -32,9 +32,11 @@ scalar openfed__Scope
 
 The "scopes" argument requires an array (GraphQL List) of nested arrays.
 
-The outermost array represents a set of OR scopes.
+The **outer array** represents a set of **OR** scopes—the token must satisfy **at least one** of the inner arrays.
 
-Each nested array sibling represents a set of AND scopes.
+Each **inner array** represents a set of **AND** scopes—the token must possess **all** scopes within that array.
+
+In other words, `scopes: [["a", "b"], ["c"]]` means: (`"a"` AND `"b"`) OR (`"c"`).
 
 Each element in the AND scopes array should be an `openfed__Scope` Scalar, which is an instance of permissions as
 defined in your authentication token.
@@ -251,34 +253,43 @@ type Query {
 }
 ```
 
-### Combining scopes in the same subgraph (matrix multiplication)
-Disparate sets of OR scopes affecting a single field will always combine through a multiplication matrix.
-This is to ensure data cannot be accessed without all appropriate permissions.
+### Combining scopes in the same subgraph
+
+When scopes are defined in multiple places (for example, on a field and on its return type), each set of scopes is
+combined with every set from the other definition.
 
 <Warning>
   The maximum total number of scopes that can apply to a single field both directly and indirectly is 16.
 </Warning>
 
-If one set of AND scopes are declared on a field definition and another set of AND scopes are defined on the
-"type level", the scopes will be multiplied together resulting in both sets of AND scopes being required.
+**Algorithm**
 
-For instance, consider the following federated graph:
+1. Take each set of scopes from the first definition.
+2. Combine it with each set from the second definition.
+3. Merge the scopes in each pair into a single AND set.
+
+The resulting scope sets are the Cartesian product of the two scope lists, with each pair merged into a single AND
+scope set.
+
+#### Simple example
 
 ```graphql
 # federated graph
 type Query {
-  scalars: [Scalar!]! @requiresScopes(scopes: [["read:query"]]) # scopes defined in the field level
+  scalars: [Scalar!]! @requiresScopes(scopes: [["read:query"]]) # field-level scopes
 }
 
-scalar Scalar @requiresScopes(scopes: [["read:scalar"]]) # scopes defined on the type level
+scalar Scalar @requiresScopes(scopes: [["read:scalar"]]) # type-level scopes
 ```
 
-Selecting the field `Query.scalars` would require the permissions `"read:query"` AND `"read:scalar"`.
-This is effectively the same as a single set of AND scopes defined as `[["read:query", "read:scalar"]]`.
+Field scopes: `[["read:query"]]`
+Type scopes: `[["read:scalar"]]`
 
-If there are multiple sets of AND scopes (multiple OR scopes), each set of AND scopes on the "field level" are
-multiplied against each set of AND scopes on the "type level".
-Consider the following federated graph:
+Result: `[["read:query", "read:scalar"]]`
+
+Selecting `Query.scalars` requires both `"read:query"` AND `"read:scalar"`.
+
+#### Multiple OR scopes
 
 ```graphql
 # federated graph
@@ -289,16 +300,20 @@ type Query {
 scalar Scalar @requiresScopes(scopes: [["read:scalar"]])
 ```
 
-Selecting the field `Query.scalars` would require the permissions (`"read:query"` AND `"read:scalar"`) OR
-(`"read:scalar"` AND `"read:private"`).
-This is effectively the same as a single set of OR scopes defined as
-`[["read:query", "read:scalar"], ["read:private", "read:scalar"]]`.
+Field scopes: `[["read:query"], ["read:private"]]`
+Type scopes: `[["read:scalar"]]`
 
+Result:
+```js
+[
+  ["read:query", "read:scalar"],
+  ["read:private", "read:scalar"]
+]
+```
 
-Each set of AND scopes on the "field level" will be added to each set of AND scopes on the "type level".
-Typically, the number of resultant scopes will be \<number of AND scopes on field level> *
-\<number of AND scopes on type level>.
-Consider the following federated graph:
+An access token requires (`"read:query"` AND `"read:scalar"`) OR (`"read:private"` AND `"read:scalar"`).
+
+#### Full example
 
 ```graphql
 # federated graph
@@ -309,23 +324,18 @@ type Query {
 scalar Scalar @requiresScopes(scopes: [["read:scalar", "read:custom"], ["read:sensitive"]])
 ```
 
-In the example above, each set of AND scopes defined at the "field level" would be ANDed together with each set of AND
-scopes defined at the "type level".
-To break this down:
-1. `["read:query", "read:field"]` from the "field level" would be added to `["read:scalar", "read:custom"]` from the
-"type level", producing `["read:query", "read:field", "read:scalar", "read:custom"]`.
-2. `["read:query", "read:field"]` from the "field level" would be added to `["read:sensitive"]` from the "type level",
-producing `["read:query", "read:field", "read:sensitive"]`.
-3. `["read:private"]` from the "field level" would be added to `["read:scalar", "read:custom"]` from the
-"type level", producing `["read:private", "read:scalar", "read:custom"]`.
-4. `["read:private"]` from the "field level" would be added to `["read:sensitive"]` from the "type level", producing
-`["read:private", "read:sensitive"]`.
-5. `["read:list"]` from the "field level" would be added to `["read:scalar", "read:custom"]` from the
-"type level", producing `["read:list", "read:scalar", "read:custom"]`.
-6. `["read:list"]` from the "field level" would be added to `["read:sensitive"]` from the "type level", producing
-`["read:list", "read:sensitive"]`.
+Field scopes (3 sets) × Type scopes (2 sets) = 6 resulting sets:
 
-This is effectively the same as a single set of scopes defined as:
+| Field set | Type set | Merged result |
+| --- | --- | --- |
+| `["read:query", "read:field"]` | `["read:scalar", "read:custom"]` | `["read:query", "read:field", "read:scalar", "read:custom"]` |
+| `["read:query", "read:field"]` | `["read:sensitive"]` | `["read:query", "read:field", "read:sensitive"]` |
+| `["read:private"]` | `["read:scalar", "read:custom"]` | `["read:private", "read:scalar", "read:custom"]` |
+| `["read:private"]` | `["read:sensitive"]` | `["read:private", "read:sensitive"]` |
+| `["read:list"]` | `["read:scalar", "read:custom"]` | `["read:list", "read:scalar", "read:custom"]` |
+| `["read:list"]` | `["read:sensitive"]` | `["read:list", "read:sensitive"]` |
+
+This is effectively the same as:
 ```js
 [
   ["read:query", "read:field", "read:scalar", "read:custom"],
@@ -337,8 +347,10 @@ This is effectively the same as a single set of scopes defined as:
 ]
 ```
 
-### Combining scopes across subgraphs (matrix multiplication)
-If multiple instances of a field (shared field) or type define scopes, those scopes will also be multiplied together.
+### Combining scopes across subgraphs
+
+When multiple instances of a shared field or type define scopes across different subgraphs, the same combination
+rule applies—each set of scopes from one subgraph is combined with every set from the other.
 
 Consider the following subgraphs:
 ```graphql
@@ -348,7 +360,7 @@ type Query @shareable {
   objects: [Object!]!
 }
 
-type Object @shareable @requiresScopes(scopes: [["read:object"]]]) {
+type Object @shareable @requiresScopes(scopes: [["read:object"]]) {
   id: ID!
 }
 ```
@@ -364,8 +376,7 @@ type Object @shareable @requiresScopes(scopes: [["read:type"], ["read:private"]]
 }
 ```
 
-The scopes defined by each instance of the field will be multiplied together, and the resulting product will be shown
-in the federated graph:
+The scopes from each subgraph are combined, and the result is shown in the federated graph:
 ```graphql
 type Query {
   ids: [ID!]! @requiresScopes(scopes: [
@@ -385,11 +396,14 @@ type Object @requiresScopes(scopes: [
 }
 ```
 
-Note that the federated graph will show the combined result of scopes for a specific field or type.
+Note that the federated graph shows the combined result of scopes for a specific field or type.
 The _effective_ scopes, _i.e._, the "type level" scopes affecting a field, will not be reflected in the federated graph.
 
-### Combining scopes (superset scope reduction)
-In the event that combining scopes would produce superfluous scopes, they will be removed.
+### Combining scopes (superset reduction)
+
+After scopes are combined, any scope set that is a superset of another set is removed. A superset is
+redundant because the smaller set already grants access with fewer permissions.
+
 Consider the following subgraphs:
 
 ```graphql
@@ -406,29 +420,23 @@ type Query @shareable {
 }
 ```
 
-One might assume the scopes would merge thus:
-```graphql
-# federated graph
-type Query {
-  ids: [ID!]! @requiresScopes(scopes: [
-    ["read:id"],
-    ["read:id", "read:field"],
-    ["read:field", "read:id"],
-    ["read:field"],
-    ["read:private", "read:id"],
-    ["read:private", "read:field"]
-  ])
-}
-```
+Combining the scopes produces 6 sets:
 
-However, upon closer inspection, it becomes apparent that many of these scopes are either repeated or supersets of
-other scopes.
-Consequently, the merge result remove any scopes that are supersets of other scopes.
-For example, the scope `"read:private"` now only exists with either `"read:id"` or `"read:field"`.
-This makes `"read:private"` redundant because if one has either the `"read:id"` or `"read:field"` permissions, this is
-sufficient to access the field.
-This the same case for the combined scopes of `"read:id"` and `"read:field"`; just one is sufficient.
-And so, the resulting federated graph is actually shown below (note that `"read:private"` is removed):
+| subgraph-a set | subgraph-b set | Merged result |
+| --- | --- | --- |
+| `["read:id"]` | `["read:id"]` | `["read:id"]` |
+| `["read:id"]` | `["read:field"]` | `["read:id", "read:field"]` |
+| `["read:field"]` | `["read:id"]` | `["read:field", "read:id"]` |
+| `["read:field"]` | `["read:field"]` | `["read:field"]` |
+| `["read:private"]` | `["read:id"]` | `["read:private", "read:id"]` |
+| `["read:private"]` | `["read:field"]` | `["read:private", "read:field"]` |
+
+After reduction:
+- `["read:id", "read:field"]` and `["read:field", "read:id"]` are duplicates and supersets of both `["read:id"]` and `["read:field"]` - removed.
+- `["read:private", "read:id"]` is a superset of `["read:id"]` - removed.
+- `["read:private", "read:field"]` is a superset of `["read:field"]` - removed.
+
+The resulting federated graph:
 ```graphql
 # federated graph
 type Query {
