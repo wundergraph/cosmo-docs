@@ -98,7 +98,18 @@
                   "router/configuration/template-expressions"
                 ]
               },
-              "router/mcp",
+              {
+                "group": "MCP Gateway",
+                "icon": "robot",
+                "pages": [
+                  "router/mcp",
+                  "router/mcp/quickstart",
+                  "router/mcp/operations",
+                  "router/mcp/configuration",
+                  "router/mcp/oauth",
+                  "router/mcp/ide-setup"
+                ]
+              },
               {
                 "group": "Custom Modules",
                 "icon": "cubes",
