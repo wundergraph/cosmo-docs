@@ -1,0 +1,119 @@
+---
+title: "General Usage"
+description: "General usage of Cosmo Streams Custom Modules across all available hooks"
+icon: "gear"
+---
+
+This page describes concepts that are shared across all Cosmo Streams handlers and apply to every available hook.
+
+## Operation Variables
+
+If your operation defines variables, you can access them through the `Variables` method on the `OperationContext` interface.
+
+```go
+variables := ctx.Operation().Variables()
+```
+
+```graphql
+subscription($customerId: Int!) {
+  orderUpdates(customerId: $customerId) {
+    id
+  }
+}
+```
+
+Example variables payload:
+
+```json
+{
+  "customerId": 123
+}
+```
+
+Inside your handler, you can retrieve the variables using the `Variables` method:
+
+```go
+variables := ctx.Operation().Variables()
+customerId := variables.Get("customerId").GetInt() // = 123
+```
+
+## Operation Arguments
+
+If no variables are defined in the operation, or if you do not control the variables,
+you can access arguments directly via the `OperationContext` interface.
+
+```go
+arguments := ctx.Operation().Arguments()
+```
+
+Consider an operation that defines multiple arguments:
+
+```graphql
+subscription {
+  orderUpdates(customerId: "123", status: PENDING) {
+    id
+    items(first: 5, sortBy: "price") { name }
+  }
+}
+```
+
+To access the `customerId` argument of the subscription field, use the `Get` method:
+
+```go
+customerId := ctx.Operation().Arguments().Get("orderUpdates", "customerId").GetStringBytes()
+```
+
+Because `orderUpdates` is the root field, you can also resolve the field name dynamically:
+
+```go
+// For OnPublishEvent handler
+rootFieldName := ctx.PublishEventConfiguration().RootFieldName()
+
+// For OnReceiveEvent and SubscriptionOnStart handler
+rootFieldName := ctx.SubscriptionEventConfiguration().RootFieldName()
+
+customerId := ctx.Operation().Arguments().Get(rootFieldName, "customerId").Value()
+```
+
+To access arguments on nested fields, such as the `sortBy` argument of the `items` field,
+use dot notation to reference the nested path.
+
+```go
+sortBy := ctx.Operation().Arguments().Get("orderUpdates.items", "sortBy").GetStringBytes()
+```
+
+When a field uses an alias, the alias must be used as the key when accessing its arguments.
+
+```graphql
+subscription {
+  orderUpdates(customerId: "123", status: PENDING) {
+    id
+    cheapestItems: items(first: 3, sortBy: "price") { name }
+    newestItems: items(first: 3, sortBy: "createdAt") { name }
+  }
+}
+```
+
+```go
+cheapestItemsSortBy := ctx.Operation().Arguments().Get("orderUpdates.cheapestItems", "sortBy").GetStringBytes()
+newestItemsSortBy := ctx.Operation().Arguments().Get("orderUpdates.newestItems", "sortBy").GetStringBytes()
+```
+
+You can also work with more complex argument types, such as arrays and input objects.
+
+```graphql
+subscription {
+  orderUpdates(statuses: ["pending", "shipped"], filter: { minTotal: 100, currency: "USD" }) {
+    id
+  }
+}
+```
+
+```go
+arguments := ctx.Operation().Arguments()
+
+statuses := arguments.Get("orderUpdates", "statuses").GetArray()
+filter := arguments.Get("orderUpdates", "filter").GetObject()
+minTotal := filter.Get("minTotal").GetInt()
+currency := filter.Get("currency").GetStringBytes()
+```
